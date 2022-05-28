@@ -1,28 +1,26 @@
 Attribute VB_Name = "Util"
 Option Explicit
 
-Public xApplicationName As String
-Public xApplicationVersion As String
-Public xApplicationLastUpdate As String
+Public Const APPNAME        As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
+Public Const APPVERSION     As String = "1.0.0"
+Public Const APPLASTUPDATED As String = "26.05.2021"
+Public Const APPDEVELOPER   As String = "Cristian Simioni Milani"
 
-Public xColorRed
-Public xColorGreen
-Public xColorLevel1
-Public xColorLevel2
-Public xColorLevel3
-Public xColorLevel4
-
-Sub initializeDefinitions()
-   xApplicationName = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
-   xApplicationVersion = "1.0.0"
-   xApplicationLastUpdate = "19.05.2022"
-   xColorRed = RGB(255, 89, 89)
-   xColorGreen = RGB(73, 179, 182)
-   xColorLevel1 = RGB(255, 242, 204)
-   xColorLevel2 = RGB(255, 217, 102)
-   xColorLevel3 = RGB(191, 144, 0)
-   xColorLevel4 = RGB(127, 96, 0)
-End Sub
+Public Enum ApplicationColors
+    'Form
+    '#Background
+    bgColorLevel1 = 16777215    'RGB(255, 255, 255)
+    bgColorLevel2 = 16777215    'RGB(255, 255, 255)
+    bgColorLevel3 = 16777215    'RGB(255, 255, 255)
+    bgColorLevel4 = 16777215    'RGB(255, 255, 255)
+    '#Button
+    btColorLevel1 = 14855222 '14602886 '809194      'RGB(234, 88, 12)
+    btColorLevel2 = 1536493     'RGB(237, 113, 23)
+    btColorLevel3 = 2461170     'RGB(242, 141, 37)
+    'Text Box
+    bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
+    bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)
+End Enum
 
 Function getDatabaseWorksheet() As Worksheet
     Set getDatabaseWorksheet = ThisWorkbook.Worksheets("Banco de Dados")
@@ -52,3 +50,22 @@ Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef messag
         message = "O valor deve ser numérico entre " & down & " e " & up
     End If
 End Function
+
+Sub RunPythonScript()
+
+'Declare Variables
+Dim objShell As Object
+Dim PythonExe, PythonScript As String
+
+'Create a new Object shell.
+Set objShell = VBA.CreateObject("Wscript.Shell")
+
+'Provide file path to Python.exe
+'USE TRIPLE QUOTES WHEN FILE PATH CONTAINS SPACES.
+PythonExe = """C:\Users\cristiansimioni\AppData\Local\Programs\Python\Python310\python.exe"""
+PythonScript = "C:\Users\cristiansimioni\Documents\Projetos\gestaoregionalizadarsu\src\combinations\combinations.py"
+
+'Run the Python Script
+objShell.Run PythonExe & PythonScript
+
+End Sub

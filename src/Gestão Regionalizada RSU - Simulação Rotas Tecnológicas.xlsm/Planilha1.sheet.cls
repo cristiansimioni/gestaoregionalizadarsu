@@ -12,5 +12,5 @@ Private Sub CommandButton2_Click()
 End Sub
 
 Private Sub Step1_Click()
-    tool.Show
+    frmTool.Show
 End Sub

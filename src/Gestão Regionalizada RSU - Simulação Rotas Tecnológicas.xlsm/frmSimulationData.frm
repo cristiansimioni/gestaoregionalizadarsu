@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} simulationData 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
-   ClientHeight    =   2610
+   ClientHeight    =   3390
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7080
-   OleObjectBlob   =   "simulationData.frx":0000
+   ClientWidth     =   7500
+   OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "simulationData"
+Attribute VB_Name = "frmSimulationData"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -75,7 +75,8 @@ End Sub
 
 
 Private Sub UserForm_Initialize()
-    Me.BackColor = Util.xColorLevel3
+    Me.Caption = APPNAME & " - xxxx"
+    Me.BackColor = ApplicationColors.bgColorLevel3
     
     LandfillDeviationTarget = Database.getLandfillDeviationTarget()
     ExpectedDeadline = Database.getExpectedDeadline()

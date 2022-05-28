@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} cities 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "Selecionar Cidades"
-   ClientHeight    =   5775
+   ClientHeight    =   5655
    ClientLeft      =   105
    ClientTop       =   450
-   ClientWidth     =   8955.001
-   OleObjectBlob   =   "cities.frx":0000
+   ClientWidth     =   7620
+   OleObjectBlob   =   "frmSelectCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "cities"
+Attribute VB_Name = "frmSelectCities"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -39,7 +39,7 @@ End Sub
 
 Private Sub cbxUF_Change()
     Set wksCities = Util.getCitiesWorksheet
-    lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).Row
+    lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).row
     lstAvailable.Clear
     currentUF = cbxUF
     For x = 2 To lastRow
@@ -58,8 +58,11 @@ End Sub
 
 
 Private Sub UserForm_Initialize()
+    Me.Caption = APPNAME & " - xxxx"
+    Me.BackColor = ApplicationColors.bgColorLevel3
+    
     Set wksCities = Util.getCitiesWorksheet
-    lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).Row
+    lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).row
     
     For x = 2 To lastRow
         uf = wksCities.Cells(x, "A")
@@ -73,4 +76,12 @@ Private Sub UserForm_Initialize()
         
         If inList = False Then cbxUF.AddItem (uf)
     Next x
+    
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.btColorLevel3
+         End If
+    Next Ctrl
+    
 End Sub

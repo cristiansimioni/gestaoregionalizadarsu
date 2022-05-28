@@ -15,6 +15,11 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 
+Private Sub btnRunAlgorithm_Click()
+    Util.RunPythonScript
+End Sub
+
 Private Sub UserForm_Initialize()
-    step2.BackColor = xColorLevel2
+    Me.Caption = APPNAME & " - Passo 2"
+    Me.BackColor = ApplicationColors.bgColorLevel2
 End Sub

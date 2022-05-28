@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} studyCaseStepOne 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne 
    Caption         =   "Dados de Definição do Estudo de Caso"
-   ClientHeight    =   5505
+   ClientHeight    =   4470
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7425
-   OleObjectBlob   =   "studyCaseStepOne.frx":0000
+   ClientWidth     =   7680
+   OleObjectBlob   =   "frmStudyCaseStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "studyCaseStepOne"
+Attribute VB_Name = "frmStudyCaseStepOne"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -48,10 +48,10 @@ End Sub
 Private Sub txtGenerationPerCapitaRDO_Change()
     Dim errorMsg As String
     If Util.validateRange(txtGenerationPerCapitaRDO.Text, 0.75, 1.25, errorMsg) Then
-        txtGenerationPerCapitaRDO.BackColor = Util.xColorGreen
+        txtGenerationPerCapitaRDO.BackColor = ApplicationColors.bgColorValidTextBox
         txtGenerationPerCapitaRDO.ControlTipText = errorMsg
     Else
-        txtGenerationPerCapitaRDO.BackColor = Util.xColorRed
+        txtGenerationPerCapitaRDO.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtGenerationPerCapitaRDO.ControlTipText = errorMsg
     End If
 End Sub
@@ -60,10 +60,10 @@ End Sub
 Private Sub txtAnnualGrowthPopulation_Change()
     Dim errorMsg As String
     If Util.validateRange(txtAnnualGrowthPopulation.Text, 0#, 100#, errorMsg) Then
-        txtAnnualGrowthPopulation.BackColor = Util.xColorGreen
+        txtAnnualGrowthPopulation.BackColor = ApplicationColors.bgColorValidTextBox
         txtAnnualGrowthPopulation.ControlTipText = errorMsg
     Else
-        txtAnnualGrowthPopulation.BackColor = Util.xColorRed
+        txtAnnualGrowthPopulation.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtAnnualGrowthPopulation.ControlTipText = errorMsg
     End If
 End Sub
@@ -71,10 +71,10 @@ End Sub
 Private Sub txtIndexSelectiveColletionRSU_Change()
     Dim errorMsg As String
     If Util.validateRange(txtIndexSelectiveColletionRSU.Text, 0#, 100#, errorMsg) Then
-        txtIndexSelectiveColletionRSU.BackColor = Util.xColorGreen
+        txtIndexSelectiveColletionRSU.BackColor = ApplicationColors.bgColorValidTextBox
         txtIndexSelectiveColletionRSU.ControlTipText = errorMsg
     Else
-        txtIndexSelectiveColletionRSU.BackColor = Util.xColorRed
+        txtIndexSelectiveColletionRSU.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtIndexSelectiveColletionRSU.ControlTipText = errorMsg
     End If
 End Sub
@@ -82,10 +82,10 @@ End Sub
 Private Sub txtAnnualGrowthCollect_Change()
     Dim errorMsg As String
     If Util.validateRange(txtAnnualGrowthCollect.Text, 0#, 100#, errorMsg) Then
-        txtAnnualGrowthCollect.BackColor = Util.xColorGreen
+        txtAnnualGrowthCollect.BackColor = ApplicationColors.bgColorValidTextBox
         txtAnnualGrowthCollect.ControlTipText = errorMsg
     Else
-        txtAnnualGrowthCollect.BackColor = Util.xColorRed
+        txtAnnualGrowthCollect.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtAnnualGrowthCollect.ControlTipText = errorMsg
     End If
 End Sub
@@ -93,10 +93,10 @@ End Sub
 Private Sub txtCOEmission_Change()
     Dim errorMsg As String
     If Util.validateRange(txtCOEmission.Text, 0.5, 2.5, errorMsg) Then
-        txtCOEmission.BackColor = Util.xColorGreen
+        txtCOEmission.BackColor = ApplicationColors.bgColorValidTextBox
         txtCOEmission.ControlTipText = errorMsg
     Else
-        txtCOEmission.BackColor = Util.xColorRed
+        txtCOEmission.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtCOEmission.ControlTipText = errorMsg
     End If
 End Sub
@@ -104,10 +104,10 @@ End Sub
 Private Sub txtAverageCostTransportation_Change()
     Dim errorMsg As String
     If Util.validateRange(txtAverageCostTransportation.Text, 0.5, 10#, errorMsg) Then
-        txtAverageCostTransportation.BackColor = Util.xColorGreen
+        txtAverageCostTransportation.BackColor = ApplicationColors.bgColorValidTextBox
         txtAverageCostTransportation.ControlTipText = errorMsg
     Else
-        txtAverageCostTransportation.BackColor = Util.xColorRed
+        txtAverageCostTransportation.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtAverageCostTransportation.ControlTipText = errorMsg
     End If
 End Sub
@@ -115,16 +115,17 @@ End Sub
 Private Sub txtReducingCostMovimentation_Change()
     Dim errorMsg As String
     If Util.validateRange(txtAverageCostTransportation.Text, 0#, 100#, errorMsg) Then
-        txtReducingCostMovimentation.BackColor = Util.xColorGreen
+        txtReducingCostMovimentation.BackColor = ApplicationColors.bgColorValidTextBox
         txtReducingCostMovimentation.ControlTipText = errorMsg
     Else
-        txtReducingCostMovimentation.BackColor = Util.xColorRed
+        txtReducingCostMovimentation.BackColor = ApplicationColors.bgColorInvalidTextBox
         txtReducingCostMovimentation.ControlTipText = errorMsg
     End If
 End Sub
 
 Private Sub UserForm_Initialize()
-    studyCaseStepOne.BackColor = xColorLevel3
+    Me.Caption = APPNAME & " - xxxx"
+    Me.BackColor = ApplicationColors.bgColorLevel3
 
     txtGenerationPerCapitaRDO.Text = Database.getGenerationPerCapitaRDO
     txtIndexSelectiveColletionRSU.Text = Database.getIndexSelectiveColletionRSU
