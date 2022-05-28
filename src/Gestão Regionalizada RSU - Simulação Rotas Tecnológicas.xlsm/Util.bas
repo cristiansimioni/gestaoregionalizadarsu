@@ -22,16 +22,16 @@ Public Enum ApplicationColors
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)
 End Enum
 
-Function getDatabaseWorksheet() As Worksheet
-    Set getDatabaseWorksheet = ThisWorkbook.Worksheets("Banco de Dados")
+Function GetDatabaseWorksheet() As Worksheet
+    Set GetDatabaseWorksheet = ThisWorkbook.Worksheets("Banco de Dados")
 End Function
 
-Function getCitiesWorksheet() As Worksheet
-    Set getCitiesWorksheet = ThisWorkbook.Worksheets("Municípios")
+Function GetCitiesWorksheet() As Worksheet
+    Set GetCitiesWorksheet = ThisWorkbook.Worksheets("Municípios")
 End Function
 
-Function getSelectedCitiesWorksheet() As Worksheet
-    Set getSelectedCitiesWorksheet = ThisWorkbook.Worksheets("Municípios Selecionados")
+Function GetSelectedCitiesWorksheet() As Worksheet
+    Set GetSelectedCitiesWorksheet = ThisWorkbook.Worksheets("Municípios Selecionados")
 End Function
 
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean

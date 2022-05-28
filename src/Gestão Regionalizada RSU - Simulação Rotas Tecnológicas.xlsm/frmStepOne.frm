@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepOne
    ClientHeight    =   6375
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   6855
+   ClientWidth     =   6915
    OleObjectBlob   =   "frmStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -61,7 +61,7 @@ Private Sub UserForm_Initialize()
     
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Then
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
             Ctrl.BackColor = ApplicationColors.btColorLevel2
          End If
     Next Ctrl

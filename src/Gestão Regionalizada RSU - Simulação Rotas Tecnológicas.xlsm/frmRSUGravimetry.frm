@@ -27,26 +27,37 @@ Dim Diapers As Double
 Dim Wood As Double
 Dim MineralResidues As Double
 Dim Others As Double
+Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
-    Unload Me
+    If FormChanged Then
+        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        If answer = vbYes Then
+          Call btnSave_Click
+        Else
+          Unload Me
+        End If
+    Else
+        Unload Me
+    End If
 End Sub
 
 Private Sub btnDefaultValues_Click()
-    txtFoodWaste.Caption = Database.GetDatabaseValue("FoodWaste", colDefaultValue)
-    txtGreenWaste.Caption = Database.GetDatabaseValue("GreenWaste", colDefaultValue)
-    txtPaper.Caption = Database.GetDatabaseValue("Paper", colDefaultValue)
-    txtPlasticFilm.Caption = Database.GetDatabaseValue("PlasticFilm", colDefaultValue)
-    txtHardPlastics.Caption = Database.GetDatabaseValue("HardPlastics", colDefaultValue)
-    txtGlass.Caption = Database.GetDatabaseValue("Glass", colDefaultValue)
-    txtFerrousMetals.Caption = Database.GetDatabaseValue("FerrousMetals", colDefaultValue)
-    txtNonFerrousMetals.Caption = Database.GetDatabaseValue("NonFerrousMetals", colDefaultValue)
-    txtTextiles.Caption = Database.GetDatabaseValue("Textiles", colDefaultValue)
-    txtRubber.Caption = Database.GetDatabaseValue("Rubber", colDefaultValue)
-    txtDiapers.Caption = Database.GetDatabaseValue("Diapers", colDefaultValue)
-    txtWood.Caption = Database.GetDatabaseValue("Wood", colDefaultValue)
-    txtMineralResidues.Caption = Database.GetDatabaseValue("MineralResidues", colDefaultValue)
-    txtOthers.Caption = Database.GetDatabaseValue("Others", colDefaultValue)
+    'Set default values
+    txtFoodWaste.Text = Database.GetDatabaseValue("FoodWaste", colDefaultValue)
+    txtGreenWaste.Text = Database.GetDatabaseValue("GreenWaste", colDefaultValue)
+    txtPaper.Text = Database.GetDatabaseValue("Paper", colDefaultValue)
+    txtPlasticFilm.Text = Database.GetDatabaseValue("PlasticFilm", colDefaultValue)
+    txtHardPlastics.Text = Database.GetDatabaseValue("HardPlastics", colDefaultValue)
+    txtGlass.Text = Database.GetDatabaseValue("Glass", colDefaultValue)
+    txtFerrousMetals.Text = Database.GetDatabaseValue("FerrousMetals", colDefaultValue)
+    txtNonFerrousMetals.Text = Database.GetDatabaseValue("NonFerrousMetals", colDefaultValue)
+    txtTextiles.Text = Database.GetDatabaseValue("Textiles", colDefaultValue)
+    txtRubber.Text = Database.GetDatabaseValue("Rubber", colDefaultValue)
+    txtDiapers.Text = Database.GetDatabaseValue("Diapers", colDefaultValue)
+    txtWood.Text = Database.GetDatabaseValue("Wood", colDefaultValue)
+    txtMineralResidues.Text = Database.GetDatabaseValue("MineralResidues", colDefaultValue)
+    txtOthers.Text = Database.GetDatabaseValue("Others", colDefaultValue)
     
     FoodWaste = CDbl(txtFoodWaste.Text)
     GreenWaste = CDbl(txtGreenWaste.Text)
@@ -64,7 +75,6 @@ Private Sub btnDefaultValues_Click()
     Others = CDbl(txtOthers.Text)
     
     Call calculateTotal
-    
 End Sub
 
 Private Sub btnSave_Click()
@@ -160,7 +170,8 @@ Private Sub txtWood_Change()
 End Sub
 
 Private Sub UserForm_Initialize()
-    Me.Caption = APPNAME & " - xxxx"
+    'Form Appearance
+    Me.Caption = APPNAME & " - Gravimetria do RSU"
     Me.BackColor = ApplicationColors.bgColorLevel3
     
     Dim Ctrl As Control
@@ -170,7 +181,7 @@ Private Sub UserForm_Initialize()
          End If
     Next Ctrl
     
-    'Preenche valores padrão nas labels
+    'Read database values (default)
     lblFoodWaste.Caption = Database.GetDatabaseValue("FoodWaste", colDefaultValue)
     lblGreenWaste.Caption = Database.GetDatabaseValue("GreenWaste", colDefaultValue)
     lblPaper.Caption = Database.GetDatabaseValue("Paper", colDefaultValue)
@@ -186,6 +197,7 @@ Private Sub UserForm_Initialize()
     lblMineralResidues.Caption = Database.GetDatabaseValue("MineralResidues", colDefaultValue)
     lblOthers.Caption = Database.GetDatabaseValue("Others", colDefaultValue)
     
+    'Read database values (user)
     FoodWaste = Database.GetDatabaseValue("FoodWaste", colUserValue)
     GreenWaste = Database.GetDatabaseValue("GreenWaste", colUserValue)
     Paper = Database.GetDatabaseValue("Paper", colUserValue)
@@ -201,6 +213,7 @@ Private Sub UserForm_Initialize()
     MineralResidues = Database.GetDatabaseValue("MineralResidues", colUserValue)
     Others = Database.GetDatabaseValue("Others", colUserValue)
     
+    'Only show the data if it's available
     If Others <> 0 Then
         txtFoodWaste.Text = FoodWaste
         txtGreenWaste.Text = GreenWaste
@@ -220,11 +233,14 @@ Private Sub UserForm_Initialize()
     
     Call calculateTotal
     
+    FormChanged = False
 End Sub
 
 Sub calculateTotal()
     Dim total As Double
-    total = FoodWaste + GreenWaste + Paper + PlasticFilm + HardPlastics + Glass + FerrousMetals + NonFerrousMetals + Textiles + Rubber + Diapers + Wood + MineralResidues + Others
+    total = FoodWaste + GreenWaste + Paper + PlasticFilm + HardPlastics + _
+            Glass + FerrousMetals + NonFerrousMetals + Textiles + Rubber + _
+            Diapers + Wood + MineralResidues + Others
     lblTotal.Caption = total
     If total > 100 Then
         lblTotal.BackColor = ApplicationColors.bgColorInvalidTextBox

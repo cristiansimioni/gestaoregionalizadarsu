@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
    Caption         =   "GEF Biogás Brasil"
-   ClientHeight    =   9420.001
+   ClientHeight    =   8655.001
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   11760
+   ClientWidth     =   12720
    OleObjectBlob   =   "frmTool.frx":0000
    StartUpPosition =   1  'CenterOwner
    WhatsThisButton =   -1  'True

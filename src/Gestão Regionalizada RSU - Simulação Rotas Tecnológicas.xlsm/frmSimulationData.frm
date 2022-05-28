@@ -75,7 +75,7 @@ End Sub
 
 
 Private Sub UserForm_Initialize()
-    Me.Caption = APPNAME & " - xxxx"
+    Me.Caption = APPNAME & " - Metas para a Simulação do Estudo de Caso"
     Me.BackColor = ApplicationColors.bgColorLevel3
     
     LandfillDeviationTarget = Database.getLandfillDeviationTarget()

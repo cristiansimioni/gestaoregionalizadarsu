@@ -20,9 +20,19 @@ Dim AnnualGrowthCollect As Double
 Dim COEmission As Double
 Dim AverageCostTransportation As Double
 Dim ReducingCostMovimentation As Double
+Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
-    Unload Me
+    If FormChanged Then
+        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        If answer = vbYes Then
+          Call btnSave_Click
+        Else
+          Unload Me
+        End If
+    Else
+        Unload Me
+    End If
 End Sub
 
 Function validateForm() As Boolean
@@ -31,107 +41,91 @@ End Function
 
 Private Sub btnSave_Click()
     If validateForm() Then
-        Database.setGenerationPerCapitaRDO (CDbl(txtGenerationPerCapitaRDO.Text))
-        Database.setIndexSelectiveColletionRSU (CDbl(txtIndexSelectiveColletionRSU.Text))
-        Database.setAnnualGrowthPopulation (CDbl(txtAnnualGrowthPopulation.Text))
-        Database.setAnnualGrowthCollect (CDbl(txtAnnualGrowthCollect.Text))
-        Database.setCOEmission (CDbl(txtCOEmission.Text))
-        Database.setAverageCostTransportation (CDbl(txtAverageCostTransportation.Text))
-        Database.setReducingCostMovimentation (CDbl(txtReducingCostMovimentation.Text))
-        'Unload Me
+        Call Database.SetDatabaseValue("GenerationPerCapitaRDO", colUserValue, CDbl(txtGenerationPerCapitaRDO.Text))
+        Call Database.SetDatabaseValue("IndexSelectiveColletionRSU", colUserValue, CDbl(txtIndexSelectiveColletionRSU.Text))
+        Call Database.SetDatabaseValue("AnnualGrowthPopulation", colUserValue, CDbl(txtAnnualGrowthPopulation.Text))
+        Call Database.SetDatabaseValue("AnnualGrowthCollect", colUserValue, CDbl(txtAnnualGrowthCollect.Text))
+        Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))
+        Call Database.SetDatabaseValue("AverageCostTransportation", colUserValue, CDbl(txtAverageCostTransportation.Text))
+        Call Database.SetDatabaseValue("ReducingCostMovimentation", colUserValue, CDbl(txtReducingCostMovimentation.Text))
+        FormChanged = False
+        Unload Me
     Else
-        MsgBox "Valores inválidos. Favor verificar!"
+        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
     End If
 End Sub
 
+Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
+    Dim errorMsg As String
+    If Database.Validate(varName, txtBox.Text, errorMsg) Then
+        txtBox.BackColor = ApplicationColors.bgColorValidTextBox
+        txtBox.ControlTipText = errorMsg
+    Else
+        txtBox.BackColor = ApplicationColors.bgColorInvalidTextBox
+        txtBox.ControlTipText = errorMsg
+    End If
+    FormChanged = True
+End Sub
 
 Private Sub txtGenerationPerCapitaRDO_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtGenerationPerCapitaRDO.Text, 0.75, 1.25, errorMsg) Then
-        txtGenerationPerCapitaRDO.BackColor = ApplicationColors.bgColorValidTextBox
-        txtGenerationPerCapitaRDO.ControlTipText = errorMsg
-    Else
-        txtGenerationPerCapitaRDO.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtGenerationPerCapitaRDO.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtGenerationPerCapitaRDO, "GenerationPerCapitaRDO")
 End Sub
 
-
 Private Sub txtAnnualGrowthPopulation_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtAnnualGrowthPopulation.Text, 0#, 100#, errorMsg) Then
-        txtAnnualGrowthPopulation.BackColor = ApplicationColors.bgColorValidTextBox
-        txtAnnualGrowthPopulation.ControlTipText = errorMsg
-    Else
-        txtAnnualGrowthPopulation.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtAnnualGrowthPopulation.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtAnnualGrowthPopulation, "AnnualGrowthPopulation")
 End Sub
 
 Private Sub txtIndexSelectiveColletionRSU_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtIndexSelectiveColletionRSU.Text, 0#, 100#, errorMsg) Then
-        txtIndexSelectiveColletionRSU.BackColor = ApplicationColors.bgColorValidTextBox
-        txtIndexSelectiveColletionRSU.ControlTipText = errorMsg
-    Else
-        txtIndexSelectiveColletionRSU.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtIndexSelectiveColletionRSU.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtIndexSelectiveColletionRSU, "IndexSelectiveColletionRSU")
 End Sub
 
 Private Sub txtAnnualGrowthCollect_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtAnnualGrowthCollect.Text, 0#, 100#, errorMsg) Then
-        txtAnnualGrowthCollect.BackColor = ApplicationColors.bgColorValidTextBox
-        txtAnnualGrowthCollect.ControlTipText = errorMsg
-    Else
-        txtAnnualGrowthCollect.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtAnnualGrowthCollect.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtAnnualGrowthCollect, "AnnualGrowthCollect")
 End Sub
 
 Private Sub txtCOEmission_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtCOEmission.Text, 0.5, 2.5, errorMsg) Then
-        txtCOEmission.BackColor = ApplicationColors.bgColorValidTextBox
-        txtCOEmission.ControlTipText = errorMsg
-    Else
-        txtCOEmission.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtCOEmission.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtCOEmission, "COEmission")
 End Sub
 
 Private Sub txtAverageCostTransportation_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtAverageCostTransportation.Text, 0.5, 10#, errorMsg) Then
-        txtAverageCostTransportation.BackColor = ApplicationColors.bgColorValidTextBox
-        txtAverageCostTransportation.ControlTipText = errorMsg
-    Else
-        txtAverageCostTransportation.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtAverageCostTransportation.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtAverageCostTransportation, "AverageCostTransportation")
 End Sub
 
 Private Sub txtReducingCostMovimentation_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtAverageCostTransportation.Text, 0#, 100#, errorMsg) Then
-        txtReducingCostMovimentation.BackColor = ApplicationColors.bgColorValidTextBox
-        txtReducingCostMovimentation.ControlTipText = errorMsg
-    Else
-        txtReducingCostMovimentation.BackColor = ApplicationColors.bgColorInvalidTextBox
-        txtReducingCostMovimentation.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtReducingCostMovimentation, "ReducingCostMovimentation")
 End Sub
 
 Private Sub UserForm_Initialize()
-    Me.Caption = APPNAME & " - xxxx"
+    'Form Appearance
+    Me.Caption = APPNAME & " - Definição do Estudo de Caso"
     Me.BackColor = ApplicationColors.bgColorLevel3
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.btColorLevel3
+         End If
+    Next Ctrl
+    
+    'Read database values
+    GenerationPerCapitaRDO = Database.GetDatabaseValue("GenerationPerCapitaRDO", colUserValue)
+    IndexSelectiveColletionRSU = Database.GetDatabaseValue("IndexSelectiveColletionRSU", colUserValue)
+    AnnualGrowthPopulation = Database.GetDatabaseValue("AnnualGrowthPopulation", colUserValue)
+    AnnualGrowthCollect = Database.GetDatabaseValue("AnnualGrowthCollect", colUserValue)
+    COEmission = Database.GetDatabaseValue("COEmission", colUserValue)
+    AverageCostTransportation = Database.GetDatabaseValue("AverageCostTransportation", colUserValue)
+    ReducingCostMovimentation = Database.GetDatabaseValue("ReducingCostMovimentation", colUserValue)
 
-    txtGenerationPerCapitaRDO.Text = Database.getGenerationPerCapitaRDO
-    txtIndexSelectiveColletionRSU.Text = Database.getIndexSelectiveColletionRSU
-    txtAnnualGrowthPopulation.Text = Database.getAnnualGrowthPopulation
-    txtAnnualGrowthCollect.Text = Database.getAnnualGrowthCollect
-    txtCOEmission.Text = Database.getCOEmission
-    txtAverageCostTransportation.Text = Database.getAverageCostTransportation
-    txtReducingCostMovimentation.Text = Database.getReducingCostMovimentation
+    'Only show the data if it's available
+    If GenerationPerCapitaRDO + IndexSelectiveColletionRSU + AnnualGrowthPopulation + _
+       AnnualGrowthCollect + COEmission + AverageCostTransportation + ReducingCostMovimentation <> 0 Then
+        txtGenerationPerCapitaRDO.Text = GenerationPerCapitaRDO
+        txtIndexSelectiveColletionRSU.Text = IndexSelectiveColletionRSU
+        txtAnnualGrowthPopulation.Text = AnnualGrowthPopulation
+        txtAnnualGrowthCollect.Text = AnnualGrowthCollect
+        txtCOEmission.Text = COEmission
+        txtAverageCostTransportation.Text = AverageCostTransportation
+        txtReducingCostMovimentation.Text = ReducingCostMovimentation
+    End If
+    
+    FormChanged = False
 End Sub

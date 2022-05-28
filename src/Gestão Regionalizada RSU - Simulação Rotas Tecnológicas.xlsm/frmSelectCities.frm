@@ -17,7 +17,6 @@ Attribute VB_Exposed = False
 
 Private Sub btnAdd_Click()
     lstSelected.AddItem (lstAvailable.List(lstAvailable.ListIndex))
-    
 End Sub
 
 Private Sub btnRemove_Click()
@@ -27,7 +26,7 @@ Private Sub btnRemove_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    Set wksSelectedCities = Util.getSelectedCitiesWorksheet
+    Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
     
     x = 2
     For Index = 0 To lstSelected.ListCount - 1
@@ -38,7 +37,7 @@ Private Sub btnSave_Click()
 End Sub
 
 Private Sub cbxUF_Change()
-    Set wksCities = Util.getCitiesWorksheet
+    Set wksCities = Util.GetCitiesWorksheet
     lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).row
     lstAvailable.Clear
     currentUF = cbxUF
@@ -58,12 +57,19 @@ End Sub
 
 
 Private Sub UserForm_Initialize()
-    Me.Caption = APPNAME & " - xxxx"
+    'Form Appearance
+    Me.Caption = APPNAME & " - Selectionar Cidades"
     Me.BackColor = ApplicationColors.bgColorLevel3
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.btColorLevel3
+         End If
+    Next Ctrl
     
-    Set wksCities = Util.getCitiesWorksheet
+    'Load UF
+    Set wksCities = Util.GetCitiesWorksheet
     lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).row
-    
     For x = 2 To lastRow
         uf = wksCities.Cells(x, "A")
         inList = False
@@ -73,15 +79,7 @@ Private Sub UserForm_Initialize()
                 Exit For
             End If
         Next Index
-        
         If inList = False Then cbxUF.AddItem (uf)
     Next x
-    
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.btColorLevel3
-         End If
-    Next Ctrl
     
 End Sub
