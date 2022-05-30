@@ -15,32 +15,27 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
-
 Private Sub btnClean_Click()
     Database.CleanDatabase
 End Sub
 
+
+Private Sub btnHelp_Click()
+    ActiveWorkbook.FollowHyperlink (Application.ActiveWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
+End Sub
 
 Private Sub StepOneButton_Click()
     frmStepOne.Show
 End Sub
 
 Private Sub StepTwoButton_Click()
-    step2.Show
+    frmStepTwo.Show
 End Sub
 
 Private Sub UserForm_Activate()
     lblApplicationName.Caption = APPNAME
     'lblApplicationVersion.Caption = APPVERSION
     'lblApplicationLastUpdate.Caption = APPLASTUPDATED
-    
-    StepThreeButton.Enabled = False
-    StepFourButton.Enabled = False
-    StepFiveButton.Enabled = False
-    StepSixButton.Enabled = False
-
 End Sub
 
 

@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} step2 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
-   ClientHeight    =   6780
+   ClientHeight    =   4200
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   8355.001
-   OleObjectBlob   =   "step2.frx":0000
+   ClientWidth     =   6915
+   OleObjectBlob   =   "frmStepTwo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "step2"
+Attribute VB_Name = "frmStepTwo"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -22,4 +22,12 @@ End Sub
 Private Sub UserForm_Initialize()
     Me.Caption = APPNAME & " - Passo 2"
     Me.BackColor = ApplicationColors.bgColorLevel2
+    
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.btColorLevel2
+         End If
+    Next Ctrl
+    
 End Sub
