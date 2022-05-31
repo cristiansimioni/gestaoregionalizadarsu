@@ -2,12 +2,13 @@ import sys
 import logging
 import numpy as np
 import csv
+import copy
 from more_itertools import set_partitions
 
 # Configure logs
 logging.basicConfig(
     stream=sys.stderr, 
-    level=logging.DEBUG,
+    level=logging.INFO,
     format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
 )
 
@@ -22,7 +23,7 @@ except IndexError:
 # due to performance issues.
 MAX_CITIES = 10
 
-
+# Custo de Movimentação
 CUST_MOV_RESIDUOS = 1
 CUST_MOV_REJEITOS = 0.7
 
@@ -117,7 +118,6 @@ opexRT4 = [0,
 165
 ]
 
-
 # Read cities from CSV file
 cities = list()
 trash = list()
@@ -145,11 +145,11 @@ def clusterization(citieslist, distance):
         #print("Cidades:", cities, " " , len(cities))
         #print("Trash:", trash, " ", len(trash))
         #print("Clusters: ", len(citieslist))
-        print("A menor distância é ", min, ", vou unir as cidades ", cities_temp[line], " e ", cities_temp[column])
+        logging.debug("A menor distância é  %d vou unir as cidades %s e %s", min, cities_temp[line], cities_temp[column])
         centrodemassa = ""
         outracidade = ""
         if trash_temp[line] > trash_temp [column]:
-            print("A cidade ", cities_temp[line], "é o centro de massa (", trash_temp[line] ,") e irá representar o cluster")
+            #print("A cidade ", cities_temp[line], "é o centro de massa (", trash_temp[line] ,") e irá representar o cluster")
             centrodemassa = cities_temp[line]
             outracidade = cities_temp[column]
             
@@ -165,17 +165,17 @@ def clusterization(citieslist, distance):
                         index_remove = index
                         #citieslist.pop(index)
                 index = index + 1
-            print(index_add)
+            #print(index_add)
             for a in citieslist[index_remove]:
                 citieslist[index_add].append(a)
             citieslist.pop(index_remove)
-            print(index_remove)
+            #print(index_remove)
             cities_temp.pop(column)
             trash_temp.pop(column)
             distance = np.delete(distance, column, 0) #deleta linha
             distance = np.delete(distance, column, 1) #delete coluna
         else:
-            print("A cidade ", cities_temp[column], "é o centro de massa (", trash_temp[column] ,") e irá representar o cluster")
+            #print("A cidade ", cities_temp[column], "é o centro de massa (", trash_temp[column] ,") e irá representar o cluster")
             centrodemassa = cities_temp[column]
             outracidade = cities_temp[line]
 
@@ -191,11 +191,11 @@ def clusterization(citieslist, distance):
                         index_remove = index
                         #citieslist.pop(index)
                 index = index + 1
-            print(index_add)
+            #print(index_add)
             for a in citieslist[index_remove]:
                 citieslist[index_add].append(a)
             citieslist.pop(index_remove)
-            print(index_remove)
+            #print(index_remove)
 
             cities_temp.pop(line)
             trash_temp.pop(line)
@@ -250,7 +250,7 @@ def inboundoutbound(subarray):
         entry = {}
         sum_inbound = 0
         if utvr_city in utvrs_only:
-            #print(utvr_city, "é uma UTVR...")
+           # print(utvr_city, "é uma UTVR...")
             entry["sub-arranjo"] = subarray
             entry["utvr"] = utvr_city
             for other_city in subarray:
@@ -259,15 +259,23 @@ def inboundoutbound(subarray):
             entry["inbound"] = sum_inbound
             #print("Inbound: ", entry["inbound"])
             for a in aterros_only:
+                e = copy.deepcopy(entry)
                 sum_outbound = 0
                 sum_outbound = sum_outbound + (getDistanceBetweenCites(utvr_city,a) * CUST_MOV_REJEITOS)
-                entry["aterro"] = a
-                entry["outbound"] = sum_outbound
-                entry["total"] = sum_inbound + sum_outbound
-                data.append(entry)
-                #print(entry)
+                e["aterro"] = a
+                e["outbound"] = sum_outbound
+                e["total"] = sum_inbound + sum_outbound
+                
+                logging.debug("Adicionando: %s", e)
+                data.append(e)
     
     data = sorted(data, key = lambda k: (k["total"]))
+    #for d in data:
+    #    print(d)
+    #print()
+    #print("========> Estou selecionando o dado: ", data[0])
+    #print(len(data))
+    #print()
     return data[0]
 
 def getSubCapex(range, trashSum):
@@ -319,16 +327,20 @@ if len(citieslist) > MAX_CITIES:
     # Call clusterization to reduce the number of cities
     clusterization(citieslist, distance)
 
-logging.debug("Cálculando combinaçãoes...")
+
+#print("Dist: ", getDistanceBetweenCites("Regente Feijó", "Quatá"))
+
+
+logging.info("Cálculando combinaçãoes...")
 combinations = list()
 combinations += list(set_partitions(citieslist))
-logging.debug(len(combinations))
+logging.info("Quantidade de combinações: %d", len(combinations))
 
-logging.debug("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
+logging.info("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
 removeArraysWithoutUTVR(combinations)
-logging.debug(len(combinations))
+logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
 
-logging.debug("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
+logging.info("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
 
 new_comb = list()
 for c in combinations:
@@ -341,15 +353,12 @@ for c in combinations:
         xcomb.append(subarray)
     new_comb.append(xcomb)
 
-
-print("New comb: ", len(new_comb))
 data = []
-
 current = 0
 for i in new_comb:
     if current % 10000 == 0:
         print(current)
-        logging.debug(len(current))
+        logging.debug(current)
 
     trashArray = 0
     capexOpexArray = 0
@@ -373,6 +382,7 @@ for i in new_comb:
         #print("IN OUT: ", rsinout)
         inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
         outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
+        rsinout["lixo"] = trashSubArray
         sub.append(rsinout)
         
     cpopfinalValue = capexOpexArray/trashArray
@@ -390,7 +400,7 @@ for i in new_comb:
 
     current = current + 1;
 
-logging.debug("Ordenando combinações...")
+logging.info("Ordenando combinações...")
 data = sorted(data, key = lambda k: (k["total"]))
 
 for i in range(5):
