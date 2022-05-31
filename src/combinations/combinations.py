@@ -22,6 +22,10 @@ except IndexError:
 # due to performance issues.
 MAX_CITIES = 10
 
+
+CUST_MOV_RESIDUOS = 1
+CUST_MOV_REJEITOS = 0.7
+
 # RSU
 rsutrash = [0,25,75,150,250,350,700,1250,2500,5000]
 capexRT1 = [0,
@@ -114,6 +118,16 @@ opexRT4 = [0,
 ]
 
 
+# Read cities from CSV file
+cities = list()
+trash = list()
+utvr = list()
+aterro = list()
+citieslist = list()
+trashlist = list()
+aterros_only = list()
+utvrs_only = list()
+
 def clusterization(citieslist, distance):
     distance = distance.copy()
     while len(cities_temp) > MAX_CITIES:
@@ -203,9 +217,9 @@ def getSubTrash(arr):
     #print ("Sub-arranjo: ", arr, " Tamanho: ", len(arr))
     for i in arr:
         #print ("Cidade(s):", i)
-        for c in i:
+        #for c in i:
             #logging.debug("Pegando quantidade de lixo para a cidade ", c)
-            totalTrash = totalTrash + getCityTrash(c)
+        totalTrash = totalTrash + getCityTrash(i)
     #print ("Total Lixo: ", totalTrash, "Faixa: ", getFaixa(totalTrash))
     return totalTrash
 
@@ -213,6 +227,48 @@ def getFaixa(sumTrash):
     for i in range(len(rsutrash)):
         if sumTrash > rsutrash[i] and sumTrash < rsutrash[i+1]:
             return i
+
+def removeArraysWithoutUTVR(combinations):
+    comb = combinations.copy()
+    print(len(combinations))
+    for c in range(len(comb)):
+        #print("Comb: ", comb[c])
+        for sub in comb[c]:
+            find = False
+            for cluster in sub:
+                for city in cluster:
+                    if utvr[cities.index(city)] == "sim":
+                        find = True
+            if not find:
+                #print("Combinação inválida: ", comb[c])
+                combinations.remove(comb[c])
+                break
+
+def inboundoutbound(subarray):
+    data = []
+    for utvr_city in subarray:
+        entry = {}
+        sum_inbound = 0
+        if utvr_city in utvrs_only:
+            #print(utvr_city, "é uma UTVR...")
+            entry["sub-arranjo"] = subarray
+            entry["utvr"] = utvr_city
+            for other_city in subarray:
+                #print("A distancia de ", utvr_city, " para ", other_city, "é de ", (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS))
+                sum_inbound = sum_inbound + (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS)
+            entry["inbound"] = sum_inbound
+            #print("Inbound: ", entry["inbound"])
+            for a in aterros_only:
+                sum_outbound = 0
+                sum_outbound = sum_outbound + (getDistanceBetweenCites(utvr_city,a) * CUST_MOV_REJEITOS)
+                entry["aterro"] = a
+                entry["outbound"] = sum_outbound
+                entry["total"] = sum_inbound + sum_outbound
+                data.append(entry)
+                #print(entry)
+    
+    data = sorted(data, key = lambda k: (k["total"]))
+    return data[0]
 
 def getSubCapex(range, trashSum):
     cpRT1 = capexRT1[range]-(trashSum*(capexRT1[range]-capexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range])
@@ -228,11 +284,7 @@ def getSubOpex(range, trashSum):
     opRT4 = opexRT4[range]-(trashSum*(opexRT4[range]-opexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range])
     return (opRT1 + opRT2 + opRT3 + opRT4)/4
 
-# Read cities from CSV file
-cities = list()
-trash = list()
-citieslist = list()
-trashlist = list()
+
 
 with open(csvcities, mode='r', encoding="utf8") as csv_file:
     csv_reader = csv.DictReader(csv_file, delimiter=';')
@@ -247,6 +299,12 @@ with open(csvcities, mode='r', encoding="utf8") as csv_file:
         newtrash = list()
         newtrash.append(float(row["trash"]))
         trash.append(float(row["trash"]))
+        utvr.append(row["utvr"])
+        if row["utvr"] == "sim":
+            utvrs_only.append(row["city"])
+        aterro.append(row["aterro"])
+        if row["aterro"] == "sim":
+            aterros_only.append(row["city"])
         trashlist.append(newtrash)
         line_count += 1
 
@@ -264,20 +322,93 @@ if len(citieslist) > MAX_CITIES:
 logging.debug("Cálculando combinaçãoes...")
 combinations = list()
 combinations += list(set_partitions(citieslist))
-
 logging.debug(len(combinations))
 
-for i in combinations:
+logging.debug("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
+removeArraysWithoutUTVR(combinations)
+logging.debug(len(combinations))
+
+logging.debug("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
+
+new_comb = list()
+for c in combinations:
+    xcomb = list()
+    for sub in c:
+        subarray = list()
+        for cluster in sub:   
+            for city in cluster:
+                subarray.append(city)
+        xcomb.append(subarray)
+    new_comb.append(xcomb)
+
+
+print("New comb: ", len(new_comb))
+data = []
+
+current = 0
+for i in new_comb:
+    if current % 10000 == 0:
+        print(current)
+        logging.debug(len(current))
+
     trashArray = 0
     capexOpexArray = 0
-    
+    inboundArray = 0
+    outboundArray = 0
+    #print("Arranjo: ", i)
+    new = {}
+
+
+
+    sub = list()
     for y in i:
+        #print("Sub-arranjo: ", y)
         trashSubArray = getSubTrash(y)
         capexSubArray = getSubCapex(getFaixa(trashSubArray), trashSubArray)
         opexSubArray = getSubOpex(getFaixa(trashSubArray), trashSubArray)
         capexOpexValue = ((capexSubArray+opexSubArray * 30.0) * trashSubArray * 312.0)/(trashSubArray * 312.0 * 30.0)
         trashArray = trashArray + trashSubArray
         capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
-    finalValue = capexOpexArray/trashArray
+        rsinout = inboundoutbound(y)
+        #print("IN OUT: ", rsinout)
+        inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
+        outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
+        sub.append(rsinout)
+        
+    cpopfinalValue = capexOpexArray/trashArray
 
-    print ("Arranjo: ", i, "Valor Calculado: ", finalValue)
+    
+    new["arranjo"] = i
+    new["sub"] = sub
+    new["capexopex"] = cpopfinalValue
+    new["inbound"] = inboundArray/trashArray
+    new["outbound"] = outboundArray/trashArray
+    new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
+    data.append(new)
+    #print ("Arranjo: ", i, "Valor Calculado: ", finalValue)
+    #break
+
+    current = current + 1;
+
+logging.debug("Ordenando combinações...")
+data = sorted(data, key = lambda k: (k["total"]))
+
+for i in range(5):
+    #print(data[i])
+    print(i, " - Arranjo: ", data[i]["arranjo"], " ", data[i]["total"])
+    print("\t Inbound", data[i]["inbound"])
+    print("\t Tecnologia", data[i]["capexopex"])
+    print("\t Outbound", data[i]["outbound"])
+    for x in data[i]["sub"]:
+        print("Sub-arranjo: ", x)
+#    print(data[i]["value"])
+#    print()
+#    print()
+
+
+
+#for x in new_comb:
+#    print ("x: ", x)
+
+#for i in range(5):
+#    print ("x: ", new_comb[i])
