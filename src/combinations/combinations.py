@@ -526,7 +526,7 @@ for i in new_comb:
         trashSubArray = getSubTrash(y)
         capexSubArray = getSubCapex(getFaixa(trashSubArray), trashSubArray)
         opexSubArray = getSubOpex(getFaixa(trashSubArray), trashSubArray)
-        capexOpexValue = ((capexSubArray+opexSubArray * 30.0) * trashSubArray * 312.0)/(trashSubArray * 312.0 * 30.0)
+        capexOpexValue = ((capexSubArray+opexSubArray * 30.0) * trashSubArray * 313.0)/(trashSubArray * 313.0 * 30.0)
         trashArray = trashArray + trashSubArray
         capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
         rsinout = inboundoutbound(y)
