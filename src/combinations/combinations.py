@@ -14,6 +14,8 @@ logging.basicConfig(
     format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
 )
 
+f = open("output.txt", "w")
+
 # Parser command line parameters
 try:
     csvcities = sys.argv[1]
@@ -30,7 +32,13 @@ CUST_MOV_RESIDUOS = 1
 CUST_MOV_REJEITOS = 0.7
 
 # Threshold lixo
-THRESHOLD_TRASH = 50.0
+THRESHOLD_TRASH = 25.0
+
+f.write("============= PARAMETROS ============= \n")
+f.write("Máximo de cidades: " + repr(MAX_CITIES) + "\n")
+f.write("Quantidade de lixo mínimo para um sub-arranjo: " + repr(THRESHOLD_TRASH) + "\n")
+f.write("Custo Movimentação Resíduos: " + repr(CUST_MOV_RESIDUOS) + "\n")
+f.write("Custo Movimentação Rejeitos: " + repr(CUST_MOV_REJEITOS) + "\n\n\n")
 
 # RSU
 rsutrash = [0,25,75,150,250,350,700,1250,2500,5000]
@@ -308,7 +316,6 @@ def clusterization_2(citieslist, distance):
             #if deleted:
             #    break
         curdist = curdist + 1
-    sleep(100)
     return citieslist
 
 
@@ -455,21 +462,35 @@ if len(citieslist) > MAX_CITIES:
 
 #print("Dist: ", getDistanceBetweenCites("Regente Feijó", "Quatá"))
 
+f.write("============= ATERROS ============= \n")
+for a in aterros_only:
+    f.write(a + "\n")
+f.write("\n\n\n")
+
+f.write("============= CLUSTERS ============= \n")
+i = 1 
 for cl in citieslist:
     print(cl)
+    f.write(repr(i) + ".\t" + repr(cl) + "\n")
+    i = i + 1
 
+f.write("\n\n\n============= ESTATÍSTICAS ============= \n")
 logging.info("Cálculando combinaçãoes...")
 combinations = list()
 combinations += list(set_partitions(citieslist))
 logging.info("Quantidade de combinações: %d", len(combinations))
+f.write("Quantidade de combinações: " + repr(len(combinations)) + "\n")
+
 
 logging.info("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
 removeArraysWithoutUTVR(combinations)
 logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
+f.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos sem UTVR): " + repr(len(combinations)) + "\n")
 
 logging.info("Removendo combinaçãoes cujo sub-arranjo não possui a quantidade de lixo necessária...")
 removeArraysTrashThreshold(combinations)
 logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
+f.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): " + repr(len(combinations)) + "\n\n\n")
 
 logging.info("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
 
@@ -509,6 +530,9 @@ for i in new_comb:
         trashArray = trashArray + trashSubArray
         capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
         rsinout = inboundoutbound(y)
+        rsinout["capex"] =  capexSubArray
+        rsinout["opex"] = opexSubArray
+        rsinout["tecnologia"] = capexOpexValue
         #print("IN OUT: ", rsinout)
         inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
         outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
@@ -521,6 +545,7 @@ for i in new_comb:
     new["arranjo"] = i
     new["sub"] = sub
     new["capexopex"] = cpopfinalValue
+    new["lixo-array"] = trashArray
     new["inbound"] = inboundArray/trashArray
     new["outbound"] = outboundArray/trashArray
     new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
@@ -533,11 +558,58 @@ for i in new_comb:
 logging.info("Ordenando combinações...")
 data = sorted(data, key = lambda k: (k["total"]))
 
+f.write("\n\n============= ARRANJO CENTRALIZADO ============= \n")
+for d in data:
+    if len(d["arranjo"]) == 1:
+        f.write(repr(d["arranjo"]) + "\n")
+        f.write("- Lixo: " + repr(d["lixo-array"]) + "\n")
+        f.write("- Custo Total: " + repr(d["total"]) + "\n")
+        print("\t Inbound", d["inbound"])
+        f.write("-- Inbound: " + repr(d["inbound"]) + "\n")
+        print("\t Tecnologia", d["capexopex"])
+        f.write("-- Tecnologia: " + repr(d["capexopex"]) + "\n")
+        print("\t Outbound", d["outbound"])
+        f.write("-- Outbound: " + repr(d["outbound"]) + "\n\n")
+        f.write("-- Sub-arranjos:\n")
+        for x in range(len(d["sub"])):
+            print("Sub-arranjo: ", d["sub"][x])
+            f.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
+            f.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
+            f.write("\t-- Aterro: " + repr(d["sub"][x]["aterro"]) + "\n")
+            f.write("\t-- Lixo: " + repr(d["sub"][x]["lixo"]) + "\n")
+            f.write("\t-- Inbound: " + repr(d["sub"][x]["inbound"]) + "\n")
+            f.write("\t-- Tecnologia: " + repr(d["sub"][x]["tecnologia"]) + "\n")
+            f.write("\t\t-- Capex: " + repr(d["sub"][x]["capex"]) + "\n")
+            f.write("\t\t-- Opex: " + repr(d["sub"][x]["opex"]) + "\n")
+            f.write("\t-- Outbound: " + repr(d["sub"][x]["outbound"]) + "\n\n")
+            break
+
+f.write("\n\n============= TOP 5 ARRANJOS ============= \n")
 for i in range(5):
     #print(data[i])
+    f.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
+    f.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
+    f.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
     print(i, " - Arranjo: ", data[i]["arranjo"], " ", data[i]["total"])
     print("\t Inbound", data[i]["inbound"])
+    f.write("-- Inbound: " + repr(data[i]["inbound"]) + "\n")
     print("\t Tecnologia", data[i]["capexopex"])
+    f.write("-- Tecnologia: " + repr(data[i]["capexopex"]) + "\n")
     print("\t Outbound", data[i]["outbound"])
-    for x in data[i]["sub"]:
-        print("Sub-arranjo: ", x)
+    f.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
+    f.write("-- Sub-arranjos:\n")
+    for x in range(len(data[i]["sub"])):
+        print("Sub-arranjo: ", data[i]["sub"][x])
+        f.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
+        f.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
+        f.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
+        f.write("\t-- Lixo: " + repr(data[i]["sub"][x]["lixo"]) + "\n")
+        f.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
+        f.write("\t-- Tecnologia: " + repr(data[i]["sub"][x]["tecnologia"]) + "\n")
+        f.write("\t\t-- Capex: " + repr(data[i]["sub"][x]["capex"]) + "\n")
+        f.write("\t\t-- Opex: " + repr(data[i]["sub"][x]["opex"]) + "\n")
+        f.write("\t-- Outbound: " + repr(data[i]["sub"][x]["outbound"]) + "\n\n")
+
+    f.write("-----------------------------------------------------------------\n\n")
+
+f.close()
