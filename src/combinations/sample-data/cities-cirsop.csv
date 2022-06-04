@@ -1,34 +1,34 @@
-city;trash;utvr;aterro
-Álvares Machado;31.2;sim;não
-Caiabu;1.4;sim;não
-Martinópolis;22.8;sim;sim
-Paraguaçu Paulista;35.6;sim;não
-Presidente Bernardes;14.8;sim;não
-Presidente Prudente;306.8;sim;não
-Rancharia;22.7;sim;sim
-Regente Feijó;16.1;sim;não
-Santo Anastácio;19.6;sim;não
-Santo Expedito;2.1;sim;não
-Adamantina;41.2;sim;não
-Alfredo Marcondes;4.9;sim;não
-Anhumas;4.9;sim;não
-Bastos;24.6;sim;não
-Borá;1.0;sim;não
-Emilianópolis;3.8;sim;não
-Iacri;7.4;sim;não
-Iepê;9.6;sim;não
-Indiana;5.7;sim;não
-Inúbia Paulista;4.7;sim;não
-João RamaLho;5.3;sim;não
-Lucélia;25.7;sim;não
-Mariápolis;4.8;sim;não
-Nantes;3.7;sim;não
-Narandiba;5.8;sim;não
-Osvaldo Cruz;38.7;sim;não
-Parapuã;12.9;sim;não
-Pirapozinho;32.6;sim;não
-Pracinha;4.9;sim;não
-Quatá;16.7;sim;não
-Sagres;2.9;sim;não
-Taciba;7.4;sim;não
-Tarabai;8.9;sim;não
+city;trash;utvr;aterro;custo_convencional;custo_transbordo;custo_pos_transbordo
+Álvares Machado;31.2;sim;não;275.0;83.4;0.65
+Caiabu;1.4;sim;não;500.0;1008.3;0.90
+Martinópolis;22.8;sim;sim;275.0;65.8;0.75
+Paraguaçu Paulista;35.6;sim;não;275.0;73.7;0.65
+Presidente Bernardes;14.8;sim;não;500.0;99.0;0.75
+Presidente Prudente;306.8;sim;não;100.0;29.9;0.50
+Rancharia;22.7;sim;sim;275.0;66.0;0.75
+Regente Feijó;16.1;sim;não;275.0;91.6;0.75
+Santo Anastácio;19.6;sim;não;275.0;75.7;0.75
+Santo Expedito;2.1;sim;não;500.0;664.5;0.90
+Adamantina;41.2;sim;não;275.0;64.2;0.65
+Alfredo Marcondes;4.9;sim;não;500.0;289.0;0.90
+Anhumas;4.9;sim;não;500.0;291.7;0.90
+Bastos;24.6;sim;não;275.0;61.3;0.75
+Borá;1.0;sim;não;500.0;1424.8;0.90
+Emilianópolis;3.8;sim;não;500.0;373.3;0.90
+Iacri;7.4;sim;não;500.0;193.6;0.90
+Iepê;9.6;sim;não;500.0;149.7;0.90
+Indiana;5.7;sim;não;500.0;248.4;0.90
+Inúbia Paulista;4.7;sim;não;500.0;300.6;0.90
+João RamaLho;5.3;sim;não;500.0;266.0;0.90
+Lucélia;25.7;sim;não;275.0;100.3;0.65
+Mariápolis;4.8;sim;não;500.0;295.4;0.90
+Nantes;3.7;sim;não;500.0;378.9;0.90
+Narandiba;5.8;sim;não;500.0;247.2;0.90
+Osvaldo Cruz;38.7;sim;não;275.0;68.0;0.65
+Parapuã;12.9;sim;não;275.0;113.2;0.75
+Pirapozinho;32.6;sim;não;275.0;80.0;0.65
+Pracinha;4.9;sim;não;500.0;287.1;0.90
+Quatá;16.7;sim;não;275.0;88.3;0.75
+Sagres;2.9;sim;não;500.0;494.3;0.90
+Taciba;7.4;sim;não;500.0;192.6;0.90
+Tarabai;8.9;sim;não;500.0;162.3;0.90

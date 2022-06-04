@@ -140,6 +140,9 @@ citieslist = list()
 trashlist = list()
 aterros_only = list()
 utvrs_only = list()
+custo_convencional = list()
+custo_transbordo = list()
+custo_pos_transbordo = list()
 
 def clusterization(citieslist, distance):
     distance = distance.copy()
@@ -323,6 +326,18 @@ def getCityTrash(city):
     index = cities.index(city)
     return trash[index]
 
+def getCitycusto_convencional(city):
+    index = cities.index(city)
+    return custo_convencional[index]
+
+def getCitycusto_transbordo(city):
+    index = cities.index(city)
+    return custo_transbordo[index]
+
+def getCitycusto_pos_transbordo(city):
+    index = cities.index(city)
+    return custo_pos_transbordo[index]
+
 def getDistanceBetweenCites(cityA, cityB):
     indexA = cities.index(cityA)
     indexB = cities.index(cityB)
@@ -386,8 +401,10 @@ def inboundoutbound(subarray):
             entry["utvr"] = utvr_city
             for other_city in subarray:
                 logging.debug("A distância de %s para %s é de %f. O lixo produzido por %s é %f", utvr_city, other_city, (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS), other_city, getCityTrash(other_city))
-                sum_inbound = sum_inbound + (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS)
+                #sum_inbound = sum_inbound + (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS)
                 #sum_inbound = sum_inbound + ((getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS) * getCityTrash(other_city))
+                sum_inbound = sum_inbound + ((getDistanceBetweenCites(utvr_city,other_city) * getCitycusto_pos_transbordo(other_city)) + getCitycusto_convencional(other_city) + getCitycusto_transbordo(other_city)) * getCityTrash(other_city)
+            sum_inbound = sum_inbound / getSubTrash(subarray)
             entry["inbound"] = sum_inbound
             #print("Inbound: ", entry["inbound"])
             for a in aterros_only:
@@ -445,6 +462,9 @@ with open(csvcities, mode='r', encoding="utf8") as csv_file:
         aterro.append(row["aterro"])
         if row["aterro"] == "sim":
             aterros_only.append(row["city"])
+        custo_convencional.append(float(row["custo_convencional"]))
+        custo_transbordo.append(float(row["custo_transbordo"]))
+        custo_pos_transbordo.append(float(row["custo_pos_transbordo"]))
         trashlist.append(newtrash)
         line_count += 1
 
