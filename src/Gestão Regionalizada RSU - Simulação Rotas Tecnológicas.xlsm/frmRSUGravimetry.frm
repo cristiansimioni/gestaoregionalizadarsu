@@ -29,6 +29,10 @@ Dim MineralResidues As Double
 Dim Others As Double
 Dim FormChanged As Boolean
 
+Function validateForm() As Boolean
+    validateForm = True
+End Function
+
 Private Sub btnBack_Click()
     If FormChanged Then
         answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
@@ -78,20 +82,26 @@ Private Sub btnDefaultValues_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    Database.setFoodWaste (FoodWaste)
-    Database.setGreenWaste (GreenWaste)
-    Database.setPaper (Paper)
-    Database.setPlasticFilm (PlasticFilm)
-    Database.setHardPlastics (HardPlastics)
-    Database.setGlass (Glass)
-    Database.setFerrousMetals (FerrousMetals)
-    Database.setNonFerrousMetals (NonFerrousMetals)
-    Database.setTextiles (Textiles)
-    Database.setRubber (Rubber)
-    Database.setDiapers (Diapers)
-    Database.setWood (Wood)
-    Database.setMineralResidues (MineralResidues)
-    Database.setOthers (Others)
+    If validateForm() Then
+        Call Database.SetDatabaseValue("FoodWaste", colUserValue, FoodWaste)
+        Call Database.SetDatabaseValue("GreenWaste", colUserValue, GreenWaste)
+        Call Database.SetDatabaseValue("Paper", colUserValue, Paper)
+        Call Database.SetDatabaseValue("PlasticFilm", colUserValue, PlasticFilm)
+        Call Database.SetDatabaseValue("HardPlastics", colUserValue, HardPlastics)
+        Call Database.SetDatabaseValue("Glass", colUserValue, Glass)
+        Call Database.SetDatabaseValue("FerrousMetals", colUserValue, FerrousMetals)
+        Call Database.SetDatabaseValue("NonFerrousMetals", colUserValue, NonFerrousMetals)
+        Call Database.SetDatabaseValue("Textiles", colUserValue, Textiles)
+        Call Database.SetDatabaseValue("Rubber", colUserValue, Rubber)
+        Call Database.SetDatabaseValue("Diapers", colUserValue, Diapers)
+        Call Database.SetDatabaseValue("Wood", colUserValue, Wood)
+        Call Database.SetDatabaseValue("MineralResidues", colUserValue, MineralResidues)
+        Call Database.SetDatabaseValue("Others", colUserValue, Others)
+        FormChanged = False
+        Unload Me
+    Else
+        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
+    End If
 End Sub
 
 Private Sub txtDiapers_Change()

@@ -24,8 +24,24 @@ Private Sub btnHelp_Click()
     ActiveWorkbook.FollowHyperlink (Application.ActiveWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
 End Sub
 
+Private Sub StepFiveButton_Click()
+    frmStepFive.Show
+End Sub
+
+Private Sub StepFourButton_Click()
+    frmStepFour.Show
+End Sub
+
 Private Sub StepOneButton_Click()
     frmStepOne.Show
+End Sub
+
+Private Sub StepSixButton_Click()
+    frmStepSix.Show
+End Sub
+
+Private Sub StepThreeButton_Click()
+    frmStepThree.Show
 End Sub
 
 Private Sub StepTwoButton_Click()

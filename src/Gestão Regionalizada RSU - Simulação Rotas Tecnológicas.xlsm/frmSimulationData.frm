@@ -17,60 +17,64 @@ Dim LandfillDeviationTarget As Double
 Dim ExpectedDeadline As Double
 Dim MixedRecyclingIndex As Double
 Dim TargetExpectation As Double
+Dim FormChanged As Boolean
+
+Function validateForm() As Boolean
+    validateForm = True
+End Function
 
 Private Sub btnBack_Click()
-    Unload Me
+    If FormChanged Then
+        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        If answer = vbYes Then
+          Call btnSave_Click
+        Else
+          Unload Me
+        End If
+    Else
+        Unload Me
+    End If
 End Sub
 
 Private Sub btnSave_Click()
-    Database.setLandfillDeviationTarget (CDbl(txtLandfillDeviationTarget.Text))
-    Database.setExpectedDeadline (CDbl(txtExpectedDeadline.Text))
-    Database.setMixedRecyclingIndex (CDbl(txtMixedRecyclingIndex.Text))
-    Database.setTargetExpectation (CDbl(txtTargetExpectation.Text))
+    If validateForm() Then
+        Call Database.SetDatabaseValue("LandfillDeviationTarget", colUserValue, CDbl(txtLandfillDeviationTarget.Text))
+        Call Database.GetDatabaseValue("ExpectedDeadline", colUserValue, CDbl(txtExpectedDeadline.Text))
+        Call Database.GetDatabaseValue("MixedRecyclingIndex", colUserValue, CDbl(txtMixedRecyclingIndex.Text))
+        Call Database.GetDatabaseValue("TargetExpectation", colUserValue, CDbl(txtTargetExpectation.Text))
+        FormChanged = False
+        Unload Me
+    Else
+        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
+    End If
+End Sub
+
+Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
+    Dim errorMsg As String
+    If Database.Validate(varName, txtBox.Text, errorMsg) Then
+        txtBox.BackColor = ApplicationColors.bgColorValidTextBox
+        txtBox.ControlTipText = errorMsg
+    Else
+        txtBox.BackColor = ApplicationColors.bgColorInvalidTextBox
+        txtBox.ControlTipText = errorMsg
+    End If
+    FormChanged = True
 End Sub
 
 Private Sub txtExpectedDeadline_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtExpectedDeadline.Text, 20, 35, errorMsg) Then
-        txtExpectedDeadline.BackColor = Util.xColorGreen
-        txtExpectedDeadline.ControlTipText = errorMsg
-    Else
-        txtExpectedDeadline.BackColor = Util.xColorRed
-        txtExpectedDeadline.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtExpectedDeadline, "ExpectedDeadline")
 End Sub
 
 Private Sub txtLandfillDeviationTarget_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtLandfillDeviationTarget.Text, 20, 90, errorMsg) Then
-        txtLandfillDeviationTarget.BackColor = Util.xColorGreen
-        txtLandfillDeviationTarget.ControlTipText = errorMsg
-    Else
-        txtLandfillDeviationTarget.BackColor = Util.xColorRed
-        txtLandfillDeviationTarget.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtLandfillDeviationTarget, "LandfillDeviationTarget")
 End Sub
 
 Private Sub txtMixedRecyclingIndex_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtMixedRecyclingIndex.Text, 20, 100, errorMsg) Then
-        txtMixedRecyclingIndex.BackColor = Util.xColorGreen
-        txtMixedRecyclingIndex.ControlTipText = errorMsg
-    Else
-        txtMixedRecyclingIndex.BackColor = Util.xColorRed
-        txtMixedRecyclingIndex.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtMixedRecyclingIndex, "MixedRecyclingIndex")
 End Sub
 
 Private Sub txtTargetExpectation_Change()
-    Dim errorMsg As String
-    If Util.validateRange(txtTargetExpectation.Text, 20, 500, errorMsg) Then
-        txtTargetExpectation.BackColor = Util.xColorGreen
-        txtTargetExpectation.ControlTipText = errorMsg
-    Else
-        txtTargetExpectation.BackColor = Util.xColorRed
-        txtTargetExpectation.ControlTipText = errorMsg
-    End If
+    Call textBoxChange(txtTargetExpectation, "TargetExpectation")
 End Sub
 
 
@@ -78,10 +82,10 @@ Private Sub UserForm_Initialize()
     Me.Caption = APPNAME & " - Metas para a Simulação do Estudo de Caso"
     Me.BackColor = ApplicationColors.bgColorLevel3
     
-    LandfillDeviationTarget = Database.getLandfillDeviationTarget()
-    ExpectedDeadline = Database.getExpectedDeadline()
-    MixedRecyclingIndex = Database.getMixedRecyclingIndex()
-    TargetExpectation = Database.getTargetExpectation()
+    LandfillDeviationTarget = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
+    ExpectedDeadline = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
+    MixedRecyclingIndex = Database.GetDatabaseValue("MixedRecyclingIndex", colUserValue)
+    TargetExpectation = Database.GetDatabaseValue("TargetExpectation", colUserValue)
     
     If LandfillDeviationTarget + ExpectedDeadline + MixedRecyclingIndex + TargetExpectation > 0 Then
         txtLandfillDeviationTarget.Text = LandfillDeviationTarget
@@ -90,4 +94,5 @@ Private Sub UserForm_Initialize()
         txtTargetExpectation.Text = TargetExpectation
     End If
     
+    FormChanged = False
 End Sub

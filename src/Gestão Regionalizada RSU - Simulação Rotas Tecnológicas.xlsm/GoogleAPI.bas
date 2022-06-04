@@ -23,7 +23,7 @@ Function Km_Distancia(Origin As String, Destination As String) As Double
     
     Url = "https://maps.googleapis.com/maps/api/directions/xml?origin=" _
         & Origin & "&destination=" & Destination _
-        & "&key=AIzaSyDAcROq-me9Iw4y375L05w7kHM6JS4cMRM"
+        & "&key=<KEY>"
         
     Solicitacao.Open "GET", Url, False
     Solicitacao.send
