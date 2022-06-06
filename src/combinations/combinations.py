@@ -3,7 +3,7 @@ import logging
 import numpy as np
 import csv
 import copy
-import time
+import itertools
 from more_itertools import set_partitions
 
 # Configure logs
@@ -14,12 +14,11 @@ logging.basicConfig(
     format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
 )
 
-f = open("output.txt", "w")
-
 # Parser command line parameters
 try:
     csvcities = sys.argv[1]
     csvdistance = sys.argv[2]
+    reportfile = sys.argv[3]
 except IndexError:
     raise SystemExit(f"Usage: {sys.argv[0]} <cities.csv> <distance.csv>")
 
@@ -32,7 +31,10 @@ CUST_MOV_RESIDUOS = 1
 CUST_MOV_REJEITOS = 0.7
 
 # Threshold lixo
-THRESHOLD_TRASH = 25.0
+THRESHOLD_TRASH = 100.0
+
+f = open(reportfile, "w")
+tool = open("tool.csv", "w")
 
 f.write("============= PARAMETROS ============= \n")
 f.write("Máximo de cidades: " + repr(MAX_CITIES) + "\n")
@@ -161,11 +163,19 @@ def clusterization(citieslist, distance):
         #print("Cidades:", cities, " " , len(cities))
         #print("Trash:", trash, " ", len(trash))
         #print("Clusters: ", len(citieslist))
-        logging.debug("A menor distância é  %d vou unir as cidades %s e %s", min, cities_temp[line], cities_temp[column])
+        for l in citieslist:
+            if cities_temp[line] in l:
+                trash_line = getSubTrash(l)
+            if cities_temp[column] in l:
+                trash_column = getSubTrash(l)
         centrodemassa = ""
         outracidade = ""
-        if trash_temp[line] > trash_temp [column]:
-            print("A cidade ", cities_temp[line], "é o centro de massa (", trash_temp[line] ,") e irá representar o cluster")
+
+        logging.debug("A menor distância é  %d vou unir as cidades %s (%f) e %s (%f)", min, cities_temp[line], trash_line, cities_temp[column], trash_column)
+        if trash_line > trash_column:
+        #if trash_temp[line] > trash_temp [column]:
+            logging.debug("A cidade %s é o centro de massa (%f) e irá representar o cluster", cities_temp[line], trash_line)
+            #print("A cidade ", cities_temp[line], "é o centro de massa (", trash_temp[line] ,") e irá representar o cluster")
             centrodemassa = cities_temp[line]
             outracidade = cities_temp[column]
             
@@ -191,7 +201,8 @@ def clusterization(citieslist, distance):
             distance = np.delete(distance, column, 0) #deleta linha
             distance = np.delete(distance, column, 1) #delete coluna
         else:
-            print("A cidade ", cities_temp[column], "é o centro de massa (", trash_temp[column] ,") e irá representar o cluster")
+            #print("A cidade ", cities_temp[column], "é o centro de massa (", trash_temp[column] ,") e irá representar o cluster")
+            logging.debug("A cidade %s é o centro de massa (%f) e irá representar o cluster", cities_temp[column], trash_column)
             centrodemassa = cities_temp[column]
             outracidade = cities_temp[line]
 
@@ -219,108 +230,6 @@ def clusterization(citieslist, distance):
             distance = np.delete(distance, line, 1) #delete coluna
     #time.sleep(10000)
     return citieslist
-
-def clusterization_3(citieslist, distance):
-    curdist = 1
-    lastdist = -1
-    distance = distance.copy()
-    while len(citieslist) > MAX_CITIES:
-        citiesadded = list()
-        for l in range(len(cities_temp)):
-            for c in range(len(cities_temp)):
-                dist = distance[l, c]
-                if dist <= curdist and dist > lastdist and dist != 0:
-                    line = l
-                    column = c
-                    centrodemassa = cities_temp[line]
-                    outracidade = cities_temp[column]
-                    index_add = 0
-                    index_remove = 0
-                    index = 0
-                    logging.debug("Encontrei uma cidade a distância %s. Vou unir as cidades %s (%f) e %s (%f)", curdist, cities_temp[line], trash_temp[line], cities_temp[column], trash_temp[column])
-                        
-                    if centrodemassa not in citiesadded or outracidade not in citiesadded:
-                        #logging.debug("Encontrei uma cidade a distância %s. Vou unir as cidades %s (%f) e %s (%f)", curdist, cities_temp[line], trash_temp[line], cities_temp[column], trash_temp[column])
-                        for cl in citieslist:
-                            for ct in cl:
-                                if ct == centrodemassa:
-                                    index_add = index
-                                    #cl.append(outracidade)
-                                if ct == outracidade:
-                                    index_remove = index
-                                    #citieslist.pop(index)
-                            index = index + 1
-                        #print(index_add)
-                        if index_add != index_remove:
-                            citiesadded.append(centrodemassa)
-                            citiesadded.append(outracidade)
-                            for a in citieslist[index_remove]:
-                                citieslist[index_add].append(a)
-                            citieslist.pop(index_remove)
-                            for xclus in citieslist:
-                                print(xclus)
-        lastdist = curdist
-        curdist = curdist + 0.1
-        logging.debug("Distância atual: %f", curdist)
-        logging.debug("Quantidade de cluesters: %f", len(citieslist))
-    #time.sleep(10000)
-    return citieslist
-
-def clusterization_2(citieslist, distance):
-    curdist = 1
-    distance = distance.copy()
-    cp_citieslist = copy.deepcopy(citieslist)
-
-    while len(citieslist) > MAX_CITIES:
-        line = 0
-        column = 0
-        for l in range(len(cities_temp)):
-            for c in range(len(cities_temp)):
-                dist = distance[l, c]
-                #print("Distância:", dist)
-                if dist <= curdist and dist != 0:
-                    line = l
-                    column = c
-                    logging.debug("Encontrei uma cidade a distância %s. Vou unir as cidades %s (%f) e %s (%f)", curdist, cities_temp[line], trash_temp[line], cities_temp[column], trash_temp[column])
-                    centrodemassa = ""
-                    outracidade = ""
-                    if trash_temp[line] > trash_temp [column]:
-                        logging.debug("A cidade %s é o centro de massa (%f) e irá representar o cluster", cities_temp[line], trash_temp[line])
-                        centrodemassa = cities_temp[line]
-                        outracidade = cities_temp[column]    
-                    else:
-                        logging.debug("A cidade %s é o centro de massa (%f) e irá representar o cluster", cities_temp[column], trash_temp[column])
-                        centrodemassa = cities_temp[column]
-                        outracidade = cities_temp[line]
-                    index_add = 0
-                    index_remove = 0
-                    index = 0
-                    for cl in citieslist:
-                        for ct in cl:
-                            if ct == centrodemassa:
-                                index_add = index
-                                #cl.append(outracidade)
-                            if ct == outracidade:
-                                index_remove = index
-                                #citieslist.pop(index)
-                        index = index + 1
-                    #print(index_add)
-                    for a in citieslist[index_remove]:
-                        citieslist[index_add].append(a)
-                    citieslist.pop(index_remove)
-                    #print(index_remove)
-
-                    #cities_temp.pop(line)
-                    #trash_temp.pop(line)
-                    #distance = np.delete(distance, line, 0) #deleta linha
-                    #distance = np.delete(distance, line, 1) #delete coluna
-                    #deleted = True
-                    #break
-            #if deleted:
-            #    break
-        curdist = curdist + 1
-    return citieslist
-
 
 def getCityTrash(city):
     index = cities.index(city)
@@ -390,7 +299,16 @@ def removeArraysTrashThreshold(combinations):
                 combinations.remove(comb[c])
                 break
 
-def inboundoutbound(subarray):
+def funccentrodemassa(cluster, cities, trash):
+    max = 0
+    for i in cluster:
+        index = cities.index(i)
+        if trash[index] > max:
+            max = trash[index]
+            c_centrodemassa = cities[index]
+    return c_centrodemassa
+
+def inboundoutbound(subarray, isCentralized):
     data = []
     for utvr_city in subarray:
         entry = {}
@@ -425,7 +343,16 @@ def inboundoutbound(subarray):
     #print("========> Estou selecionando o dado: ", data[0])
     #print(len(data))
     #print()
-    return data[0]
+    if isCentralized:
+        #Retorna a UTVR sendo o centro de massa, não o mais eficaz
+        cmassa = funccentrodemassa(subarray, cities, trash)
+        print("CENTRALIZADO", subarray)
+        print("CENTRO DE MASSA", cmassa)
+        for d in data:
+            if d["utvr"] == cmassa:
+                return d
+    else:
+        return data[0]
 
 def getSubCapex(range, trashSum):
     cpRT1 = capexRT1[range]-(trashSum*(capexRT1[range]-capexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range])
@@ -440,8 +367,6 @@ def getSubOpex(range, trashSum):
     opRT3 = opexRT3[range]-(trashSum*(opexRT3[range]-opexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range])
     opRT4 = opexRT4[range]-(trashSum*(opexRT4[range]-opexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range])
     return (opRT1 + opRT2 + opRT3 + opRT4)/4
-
-
 
 with open(csvcities, mode='r', encoding="utf8") as csv_file:
     csv_reader = csv.DictReader(csv_file, delimiter=';')
@@ -479,9 +404,6 @@ if len(citieslist) > MAX_CITIES:
     # Call clusterization to reduce the number of cities
     clusterization(citieslist, distance)
 
-
-#print("Dist: ", getDistanceBetweenCites("Regente Feijó", "Quatá"))
-
 f.write("============= ATERROS ============= \n")
 for a in aterros_only:
     f.write(a + "\n")
@@ -500,7 +422,6 @@ combinations = list()
 combinations += list(set_partitions(citieslist))
 logging.info("Quantidade de combinações: %d", len(combinations))
 f.write("Quantidade de combinações: " + repr(len(combinations)) + "\n")
-
 
 logging.info("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
 removeArraysWithoutUTVR(combinations)
@@ -540,6 +461,10 @@ for i in new_comb:
     logging.debug("Arranjo: %s", i)
     new = {}
 
+    centralizado = False
+    if len(i) == 1:
+        centralizado = True
+
     sub = list()
     for y in i:
         logging.debug("Sub-arranjo: %s", y)
@@ -549,7 +474,7 @@ for i in new_comb:
         capexOpexValue = ((capexSubArray+opexSubArray * 30.0) * trashSubArray * 313.0)/(trashSubArray * 313.0 * 30.0)
         trashArray = trashArray + trashSubArray
         capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
-        rsinout = inboundoutbound(y)
+        rsinout = inboundoutbound(y, centralizado)
         rsinout["capex"] =  capexSubArray
         rsinout["opex"] = opexSubArray
         rsinout["tecnologia"] = capexOpexValue
@@ -607,6 +532,9 @@ for d in data:
 f.write("\n\n============= TOP 5 ARRANJOS ============= \n")
 for i in range(5):
     #print(data[i])
+    tool.write(repr(data[i]["arranjo"]) + ";Sumário;" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + "\n")
+
+
     f.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
     f.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
     f.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
@@ -619,6 +547,9 @@ for i in range(5):
     f.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
     f.write("-- Sub-arranjos:\n")
     for x in range(len(data[i]["sub"])):
+        tool.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + "\n")
+
+
         print("Sub-arranjo: ", data[i]["sub"][x])
         f.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
         f.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
@@ -632,4 +563,6 @@ for i in range(5):
 
     f.write("-----------------------------------------------------------------\n\n")
 
+# Close report and tool file
 f.close()
+tool.close
