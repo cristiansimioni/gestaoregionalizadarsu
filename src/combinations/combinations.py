@@ -31,7 +31,7 @@ CUST_MOV_RESIDUOS = 1
 CUST_MOV_REJEITOS = 0.7
 
 # Threshold lixo
-THRESHOLD_TRASH = 100.0
+THRESHOLD_TRASH = 75.0
 
 f = open(reportfile, "w")
 tool = open("tool.csv", "w")
@@ -505,10 +505,12 @@ for i in new_comb:
         rsinout["capex"] =  capexSubArray
         rsinout["opex"] = opexSubArray
         rsinout["tecnologia"] = capexOpexValue
+        
         #print("IN OUT: ", rsinout)
         inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
         outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
         rsinout["lixo"] = trashSubArray
+        rsinout["total"] = capexOpexValue + rsinout["inbound"] + rsinout["outbound"]
         sub.append(rsinout)
         
     cpopfinalValue = 0 #capexOpexArray/trashArray
@@ -550,6 +552,7 @@ for d in data:
             f.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
             f.write("\t-- Aterro: " + repr(d["sub"][x]["aterro"]) + "\n")
             f.write("\t-- Lixo: " + repr(d["sub"][x]["lixo"]) + "\n")
+            f.write("\t-- Total: " + repr(d["sub"][x]["total"]) + "\n")
             f.write("\t-- Inbound: " + repr(d["sub"][x]["inbound"]) + "\n")
             f.write("\t-- Tecnologia: " + repr(d["sub"][x]["tecnologia"]) + "\n")
             f.write("\t\t-- Capex: " + repr(d["sub"][x]["capex"]) + "\n")
@@ -583,6 +586,7 @@ for i in range(5):
         f.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
         f.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
         f.write("\t-- Lixo: " + repr(data[i]["sub"][x]["lixo"]) + "\n")
+        f.write("\t-- Total: " + repr(data[i]["sub"][x]["total"]) + "\n")
         f.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
         f.write("\t-- Tecnologia: " + repr(data[i]["sub"][x]["tecnologia"]) + "\n")
         f.write("\t\t-- Capex: " + repr(data[i]["sub"][x]["capex"]) + "\n")
