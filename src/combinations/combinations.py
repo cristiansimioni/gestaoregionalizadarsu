@@ -321,14 +321,26 @@ def inboundoutbound(subarray, isCentralized):
                 logging.debug("A distância de %s para %s é de %f. O lixo produzido por %s é %f", utvr_city, other_city, (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS), other_city, getCityTrash(other_city))
                 #sum_inbound = sum_inbound + (getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS)
                 #sum_inbound = sum_inbound + ((getDistanceBetweenCites(utvr_city,other_city) * CUST_MOV_RESIDUOS) * getCityTrash(other_city))
-                sum_inbound = sum_inbound + ((getDistanceBetweenCites(utvr_city,other_city) * getCitycusto_pos_transbordo(other_city)) + getCitycusto_convencional(other_city) + getCitycusto_transbordo(other_city)) * getCityTrash(other_city)
+                #sum_inbound = sum_inbound + ((getDistanceBetweenCites(utvr_city,other_city) * getCitycusto_pos_transbordo(other_city)) + getCitycusto_convencional(other_city) + getCitycusto_transbordo(other_city)) * getCityTrash(other_city)
+                #sum_inbound = sum_inbound + ((getCitycusto_convencional(other_city) * getCityTrash(other_city)) + (getCitycusto_transbordo(other_city) * getCityTrash(other_city)) + (getCitycusto_pos_transbordo(other_city) * getDistanceBetweenCites(utvr_city,other_city) * getCityTrash(other_city))) * getCityTrash(other_city)
+                sum_inbound = sum_inbound + ((getCitycusto_convencional(other_city)) + (getCitycusto_transbordo(other_city)) + (getCitycusto_pos_transbordo(other_city) * getDistanceBetweenCites(utvr_city,other_city))) * getCityTrash(other_city)
+                
+                if isCentralized and utvr_city == "Presidente Prudente":
+                    logging.debug("Inbound = ((custo convencional %f) + (custo transbordo %f) + (pos transbordo %f * distancia %f)) * %f \n", 
+                        getCitycusto_convencional(other_city), 
+                         getCitycusto_transbordo(other_city), 
+                         getCitycusto_pos_transbordo(other_city), getDistanceBetweenCites(utvr_city,other_city),
+                         getCityTrash(other_city))
+                    logging.debug("Inbound atual = %f", sum_inbound)
+            if isCentralized and utvr_city == "Presidente Prudente":
+                logging.debug("Inbound Final = %f / %f = %f \n", sum_inbound, getSubTrash(subarray),  sum_inbound / getSubTrash(subarray))
             sum_inbound = sum_inbound / getSubTrash(subarray)
             entry["inbound"] = sum_inbound
             #print("Inbound: ", entry["inbound"])
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
-                sum_outbound = sum_outbound + (getDistanceBetweenCites(utvr_city,a) * CUST_MOV_REJEITOS)
+                sum_outbound = sum_outbound + (getDistanceBetweenCites(utvr_city,a) * (CUST_MOV_REJEITOS * getCitycusto_pos_transbordo(utvr_city))) * 0.5
                 e["aterro"] = a
                 e["outbound"] = sum_outbound
                 e["total"] = sum_inbound + sum_outbound
@@ -355,17 +367,29 @@ def inboundoutbound(subarray, isCentralized):
         return data[0]
 
 def getSubCapex(range, trashSum):
-    cpRT1 = capexRT1[range]-(trashSum*(capexRT1[range]-capexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range])
-    cpRT2 = capexRT2[range]-(trashSum*(capexRT2[range]-capexRT2[range+1]))/(rsutrash[range+1]-rsutrash[range])
-    cpRT3 = capexRT3[range]-(trashSum*(capexRT3[range]-capexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range])
-    cpRT4 = capexRT4[range]-(trashSum*(capexRT4[range]-capexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range])
+    #cpRT1 = capexRT1[range] - ((trashSum*(capexRT1[range]-capexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    cpRT1 = capexRT1[range] + ((capexRT1[range]-capexRT1[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT2 = capexRT2[range] + ((capexRT2[range]-capexRT2[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT3 = capexRT3[range] + ((capexRT3[range]-capexRT3[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT4 = capexRT4[range] + ((capexRT4[range]-capexRT4[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    #(capexRT1[range]-capexRT1[range+1])    
+    #(rsutrash[range]-rsutrash[range+1])
+    #(trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])
+    #       4689 -   ((149,4 * (4689 - 3061)) / (150 - 75))     
+    #cpRT2 = capexRT2[range] - ((trashSum*(capexRT2[range]-capexRT2[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    #cpRT3 = capexRT3[range] - ((trashSum*(capexRT3[range]-capexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    #cpRT4 = capexRT4[range] - ((trashSum*(capexRT4[range]-capexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range]))
     return (cpRT1 + cpRT2 + cpRT3 + cpRT4)/4
 
 def getSubOpex(range, trashSum):
-    opRT1 = opexRT1[range]-(trashSum*(opexRT1[range]-opexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range])
-    opRT2 = opexRT2[range]-(trashSum*(opexRT2[range]-opexRT2[range+1]))/(rsutrash[range+1]-rsutrash[range])
-    opRT3 = opexRT3[range]-(trashSum*(opexRT3[range]-opexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range])
-    opRT4 = opexRT4[range]-(trashSum*(opexRT4[range]-opexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range])
+    #opRT1 = opexRT1[range]-((trashSum*(opexRT1[range]-opexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    #opRT2 = opexRT2[range]-((trashSum*(opexRT2[range]-opexRT2[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    #opRT3 = opexRT3[range]-((trashSum*(opexRT3[range]-opexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    #opRT4 = opexRT4[range]-((trashSum*(opexRT4[range]-opexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range]))
+    opRT1 = opexRT1[range] + ((opexRT1[range]-opexRT1[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT2 = opexRT2[range] + ((opexRT2[range]-opexRT2[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT3 = opexRT3[range] + ((opexRT3[range]-opexRT3[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT4 = opexRT4[range] + ((opexRT4[range]-opexRT4[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
     return (opRT1 + opRT2 + opRT3 + opRT4)/4
 
 with open(csvcities, mode='r', encoding="utf8") as csv_file:
@@ -475,6 +499,9 @@ for i in new_comb:
         trashArray = trashArray + trashSubArray
         capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
         rsinout = inboundoutbound(y, centralizado)
+        rsinout["capex"] =  0#capexSubArray
+        rsinout["opex"] = 0#opexSubArray
+        rsinout["tecnologia"] = 0#capexOpexValue
         rsinout["capex"] =  capexSubArray
         rsinout["opex"] = opexSubArray
         rsinout["tecnologia"] = capexOpexValue
@@ -484,11 +511,12 @@ for i in new_comb:
         rsinout["lixo"] = trashSubArray
         sub.append(rsinout)
         
+    cpopfinalValue = 0 #capexOpexArray/trashArray
     cpopfinalValue = capexOpexArray/trashArray
-
     
     new["arranjo"] = i
     new["sub"] = sub
+    new["capexopex"] = 0 #cpopfinalValue
     new["capexopex"] = cpopfinalValue
     new["lixo-array"] = trashArray
     new["inbound"] = inboundArray/trashArray
