@@ -44,6 +44,7 @@ f.write("Custo Movimentação Rejeitos: " + repr(CUST_MOV_REJEITOS) + "\n\n\n")
 
 # RSU
 rsutrash = [0,25,75,150,250,350,700,1250,2500,5000]
+fator = [0.75,0.80,0.85,0.95,1,1,1,1,1,1]
 capexRT1 = [0,
 10952,
 4689,
@@ -367,30 +368,38 @@ def inboundoutbound(subarray, isCentralized):
         return data[0]
 
 def getSubCapex(range, trashSum):
-    #cpRT1 = capexRT1[range] - ((trashSum*(capexRT1[range]-capexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    cpRT1 = capexRT1[range] + ((capexRT1[range]-capexRT1[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    cpRT2 = capexRT2[range] + ((capexRT2[range]-capexRT2[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    cpRT3 = capexRT3[range] + ((capexRT3[range]-capexRT3[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    cpRT4 = capexRT4[range] + ((capexRT4[range]-capexRT4[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    #(capexRT1[range]-capexRT1[range+1])    
-    #(rsutrash[range]-rsutrash[range+1])
-    #(trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])
-    #       4689 -   ((149,4 * (4689 - 3061)) / (150 - 75))     
-    #cpRT2 = capexRT2[range] - ((trashSum*(capexRT2[range]-capexRT2[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    #cpRT3 = capexRT3[range] - ((trashSum*(capexRT3[range]-capexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    #cpRT4 = capexRT4[range] - ((trashSum*(capexRT4[range]-capexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    return (cpRT1 + cpRT2 + cpRT3 + cpRT4)/4
+    
+
+    cpRT1 = capexRT1[range]*fator[range] + ((capexRT1[range]*fator[range]-capexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT2 = capexRT2[range]*fator[range] + ((capexRT2[range]*fator[range]-capexRT2[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT3 = capexRT3[range]*fator[range] + ((capexRT3[range]*fator[range]-capexRT3[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT4 = capexRT4[range]*fator[range] + ((capexRT4[range]*fator[range]-capexRT4[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    cpRT5 = capexRT1[range]*fator[range] + ((capexRT1[range]*fator[range]-capexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    
+    if trashSum <= 75:
+        return ((cpRT1 + cpRT2)/2)
+    if trashSum <= 150:
+        return (cpRT1 + cpRT2 + cpRT3)/3
+    if trashSum <= 250:
+        return (cpRT1 + cpRT2 + cpRT3 + cpRT5)/4
+    else:
+        return (cpRT1 + cpRT2 + cpRT3 + cpRT4 + cpRT5)/5
 
 def getSubOpex(range, trashSum):
-    #opRT1 = opexRT1[range]-((trashSum*(opexRT1[range]-opexRT1[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    #opRT2 = opexRT2[range]-((trashSum*(opexRT2[range]-opexRT2[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    #opRT3 = opexRT3[range]-((trashSum*(opexRT3[range]-opexRT3[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    #opRT4 = opexRT4[range]-((trashSum*(opexRT4[range]-opexRT4[range+1]))/(rsutrash[range+1]-rsutrash[range]))
-    opRT1 = opexRT1[range] + ((opexRT1[range]-opexRT1[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    opRT2 = opexRT2[range] + ((opexRT2[range]-opexRT2[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    opRT3 = opexRT3[range] + ((opexRT3[range]-opexRT3[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    opRT4 = opexRT4[range] + ((opexRT4[range]-opexRT4[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
-    return (opRT1 + opRT2 + opRT3 + opRT4)/4
+    opRT1 = opexRT1[range]*fator[range] + ((opexRT1[range]*fator[range]-opexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT2 = opexRT2[range]*fator[range] + ((opexRT2[range]*fator[range]-opexRT2[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT3 = opexRT3[range]*fator[range] + ((opexRT3[range]*fator[range]-opexRT3[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT4 = opexRT4[range]*fator[range] + ((opexRT4[range]*fator[range]-opexRT4[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    opRT5 = opexRT1[range]*fator[range] + ((opexRT1[range]*fator[range]-opexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
+    
+    if trashSum <= 75:
+        return ((opRT1 + opRT2)/2)
+    if trashSum <= 150:
+        return (opRT1 + opRT2 + opRT3)/3
+    if trashSum <= 250:
+        return (opRT1 + opRT2 + opRT3 + opRT5)/4
+    else:
+        return (opRT1 + opRT2 + opRT3 + opRT4 + opRT5)/5
 
 with open(csvcities, mode='r', encoding="utf8") as csv_file:
     csv_reader = csv.DictReader(csv_file, delimiter=';')
