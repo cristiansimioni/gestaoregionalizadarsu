@@ -24,27 +24,27 @@ Private Sub btnHelp_Click()
     ActiveWorkbook.FollowHyperlink (Application.ActiveWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
 End Sub
 
-Private Sub StepFiveButton_Click()
+Private Sub btnStepFive_Click()
     frmStepFive.Show
 End Sub
 
-Private Sub StepFourButton_Click()
+Private Sub btnStepFour_Click()
     frmStepFour.Show
 End Sub
 
-Private Sub StepOneButton_Click()
+Private Sub btnStepOne_Click()
     frmStepOne.Show
 End Sub
 
-Private Sub StepSixButton_Click()
+Private Sub btnStepSix_Click()
     frmStepSix.Show
 End Sub
 
-Private Sub StepThreeButton_Click()
+Private Sub btnStepThree_Click()
     frmStepThree.Show
 End Sub
 
-Private Sub StepTwoButton_Click()
+Private Sub btnStepTwo_Click()
     frmStepTwo.Show
 End Sub
 
@@ -58,10 +58,10 @@ End Sub
 Private Sub UserForm_Initialize()
     Me.Caption = "GEF Biogás Brasil - " & APPNAME & " - " & APPVERSION
     Me.BackColor = ApplicationColors.bgColorLevel1
-    Me.StepOneButton.BackColor = ApplicationColors.btColorLevel1
-    Me.StepTwoButton.BackColor = ApplicationColors.btColorLevel1
-    Me.StepThreeButton.BackColor = ApplicationColors.btColorLevel1
-    Me.StepFourButton.BackColor = ApplicationColors.btColorLevel1
-    Me.StepFiveButton.BackColor = ApplicationColors.btColorLevel1
-    Me.StepSixButton.BackColor = ApplicationColors.btColorLevel1
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.btColorLevel1
+         End If
+    Next Ctrl
 End Sub

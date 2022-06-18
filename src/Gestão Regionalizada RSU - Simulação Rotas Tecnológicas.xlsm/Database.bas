@@ -3,19 +3,20 @@ Option Explicit
 
 Public Enum DatabaseColumn
     colGroup = 1
-    colDescription = 2
-    colName = 3
-    colType
-    colFormula
-    colUnit
-    colUserValue
-    colDefaultValue
-    colWorkbook
-    colSheet
-    colCell
-    colValid
-    colMinValue
-    colMaxValue
+    colStep = 2
+    colDescription = 3
+    colName = 4
+    colType = 5
+    colFormula = 6
+    colUnit = 7
+    colUserValue = 8
+    colDefaultValue = 9
+    colWorkbook = 10
+    colSheet = 11
+    colCell = 12
+    colValid = 13
+    colMinValue = 14
+    colMaxValue = 15
 End Enum
 
 Public Enum Project

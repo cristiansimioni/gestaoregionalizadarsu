@@ -13,15 +13,18 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
+Public selectedCites As New Collection
 
 Private Sub btnAdd_Click()
     lstSelected.AddItem (lstAvailable.List(lstAvailable.ListIndex))
+    selectedCites.Add (lstAvailable.List(lstAvailable.ListIndex))
 End Sub
 
 Private Sub btnRemove_Click()
     If lstSelected.ListIndex > -1 Then
         lstSelected.RemoveItem (lstSelected.ListIndex)
+        selectedCites.Remove (lstSelected.ListIndex + 1)
+        Call cbxUF_Change
     End If
 End Sub
 
@@ -29,10 +32,10 @@ Private Sub btnSave_Click()
     Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
     
     x = 2
-    For Index = 0 To lstSelected.ListCount - 1
-        wksSelectedCities.Cells(x, "A").value = CStr(lstSelected.List(Index))
+    For index = 0 To lstSelected.ListCount - 1
+        wksSelectedCities.Cells(x, "A").value = CStr(lstSelected.List(index))
         x = x + 1
-    Next Index
+    Next index
     
 End Sub
 
@@ -45,7 +48,9 @@ Private Sub cbxUF_Change()
         uf = wksCities.Cells(x, "A")
         city = wksCities.Cells(x, "D")
         If uf = cbxUF Then
-            lstAvailable.AddItem (city)
+            If Not IsInCollection(selectedCites, city) Then
+                lstAvailable.AddItem (city)
+            End If
         End If
     Next x
 End Sub
@@ -73,13 +78,33 @@ Private Sub UserForm_Initialize()
     For x = 2 To lastRow
         uf = wksCities.Cells(x, "A")
         inList = False
-        For Index = 0 To cbxUF.ListCount - 1
-            If uf = CStr(cbxUF.List(Index)) Then
+        For index = 0 To cbxUF.ListCount - 1
+            If uf = CStr(cbxUF.List(index)) Then
                 inList = True
                 Exit For
             End If
-        Next Index
+        Next index
         If inList = False Then cbxUF.AddItem (uf)
     Next x
     
+    'Load alrady selected cities if available
+    Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
+    Dim r As Integer
+    lastRow = wksSelectedCities.Cells(Rows.Count, 1).End(xlUp).row
+    For r = 2 To lastRow
+        selectedCites.Add wksSelectedCities.Cells(r, 1).value
+        lstSelected.AddItem wksSelectedCities.Cells(r, 1).value
+    Next r
+    
 End Sub
+
+Function IsInCollection(ByVal oCollection As Collection, ByVal sItem As String) As Boolean
+    Dim vItem As Variant
+    For Each vItem In oCollection
+        If vItem = sItem Then
+            IsInCollection = True
+            Exit Function
+        End If
+    Next vItem
+    IsInCollection = False
+End Function

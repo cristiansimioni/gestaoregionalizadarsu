@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
    ClientHeight    =   4965
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   6915
+   ClientLeft      =   240
+   ClientTop       =   930
+   ClientWidth     =   6930
    OleObjectBlob   =   "frmStepTwo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -21,6 +21,10 @@ End Sub
 
 Private Sub btnRunAlgorithm_Click()
     Util.RunPythonScript
+End Sub
+
+Private Sub CommandButton4_Click()
+    frmEditCities.Show
 End Sub
 
 Private Sub UserForm_Initialize()
