@@ -145,6 +145,8 @@ def funccentrodemassa(data, cluster):
 
 def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only):
     data = []
+    CAPEX_INBOUND = 150
+    CAPEX_OUTBOUND = 25
     for utvr_city in subarray:
         entry = {}
         sum_inbound = 0
@@ -164,6 +166,7 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
             if isCentralized and utvr_city == "Presidente Prudente":
                 logging.debug("Inbound Final = %f / %f = %f \n", sum_inbound, getSubTrash(cdata, subarray),  sum_inbound / getSubTrash(cdata, subarray))
             sum_inbound = sum_inbound / getSubTrash(cdata, subarray)
+            sum_inbound = (CAPEX_INBOUND/35.0 + sum_inbound) /  1.0
             entry["inbound"] = sum_inbound
             #print("Inbound: ", entry["inbound"])
             for a in aterros_only:
@@ -171,7 +174,7 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 sum_outbound = 0
                 sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * getCityAttribute(cdata, utvr_city, "cost-post-transhipment"))) * 0.5
                 e["aterro"] = a
-                e["outbound"] = sum_outbound
+                e["outbound"] = (CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0
                 e["total"] = sum_inbound + sum_outbound
                 
                 logging.debug("Adicionando: %s", e)
@@ -190,17 +193,17 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
         return data[0]
 
 def getSubCapex(range, trashSum, rsutrash):
-    fator = [0.0,0.75,0.80,0.85,0.95,1,1,1,1,1]
+    fator = [1,1,1,1,1,1,1,1,1,1]
     capexRT1 = [0,
-    10952,
-    4689,
-    3061,
-    2346,
-    2051,
-    1638,
-    1576,
-    1394,
-    1359
+    1668,
+    925,
+    733,
+    650,
+    612,
+    2135,
+    2133,
+    1985,
+    1974
     ]
     capexRT2 = [0,
     9861,
@@ -243,26 +246,26 @@ def getSubCapex(range, trashSum, rsutrash):
     cpRT5 = capexRT1[range]*fator[range] + ((capexRT1[range]*fator[range]-capexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
     
     if trashSum <= 75:
-        return ((cpRT1 + cpRT2)/2)
+        return ((cpRT1))
     if trashSum <= 150:
-        return (cpRT1 + cpRT2 + cpRT3)/3
-    if trashSum <= 250:
-        return (cpRT1 + cpRT2 + cpRT3 + cpRT5)/4
+        return (cpRT1)
+    if trashSum <= 350:
+        return (cpRT1)
     else:
-        return (cpRT1 + cpRT2 + cpRT3 + cpRT4 + cpRT5)/5
+        return (cpRT1)
 
 def getSubOpex(range, trashSum, rsutrash):
-    fator = [0.0,0.75,0.80,0.85,0.95,1,1,1,1,1]
+    fator = [1,1,1,1,1,1,1,1,1,1]
     opexRT1 = [0,
-    1886,
-    707,
-    389,
-    269,
-    234,
-    171,
-    142,
-    126,
-    105
+    314,
+    135,
+    89,
+    71,
+    64,
+    214,
+    198,
+    188,
+    179
     ]
     opexRT2 = [0,
     1557,
@@ -305,13 +308,13 @@ def getSubOpex(range, trashSum, rsutrash):
     opRT5 = opexRT1[range]*fator[range] + ((opexRT1[range]*fator[range]-opexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
     
     if trashSum <= 75:
-        return ((opRT1 + opRT2)/2)
+        return ((opRT1))
     if trashSum <= 150:
-        return (opRT1 + opRT2 + opRT3)/3
-    if trashSum <= 250:
-        return (opRT1 + opRT2 + opRT3 + opRT5)/4
+        return (opRT1)
+    if trashSum <= 350:
+        return (opRT1)
     else:
-        return (opRT1 + opRT2 + opRT3 + opRT4 + opRT5)/5
+        return (opRT1)
 
 def getCities(data):
     cities = list()
@@ -485,7 +488,7 @@ def main():
             trashSubArray = getSubTrash(citiesdata, y)
             capexSubArray = getSubCapex(getFaixa(trashSubArray, rsutrash), trashSubArray, rsutrash)
             opexSubArray = getSubOpex(getFaixa(trashSubArray, rsutrash), trashSubArray, rsutrash)
-            capexOpexValue = ((capexSubArray+opexSubArray * 30.0) * trashSubArray * 313.0)/(trashSubArray * 313.0 * 30.0)
+            capexOpexValue = (capexSubArray/35.0 + opexSubArray)/ 1.0
             trashArray = trashArray + trashSubArray
             capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
             rsinout = inboundoutbound(citiesdata, distance, y, centralizado, utvrs, landfill)
@@ -529,15 +532,11 @@ def main():
             report.write(repr(d["arranjo"]) + "\n")
             report.write("- Lixo: " + repr(d["lixo-array"]) + "\n")
             report.write("- Custo Total: " + repr(d["total"]) + "\n")
-            print("\t Inbound", d["inbound"])
             report.write("-- Inbound: " + repr(d["inbound"]) + "\n")
-            print("\t Tecnologia", d["capexopex"])
             report.write("-- Tecnologia: " + repr(d["capexopex"]) + "\n")
-            print("\t Outbound", d["outbound"])
             report.write("-- Outbound: " + repr(d["outbound"]) + "\n\n")
             report.write("-- Sub-arranjos:\n")
             for x in range(len(d["sub"])):
-                print("Sub-arranjo: ", d["sub"][x])
                 report.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
                 report.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
                 report.write("\t-- Aterro: " + repr(d["sub"][x]["aterro"]) + "\n")
@@ -551,27 +550,22 @@ def main():
                 break
 
         report.write("\n\n============= TOP 5 ARRANJOS ============= \n")
-        for i in range(5):
-            #print(data[i])
+        for i in range(len(data)):
+            if i % 1000 != 0:
+                continue
             output.write(repr(data[i]["arranjo"]) + ";Sumário;" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + "\n")
 
 
             report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
             report.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
             report.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
-            print(i, " - Arranjo: ", data[i]["arranjo"], " ", data[i]["total"])
-            print("\t Inbound", data[i]["inbound"])
             report.write("-- Inbound: " + repr(data[i]["inbound"]) + "\n")
-            print("\t Tecnologia", data[i]["capexopex"])
             report.write("-- Tecnologia: " + repr(data[i]["capexopex"]) + "\n")
-            print("\t Outbound", data[i]["outbound"])
             report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
             report.write("-- Sub-arranjos:\n")
             for x in range(len(data[i]["sub"])):
                 output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + "\n")
 
-
-                print("Sub-arranjo: ", data[i]["sub"][x])
                 report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
                 report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
                 report.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
@@ -585,9 +579,9 @@ def main():
 
             report.write("-----------------------------------------------------------------\n\n")
 
-        # Close report and output file
-        report.close()
-        output.close
+    # Close report and output file
+    report.close()
+    output.close
 
 if __name__ == "__main__":
     main()
