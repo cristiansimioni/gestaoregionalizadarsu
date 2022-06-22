@@ -34,6 +34,10 @@ Function GetSelectedCitiesWorksheet() As Worksheet
     Set GetSelectedCitiesWorksheet = ThisWorkbook.Worksheets("Municípios Selecionados")
 End Function
 
+Function GetCitiesDistanceWorksheet() As Worksheet
+    Set GetCitiesDistanceWorksheet = ThisWorkbook.Worksheets("Distancias entre Municípios")
+End Function
+
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean
     validateRange = True
     If IsNumeric(value) Then
@@ -51,6 +55,31 @@ Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef messag
     End If
 End Function
 
+Sub saveAsCSV(projectName As String, directory As String)
+    Dim sFileName As String
+    Dim WB As Workbook
+
+    Application.DisplayAlerts = False
+
+    sFileName = "cities-" & projectName & ".csv"
+    'Copy the contents of required sheet ready to paste into the new CSV
+    Sheets("Municípios Selecionados").Range("A1:J41").Copy
+
+    'Open a new XLS workbook, save it as the file name
+    Set WB = Workbooks.Add
+    With WB
+        .Title = "Cidades"
+        .Subject = projectName
+        .Sheets(1).Select
+        ActiveSheet.Paste
+        .SaveAs directory & "\" & sFileName, xlCSV
+        .Close
+    End With
+
+    Application.DisplayAlerts = True
+End Sub
+
+
 Sub RunPythonScript()
 
 'Declare Variables
@@ -63,9 +92,10 @@ Set objShell = VBA.CreateObject("Wscript.Shell")
 'Provide file path to Python.exe
 'USE TRIPLE QUOTES WHEN FILE PATH CONTAINS SPACES.
 PythonExe = """C:\Users\cristiansimioni\AppData\Local\Programs\Python\Python310\python.exe"""
+PythonExe = "C:\Users\cristiansimioni\AppData\Local\Microsoft\WindowsApps\python3.exe"
 PythonScript = "C:\Users\cristiansimioni\Documents\Projetos\gestaoregionalizadarsu\src\combinations\combinations.py"
 
 'Run the Python Script
-objShell.Run PythonExe & PythonScript
+'objShell.Run PythonExe & PythonScript
 
 End Sub

@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities 
    Caption         =   "Editar Cidades"
-   ClientHeight    =   7815
+   ClientHeight    =   7860
    ClientLeft      =   240
    ClientTop       =   930
    ClientWidth     =   15555
@@ -86,22 +86,24 @@ Private Sub UserForm_Initialize()
         Dim c As clsCity
         Set c = New clsCity
         c.vCityName = wksDatabase.Cells(r, 1).value
-        c.vPopulation = wksDatabase.Cells(r, 2).value
-        c.vTrash = CDbl(wksDatabase.Cells(r, 4).value)
-        c.vConventionalCost = wksDatabase.Cells(r, 5).value
-        c.vTransshipmentCost = wksDatabase.Cells(r, 6).value
-        c.vCostPostTransshipment = wksDatabase.Cells(r, 7).value
-        If wksDatabase.Cells(r, 8).value = "Sim" Then
+        c.vLatitude = wksDatabase.Cells(r, 2).value
+        c.vLongitude = wksDatabase.Cells(r, 3).value
+        c.vPopulation = wksDatabase.Cells(r, 4).value
+        c.vTrash = CDbl(wksDatabase.Cells(r, 5).value)
+        c.vConventionalCost = wksDatabase.Cells(r, 6).value
+        c.vTransshipmentCost = wksDatabase.Cells(r, 7).value
+        c.vCostPostTransshipment = wksDatabase.Cells(r, 8).value
+        If wksDatabase.Cells(r, 9).value = "Sim" Then
             c.vUTVR = True
         Else
             c.vUTVR = False
         End If
-        If wksDatabase.Cells(r, 9).value = "Sim" Then
+        If wksDatabase.Cells(r, 10).value = "Sim" Then
             c.vExistentLandfill = True
         Else
             c.vExistentLandfill = False
         End If
-        If wksDatabase.Cells(r, 10).value = "Sim" Then
+        If wksDatabase.Cells(r, 11).value = "Sim" Then
             c.vPotentialLandfill = True
         Else
             c.vPotentialLandfill = False

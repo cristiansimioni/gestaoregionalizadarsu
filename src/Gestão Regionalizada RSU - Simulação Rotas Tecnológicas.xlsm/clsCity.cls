@@ -10,6 +10,8 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public vCityName As String
+Public vLatitude As Double
+Public vLongitude As Double
 Public vPopulation As Double
 Public vTrash As Double
 Public vConventionalCost As Double

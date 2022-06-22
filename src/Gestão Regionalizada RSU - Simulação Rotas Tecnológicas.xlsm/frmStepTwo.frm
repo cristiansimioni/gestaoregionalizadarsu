@@ -13,14 +13,25 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Private Sub btnGeneralData_Click()
     frmGeneralData.Show
 End Sub
 
 Private Sub btnRunAlgorithm_Click()
+    'Calculate cities distance
+    Call modCity.calculateDistances
+    
+    'Save cities to csv
+    Call Util.saveAsCSV("CIRSOP", "C:\Users\cristiansimioni\Downloads")
+
+    'Save distance to csv
+    Call Util.saveAsCSV("CIRSOP", "C:\Users\cristiansimioni\Downloads")
+    
+    'Run the algorithm
     Util.RunPythonScript
+    
+    'Load the result into the workbook
+    
 End Sub
 
 Private Sub CommandButton4_Click()
