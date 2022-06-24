@@ -17,6 +17,7 @@ Public Enum ApplicationColors
     btColorLevel1 = 14855222 '14602886 '809194      'RGB(234, 88, 12)
     btColorLevel2 = 1536493     'RGB(237, 113, 23)
     btColorLevel3 = 2461170     'RGB(242, 141, 37)
+    btColorLevel4 = 2461170     'RGB(242, 141, 37)
     'Text Box
     bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)

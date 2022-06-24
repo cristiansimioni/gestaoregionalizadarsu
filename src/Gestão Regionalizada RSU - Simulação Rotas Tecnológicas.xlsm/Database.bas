@@ -19,10 +19,6 @@ Public Enum DatabaseColumn
     colMaxValue = 15
 End Enum
 
-Public Enum Project
-    projectName
-End Enum
-
 Function LocateVariableRow(ByVal name As String)
     Dim wksDatabase As Worksheet
     Set wksDatabase = Util.GetDatabaseWorksheet

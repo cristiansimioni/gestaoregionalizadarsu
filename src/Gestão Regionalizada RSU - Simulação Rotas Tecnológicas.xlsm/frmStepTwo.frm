@@ -13,6 +13,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Sub btnBack_Click()
+    Unload Me
+End Sub
+
 Private Sub btnGeneralData_Click()
     frmGeneralData.Show
 End Sub
