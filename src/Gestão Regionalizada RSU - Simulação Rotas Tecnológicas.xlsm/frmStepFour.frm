@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFour 
    Caption         =   "UserForm1"
-   ClientHeight    =   3435
+   ClientHeight    =   8745.001
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   7875
@@ -23,4 +23,8 @@ End Sub
 
 Private Sub btnQuantitativeVal_Click()
     frmQuantitativeVal.Show
+End Sub
+
+Private Sub UserForm_Click()
+
 End Sub

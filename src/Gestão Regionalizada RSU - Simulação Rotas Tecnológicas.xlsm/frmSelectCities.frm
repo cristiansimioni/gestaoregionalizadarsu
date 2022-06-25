@@ -17,7 +17,10 @@ Public selectedCites As New Collection
 
 Private Sub btnAdd_Click()
     lstSelected.AddItem (lstAvailable.List(lstAvailable.ListIndex))
-    selectedCites.Add (lstAvailable.List(lstAvailable.ListIndex))
+    Dim city As String
+    city = lstAvailable.List(lstAvailable.ListIndex)
+    selectedCites.Add (city)
+    lstAvailable.RemoveItem (lstAvailable.ListIndex)
 End Sub
 
 Private Sub btnRemove_Click()
@@ -46,10 +49,10 @@ Private Sub cbxUF_Change()
     currentUF = cbxUF
     For x = 2 To lastRow
         uf = wksCities.Cells(x, "A")
-        City = wksCities.Cells(x, "D")
+        city = wksCities.Cells(x, "D")
         If uf = cbxUF Then
-            If Not IsInCollection(selectedCites, City) Then
-                lstAvailable.AddItem (City)
+            If Not IsInCollection(selectedCites, city) Then
+                lstAvailable.AddItem (city)
             End If
         End If
     Next x

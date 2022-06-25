@@ -3,8 +3,11 @@ Option Explicit
 
 Public Const APPNAME        As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION     As String = "1.0.0"
-Public Const APPLASTUPDATED As String = "26.05.2021"
+Public Const APPLASTUPDATED As String = "25.06.2021"
 Public Const APPDEVELOPER   As String = "Cristian Simioni Milani"
+
+Public Const FOLDERALGORITHM As String = "Algoritmo"
+
 
 Public Enum ApplicationColors
     'Form
@@ -56,15 +59,32 @@ Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef messag
     End If
 End Function
 
-Sub saveAsCSV(projectName As String, directory As String)
+Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     Dim sFileName As String
     Dim WB As Workbook
+    Dim wks As Worksheet
 
     Application.DisplayAlerts = False
 
-    sFileName = "cities-" & projectName & ".csv"
+    
     'Copy the contents of required sheet ready to paste into the new CSV
-    Sheets("Municípios Selecionados").Range("A1:J41").Copy
+    If sheet = "city" Then
+        sFileName = "cities-" & projectName & ".csv"
+        Set wks = Util.GetSelectedCitiesWorksheet
+    Else
+        sFileName = "distance-" & projectName & ".csv"
+        Set wks = Util.GetCitiesDistanceWorksheet
+    End If
+    
+    Dim lRow As Long
+    Dim lCol As Long
+    
+    'Find the last non-blank cell in column A(1)
+    lRow = wks.Cells(Rows.Count, 1).End(xlUp).row
+    
+    'Find the last non-blank cell in row 1
+    lCol = wks.Cells(1, Columns.Count).End(xlToLeft).column
+    wks.Range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
 
     'Open a new XLS workbook, save it as the file name
     Set WB = Workbooks.Add
@@ -84,19 +104,86 @@ End Sub
 Sub RunPythonScript()
 
 'Declare Variables
-Dim objShell As Object
-Dim PythonExe, PythonScript As String
-
-'Create a new Object shell.
-Set objShell = VBA.CreateObject("Wscript.Shell")
+Dim PythonExe, PythonScript, Params, cmd As String
+Dim wsh As Object
+Set wsh = VBA.CreateObject("WScript.Shell")
+Dim waitOnReturn As Boolean: waitOnReturn = True
+Dim windowStyle As Integer: windowStyle = 1
+Dim errorCode As Integer
 
 'Provide file path to Python.exe
 'USE TRIPLE QUOTES WHEN FILE PATH CONTAINS SPACES.
 PythonExe = """C:\Users\cristiansimioni\AppData\Local\Programs\Python\Python310\python.exe"""
-PythonExe = "C:\Users\cristiansimioni\AppData\Local\Microsoft\WindowsApps\python3.exe"
-PythonScript = "C:\Users\cristiansimioni\Documents\Projetos\gestaoregionalizadarsu\src\combinations\combinations.py"
+PythonExe = """C:\Users\cristiansimioni\AppData\Local\Microsoft\WindowsApps\python3.exe"""
+PythonScript = """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\gestaoregionalizadarsu\src\combinations\combinations.py"""
 
+Params = """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\cities-Cristian.csv""" & _
+         " " & _
+         """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\distance-Cristian.csv""" & _
+         " " & _
+         "10 50" & _
+         " " & _
+         """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\alg-report.txt""" & _
+         " " & _
+         """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\alg-out.csv"""
+
+cmd = "%comspec% /c " & Chr(34) & PythonExe & " " & PythonScript & " " & Params & Chr(34)
 'Run the Python Script
-'objShell.Run PythonExe & PythonScript
+errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
+
+If errorCode = 0 Then
+    'Insert your code here
+    MsgBox "Program finished successfully."
+Else
+    MsgBox "Program exited with error code " & errorCode & "."
+End If
+
+
 
 End Sub
+
+Public Function FolderCreate(ByVal strPathToFolder As String, ByVal strFolder As String) As Variant
+    'The function FolderCreate attemps to create the folder strFolder on the path strPathToFolder _
+    ' and returns an array where the first element is a boolean indicating if the folder was created/already exists
+    ' True meaning that the folder already exists or was successfully created, and False meaning that the folder _
+    ' wans't created and doesn't exists
+    '
+    'The second element of the returned array is the Full Folder Path , meaning ex: "C:\MyExamplePath\MyCreatedFolder"
+    
+    Dim fso As Object
+    'Dim fso As New FileSystemObject
+    Dim FullDirPath As String
+    Dim Length As Long
+    
+    'Check if the path to folder string finishes by the path separator (ex: \) ,and if not add it
+    If Right(strPathToFolder, 1) <> Application.PathSeparator Then
+        strPathToFolder = strPathToFolder & Application.PathSeparator
+    End If
+    
+    'Check if the folder string starts by the path separator (ex: \) , and if it does remove it
+    If Left(strFolder, 1) = Application.PathSeparator Then
+        Length = Len(strFolder) - 1
+        strFolder = Right(strFolder, Length)
+    End If
+    
+    FullDirPath = strPathToFolder & strFolder
+    
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    If fso.FolderExists(FullDirPath) Then
+        FolderCreate = FullDirPath
+    Else
+        On Error GoTo ErrorHandler
+        fso.CreateFolder Path:=FullDirPath
+        FolderCreate = FullDirPath
+        On Error GoTo 0
+    End If
+    
+SafeExit:
+        Exit Function
+    
+ErrorHandler:
+        MsgBox prompt:="A folder could not be created for the following path: " & FullDirPath & vbCrLf & _
+                "Check the path name and try again."
+        FolderCreate = ""
+End Function

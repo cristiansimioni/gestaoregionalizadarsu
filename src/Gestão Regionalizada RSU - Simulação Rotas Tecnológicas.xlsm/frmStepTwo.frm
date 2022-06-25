@@ -25,11 +25,22 @@ Private Sub btnRunAlgorithm_Click()
     'Calculate cities distance
     Call modCity.calculateDistances
     
+    'Create project folder
+    Dim prjPath As String
+    Dim prjName As String
+    prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
+    prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
+    prjPath = Util.FolderCreate(prjPath, prjName)
+    
+    'Create algorithm folder
+    Dim algPath As String
+    algPath = Util.FolderCreate(prjPath, FOLDERALGORITHM)
+    
     'Save cities to csv
-    Call Util.saveAsCSV("CIRSOP", "C:\Users\cristiansimioni\Downloads")
+    Call Util.saveAsCSV(prjName, algPath, "city")
 
     'Save distance to csv
-    Call Util.saveAsCSV("CIRSOP", "C:\Users\cristiansimioni\Downloads")
+    Call Util.saveAsCSV(prjName, algPath, "distance")
     
     'Run the algorithm
     Util.RunPythonScript

@@ -78,38 +78,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
 
-    Set wksDatabase = Util.GetSelectedCitiesWorksheet
-    Dim lastRow As Integer
-    Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
-    For r = 2 To lastRow
-        Dim c As clsCity
-        Set c = New clsCity
-        c.vCityName = wksDatabase.Cells(r, 1).value
-        c.vLatitude = wksDatabase.Cells(r, 2).value
-        c.vLongitude = wksDatabase.Cells(r, 3).value
-        c.vPopulation = wksDatabase.Cells(r, 4).value
-        c.vTrash = CDbl(wksDatabase.Cells(r, 5).value)
-        c.vConventionalCost = wksDatabase.Cells(r, 6).value
-        c.vTransshipmentCost = wksDatabase.Cells(r, 7).value
-        c.vCostPostTransshipment = wksDatabase.Cells(r, 8).value
-        If wksDatabase.Cells(r, 9).value = "Sim" Then
-            c.vUTVR = True
-        Else
-            c.vUTVR = False
-        End If
-        If wksDatabase.Cells(r, 10).value = "Sim" Then
-            c.vExistentLandfill = True
-        Else
-            c.vExistentLandfill = False
-        End If
-        If wksDatabase.Cells(r, 11).value = "Sim" Then
-            c.vPotentialLandfill = True
-        Else
-            c.vPotentialLandfill = False
-        End If
-        cities.Add c
-    Next r
+    Set cities = readCities
     
     vScrollBar.Min = 1
     If cities.Count >= 10 Then

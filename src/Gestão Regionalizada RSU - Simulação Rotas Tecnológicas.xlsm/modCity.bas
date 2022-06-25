@@ -9,24 +9,25 @@ Public Function readCities()
         Dim c As clsCity
         Set c = New clsCity
         c.vCityName = wksDatabase.Cells(r, 1).value
-        c.vLatitude = wksDatabase.Cells(r, 2).value
-        c.vLongitude = wksDatabase.Cells(r, 3).value
-        c.vPopulation = wksDatabase.Cells(r, 4).value
-        c.vTrash = CDbl(wksDatabase.Cells(r, 5).value)
-        c.vConventionalCost = wksDatabase.Cells(r, 6).value
-        c.vTransshipmentCost = wksDatabase.Cells(r, 7).value
-        c.vCostPostTransshipment = wksDatabase.Cells(r, 8).value
-        If wksDatabase.Cells(r, 9).value = "Sim" Then
+        c.vIBGECode = wksDatabase.Cells(r, 2).value
+        c.vLatitude = wksDatabase.Cells(r, 3).value
+        c.vLongitude = wksDatabase.Cells(r, 4).value
+        c.vPopulation = wksDatabase.Cells(r, 5).value
+        c.vTrash = Round(wksDatabase.Cells(r, 6).value, 2)
+        c.vConventionalCost = wksDatabase.Cells(r, 7).value
+        c.vTransshipmentCost = wksDatabase.Cells(r, 8).value
+        c.vCostPostTransshipment = wksDatabase.Cells(r, 9).value
+        If wksDatabase.Cells(r, 10).value = "Sim" Then
             c.vUTVR = True
         Else
             c.vUTVR = False
         End If
-        If wksDatabase.Cells(r, 10).value = "Sim" Then
+        If wksDatabase.Cells(r, 11).value = "Sim" Then
             c.vExistentLandfill = True
         Else
             c.vExistentLandfill = False
         End If
-        If wksDatabase.Cells(r, 11).value = "Sim" Then
+        If wksDatabase.Cells(r, 12).value = "Sim" Then
             c.vPotentialLandfill = True
         Else
             c.vPotentialLandfill = False
@@ -72,7 +73,7 @@ Public Function GetDistanceCoord(ByVal lat1 As Double, ByVal lon1 As Double, ByV
     ElseIf unit = "N" Then
         dist = dist * 0.8684
     End If
-    GetDistanceCoord = dist
+    GetDistanceCoord = Round(dist, 2)
 End Function
  
 Function deg2rad(ByVal deg As Double) As Double

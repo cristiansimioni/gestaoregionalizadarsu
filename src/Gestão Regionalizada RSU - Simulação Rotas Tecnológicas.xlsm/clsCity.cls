@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public vCityName As String
+Public vIBGECode As Double
 Public vLatitude As Double
 Public vLongitude As Double
 Public vPopulation As Double

@@ -384,26 +384,26 @@ def main():
     
     citiesdata = []
     clusters = []
-    with open(CSVCITIES, mode='r', encoding="utf8") as csv_file:
-        csv_reader = csv.DictReader(csv_file, delimiter=';')
+    with open(CSVCITIES, mode='r') as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
             if line_count == 0:
                 line_count += 1
             city = {}
-            city["name"] = row["city"]
-            city["trash"] = float(row["trash"])
-            if row["utvr"] == "sim":
+            city["name"] = row["Município"]
+            city["trash"] = float(row["Lixo (t/d)"])
+            if row["UTVR"] == "Sim":
                 city["utvr"] = True
             else:
                 city["utvr"] = False
-            if row["aterro"] == "sim":
-                city["landfill"] = True 
+            if row["Aterro Existente"] == "Sim":
+                city["landfill"] = True
             else:
                 city["landfill"] = False
-            city["conventional-cost"] = float(row["custo_convencional"])
-            city["transshipment-cost"] = float(row["custo_transbordo"])
-            city["cost-post-transhipment"] = float(row["custo_pos_transbordo"])
+            city["conventional-cost"] = float(row["Custo de Coleta Mista Convencional"])
+            city["transshipment-cost"] = float(row["Custo de Coleta e Transbordo de Resíduos Mistos"])
+            city["cost-post-transhipment"] = float(row["Custo de Transporte Pós Transbordo"])
             citiesdata.append(city)
             line_count += 1
 
@@ -549,35 +549,35 @@ def main():
                 report.write("\t-- Outbound: " + repr(d["sub"][x]["outbound"]) + "\n\n")
                 break
 
-        report.write("\n\n============= TOP 5 ARRANJOS ============= \n")
-        for i in range(len(data)):
-            if i % 1000 != 0:
-                continue
-            output.write(repr(data[i]["arranjo"]) + ";Sumário;" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + "\n")
+    report.write("\n\n============= TOP 5 ARRANJOS ============= \n")
+    for i in range(len(data)):
+        if i % 1000 != 0:
+            continue
+        output.write(repr(data[i]["arranjo"]) + ";Sumário;" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + "\n")
 
 
-            report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
-            report.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
-            report.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
-            report.write("-- Inbound: " + repr(data[i]["inbound"]) + "\n")
-            report.write("-- Tecnologia: " + repr(data[i]["capexopex"]) + "\n")
-            report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
-            report.write("-- Sub-arranjos:\n")
-            for x in range(len(data[i]["sub"])):
-                output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + "\n")
+        report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
+        report.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
+        report.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
+        report.write("-- Inbound: " + repr(data[i]["inbound"]) + "\n")
+        report.write("-- Tecnologia: " + repr(data[i]["capexopex"]) + "\n")
+        report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
+        report.write("-- Sub-arranjos:\n")
+        for x in range(len(data[i]["sub"])):
+            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + "\n")
 
-                report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
-                report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
-                report.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
-                report.write("\t-- Lixo: " + repr(data[i]["sub"][x]["lixo"]) + "\n")
-                report.write("\t-- Total: " + repr(data[i]["sub"][x]["total"]) + "\n")
-                report.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
-                report.write("\t-- Tecnologia: " + repr(data[i]["sub"][x]["tecnologia"]) + "\n")
-                report.write("\t\t-- Capex: " + repr(data[i]["sub"][x]["capex"]) + "\n")
-                report.write("\t\t-- Opex: " + repr(data[i]["sub"][x]["opex"]) + "\n")
-                report.write("\t-- Outbound: " + repr(data[i]["sub"][x]["outbound"]) + "\n\n")
+            report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
+            report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
+            report.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
+            report.write("\t-- Lixo: " + repr(data[i]["sub"][x]["lixo"]) + "\n")
+            report.write("\t-- Total: " + repr(data[i]["sub"][x]["total"]) + "\n")
+            report.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
+            report.write("\t-- Tecnologia: " + repr(data[i]["sub"][x]["tecnologia"]) + "\n")
+            report.write("\t\t-- Capex: " + repr(data[i]["sub"][x]["capex"]) + "\n")
+            report.write("\t\t-- Opex: " + repr(data[i]["sub"][x]["opex"]) + "\n")
+            report.write("\t-- Outbound: " + repr(data[i]["sub"][x]["outbound"]) + "\n\n")
 
-            report.write("-----------------------------------------------------------------\n\n")
+        report.write("-----------------------------------------------------------------\n\n")
 
     # Close report and output file
     report.close()
