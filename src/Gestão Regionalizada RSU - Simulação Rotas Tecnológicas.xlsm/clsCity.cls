@@ -11,6 +11,8 @@ Option Explicit
 
 Public vCityName As String
 Public vIBGECode As Double
+Public vUF As String
+Public vUFCode
 Public vLatitude As Double
 Public vLongitude As Double
 Public vPopulation As Double

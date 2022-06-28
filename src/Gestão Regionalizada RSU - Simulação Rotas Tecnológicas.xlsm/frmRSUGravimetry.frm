@@ -188,6 +188,7 @@ Private Sub UserForm_Initialize()
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
             Ctrl.BackColor = ApplicationColors.btColorLevel3
+            Ctrl.ForeColor = ApplicationColors.fgColorLevel3
          End If
     Next Ctrl
     

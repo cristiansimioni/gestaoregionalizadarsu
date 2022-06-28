@@ -39,9 +39,9 @@ End Sub
 Private Sub btnSave_Click()
     If validateForm() Then
         Call Database.SetDatabaseValue("LandfillDeviationTarget", colUserValue, CDbl(txtLandfillDeviationTarget.Text))
-        Call Database.GetDatabaseValue("ExpectedDeadline", colUserValue, CDbl(txtExpectedDeadline.Text))
-        Call Database.GetDatabaseValue("MixedRecyclingIndex", colUserValue, CDbl(txtMixedRecyclingIndex.Text))
-        Call Database.GetDatabaseValue("TargetExpectation", colUserValue, CDbl(txtTargetExpectation.Text))
+        Call Database.SetDatabaseValue("ExpectedDeadline", colUserValue, CDbl(txtExpectedDeadline.Text))
+        Call Database.SetDatabaseValue("MixedRecyclingIndex", colUserValue, CDbl(txtMixedRecyclingIndex.Text))
+        Call Database.SetDatabaseValue("TargetExpectation", colUserValue, CDbl(txtTargetExpectation.Text))
         FormChanged = False
         Unload Me
     Else
@@ -81,6 +81,18 @@ End Sub
 Private Sub UserForm_Initialize()
     Me.Caption = APPNAME & " - Metas para a Simulação do Estudo de Caso"
     Me.BackColor = ApplicationColors.bgColorLevel3
+    
+    'Form Appearance
+    Me.Caption = APPNAME & " - Gravimetria do RSU"
+    Me.BackColor = ApplicationColors.bgColorLevel3
+    
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.btColorLevel3
+            Ctrl.ForeColor = ApplicationColors.fgColorLevel3
+         End If
+    Next Ctrl
     
     LandfillDeviationTarget = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
     ExpectedDeadline = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)

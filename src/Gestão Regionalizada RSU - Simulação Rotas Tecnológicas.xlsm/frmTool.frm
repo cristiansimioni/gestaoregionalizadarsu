@@ -19,7 +19,6 @@ Private Sub btnClean_Click()
     Database.CleanDatabase
 End Sub
 
-
 Private Sub btnHelp_Click()
     ActiveWorkbook.FollowHyperlink (Application.ActiveWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
 End Sub
@@ -48,20 +47,17 @@ Private Sub btnStepTwo_Click()
     frmStepTwo.Show
 End Sub
 
-Private Sub UserForm_Activate()
-    lblApplicationName.Caption = APPNAME
-    'lblApplicationVersion.Caption = APPVERSION
-    'lblApplicationLastUpdate.Caption = APPLASTUPDATED
-End Sub
-
-
 Private Sub UserForm_Initialize()
+    'Form Appearance
     Me.Caption = "GEF Biogás Brasil - " & APPNAME & " - " & APPVERSION
     Me.BackColor = ApplicationColors.bgColorLevel1
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
             Ctrl.BackColor = ApplicationColors.btColorLevel1
+            Ctrl.ForeColor = ApplicationColors.fgColorLevel1
          End If
     Next Ctrl
+    
+    lblApplicationName.Caption = APPNAME
 End Sub

@@ -78,7 +78,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
 
-    Set cities = readCities
+    Set cities = readSelectedCities
     
     vScrollBar.Min = 1
     If cities.Count >= 10 Then

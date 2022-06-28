@@ -17,10 +17,14 @@ Public Enum ApplicationColors
     bgColorLevel3 = 16777215    'RGB(255, 255, 255)
     bgColorLevel4 = 16777215    'RGB(255, 255, 255)
     '#Button
-    btColorLevel1 = 14855222 '14602886 '809194      'RGB(234, 88, 12)
-    btColorLevel2 = 1536493     'RGB(237, 113, 23)
-    btColorLevel3 = 2461170     'RGB(242, 141, 37)
-    btColorLevel4 = 2461170     'RGB(242, 141, 37)
+    btColorLevel1 = 14602886    'RGB(134, 210, 222)
+    btColorLevel2 = 14855222    'RGB(54,  172, 226)
+    btColorLevel3 = 7220525     'RGB(45,   45, 110)
+    btColorLevel4 = 2461170     'RGB(242, 141,  37)
+    fgColorLevel1 = 0           'RGB(0, 0, 0)
+    fgColorLevel2 = 16777215    'RGB(255, 255, 255)
+    fgColorLevel3 = 16777215    'RGB(255, 255, 255)
+    fgColorLevel4 = 16777215    'RGB(255, 255, 255)
     'Text Box
     bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)

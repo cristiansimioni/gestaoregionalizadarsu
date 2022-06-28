@@ -1,6 +1,35 @@
 Attribute VB_Name = "modCity"
-Public Function readCities()
+Option Explicit
+
+Public Enum DatabaseCityColumn
+    colUF = 1
+    colUFCode = 2
+    colCityCode = 3
+    colIBGECode = 4
+    colCityName = 5
+    colPoulation = 6
+    colLatitude = 7
+    colLongitude = 8
+End Enum
+
+Public Enum SelectedCityColumn
+    colCityName = 1
+    colIBGECode = 2
+    colLatitude = 3
+    colLongitude = 4
+    colPoulation = 5
+    colTrash = 6
+    colConventionalCost = 7
+    colTransshipmentCost = 8
+    colCostPostTransshipment = 9
+    colUTVR = 10
+    colExistentLandfill = 11
+    colPotentialLandfill = 12
+End Enum
+
+Public Function readSelectedCities()
     Dim cities As New Collection
+    Dim wksDatabase As Worksheet
     Set wksDatabase = Util.GetSelectedCitiesWorksheet
     Dim lastRow As Integer
     Dim r As Integer
@@ -34,15 +63,39 @@ Public Function readCities()
         End If
         cities.Add c
     Next r
-    Set readCities = cities
+    Set readSelectedCities = cities
+End Function
+
+Public Function readDatabaseCities()
+    Dim cities As New Collection
+    Dim wks As Worksheet
+    Set wks = Util.GetCitiesWorksheet
+    Dim lastRow As Integer
+    Dim r As Integer
+    lastRow = wks.Cells(Rows.Count, 1).End(xlUp).row
+    For r = 2 To lastRow
+        Dim c As clsCity
+        Set c = New clsCity
+        c.vUF = wks.Cells(r, DatabaseCityColumn.colUF).value
+        c.vUFCode = wks.Cells(r, DatabaseCityColumn.colUFCode).value
+        c.vIBGECode = wks.Cells(r, DatabaseCityColumn.colIBGECode).value
+        c.vCityName = wks.Cells(r, DatabaseCityColumn.colCityName).value
+        c.vPopulation = wks.Cells(r, DatabaseCityColumn.colPoulation).value
+        c.vLatitude = wks.Cells(r, DatabaseCityColumn.colLatitude).value
+        c.vLongitude = wks.Cells(r, DatabaseCityColumn.colLongitude).value
+        cities.Add c
+    Next r
+    Set readDatabaseCities = cities
 End Function
 
 Public Sub calculateDistances()
+    Dim wksCitiesDistance As Worksheet
     Set wksCitiesDistance = GetCitiesDistanceWorksheet
     wksCitiesDistance.Cells.Clear
+    Dim CityRow, CityCol As clsCity
     
     Dim cities As New Collection
-    Set cities = readCities()
+    Set cities = readSelectedCities()
     Dim distance As Double
     
     Dim row As Integer
@@ -52,7 +105,7 @@ Public Sub calculateDistances()
     For Each CityRow In cities
         For Each CityCol In cities
             distance = modCity.GetDistanceCoord(CityRow.vLatitude, CityRow.vLongitude, CityCol.vLatitude, CityCol.vLongitude, "K")
-            Debug.Print "A distância entre " & CityRow.vCityName & " e " & CityCol.vCityName & " é: " & distance
+            'Debug.Print "A distância entre " & CityRow.vCityName & " e " & CityCol.vCityName & " é: " & distance
             wksCitiesDistance.Cells(row, col).value = distance
             col = col + 1
         Next CityCol
