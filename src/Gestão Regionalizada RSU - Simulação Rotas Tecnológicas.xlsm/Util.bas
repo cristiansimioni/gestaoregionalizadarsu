@@ -116,20 +116,18 @@ Dim windowStyle As Integer: windowStyle = 1
 Dim errorCode As Integer
 
 'Provide file path to Python.exe
-'USE TRIPLE QUOTES WHEN FILE PATH CONTAINS SPACES.
-PythonExe = """C:\Users\cristiansimioni\AppData\Local\Programs\Python\Python310\python.exe"""
 PythonExe = """C:\Users\cristiansimioni\AppData\Local\Microsoft\WindowsApps\python3.exe"""
-PythonScript = """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\gestaoregionalizadarsu\src\combinations\combinations.py"""
+PythonScript = """C:\Users\cristiansimioni\Desktop\gestaoregionalizadarsu\src\combinations\combinations.py"""
 
-Params = """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\cities-Cristian.csv""" & _
+Params = """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\cities-Cristian.csv""" & _
          " " & _
-         """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\distance-Cristian.csv""" & _
+         """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\distance-Cristian.csv""" & _
          " " & _
          "10 50" & _
          " " & _
-         """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\alg-report.txt""" & _
+         """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-report.txt""" & _
          " " & _
-         """C:\Users\cristiansimioni\OneDrive\Área de Trabalho\Teste\Cristian\Algoritmo\alg-out.csv"""
+         """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-out.csv"""
 
 cmd = "%comspec% /c " & Chr(34) & PythonExe & " " & PythonScript & " " & Params & Chr(34)
 'Run the Python Script
@@ -141,8 +139,6 @@ If errorCode = 0 Then
 Else
     MsgBox "Program exited with error code " & errorCode & "."
 End If
-
-
 
 End Sub
 
@@ -190,4 +186,51 @@ ErrorHandler:
         MsgBox prompt:="A folder could not be created for the following path: " & FullDirPath & vbCrLf & _
                 "Check the path name and try again."
         FolderCreate = ""
+End Function
+
+Public Function CSVImport()
+    Dim ws As Worksheet, strFile As String, sPath As String
+
+    Set ws = ActiveWorkbook.Sheets("CSVTEST") 'set to current worksheet name
+
+    'sPath = ThisWorkbook.Path & "\Site_survey_form2.csv"  '"\ your file name
+    'sPath = "C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-out.csv"
+
+    'With ws.QueryTables.Add(Connection:="TEXT;" & sPath, Destination:=ws.Range("A1"))
+    '    .TextFileParseType = xlDelimited
+    '    .TextFileCommaDelimiter = True
+    '    .Refresh
+    'End With
+    
+    Dim line As String
+    Dim arrayOfElements
+    Dim element As Variant
+    Dim filePath As String
+    Dim ImportToRow, StartColumn, ArrayId As Integer
+    
+    ArrayId = 0
+    ImportToRow = 1
+    
+    filePath = "C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-out.csv"
+    Open filePath For Input As #1 ' Open file for input
+        Do While Not EOF(1) ' Loop until end of file
+            ImportToRow = ImportToRow + 1
+            Line Input #1, line
+            arrayOfElements = Split(line, ";") 'Split the line into the array.
+    
+            If arrayOfElements(1) = "Sumário" Then
+                ArrayId = ArrayId + 1
+            End If
+            ws.Cells(ImportToRow, 1) = ArrayId
+            ws.Cells(ImportToRow, 2) = "Não"
+            'Loop thorugh every element in the array and print to Excelfile
+            StartColumn = 3
+            For Each element In arrayOfElements
+                ws.Cells(ImportToRow, StartColumn).value = element
+                StartColumn = StartColumn + 1
+                Debug.Print element
+            Next
+        Loop
+    Close #1 ' Close file.
+    
 End Function

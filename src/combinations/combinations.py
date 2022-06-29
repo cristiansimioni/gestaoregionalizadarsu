@@ -536,7 +536,13 @@ def main():
             report.write("-- Tecnologia: " + repr(d["capexopex"]) + "\n")
             report.write("-- Outbound: " + repr(d["outbound"]) + "\n\n")
             report.write("-- Sub-arranjos:\n")
+
+            output.write(repr(d["arranjo"]) + ";Sumário;" + repr(d["total"]) + ";" + repr(d["lixo-array"]) + ";" + repr(d["inbound"])  + ";" + repr(d["outbound"]) + "\n")
+
+
             for x in range(len(d["sub"])):
+                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + "\n")
+
                 report.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
                 report.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
                 report.write("\t-- Aterro: " + repr(d["sub"][x]["aterro"]) + "\n")
@@ -553,7 +559,7 @@ def main():
     for i in range(len(data)):
         if i % 1000 != 0:
             continue
-        output.write(repr(data[i]["arranjo"]) + ";Sumário;" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + "\n")
+        output.write(repr(data[i]["arranjo"]) + ";Sumário;" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + "\n")
 
 
         report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
@@ -564,7 +570,7 @@ def main():
         report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
         report.write("-- Sub-arranjos:\n")
         for x in range(len(data[i]["sub"])):
-            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + "\n")
+            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["total"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + "\n")
 
             report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
             report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")

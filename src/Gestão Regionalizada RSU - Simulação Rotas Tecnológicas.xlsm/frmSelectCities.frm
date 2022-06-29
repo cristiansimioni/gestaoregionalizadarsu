@@ -13,8 +13,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Public databaseCities As New Collection
-Public selectedCities As New Collection
+Dim databaseCities As New Collection
+Dim selectedCities As New Collection
+Dim FormChanged As Boolean
 
 Private Sub btnAdd_Click()
     If cbxUF.ListIndex > -1 And lstAvailable.ListIndex > -1 Then
@@ -31,7 +32,16 @@ Private Sub btnAdd_Click()
 End Sub
 
 Private Sub btnBack_Click()
-    Unload Me
+    If FormChanged Then
+        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        If answer = vbYes Then
+          Call btnSave_Click
+        Else
+          Unload Me
+        End If
+    Else
+        Unload Me
+    End If
 End Sub
 
 Private Sub btnRemove_Click()
@@ -78,11 +88,8 @@ Private Sub btnSave_Click()
 End Sub
 
 Private Sub cbxUF_Change()
-    Set wksCities = Util.GetCitiesWorksheet
-    lastRow = wksCities.Cells(Rows.Count, 1).End(xlUp).row
     lstAvailable.Clear
     currentUF = cbxUF
-    
     For Each city In databaseCities
         If city.vUF = cbxUF Then
             If Not IsInCollection(selectedCities, city.vIBGECode) Then
@@ -108,7 +115,6 @@ Private Sub UserForm_Initialize()
     
     lstAvailable.ColumnWidths = "130,10"
     lstSelected.ColumnWidths = "130,10"
-    
     
     'Load database cities
     Set databaseCities = readDatabaseCities
@@ -136,6 +142,7 @@ Private Sub UserForm_Initialize()
         lstSelected.List(lstSelected.ListCount - 1, 1) = city.vIBGECode
     Next city
     
+    FormChanged = False
 End Sub
 
 Function IsInCollection(ByVal oCollection As Collection, ByVal sItem As Double) As Boolean
