@@ -56,8 +56,8 @@ Private Sub btnSave_Click()
     Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
     
     'Clear currect selected cities worksheet
-    wksSelectedCities.Range("A2:B100").Clear
-    wksSelectedCities.Range("G2:L100").Clear
+    wksSelectedCities.Range("A2:B100").ClearContents
+    wksSelectedCities.Range("G2:L100").ClearContents
     
     'Fill with current values
     row = 2

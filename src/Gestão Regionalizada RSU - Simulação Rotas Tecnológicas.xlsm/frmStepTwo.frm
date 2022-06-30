@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
-   ClientHeight    =   4965
+   ClientHeight    =   4800
    ClientLeft      =   240
    ClientTop       =   930
    ClientWidth     =   6930
@@ -43,10 +43,15 @@ Private Sub btnRunAlgorithm_Click()
     Call Util.saveAsCSV(prjName, algPath, "distance")
     
     'Run the algorithm
-    Util.RunPythonScript
+    Call Util.RunPythonScript(algPath, prjName)
     
     'Load the result into the workbook
+    Call Util.CSVImport(algPath, prjName)
     
+End Sub
+
+Private Sub btnSelectArrays_Click()
+    frmSelectArrays.Show
 End Sub
 
 Private Sub CommandButton4_Click()

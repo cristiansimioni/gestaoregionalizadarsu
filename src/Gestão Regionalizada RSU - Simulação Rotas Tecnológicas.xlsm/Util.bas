@@ -43,7 +43,11 @@ Function GetSelectedCitiesWorksheet() As Worksheet
 End Function
 
 Function GetCitiesDistanceWorksheet() As Worksheet
-    Set GetCitiesDistanceWorksheet = ThisWorkbook.Worksheets("Distancias entre Municípios")
+    Set GetCitiesDistanceWorksheet = ThisWorkbook.Worksheets("Distâncias entre Municípios")
+End Function
+
+Function GetArraysWorksheet() As Worksheet
+    Set GetArraysWorksheet = ThisWorkbook.Worksheets("Arranjos")
 End Function
 
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean
@@ -73,10 +77,10 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     
     'Copy the contents of required sheet ready to paste into the new CSV
     If sheet = "city" Then
-        sFileName = "cities-" & projectName & ".csv"
+        sFileName = "cidades-" & projectName & ".csv"
         Set wks = Util.GetSelectedCitiesWorksheet
     Else
-        sFileName = "distance-" & projectName & ".csv"
+        sFileName = "distancias-" & projectName & ".csv"
         Set wks = Util.GetCitiesDistanceWorksheet
     End If
     
@@ -105,7 +109,7 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
 End Sub
 
 
-Sub RunPythonScript()
+Sub RunPythonScript(ByVal algPath As String, ByVal prjName As String)
 
 'Declare Variables
 Dim PythonExe, PythonScript, Params, cmd As String
@@ -117,17 +121,17 @@ Dim errorCode As Integer
 
 'Provide file path to Python.exe
 PythonExe = """C:\Users\cristiansimioni\AppData\Local\Microsoft\WindowsApps\python3.exe"""
-PythonScript = """C:\Users\cristiansimioni\Desktop\gestaoregionalizadarsu\src\combinations\combinations.py"""
+PythonScript = Application.ActiveWorkbook.Path & "\src\combinations\combinations.py"
 
-Params = """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\cities-Cristian.csv""" & _
+Params = algPath & "\cidades-" & prjName & ".csv" & _
          " " & _
-         """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\distance-Cristian.csv""" & _
+         algPath & "\distancias-" & prjName & ".csv" & _
          " " & _
-         "10 50" & _
+         "10 100" & _
          " " & _
-         """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-report.txt""" & _
+         algPath & "\relatório-" & prjName & ".txt" & _
          " " & _
-         """C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-out.csv"""
+         algPath & "\output-" & prjName & ".csv"
 
 cmd = "%comspec% /c " & Chr(34) & PythonExe & " " & PythonScript & " " & Params & Chr(34)
 'Run the Python Script
@@ -188,20 +192,12 @@ ErrorHandler:
         FolderCreate = ""
 End Function
 
-Public Function CSVImport()
+Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
     Dim ws As Worksheet, strFile As String, sPath As String
 
-    Set ws = ActiveWorkbook.Sheets("CSVTEST") 'set to current worksheet name
+    Set ws = ActiveWorkbook.Sheets("Arranjos") 'set to current worksheet name
+    ws.Rows("2:" & Rows.Count).ClearContents
 
-    'sPath = ThisWorkbook.Path & "\Site_survey_form2.csv"  '"\ your file name
-    'sPath = "C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-out.csv"
-
-    'With ws.QueryTables.Add(Connection:="TEXT;" & sPath, Destination:=ws.Range("A1"))
-    '    .TextFileParseType = xlDelimited
-    '    .TextFileCommaDelimiter = True
-    '    .Refresh
-    'End With
-    
     Dim line As String
     Dim arrayOfElements
     Dim element As Variant
@@ -211,7 +207,7 @@ Public Function CSVImport()
     ArrayId = 0
     ImportToRow = 1
     
-    filePath = "C:\Users\cristiansimioni\Desktop\Teste\Cristian\Algoritmo\alg-out.csv"
+    filePath = algPath & "\output-" & prjName & ".csv"
     Open filePath For Input As #1 ' Open file for input
         Do While Not EOF(1) ' Loop until end of file
             ImportToRow = ImportToRow + 1
