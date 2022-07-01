@@ -6,10 +6,13 @@ Public Enum DatabaseArrayColumn
     colSelected = 2
     colArrayRaw = 3
     colSubRaw = 4
-    colTotal = 5
-    colTrash = 6
-    colInbound = 7
-    colOutbound = 8
+    colLandfill = 5
+    colUTVR = 6
+    colTotal = 7
+    colTrash = 8
+    colTechnology = 9
+    colInbound = 10
+    colOutbound = 11
 End Enum
 
 Public Function readArrays()
@@ -31,20 +34,52 @@ Public Function readArrays()
             End If
             Set arr = New clsArray
             arr.vArrayRaw = wksDatabase.Cells(r, DatabaseArrayColumn.colArrayRaw).value
-            arr.vTotal = wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value
-            arr.vTrash = wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value
-            arr.vInbound = wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value
-            arr.vOutbound = wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value
+            If wksDatabase.Cells(r, DatabaseArrayColumn.colSelected).value = "Sim" Then
+                arr.vSelected = True
+            Else
+                arr.vSelected = False
+            End If
+            arr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
+            arr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
+            arr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
+            arr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
+            arr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
+            arr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 2)
+            arr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 2)
             Set arr.vSubArray = New Collection
         Else
             Set subArr = New clsArray
             subArr.vArrayRaw = wksDatabase.Cells(r, DatabaseArrayColumn.colSubRaw).value
-            subArr.vTotal = wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value
-            subArr.vTrash = wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value
-            subArr.vInbound = wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value
-            subArr.vOutbound = wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value
+            subArr.vArrayRaw = Replace(subArr.vArrayRaw, "[", "")
+            subArr.vArrayRaw = Replace(subArr.vArrayRaw, "]", "")
+            subArr.vArrayRaw = Replace(subArr.vArrayRaw, "'", "")
+            subArr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
+            subArr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
+            subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
+            subArr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
+            subArr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
+            subArr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 2)
+            subArr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 2)
             arr.vSubArray.Add subArr
         End If
     Next r
+    arrays.Add arr
     Set readArrays = arrays
+End Function
+
+Public Function updateValues(ByVal arrays As Collection)
+    Dim wksDatabase As Worksheet
+    Set wksDatabase = Util.GetArraysWorksheet
+    Dim lastRow As Integer
+    Dim r, id As Integer
+    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
+    
+    For r = 2 To lastRow
+        id = wksDatabase.Cells(r, DatabaseArrayColumn.colId).value
+        If arrays(id).vSelected Then
+            wksDatabase.Cells(r, DatabaseArrayColumn.colSelected) = "Sim"
+        Else
+            wksDatabase.Cells(r, DatabaseArrayColumn.colSelected) = "Não"
+        End If
+    Next r
 End Function

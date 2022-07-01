@@ -127,7 +127,7 @@ Params = algPath & "\cidades-" & prjName & ".csv" & _
          " " & _
          algPath & "\distancias-" & prjName & ".csv" & _
          " " & _
-         "10 100" & _
+         "10 75" & _
          " " & _
          algPath & "\relatório-" & prjName & ".txt" & _
          " " & _
@@ -218,7 +218,11 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
                 ArrayId = ArrayId + 1
             End If
             ws.Cells(ImportToRow, 1) = ArrayId
-            ws.Cells(ImportToRow, 2) = "Não"
+            If ArrayId = 1 Then 'Centralized array
+                ws.Cells(ImportToRow, 2) = "Sim"
+            Else
+                ws.Cells(ImportToRow, 2) = "Não"
+            End If
             'Loop thorugh every element in the array and print to Excelfile
             StartColumn = 3
             For Each element In arrayOfElements

@@ -10,8 +10,12 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public vArrayRaw As String
+Public vSelected As Boolean
+Public vLandfill As String
+Public vUTVR As String
 Public vTotal As Double
 Public vTrash As Double
+Public vTechnology As Double
 Public vInbound As Double
 Public vOutbound As Double
 Public vSubArray As Collection
