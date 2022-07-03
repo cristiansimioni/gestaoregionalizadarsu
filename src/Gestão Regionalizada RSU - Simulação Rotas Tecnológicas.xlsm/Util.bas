@@ -3,11 +3,13 @@ Option Explicit
 
 Public Const APPNAME        As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION     As String = "1.0.0"
-Public Const APPLASTUPDATED As String = "25.06.2021"
+Public Const APPLASTUPDATED As String = "02.07.2022"
 Public Const APPDEVELOPER   As String = "Cristian Simioni Milani"
 
-Public Const FOLDERALGORITHM As String = "Algoritmo"
-
+Public Const FOLDERALGORITHM  As String = "Algoritmo"
+Public Const FOLDERBASEMARKET As String = "Mercado Base"
+Public Const FOLDEROPTIMIZEDMARKET As String = "Mercado Otimizado"
+Public Const FOLDERLANDFILLMARKET As String = "Mercado Aterro Existentes"
 
 Public Enum ApplicationColors
     'Form
@@ -202,9 +204,10 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
     Dim arrayOfElements
     Dim element As Variant
     Dim filePath As String
-    Dim ImportToRow, StartColumn, ArrayId As Integer
+    Dim ImportToRow, StartColumn, ArrayId, SubArrayId As Integer
     
     ArrayId = 0
+    SubArrayId = 0
     ImportToRow = 1
     
     filePath = algPath & "\output-" & prjName & ".csv"
@@ -216,20 +219,30 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
     
             If arrayOfElements(1) = "Sumário" Then
                 ArrayId = ArrayId + 1
+                SubArrayId = 0
             End If
             ws.Cells(ImportToRow, 1) = ArrayId
+            
             If ArrayId = 1 Then 'Centralized array
                 ws.Cells(ImportToRow, 2) = "Sim"
             Else
                 ws.Cells(ImportToRow, 2) = "Não"
             End If
+            
+            If arrayOfElements(1) = "Sumário" Then
+                ws.Cells(ImportToRow, 3) = "A" & ArrayId
+            Else
+                ws.Cells(ImportToRow, 3) = "A" & ArrayId & "SA" & SubArrayId
+            End If
             'Loop thorugh every element in the array and print to Excelfile
-            StartColumn = 3
+            StartColumn = 4
             For Each element In arrayOfElements
                 ws.Cells(ImportToRow, StartColumn).value = element
                 StartColumn = StartColumn + 1
                 Debug.Print element
             Next
+            
+            SubArrayId = SubArrayId + 1
         Loop
     Close #1 ' Close file.
     

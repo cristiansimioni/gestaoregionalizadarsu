@@ -25,6 +25,49 @@ Private Sub btnContract_Click()
     frmContract.Show
 End Sub
 
+Private Sub btnExecuteSimulation_Click()
+    'Create project folder
+    Dim prjPath As String
+    Dim prjName As String
+    prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
+    prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
+    prjPath = Util.FolderCreate(prjPath, prjName)
+    
+    'Create base market folder
+    Dim baseMarketPath As String
+    baseMarketPath = Util.FolderCreate(prjPath, FOLDERBASEMARKET)
+    Dim optimizedMarketPath As String
+    optimizedMarketPath = Util.FolderCreate(prjPath, FOLDEROPTIMIZEDMARKET)
+    Dim landfillMarketPath As String
+    landfillMarketPath = Util.FolderCreate(prjPath, FOLDERLANDFILLMARKET)
+    
+    'Process arrays
+    Dim arrays As Collection
+    Set arrays = readArrays
+    For Each a In arrays
+        If a.vSelected Then
+            Dim arrayBaseMarketPath, arrayOptimizedMarketPath, arrayLandfillMarketPath As String
+            arrayBaseMarketPath = Util.FolderCreate(baseMarketPath, a.vCode)
+            arrayOptimizedMarketPath = Util.FolderCreate(optimizedMarketPath, a.vCode)
+            arrayLandfillMarketPath = Util.FolderCreate(landfillMarketPath, a.vCode)
+            For Each s In a.vSubArray
+                Dim subArrayBaseMarketPath, subArrayOptimizedMarketPath, subArrayLandfillMarketPath As String
+                subArrayBaseMarketPath = Util.FolderCreate(arrayBaseMarketPath, s.vCode)
+                subArrayOptimizedMarketPath = Util.FolderCreate(arrayOptimizedMarketPath, s.vCode)
+                subArrayLandfillMarketPath = Util.FolderCreate(arrayLandfillMarketPath, s.vCode)
+                
+                'Create routes from 1 to 5 for all markets
+                
+            Next s
+            
+            'Create tool 2 for array
+            
+            'Read data from tool 2 and insert into sheet
+            
+        End If
+    Next a
+End Sub
+
 Private Sub btnFinancialAssumptions_Click()
     frmFinancialAssumptions.Show
 End Sub

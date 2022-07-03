@@ -4,15 +4,16 @@ Option Explicit
 Public Enum DatabaseArrayColumn
     colId = 1
     colSelected = 2
-    colArrayRaw = 3
-    colSubRaw = 4
-    colLandfill = 5
-    colUTVR = 6
-    colTotal = 7
-    colTrash = 8
-    colTechnology = 9
-    colInbound = 10
-    colOutbound = 11
+    colCode = 3
+    colArrayRaw = 4
+    colSubRaw = 5
+    colLandfill = 6
+    colUTVR = 7
+    colTotal = 8
+    colTrash = 9
+    colTechnology = 10
+    colInbound = 11
+    colOutbound = 12
 End Enum
 
 Public Function readArrays()
@@ -39,6 +40,7 @@ Public Function readArrays()
             Else
                 arr.vSelected = False
             End If
+            arr.vCode = wksDatabase.Cells(r, DatabaseArrayColumn.colCode).value
             arr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
             arr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             arr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
@@ -49,12 +51,15 @@ Public Function readArrays()
             Set arr.vSubArray = New Collection
         Else
             Set subArr = New clsArray
+            subArr.vCode = wksDatabase.Cells(r, DatabaseArrayColumn.colCode).value
             subArr.vArrayRaw = wksDatabase.Cells(r, DatabaseArrayColumn.colSubRaw).value
             subArr.vArrayRaw = Replace(subArr.vArrayRaw, "[", "")
             subArr.vArrayRaw = Replace(subArr.vArrayRaw, "]", "")
             subArr.vArrayRaw = Replace(subArr.vArrayRaw, "'", "")
             subArr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
+            subArr.vLandfill = Replace(subArr.vLandfill, "'", "")
             subArr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
+            subArr.vUTVR = Replace(subArr.vUTVR, "'", "")
             subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
             subArr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
             subArr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
