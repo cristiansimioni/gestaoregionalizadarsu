@@ -101,7 +101,8 @@ def getFaixa(sumTrash, rsutrash):
 def removeArraysWithoutUTVR(combinations, utvrs):
     comb = combinations.copy()
     for c in range(len(comb)):
-        #print("Comb: ", comb[c])
+        if c % (len(comb)/10.0) == 0:
+            logging.info("Progreso: %d%%", c/len(comb)*100)
         for sub in comb[c]:
             find = False
             for cluster in sub:
@@ -109,7 +110,6 @@ def removeArraysWithoutUTVR(combinations, utvrs):
                     if city in utvrs:
                         find = True
             if not find:
-                #print("Combinação inválida: ", comb[c])
                 combinations.remove(comb[c])
                 break
 
@@ -118,8 +118,8 @@ def removeArraysTrashThreshold(data, combinations, threshold):
     sublist = list()
     trashtotallist = list()
     for c in range(len(comb)):
-        if c % 1000 == 0:
-            print(c, " ", len(sublist))
+        if c % (len(comb)/10.0) == 0:
+            logging.info("Progreso: %d%%", c/len(comb)*100)
         for sub in comb[c]:
             lixo = 0
             if sub in sublist:
@@ -168,7 +168,6 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
             sum_inbound = sum_inbound / getSubTrash(cdata, subarray)
             sum_inbound = (CAPEX_INBOUND/35.0 + sum_inbound) /  1.0
             entry["inbound"] = sum_inbound
-            #print("Inbound: ", entry["inbound"])
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
@@ -184,8 +183,6 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
     if isCentralized:
         #Retorna a UTVR sendo o centro de massa, não o mais eficaz
         cmassa = funccentrodemassa(cdata, subarray)
-        print("CENTRALIZADO", subarray)
-        print("CENTRO DE MASSA", cmassa)
         for d in data:
             if d["utvr"] == cmassa:
                 return d
@@ -361,7 +358,7 @@ def main():
     try:
         CSVCITIES = sys.argv[1]                 # Cities file
         CSVDISTANCE = sys.argv[2]               # Distance matrix file
-        MAX_CITIES = int(sys.argv[3])           # The maximium number of allowed cities to generate the combinations due to performance issues.
+        MAX_CITIES = int(sys.argv[3])           # The maximium number of allowed cities to generate the combinations due to performance issues
         TRASH_THRESHOLD = float(sys.argv[4])    # The minimun of trash for a sub-array
         REPORTFILE = sys.argv[5]                # The report file name
         OUTPUTFILE = sys.argv[6]                # The output file name
@@ -373,7 +370,7 @@ def main():
     output = open(OUTPUTFILE, "w")
 
     # Print parameters in report file
-    report.write("============= PARAMETROS ============= \n")
+    report.write("============= PARÂMETROS ============= \n")
     report.write("Arquivo de cidades: " + repr(CSVCITIES) + "\n")
     report.write("Arquivo de distâncias: " + repr(CSVDISTANCE) + "\n")
     report.write("Máximo de cidades: " + repr(MAX_CITIES) + "\n")
@@ -411,6 +408,7 @@ def main():
     distance = np.loadtxt(open(CSVDISTANCE, "rb"), delimiter=",", skiprows=0)
 
     if len(citiesdata) > MAX_CITIES:
+        logging.info("Gerando clusters...")
         logging.debug("Quantidade de cidades superior a %d o algoritmo irá clusterizar as cidades.", MAX_CITIES)
     # Call clusterization to reduce the number of cities or just to build a list of list
     clusters = clusterization(citiesdata, distance, MAX_CITIES)
@@ -426,7 +424,6 @@ def main():
     report.write("============= CLUSTERS ============= \n")
     i = 1 
     for c in clusters:
-        print(c)
         report.write(repr(i) + ".\t" + repr(c) + "\n")
         i += 1
 
@@ -466,15 +463,13 @@ def main():
     data = []
     current = 0
     for i in new_comb:
-        if current % 10000 == 0:
-            print(current)
-            logging.debug(current)
+        if current % (len(new_comb)/10.0) == 0:
+            logging.info("Progreso: %d%%", current/len(new_comb)*100)
 
         trashArray = 0
         capexOpexArray = 0
         inboundArray = 0
         outboundArray = 0
-        #print("Arranjo: ", i)
         logging.debug("Arranjo: %s", i)
         new = {}
 
@@ -499,7 +494,6 @@ def main():
             rsinout["opex"] = opexSubArray
             rsinout["tecnologia"] = capexOpexValue
             
-            #print("IN OUT: ", rsinout)
             inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
             outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
             rsinout["lixo"] = trashSubArray
@@ -518,8 +512,6 @@ def main():
         new["outbound"] = outboundArray/trashArray
         new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
         data.append(new)
-        #print ("Arranjo: ", i, "Valor Calculado: ", finalValue)
-        #break
 
         current = current + 1
 
