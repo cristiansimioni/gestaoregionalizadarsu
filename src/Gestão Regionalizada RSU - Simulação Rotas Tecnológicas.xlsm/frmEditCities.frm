@@ -20,60 +20,56 @@ Private Sub btnBack_Click()
 End Sub
 
 Private Sub btnSave_Click()
-
+    updateCityValues cities
+    Unload Me
 End Sub
 
-
 Private Sub txtConventionalCost1_Change()
-    Dim index As Integer
-    index = 0
-    If txtConventionalCost1.Text <> "" Then
-        index = index + vScrollBar.value
-        cities.Item(index).vConventionalCost = CDbl(txtConventionalCost1.Text)
-    End If
+    Call updateConventionalCost(txtConventionalCost1, 1)
 End Sub
 
 Private Sub txtConventionalCost2_Change()
-    Dim index As Integer
-    index = 1
-    If vScrollBar.value <> 1 Then
-        index = index + vScrollBar.value
-    End If
-    cities.Item(index).vConventionalCost = CDbl(txtConventionalCost2.Text)
+    Call updateConventionalCost(txtConventionalCost3, 2)
 End Sub
 
 Private Sub txtConventionalCost3_Change()
-    Dim index As Integer
-    index = 1
-    If vScrollBar.value > 1 Then
-        index = index + vScrollBar.value
-    End If
-    cities.Item(index).vConventionalCost = CDbl(txtConventionalCost1.Text)
+    Call updateConventionalCost(txtConventionalCost3, 3)
 End Sub
 
 Private Sub txtConventionalCost4_Change()
-
+    Call updateConventionalCost(txtConventionalCost4, 4)
 End Sub
 
 Private Sub txtConventionalCost5_Change()
-
+    Call updateConventionalCost(txtConventionalCost5, 5)
 End Sub
 
 Private Sub txtConventionalCost6_Change()
-
+    Call updateConventionalCost(txtConventionalCost6, 6)
 End Sub
 Private Sub txtConventionalCost7_Change()
-
+    Call updateConventionalCost(txtConventionalCost7, 7)
 End Sub
 Private Sub txtConventionalCost8_Change()
-
+    Call updateConventionalCost(txtConventionalCost8, 8)
 End Sub
 Private Sub txtConventionalCost9_Change()
-
+    Call updateConventionalCost(txtConventionalCost9, 9)
 End Sub
 
 Private Sub txtConventionalCost10_Change()
+    Call updateConventionalCost(txtConventionalCost10, 10)
+End Sub
 
+Private Sub updateConventionalCost(ByRef txtBox, ByVal index As Integer)
+    Dim i As Integer
+    i = index
+    If vScrollBar.value > 1 Then
+        i = i + vScrollBar.value
+    End If
+    If IsNumeric(txtBox.Text) Then
+        cities.Item(i).vConventionalCost = CDbl(txtBox.Text)
+    End If
 End Sub
 
 Private Sub UserForm_Initialize()

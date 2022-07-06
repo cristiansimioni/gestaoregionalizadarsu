@@ -22,6 +22,7 @@ Private Sub btnGeneralData_Click()
 End Sub
 
 Private Sub btnRunAlgorithm_Click()
+    btnRunAlgorithm.Enabled = False
     'Calculate cities distance
     Call modCity.calculateDistances
     
@@ -47,6 +48,8 @@ Private Sub btnRunAlgorithm_Click()
     
     'Load the result into the workbook
     Call Util.CSVImport(algPath, prjName)
+    
+    btnRunAlgorithm.Enabled = True
     
 End Sub
 

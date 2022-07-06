@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "Selecionar Cidades"
    ClientHeight    =   9045.001
-   ClientLeft      =   105
-   ClientTop       =   450
-   ClientWidth     =   10995
+   ClientLeft      =   225
+   ClientTop       =   915
+   ClientWidth     =   10980
    OleObjectBlob   =   "frmSelectCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

@@ -44,22 +44,47 @@ Private Sub btnExecuteSimulation_Click()
     'Process arrays
     Dim arrays As Collection
     Set arrays = readArrays
+    
+    Dim markets, routes As Variant
+    markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
+    routes = Array("RT1-A", "RT1-B", "RT1-C", "RT2", "RT3", "RT4", "RT5")
+    
+    Dim wksDefinedArrays As Worksheet
+    Set wksDefinedArrays = Util.GetDefinedArraysWorksheet
+    
+    Dim row As Integer
+    row = 2
+    
     For Each a In arrays
         If a.vSelected Then
-            Dim arrayBaseMarketPath, arrayOptimizedMarketPath, arrayLandfillMarketPath As String
-            arrayBaseMarketPath = Util.FolderCreate(baseMarketPath, a.vCode)
-            arrayOptimizedMarketPath = Util.FolderCreate(optimizedMarketPath, a.vCode)
-            arrayLandfillMarketPath = Util.FolderCreate(landfillMarketPath, a.vCode)
-            For Each s In a.vSubArray
-                Dim subArrayBaseMarketPath, subArrayOptimizedMarketPath, subArrayLandfillMarketPath As String
-                subArrayBaseMarketPath = Util.FolderCreate(arrayBaseMarketPath, s.vCode)
-                subArrayOptimizedMarketPath = Util.FolderCreate(arrayOptimizedMarketPath, s.vCode)
-                subArrayLandfillMarketPath = Util.FolderCreate(arrayLandfillMarketPath, s.vCode)
-                
-                'Create routes from 1 to 5 for all markets
-                
-            Next s
-            
+            For Each m In markets
+                Dim marketPath, arrayMarketPath As String
+                marketPath = Util.FolderCreate(prjPath, m)
+                arrayMarketPath = Util.FolderCreate(marketPath, a.vCode)
+                For Each s In a.vSubArray
+                    For Each r In routes
+                        Dim subArrayBaseMarketPath, subArrayOptimizedMarketPath, subArrayLandfillMarketPath, newFile As String
+                        subArrayMarketPath = Util.FolderCreate(arrayMarketPath, s.vCode)
+                        
+                        wksDefinedArrays.Cells(row, 1).value = m
+                        wksDefinedArrays.Cells(row, 2).value = a.vCode
+                        wksDefinedArrays.Cells(row, 3).value = s.vCode
+                        wksDefinedArrays.Cells(row, 4).value = r
+                        row = row + 1
+                        'Create routes from 1 to 5 for all markets
+                        newFile = subArrayMarketPath & "\" & r & ".xlsm"
+                        FileCopy "C:\Users\cristiansimioni\Desktop\gestaoregionalizadarsu\templates\Base Ferramenta 3 - RT 1.xlsm", newFile
+                        
+                        Call EditRouteToolData(newFile)
+                        
+                    Next r
+                Next s
+                wksDefinedArrays.Cells(row, 1).value = m
+                wksDefinedArrays.Cells(row, 2).value = a.vCode
+                wksDefinedArrays.Cells(row, 3).value = ""
+                wksDefinedArrays.Cells(row, 4).value = ""
+                row = row + 1
+            Next m
             'Create tool 2 for array
             
             'Read data from tool 2 and insert into sheet

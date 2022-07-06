@@ -6,6 +6,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool
    ClientTop       =   465
    ClientWidth     =   12720
    OleObjectBlob   =   "frmTool.frx":0000
+   ShowModal       =   0   'False
    StartUpPosition =   1  'CenterOwner
    WhatsThisButton =   -1  'True
    WhatsThisHelp   =   -1  'True

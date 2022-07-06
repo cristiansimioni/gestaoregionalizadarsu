@@ -52,6 +52,10 @@ Function GetArraysWorksheet() As Worksheet
     Set GetArraysWorksheet = ThisWorkbook.Worksheets("Arranjos")
 End Function
 
+Function GetDefinedArraysWorksheet() As Worksheet
+    Set GetDefinedArraysWorksheet = ThisWorkbook.Worksheets("Arranjos Consolidados")
+End Function
+
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean
     validateRange = True
     If IsNumeric(value) Then
@@ -141,7 +145,7 @@ errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
 
 If errorCode = 0 Then
     'Insert your code here
-    MsgBox "Program finished successfully."
+    MsgBox "Algoritmo finalizado com sucesso!"
 Else
     MsgBox "Program exited with error code " & errorCode & "."
 End If

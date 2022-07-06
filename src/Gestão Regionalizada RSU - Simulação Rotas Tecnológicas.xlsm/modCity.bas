@@ -136,3 +136,41 @@ End Function
 Function rad2deg(ByVal rad As Double) As Double
     rad2deg = rad / WorksheetFunction.Pi * 180#
 End Function
+
+Public Function updateCityValues(ByVal cities As Collection)
+    Dim wks As Worksheet
+    Set wks = Util.GetSelectedCitiesWorksheet
+    
+    Dim lastRow As Integer
+    Dim r, id As Integer
+    Dim c As clsCity
+    lastRow = wks.Cells(Rows.Count, 1).End(xlUp).row
+    
+    r = 2
+    For Each c In cities
+        wks.Cells(r, SelectedCityColumn.colConventionalCost) = c.vConventionalCost
+        wks.Cells(r, SelectedCityColumn.colTransshipmentCost) = c.vTransshipmentCost
+        wks.Cells(r, SelectedCityColumn.colCostPostTransshipment) = c.vCostPostTransshipment
+        If c.vUTVR Then
+            wks.Cells(r, SelectedCityColumn.colUTVR) = "Sim"
+        Else
+            wks.Cells(r, SelectedCityColumn.colUTVR) = "Não"
+        End If
+        If c.vExistentLandfill Then
+            wks.Cells(r, SelectedCityColumn.colExistentLandfill) = "Sim"
+        Else
+            wks.Cells(r, SelectedCityColumn.colExistentLandfill) = "Não"
+        End If
+        If c.vExistentLandfill Then
+            wks.Cells(r, SelectedCityColumn.colExistentLandfill) = "Sim"
+        Else
+            wks.Cells(r, SelectedCityColumn.colExistentLandfill) = "Não"
+        End If
+        If c.vPotentialLandfill Then
+            wks.Cells(r, SelectedCityColumn.colPotentialLandfill) = "Sim"
+        Else
+            wks.Cells(r, SelectedCityColumn.colPotentialLandfill) = "Não"
+        End If
+        r = r + 1
+    Next c
+End Function
