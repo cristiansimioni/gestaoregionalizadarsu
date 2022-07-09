@@ -13,11 +13,13 @@ Public vArrayRaw As String
 Public vSelected As Boolean
 Public vCode As String
 Public vLandfill As String
+Public vExistentLandfill As String
 Public vUTVR As String
 Public vTotal As Double
 Public vTrash As Double
 Public vTechnology As Double
 Public vInbound As Double
 Public vOutbound As Double
+Public vOutboundExistentLandfill As Double
 Public vSubArray As Collection
 

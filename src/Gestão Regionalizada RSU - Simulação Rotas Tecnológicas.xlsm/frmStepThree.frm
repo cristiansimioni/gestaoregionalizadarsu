@@ -75,14 +75,14 @@ Private Sub btnExecuteSimulation_Click()
                         newFile = subArrayMarketPath & "\" & r & ".xlsm"
                         FileCopy "C:\Users\cristiansimioni\Desktop\gestaoregionalizadarsu\templates\Base Ferramenta 3 - RT 1.xlsm", newFile
                         
-                        Call EditRouteToolData(newFile)
+                        Call EditRouteToolData(newFile, s, m)
                         
                     Next r
                 Next s
                 wksDefinedArrays.Cells(row, 1).value = m
                 wksDefinedArrays.Cells(row, 2).value = a.vCode
-                wksDefinedArrays.Cells(row, 3).value = ""
-                wksDefinedArrays.Cells(row, 4).value = ""
+                wksDefinedArrays.Cells(row, 3).value = "Consolidado"
+                wksDefinedArrays.Cells(row, 4).value = "NA"
                 row = row + 1
             Next m
             'Create tool 2 for array

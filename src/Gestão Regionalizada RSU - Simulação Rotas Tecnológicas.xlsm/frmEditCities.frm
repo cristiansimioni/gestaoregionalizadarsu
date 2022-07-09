@@ -227,7 +227,7 @@ Private Sub updateConventionalCost(ByRef txtBox, ByVal index As Integer)
         i = i + vScrollBar.value - 1
     End If
     
-    If Util.validateRange(txtBox.Text, 0#, 2000#, errorMsg) Then
+    If Util.validateRange(txtBox.Text, 0#, 500#, errorMsg) Then
         txtBox.BackColor = ApplicationColors.bgColorValidTextBox
         txtBox.ControlTipText = errorMsg
     Else
@@ -249,7 +249,7 @@ Private Sub updateTransshipmentCost(ByRef txtBox, ByVal index As Integer)
         i = i + vScrollBar.value - 1
     End If
     
-    If Util.validateRange(txtBox.Text, 0#, 2000#, errorMsg) Then
+    If Util.validateRange(txtBox.Text, 0#, 1500#, errorMsg) Then
         txtBox.BackColor = ApplicationColors.bgColorValidTextBox
         txtBox.ControlTipText = errorMsg
     Else
@@ -271,7 +271,7 @@ Private Sub updateCostPostTranshipment(ByRef txtBox, ByVal index As Integer)
         i = i + vScrollBar.value - 1
     End If
     
-    If Util.validateRange(txtBox.Text, 0#, 2000#, errorMsg) Then
+    If Util.validateRange(txtBox.Text, 0#, 10#, errorMsg) Then
         txtBox.BackColor = ApplicationColors.bgColorValidTextBox
         txtBox.ControlTipText = errorMsg
     Else

@@ -8,12 +8,14 @@ Public Enum DatabaseArrayColumn
     colArrayRaw = 4
     colSubRaw = 5
     colLandfill = 6
-    colUTVR = 7
-    colTotal = 8
-    colTrash = 9
-    colTechnology = 10
-    colInbound = 11
-    colOutbound = 12
+    colExistentLandfill = 7
+    colUTVR = 8
+    colTotal = 9
+    colTrash = 10
+    colTechnology = 11
+    colInbound = 12
+    colOutbound = 13
+    colOutboundExistentLandfill = 14
 End Enum
 
 Public Function readArrays()
@@ -42,12 +44,14 @@ Public Function readArrays()
             End If
             arr.vCode = wksDatabase.Cells(r, DatabaseArrayColumn.colCode).value
             arr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
+            arr.vExistentLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colExistentLandfill).value
             arr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             arr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
             arr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
             arr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
             arr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 2)
             arr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 2)
+            arr.vOutboundExistentLandfill = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutboundExistentLandfill).value, 2)
             Set arr.vSubArray = New Collection
         Else
             Set subArr = New clsArray
@@ -58,6 +62,7 @@ Public Function readArrays()
             subArr.vArrayRaw = Replace(subArr.vArrayRaw, "'", "")
             subArr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
             subArr.vLandfill = Replace(subArr.vLandfill, "'", "")
+            subArr.vExistentLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colExistentLandfill).value
             subArr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             subArr.vUTVR = Replace(subArr.vUTVR, "'", "")
             subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
@@ -65,6 +70,7 @@ Public Function readArrays()
             subArr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
             subArr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 2)
             subArr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 2)
+            subArr.vOutboundExistentLandfill = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutboundExistentLandfill).value, 2)
             arr.vSubArray.Add subArr
         End If
     Next r

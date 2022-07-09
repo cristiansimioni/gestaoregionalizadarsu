@@ -133,7 +133,7 @@ Params = algPath & "\cidades-" & prjName & ".csv" & _
          " " & _
          algPath & "\distancias-" & prjName & ".csv" & _
          " " & _
-         "10 75" & _
+         "10 100" & _
          " " & _
          algPath & "\relatório-" & prjName & ".txt" & _
          " " & _
