@@ -3,7 +3,7 @@ Option Explicit
 
 Public Const APPNAME        As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION     As String = "1.0.0"
-Public Const APPLASTUPDATED As String = "02.07.2022"
+Public Const APPLASTUPDATED As String = "11.07.2022"
 Public Const APPDEVELOPER   As String = "Cristian Simioni Milani"
 
 Public Const FOLDERALGORITHM  As String = "Algoritmo"
@@ -126,14 +126,18 @@ Dim windowStyle As Integer: windowStyle = 1
 Dim errorCode As Integer
 
 'Provide file path to Python.exe
-PythonExe = """C:\Users\cristiansimioni\AppData\Local\Microsoft\WindowsApps\python3.exe"""
+PythonExe = Database.GetDatabaseValue("PythonPath", colUserValue)
 PythonScript = Application.ActiveWorkbook.Path & "\src\combinations\combinations.py"
+
+Dim maxCluster, trashThreshold As Double
+maxCluster = Database.GetDatabaseValue("MaxClusters", colUserValue)
+trashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
 
 Params = algPath & "\cidades-" & prjName & ".csv" & _
          " " & _
          algPath & "\distancias-" & prjName & ".csv" & _
          " " & _
-         "10 100" & _
+         maxCluster & " " & trashThreshold & _
          " " & _
          algPath & "\relatório-" & prjName & ".txt" & _
          " " & _
@@ -250,4 +254,15 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
         Loop
     Close #1 ' Close file.
     
+End Function
+
+
+Public Function GetMarketCode(ByVal market As String)
+    If market = FOLDERBASEMARKET Then
+        GetMarketCode = "M1"
+    ElseIf market = FOLDEROPTIMIZEDMARKET Then
+        GetMarketCode = "M2"
+    Else
+        GetMarketCode = "M3"
+    End If
 End Function
