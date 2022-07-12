@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
-   ClientHeight    =   4800
+   ClientHeight    =   5550
    ClientLeft      =   360
    ClientTop       =   1395
    ClientWidth     =   6945
@@ -19,6 +19,10 @@ End Sub
 
 Private Sub btnGeneralData_Click()
     frmGeneralData.Show
+End Sub
+
+Private Sub btnAlgorithParameter_Click()
+    frmAlgorithmParameter.Show
 End Sub
 
 Private Sub btnRunAlgorithm_Click()

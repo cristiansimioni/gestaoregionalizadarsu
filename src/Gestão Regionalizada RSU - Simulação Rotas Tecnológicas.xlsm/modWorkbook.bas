@@ -2,7 +2,7 @@ Attribute VB_Name = "modWorkbook"
 Option Explicit
 
 Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
-    'Application.DisplayAlerts = False
+    Application.DisplayAlerts = False
     
     Dim value As Integer
     value = 200
@@ -23,4 +23,6 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     
     ActiveWorkbook.Save
     ActiveWindow.Close
+    
+    Application.DisplayAlerts = True
 End Sub

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
-   ClientHeight    =   3390
+   ClientHeight    =   4920
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7500
+   ClientWidth     =   7875
    OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -17,6 +17,11 @@ Dim LandfillDeviationTarget As Double
 Dim ExpectedDeadline As Double
 Dim MixedRecyclingIndex As Double
 Dim TargetExpectation As Double
+Dim CurrentLandfillCost As Double
+Dim CurrentCostRSU As Double
+Dim LandfillCurrentDeviation As Double
+Dim ValuationEfficiency As Double
+
 Dim FormChanged As Boolean
 
 Function validateForm() As Boolean
@@ -42,6 +47,11 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("ExpectedDeadline", colUserValue, CDbl(txtExpectedDeadline.Text))
         Call Database.SetDatabaseValue("MixedRecyclingIndex", colUserValue, CDbl(txtMixedRecyclingIndex.Text))
         Call Database.SetDatabaseValue("TargetExpectation", colUserValue, CDbl(txtTargetExpectation.Text))
+        Call Database.SetDatabaseValue("CurrentLandfillCost", colUserValue, CDbl(txtCurrentLandfillCost.Text))
+        Call Database.SetDatabaseValue("CurrentCostRSU", colUserValue, CDbl(txtCurrentCostRSU.Text))
+        Call Database.SetDatabaseValue("LandfillCurrentDeviation", colUserValue, CDbl(txtLandfillCurrentDeviation.Text))
+        Call Database.SetDatabaseValue("ValuationEfficiency", colUserValue, CDbl(txtValuationEfficiency.Text))
+        
         FormChanged = False
         Unload Me
     Else
@@ -61,8 +71,20 @@ Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
     FormChanged = True
 End Sub
 
+Private Sub txtCurrentCostRSU_Change()
+    Call textBoxChange(txtCurrentCostRSU, "CurrentCostRSU")
+End Sub
+
+Private Sub txtCurrentLandfillCost_Change()
+    Call textBoxChange(txtCurrentLandfillCost, "CurrentLandfillCost")
+End Sub
+
 Private Sub txtExpectedDeadline_Change()
     Call textBoxChange(txtExpectedDeadline, "ExpectedDeadline")
+End Sub
+
+Private Sub txtLandfillCurrentDeviation_Change()
+    Call textBoxChange(txtLandfillCurrentDeviation, "LandfillCurrentDeviation")
 End Sub
 
 Private Sub txtLandfillDeviationTarget_Change()
@@ -77,6 +99,10 @@ Private Sub txtTargetExpectation_Change()
     Call textBoxChange(txtTargetExpectation, "TargetExpectation")
 End Sub
 
+
+Private Sub txtValuationEfficiency_Change()
+    Call textBoxChange(txtValuationEfficiency, "ValuationEfficiency")
+End Sub
 
 Private Sub UserForm_Initialize()
     Me.Caption = APPNAME & " - Metas para a Simulação do Estudo de Caso"
@@ -98,12 +124,20 @@ Private Sub UserForm_Initialize()
     ExpectedDeadline = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
     MixedRecyclingIndex = Database.GetDatabaseValue("MixedRecyclingIndex", colUserValue)
     TargetExpectation = Database.GetDatabaseValue("TargetExpectation", colUserValue)
+    CurrentLandfillCost = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
+    CurrentCostRSU = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
+    LandfillCurrentDeviation = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
+    ValuationEfficiency = Database.GetDatabaseValue("ValuationEfficiency", colUserValue)
     
-    If LandfillDeviationTarget + ExpectedDeadline + MixedRecyclingIndex + TargetExpectation > 0 Then
+    If LandfillDeviationTarget + ExpectedDeadline + MixedRecyclingIndex + TargetExpectation + CurrentLandfillCost + CurrentCostRSU + LandfillCurrentDeviation + ValuationEfficiency > 0 Then
         txtLandfillDeviationTarget.Text = LandfillDeviationTarget
         txtExpectedDeadline.Text = ExpectedDeadline
         txtMixedRecyclingIndex.Text = MixedRecyclingIndex
         txtTargetExpectation.Text = TargetExpectation
+        txtCurrentLandfillCost = CurrentLandfillCost
+        txtCurrentCostRSU = CurrentCostRSU
+        txtLandfillCurrentDeviation = LandfillCurrentDeviation
+        txtValuationEfficiency = ValuationEfficiency
     End If
     
     FormChanged = False

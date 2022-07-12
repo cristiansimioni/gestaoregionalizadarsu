@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne 
    Caption         =   "Dados de Definição do Estudo de Caso"
-   ClientHeight    =   4470
+   ClientHeight    =   3390
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   7680
@@ -17,9 +17,6 @@ Dim GenerationPerCapitaRDO As Double
 Dim IndexSelectiveColletionRSU As Double
 Dim AnnualGrowthPopulation As Double
 Dim AnnualGrowthCollect As Double
-Dim COEmission As Double
-Dim AverageCostTransportation As Double
-Dim ReducingCostMovimentation As Double
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
@@ -45,9 +42,6 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("IndexSelectiveColletionRSU", colUserValue, CDbl(txtIndexSelectiveColletionRSU.Text))
         Call Database.SetDatabaseValue("AnnualGrowthPopulation", colUserValue, CDbl(txtAnnualGrowthPopulation.Text))
         Call Database.SetDatabaseValue("AnnualGrowthCollect", colUserValue, CDbl(txtAnnualGrowthCollect.Text))
-        Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))
-        Call Database.SetDatabaseValue("AverageCostTransportation", colUserValue, CDbl(txtAverageCostTransportation.Text))
-        Call Database.SetDatabaseValue("ReducingCostMovimentation", colUserValue, CDbl(txtReducingCostMovimentation.Text))
         FormChanged = False
         Unload Me
     Else
@@ -83,17 +77,6 @@ Private Sub txtAnnualGrowthCollect_Change()
     Call textBoxChange(txtAnnualGrowthCollect, "AnnualGrowthCollect")
 End Sub
 
-Private Sub txtCOEmission_Change()
-    Call textBoxChange(txtCOEmission, "COEmission")
-End Sub
-
-Private Sub txtAverageCostTransportation_Change()
-    Call textBoxChange(txtAverageCostTransportation, "AverageCostTransportation")
-End Sub
-
-Private Sub txtReducingCostMovimentation_Change()
-    Call textBoxChange(txtReducingCostMovimentation, "ReducingCostMovimentation")
-End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
@@ -111,20 +94,14 @@ Private Sub UserForm_Initialize()
     IndexSelectiveColletionRSU = Database.GetDatabaseValue("IndexSelectiveColletionRSU", colUserValue)
     AnnualGrowthPopulation = Database.GetDatabaseValue("AnnualGrowthPopulation", colUserValue)
     AnnualGrowthCollect = Database.GetDatabaseValue("AnnualGrowthCollect", colUserValue)
-    COEmission = Database.GetDatabaseValue("COEmission", colUserValue)
-    AverageCostTransportation = Database.GetDatabaseValue("AverageCostTransportation", colUserValue)
-    ReducingCostMovimentation = Database.GetDatabaseValue("ReducingCostMovimentation", colUserValue)
 
     'Only show the data if it's available
     If GenerationPerCapitaRDO + IndexSelectiveColletionRSU + AnnualGrowthPopulation + _
-       AnnualGrowthCollect + COEmission + AverageCostTransportation + ReducingCostMovimentation <> 0 Then
+       AnnualGrowthCollect <> 0 Then
         txtGenerationPerCapitaRDO.Text = GenerationPerCapitaRDO
         txtIndexSelectiveColletionRSU.Text = IndexSelectiveColletionRSU
         txtAnnualGrowthPopulation.Text = AnnualGrowthPopulation
         txtAnnualGrowthCollect.Text = AnnualGrowthCollect
-        txtCOEmission.Text = COEmission
-        txtAverageCostTransportation.Text = AverageCostTransportation
-        txtReducingCostMovimentation.Text = ReducingCostMovimentation
     End If
     
     FormChanged = False

@@ -47,7 +47,7 @@ Private Sub btnExecuteSimulation_Click()
     
     Dim markets, routes As Variant
     markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
-    routes = Array("RT1-A", "RT1-B", "RT1-C", "RT2", "RT3", "RT4", "RT5")
+    routes = Array("RT1", "RT2", "RT3", "RT4", "RT5")
     
     Dim wksDefinedArrays As Worksheet
     Set wksDefinedArrays = Util.GetDefinedArraysWorksheet
@@ -63,17 +63,41 @@ Private Sub btnExecuteSimulation_Click()
                 arrayMarketPath = Util.FolderCreate(marketPath, a.vCode)
                 For Each s In a.vSubArray
                     For Each r In routes
-                        Dim subArrayBaseMarketPath, subArrayOptimizedMarketPath, subArrayLandfillMarketPath, newFile As String
+                        Dim subArrayBaseMarketPath, subArrayOptimizedMarketPath, subArrayLandfillMarketPath, newFile, templateFile As String
                         subArrayMarketPath = Util.FolderCreate(arrayMarketPath, s.vCode)
                         
-                        wksDefinedArrays.Cells(row, 1).value = m
-                        wksDefinedArrays.Cells(row, 2).value = a.vCode
-                        wksDefinedArrays.Cells(row, 3).value = s.vCode
-                        wksDefinedArrays.Cells(row, 4).value = r
-                        row = row + 1
+                        If InStr(r, "RT1") Then
+                            wksDefinedArrays.Cells(row, 1).value = m
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
+                            wksDefinedArrays.Cells(row, 4).value = "RT1-A"
+                            row = row + 1
+                            wksDefinedArrays.Cells(row, 1).value = m
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
+                            wksDefinedArrays.Cells(row, 4).value = "RT1-B"
+                            row = row + 1
+                            wksDefinedArrays.Cells(row, 1).value = m
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
+                            wksDefinedArrays.Cells(row, 4).value = "RT1-C"
+                            row = row + 1
+                        Else
+                            wksDefinedArrays.Cells(row, 1).value = m
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
+                            wksDefinedArrays.Cells(row, 4).value = r
+                            row = row + 1
+                        End If
+                        
                         'Create routes from 1 to 5 for all markets
-                        newFile = subArrayMarketPath & "\" & r & ".xlsm"
-                        FileCopy "C:\Users\cristiansimioni\Desktop\gestaoregionalizadarsu\templates\Base Ferramenta 3 - RT 1.xlsm", newFile
+                        newFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & r & ".xlsm"
+                        templateFile = Application.ActiveWorkbook.Path & "\templates\Base Ferramenta 3 - " & r & ".xlsm"
+                        
+                        'Only create the file if it's not created yet
+                        If Len(Dir(newFile)) = 0 Then
+                            FileCopy templateFile, newFile
+                        End If
                         
                         Call EditRouteToolData(newFile, s, m)
                         
