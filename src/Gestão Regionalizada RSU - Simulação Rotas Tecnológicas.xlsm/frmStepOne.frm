@@ -73,11 +73,11 @@ End Sub
 Private Sub UserForm_Initialize()
     'Form Appearance
     Me.Caption = APPNAME & " - Passo 1"
-    Me.BackColor = ApplicationColors.bgColorLevel2
+    Me.BackColor = ApplicationColors.frmBgColorLevel2
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.btColorLevel2
+            Ctrl.BackColor = ApplicationColors.bgColorLevel2
             Ctrl.ForeColor = ApplicationColors.fgColorLevel2
          End If
     Next Ctrl

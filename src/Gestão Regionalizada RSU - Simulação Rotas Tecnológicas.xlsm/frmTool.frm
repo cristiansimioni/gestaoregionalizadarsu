@@ -51,14 +51,20 @@ End Sub
 Private Sub UserForm_Initialize()
     'Form Appearance
     Me.Caption = "GEF Biogás Brasil - " & APPNAME & " - " & APPVERSION
-    Me.BackColor = ApplicationColors.bgColorLevel1
+    Me.BackColor = ApplicationColors.frmBgColorLevel1
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.btColorLevel1
+            Ctrl.BackColor = ApplicationColors.bgColorLevel1
             Ctrl.ForeColor = ApplicationColors.fgColorLevel1
          End If
     Next Ctrl
     
     lblApplicationName.Caption = APPNAME
+    
+    
+    imgStepOneStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERASSETS & "\" & FOLDERICONS & "\check-icon.jpg")
+    imgStepSixStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERASSETS & "\" & FOLDERICONS & "\check-icon.jpg")
+    
+    
 End Sub

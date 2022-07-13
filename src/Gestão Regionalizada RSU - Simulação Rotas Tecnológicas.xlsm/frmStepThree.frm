@@ -102,19 +102,36 @@ Private Sub btnExecuteSimulation_Click()
                         Call EditRouteToolData(newFile, s, m)
                         
                     Next r
+                    wksDefinedArrays.Cells(row, 1).value = m
+                    wksDefinedArrays.Cells(row, 2).value = a.vCode
+                    wksDefinedArrays.Cells(row, 3).value = "Consolidado"
+                    wksDefinedArrays.Cells(row, 4).value = "NA"
+                row = row + 1
                 Next s
+                'Create tool 2 for array
+                Dim toolTwoFile, templateToolTwoFile As String
+                toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & a.vCode & r & " - Ferramenta 2.xlsx"
+                templateFile = Application.ActiveWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsx"
+                
+                'Only create the file if it's not created yet
+                 If Len(Dir(toolTwoFile)) = 0 Then
+                    FileCopy templateFile, toolTwoFile
+                 End If
+                
+                Call EditToolTwoData(toolTwoFile)
+                
+                'Read data from tool 2 and insert into sheet
                 wksDefinedArrays.Cells(row, 1).value = m
-                wksDefinedArrays.Cells(row, 2).value = a.vCode
-                wksDefinedArrays.Cells(row, 3).value = "Consolidado"
+                wksDefinedArrays.Cells(row, 2).value = "Consolidado"
+                wksDefinedArrays.Cells(row, 3).value = "NA"
                 wksDefinedArrays.Cells(row, 4).value = "NA"
                 row = row + 1
             Next m
-            'Create tool 2 for array
-            
-            'Read data from tool 2 and insert into sheet
             
         End If
     Next a
+    
+    MsgBox "Simulação finalizada com sucesso!", vbInformation
 End Sub
 
 Private Sub btnFinancialAssumptions_Click()
@@ -139,12 +156,12 @@ End Sub
 
 Private Sub UserForm_Initialize()
     Me.Caption = APPNAME & " - Passo 3"
-    Me.BackColor = ApplicationColors.bgColorLevel2
+    Me.BackColor = ApplicationColors.frmBgColorLevel2
     
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.btColorLevel2
+            Ctrl.BackColor = ApplicationColors.bgColorLevel2
          End If
     Next Ctrl
 End Sub

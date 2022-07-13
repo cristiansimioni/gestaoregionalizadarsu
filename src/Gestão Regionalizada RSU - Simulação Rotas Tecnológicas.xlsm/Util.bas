@@ -1,28 +1,38 @@
 Attribute VB_Name = "Util"
 Option Explicit
 
-Public Const APPNAME        As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION     As String = "1.0.0"
-Public Const APPLASTUPDATED As String = "11.07.2022"
-Public Const APPDEVELOPER   As String = "Cristian Simioni Milani"
+'Application
+Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
+Public Const APPVERSION             As String = "1.0.0"
+Public Const APPLASTUPDATED         As String = "11.07.2022"
+Public Const APPDEVELOPER           As String = "Cristian Simioni Milani"
 
-Public Const FOLDERALGORITHM  As String = "Algoritmo"
-Public Const FOLDERBASEMARKET As String = "Mercado Base"
-Public Const FOLDEROPTIMIZEDMARKET As String = "Mercado Otimizado"
-Public Const FOLDERLANDFILLMARKET As String = "Mercado Aterro Existentes"
+'Folder
+Public Const FOLDERASSETS           As String = "assets"
+Public Const FOLDERICONS            As String = "icons"
+Public Const FOLDERTEMPLATES        As String = "templates"
+Public Const FOLDERALGORITHM        As String = "Algoritmo"
+Public Const FOLDERBASEMARKET       As String = "Mercado Base"
+Public Const FOLDEROPTIMIZEDMARKET  As String = "Mercado Otimizado"
+Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
 
+'Messages
+Public Const MSG_CHANGED_NOT_SAVED                  As String = "Você realizou alterações no formulário. Gostaria de salvar?"
+Public Const MSG_ALGORITHM_COMPLETE_SUCCESSFULLY    As String = "A execução do algoritmo terminou com sucesso."
+
+'Look and feel
 Public Enum ApplicationColors
     'Form
     '#Background
-    bgColorLevel1 = 16777215    'RGB(255, 255, 255)
-    bgColorLevel2 = 16777215    'RGB(255, 255, 255)
-    bgColorLevel3 = 16777215    'RGB(255, 255, 255)
-    bgColorLevel4 = 16777215    'RGB(255, 255, 255)
+    frmBgColorLevel1 = 16777215    'RGB(255, 255, 255)
+    frmBgColorLevel2 = 16777215    'RGB(255, 255, 255)
+    frmBgColorLevel3 = 16777215    'RGB(255, 255, 255)
+    frmBgColorLevel4 = 16777215    'RGB(255, 255, 255)
     '#Button
-    btColorLevel1 = 14602886    'RGB(134, 210, 222)
-    btColorLevel2 = 14855222    'RGB(54,  172, 226)
-    btColorLevel3 = 7220525     'RGB(45,   45, 110)
-    btColorLevel4 = 2461170     'RGB(242, 141,  37)
+    bgColorLevel1 = 14602886    'RGB(134, 210, 222)
+    bgColorLevel2 = 14855222    'RGB(54,  172, 226)
+    bgColorLevel3 = 7220525     'RGB(45,   45, 110)
+    bgColorLevel4 = 2461170     'RGB(242, 141,  37)
     fgColorLevel1 = 0           'RGB(0, 0, 0)
     fgColorLevel2 = 16777215    'RGB(255, 255, 255)
     fgColorLevel3 = 16777215    'RGB(255, 255, 255)
@@ -31,6 +41,9 @@ Public Enum ApplicationColors
     bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)
 End Enum
+
+'Icons
+
 
 Function GetDatabaseWorksheet() As Worksheet
     Set GetDatabaseWorksheet = ThisWorkbook.Worksheets("Banco de Dados")
@@ -98,7 +111,7 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     
     'Find the last non-blank cell in row 1
     lCol = wks.Cells(1, Columns.Count).End(xlToLeft).column
-    wks.Range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
+    wks.range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
 
     'Open a new XLS workbook, save it as the file name
     Set WB = Workbooks.Add

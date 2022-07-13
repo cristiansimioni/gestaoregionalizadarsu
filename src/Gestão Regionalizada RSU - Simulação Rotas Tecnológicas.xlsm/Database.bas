@@ -76,6 +76,10 @@ Function Validate(ByVal name As String, ByVal value As String, Optional ByRef me
     
 End Function
 
+Function checkStepStatus(ByVal step As String)
+    checkStepStatus = True
+End Function
+
 Sub CleanDatabase()
 
 End Sub

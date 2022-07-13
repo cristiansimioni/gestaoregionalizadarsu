@@ -56,8 +56,8 @@ Private Sub btnSave_Click()
     Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
     
     'Clear currect selected cities worksheet
-    wksSelectedCities.Range("A2:B100").ClearContents
-    wksSelectedCities.Range("G2:L100").ClearContents
+    wksSelectedCities.range("A2:B100").ClearContents
+    wksSelectedCities.range("G2:L100").ClearContents
     
     'Fill with current values
     row = 2
@@ -104,11 +104,11 @@ End Sub
 Private Sub UserForm_Initialize()
     'Form Appearance
     Me.Caption = APPNAME & " - Selectionar Cidades"
-    Me.BackColor = ApplicationColors.bgColorLevel3
+    Me.BackColor = ApplicationColors.frmBgColorLevel3
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.btColorLevel3
+            Ctrl.BackColor = ApplicationColors.bgColorLevel3
             Ctrl.ForeColor = ApplicationColors.fgColorLevel3
          End If
     Next Ctrl

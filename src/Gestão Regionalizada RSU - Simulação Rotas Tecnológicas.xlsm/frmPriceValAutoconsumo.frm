@@ -20,11 +20,11 @@ End Sub
 Private Sub UserForm_Initialize()
     'Form Appearance
     Me.Caption = APPNAME & " - Selectionar Cidades"
-    Me.BackColor = ApplicationColors.bgColorLevel4
+    Me.BackColor = ApplicationColors.frmBgColorLevel4
     Dim Ctrl As Control
     For Each Ctrl In Me.Controls
         If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.btColorLevel4
+            Ctrl.BackColor = ApplicationColors.bgColorLevel4
          End If
     Next Ctrl
 End Sub
