@@ -4,18 +4,23 @@ Option Explicit
 'Application
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "1.0.0"
-Public Const APPLASTUPDATED         As String = "11.07.2022"
+Public Const APPLASTUPDATED         As String = "14.07.2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
 'Folder
 Public Const FOLDERASSETS           As String = "assets"
 Public Const FOLDERICONS            As String = "icons"
+Public Const FOLDERMANUAL           As String = "assets\manual"
 Public Const FOLDERTEMPLATES        As String = "templates"
 Public Const FOLDERALGORITHM        As String = "Algoritmo"
 Public Const FOLDERBASEMARKET       As String = "Mercado Base"
 Public Const FOLDEROPTIMIZEDMARKET  As String = "Mercado Otimizado"
 Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
+
+'Icons
+Public Const ICONCHECK              As String = "check-icon.jpg"
+Public Const ICONWARNING            As String = "error-icon.jpg"
 
 'Messages
 Public Const MSG_CHANGED_NOT_SAVED                  As String = "Você realizou alterações no formulário. Gostaria de salvar?"
@@ -43,9 +48,6 @@ Public Enum ApplicationColors
     bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)
 End Enum
-
-'Icons
-
 
 Function GetDatabaseWorksheet() As Worksheet
     Set GetDatabaseWorksheet = ThisWorkbook.Worksheets("Banco de Dados")

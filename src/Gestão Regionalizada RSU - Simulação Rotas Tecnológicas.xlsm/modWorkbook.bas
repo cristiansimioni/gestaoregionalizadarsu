@@ -2,11 +2,6 @@ Attribute VB_Name = "modWorkbook"
 Option Explicit
 
 Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
-    Application.DisplayAlerts = False
-    
-    Dim value As Integer
-    value = 200
-    
     Workbooks.Open filename
     
     ' Valores sub-arranjo
@@ -42,11 +37,9 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     
     ActiveWorkbook.Save
     ActiveWindow.Close
-    
-    Application.DisplayAlerts = True
 End Sub
 
-Public Sub EditToolTwoData(ByVal filename)
+Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles)
     Workbooks.Open filename
     
     'Valores da ferramenta
@@ -70,6 +63,43 @@ Public Sub EditToolTwoData(ByVal filename)
         End If
     Next r
     
+    Dim MacroName As String
+    MacroName = "updateRoutesData"
+    Run "'" & filename & "'!" & MacroName, routeFiles(1), routeFiles(2), routeFiles(3), routeFiles(4)
+    
     ActiveWorkbook.Save
     ActiveWindow.Close
+End Sub
+
+Public Sub CopyDataFromToolTwo(ByVal filename, ByVal row)
+    Dim wbk As Workbook
+    Dim wks As Worksheet
+    Set wbk = Workbooks.Open(filename:=filename, ReadOnly:=True)
+    
+    Dim route1ARow, route1BRow, route1CRow, route2Row, route3Row, route4Row, route5Row As Integer
+    Dim rowStartToolTwo, rowLastToolTwo, colStartTool As Integer
+    
+    route1ARow = row - 8
+    route1BRow = row - 7
+    route1CRow = row - 6
+    route2Row = row - 5
+    route3Row = row - 4
+    route4Row = row - 3
+    route5Row = row - 2
+    
+    colStartTool = 6
+    rowLastToolTwo = 65
+    
+    Set wks = GetDefinedArraysWorksheet
+    For rowStartToolTwo = 9 To rowLastToolTwo
+        wks.Cells(route1ARow, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 3).value
+        wks.Cells(route1BRow, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 4).value
+        wks.Cells(route1CRow, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 5).value
+        wks.Cells(route2Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 6).value
+        wks.Cells(route3Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 7).value
+        wks.Cells(route4Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 8).value
+        colStartTool = colStartTool + 1
+    Next
+    
+    wbk.Close
 End Sub
