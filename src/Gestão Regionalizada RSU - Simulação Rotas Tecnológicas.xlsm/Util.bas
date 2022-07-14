@@ -5,7 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "1.0.0"
 Public Const APPLASTUPDATED         As String = "11.07.2022"
-Public Const APPDEVELOPER           As String = "Cristian Simioni Milani"
+Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
+Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
 'Folder
 Public Const FOLDERASSETS           As String = "assets"
@@ -19,6 +20,7 @@ Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
 'Messages
 Public Const MSG_CHANGED_NOT_SAVED                  As String = "Você realizou alterações no formulário. Gostaria de salvar?"
 Public Const MSG_ALGORITHM_COMPLETE_SUCCESSFULLY    As String = "A execução do algoritmo terminou com sucesso."
+Public Const MSG_ALGORITHM_COMPLETE_FAILED          As String = "A execução do algoritmo falhou."
 
 'Look and feel
 Public Enum ApplicationColors

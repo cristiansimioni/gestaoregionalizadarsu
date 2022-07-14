@@ -47,8 +47,6 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
 End Sub
 
 Public Sub EditToolTwoData(ByVal filename)
-    Application.DisplayAlerts = False
-    
     Workbooks.Open filename
     
     'Valores da ferramenta
@@ -74,6 +72,4 @@ Public Sub EditToolTwoData(ByVal filename)
     
     ActiveWorkbook.Save
     ActiveWindow.Close
-    
-    Application.DisplayAlerts = True
 End Sub

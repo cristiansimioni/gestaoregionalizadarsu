@@ -55,6 +55,10 @@ Private Sub btnExecuteSimulation_Click()
     Dim row As Integer
     row = 2
     
+    
+    Application.DisplayAlerts = False
+    Application.ScreenUpdating = False
+    
     For Each a In arrays
         If a.vSelected Then
             For Each m In markets
@@ -110,8 +114,8 @@ Private Sub btnExecuteSimulation_Click()
                 Next s
                 'Create tool 2 for array
                 Dim toolTwoFile, templateToolTwoFile As String
-                toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & a.vCode & r & " - Ferramenta 2.xlsx"
-                templateFile = Application.ActiveWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsx"
+                toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & a.vCode & r & " - Ferramenta 2.xlsm"
+                templateFile = Application.ActiveWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsm"
                 
                 'Only create the file if it's not created yet
                  If Len(Dir(toolTwoFile)) = 0 Then
@@ -131,6 +135,8 @@ Private Sub btnExecuteSimulation_Click()
         End If
     Next a
     
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
     MsgBox "Simulação finalizada com sucesso!", vbInformation
 End Sub
 
