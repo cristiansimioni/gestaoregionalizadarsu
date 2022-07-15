@@ -25,6 +25,7 @@ Private Sub btnQuantitativeVal_Click()
     frmQuantitativeVal.Show
 End Sub
 
-Private Sub UserForm_Click()
-
+Private Sub UserForm_Initialize()
+    'Form Appearance
+    Call modForm.applyLookAndFeel(Me, 2, "Passo 4")
 End Sub

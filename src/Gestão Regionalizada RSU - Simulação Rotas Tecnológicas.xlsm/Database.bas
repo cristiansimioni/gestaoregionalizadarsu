@@ -80,6 +80,6 @@ Function checkStepStatus(ByVal step As String)
     checkStepStatus = True
 End Function
 
-Sub CleanDatabase()
+Sub Clean()
 
 End Sub

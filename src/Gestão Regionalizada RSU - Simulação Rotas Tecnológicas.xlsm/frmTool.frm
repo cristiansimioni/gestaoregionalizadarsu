@@ -1,6 +1,5 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
-   Caption         =   "GEF Biogás Brasil"
    ClientHeight    =   8655.001
    ClientLeft      =   120
    ClientTop       =   465
@@ -17,7 +16,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnClean_Click()
-    Database.CleanDatabase
+    Database.Clean
 End Sub
 
 Private Sub btnHelp_Click()
@@ -50,21 +49,9 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Me.Caption = "GEF Biogás Brasil - " & APPNAME & " - " & APPVERSION
-    Me.BackColor = ApplicationColors.frmBgColorLevel1
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.bgColorLevel1
-            Ctrl.ForeColor = ApplicationColors.fgColorLevel1
-         End If
-    Next Ctrl
+    Call modForm.applyLookAndFeel(Me, 1, APPVERSION)
     
     lblApplicationName.Caption = APPNAME
-    
-    
     imgStepOneStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERASSETS & "\" & FOLDERICONS & "\check-icon.jpg")
     imgStepSixStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERASSETS & "\" & FOLDERICONS & "\check-icon.jpg")
-    
-    
 End Sub

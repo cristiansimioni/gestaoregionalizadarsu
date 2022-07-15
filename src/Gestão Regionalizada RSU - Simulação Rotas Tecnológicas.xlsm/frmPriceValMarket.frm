@@ -13,18 +13,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Dim FormChanged As Boolean
+
 Private Sub btnBack_Click()
     Unload Me
 End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Me.Caption = APPNAME & " - Selectionar Cidades"
-    Me.BackColor = ApplicationColors.frmBgColorLevel4
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.bgColorLevel4
-         End If
-    Next Ctrl
+    Call modForm.applyLookAndFeel(Me, 4, "CCCCCCCCCCCC")
+    
+    FormChanged = False
 End Sub

@@ -365,7 +365,17 @@ Private Sub txtTransshipmentCost9_Change()
 End Sub
 
 Private Sub UserForm_Initialize()
-
+    
+    Me.BackColor = ApplicationColors.frmBgColorLevel3
+    
+    Dim Ctrl As Control
+    For Each Ctrl In Me.Controls
+        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
+            Ctrl.BackColor = ApplicationColors.bgColorLevel3
+            Ctrl.ForeColor = ApplicationColors.fgColorLevel3
+         End If
+    Next Ctrl
+    
     Set cities = readSelectedCities
     
     vScrollBar.Min = 1

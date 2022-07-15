@@ -3,6 +3,7 @@ Option Explicit
 
 'Application
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
+Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPVERSION             As String = "1.0.0"
 Public Const APPLASTUPDATED         As String = "14.07.2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
@@ -120,7 +121,7 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     'Open a new XLS workbook, save it as the file name
     Set WB = Workbooks.Add
     With WB
-        .Title = "Cidades"
+        .title = "Cidades"
         .Subject = projectName
         .Sheets(1).Select
         ActiveSheet.Paste

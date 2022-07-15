@@ -66,14 +66,7 @@ Private Sub CommandButton4_Click()
 End Sub
 
 Private Sub UserForm_Initialize()
-    Me.Caption = APPNAME & " - Passo 2"
-    Me.BackColor = ApplicationColors.frmBgColorLevel2
-    
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.bgColorLevel2
-         End If
-    Next Ctrl
+    'Form Appearance
+    Call modForm.applyLookAndFeel(Me, 2, "Passo 2")
     
 End Sub

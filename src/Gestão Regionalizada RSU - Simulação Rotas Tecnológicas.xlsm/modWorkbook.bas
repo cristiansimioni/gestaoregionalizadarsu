@@ -34,6 +34,19 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
         End If
     Next r
     
+    Dim MacroName As String
+    MacroName = "calculateRoutes"
+    Dim varProject As String
+    Dim targetProject As Double
+    Dim varShareholder As String
+    Dim targetShareholder As Double
+    
+    varProject = Database.GetDatabaseValue("VariableProject", colUserValue)
+    targetProject = Database.GetDatabaseValue("TargetProject", colUserValue)
+    varShareholder = Database.GetDatabaseValue("VariableShareholder", colUserValue)
+    targetShareholder = Database.GetDatabaseValue("TargetShareholder", colUserValue)
+    
+    Run "'" & filename & "'!" & MacroName, varProject, targetProject, varShareholder, targetShareholder
     
     ActiveWorkbook.Save
     ActiveWindow.Close
@@ -65,7 +78,7 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles)
     
     Dim MacroName As String
     MacroName = "updateRoutesData"
-    Run "'" & filename & "'!" & MacroName, routeFiles(1), routeFiles(2), routeFiles(3), routeFiles(4)
+    Run "'" & filename & "'!" & MacroName, routeFiles(1), routeFiles(2), routeFiles(3), routeFiles(4), routeFiles(5)
     
     ActiveWorkbook.Save
     ActiveWindow.Close
@@ -98,6 +111,7 @@ Public Sub CopyDataFromToolTwo(ByVal filename, ByVal row)
         wks.Cells(route2Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 6).value
         wks.Cells(route3Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 7).value
         wks.Cells(route4Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 8).value
+        wks.Cells(route5Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT큦").Cells(rowStartToolTwo, 9).value
         colStartTool = colStartTool + 1
     Next
     

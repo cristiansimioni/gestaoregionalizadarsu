@@ -31,7 +31,7 @@ End Sub
 Private Sub btnFolder_Click()
     Dim sFolder As String
     With Application.FileDialog(msoFileDialogFolderPicker)
-        .Title = "Selecione a pasta onde deseja salvar o projeto"
+        .title = "Selecione a pasta onde deseja salvar o projeto"
         If .Show = -1 Then
             sFolder = .SelectedItems(1)
         End If
@@ -72,15 +72,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Me.Caption = APPNAME & " - Passo 1"
-    Me.BackColor = ApplicationColors.frmBgColorLevel2
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.bgColorLevel2
-            Ctrl.ForeColor = ApplicationColors.fgColorLevel2
-         End If
-    Next Ctrl
+    Call modForm.applyLookAndFeel(Me, 2, "Passo 1")
     
     'Read database values
     txtProjectName.Text = Database.GetDatabaseValue("ProjectName", colUserValue)
