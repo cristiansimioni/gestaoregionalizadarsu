@@ -4,6 +4,7 @@ Option Explicit
 'Application
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
+Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "1.0.0"
 Public Const APPLASTUPDATED         As String = "14.07.2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
@@ -11,7 +12,7 @@ Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com
 
 'Folder
 Public Const FOLDERASSETS           As String = "assets"
-Public Const FOLDERICONS            As String = "icons"
+Public Const FOLDERICONS            As String = "assets\icons"
 Public Const FOLDERMANUAL           As String = "assets\manual"
 Public Const FOLDERTEMPLATES        As String = "templates"
 Public Const FOLDERALGORITHM        As String = "Algoritmo"
@@ -24,7 +25,12 @@ Public Const ICONCHECK              As String = "check-icon.jpg"
 Public Const ICONWARNING            As String = "error-icon.jpg"
 
 'Messages
+Public Const MSG_ATTENTION                          As String = "Atenção"
+Public Const MSG_CLEAN_DATABASE                     As String = "Tem certeza que você deseja apagar tudo? Todos os dados inseridos serão apagados."
+Public Const MSG_CHANGED_NOT_SAVED_TITLE            As String = "Salvar Alterações"
 Public Const MSG_CHANGED_NOT_SAVED                  As String = "Você realizou alterações no formulário. Gostaria de salvar?"
+Public Const MSG_INVALID_DATA_TITLE                 As String = "Dados Inválidos"
+Public Const MSG_INVALID_DATA                       As String = "Um ou mais dados estão preechidos de maneira incorreta. Favor verificar!"
 Public Const MSG_ALGORITHM_COMPLETE_SUCCESSFULLY    As String = "A execução do algoritmo terminou com sucesso."
 Public Const MSG_ALGORITHM_COMPLETE_FAILED          As String = "A execução do algoritmo falhou."
 
@@ -48,6 +54,10 @@ Public Enum ApplicationColors
     'Text Box
     bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)
+    txtFgColorLevel1 = 0           'RGB(0, 0, 0)
+    txtFgColorLevel2 = 0           'RGB(0, 0, 0)
+    txtFgColorLevel3 = 16777215    'RGB(255, 255, 255)
+    txtFgColorLevel4 = 16777215    'RGB(255, 255, 255)
 End Enum
 
 Function GetDatabaseWorksheet() As Worksheet

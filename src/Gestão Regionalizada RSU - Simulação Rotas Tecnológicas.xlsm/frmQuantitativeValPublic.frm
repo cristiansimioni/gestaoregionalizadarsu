@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmQuantitativeValPublic 
    Caption         =   "UserForm1"
-   ClientHeight    =   3420
+   ClientHeight    =   4005
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   8280.001
+   ClientWidth     =   9840.001
    OleObjectBlob   =   "frmQuantitativeValPublic.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -21,7 +21,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 4, "HHHHH")
+    Call modForm.applyLookAndFeel(Me, 3, "Utilidade Pública (Quantitivo para Valorização")
     
     FormChanged = False
 End Sub
