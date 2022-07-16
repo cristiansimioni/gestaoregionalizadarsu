@@ -34,7 +34,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Definir Arranjos Centralizados")
+    Call modForm.applyLookAndFeel(Me, 3, "Definir Arranjos Centralizados", True)
     
     Set arrays = readArrays
     

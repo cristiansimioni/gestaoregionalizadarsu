@@ -143,7 +143,7 @@ def funccentrodemassa(data, cluster):
             c_centrodemassa = i
     return c_centrodemassa
 
-def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only):
+def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only, existentlandfill):
     data = []
     CAPEX_INBOUND = 150
     CAPEX_OUTBOUND = 25
@@ -168,6 +168,16 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
             sum_inbound = sum_inbound / getSubTrash(cdata, subarray)
             sum_inbound = (CAPEX_INBOUND/35.0 + sum_inbound) /  1.0
             entry["inbound"] = sum_inbound
+            dist = 999999
+            for a in existentlandfill:
+                distCities = getDistanceBetweenCites(cdata, distance, utvr_city, a)
+                if distCities < dist:
+                    dist = distCities
+                    sum_outbound = 0
+                    sum_outbound = sum_outbound + (distCities * (0.7 * getCityAttribute(cdata, utvr_city, "cost-post-transhipment"))) * 0.5
+                    entry["aterro-existente"] = a
+                    entry["outbound-existente"] = (CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0
+        
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
@@ -332,6 +342,13 @@ def getLandfill(data):
             landfill.append(d["name"])
     return landfill
 
+def getExistentLandfill(data):
+    existentlandfill = list()
+    for d in data:
+        if d["existent-landfill"]:
+            existentlandfill.append(d["name"])
+    return existentlandfill
+
 def getUTVR(data):
     utvr = list()
     for d in data:
@@ -418,9 +435,15 @@ def main():
     clusters = clusterization(citiesdata, distance, MAX_CITIES)
 
     # Print landfills in the report file
-    report.write("============= ATERROS ============= \n")
+    report.write("============= ATERROS POTENCIAIS ============= \n")
     landfill = getLandfill(citiesdata)
     for l in landfill:
+        report.write(l + "\n")
+    report.write("\n\n\n")
+
+    report.write("============= ATERROS EXISTENTES ============= \n")
+    existentlandfill = getExistentLandfill(citiesdata)
+    for l in existentlandfill:
         report.write(l + "\n")
     report.write("\n\n\n")
 
@@ -474,6 +497,7 @@ def main():
         capexOpexArray = 0
         inboundArray = 0
         outboundArray = 0
+        outboundExistentLandfill = 0
         logging.debug("Arranjo: %s", i)
         new = {}
 
@@ -490,7 +514,7 @@ def main():
             capexOpexValue = (capexSubArray/35.0 + opexSubArray)/ 1.0
             trashArray = trashArray + trashSubArray
             capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
-            rsinout = inboundoutbound(citiesdata, distance, y, centralizado, utvrs, landfill)
+            rsinout = inboundoutbound(citiesdata, distance, y, centralizado, utvrs, landfill, existentlandfill)
             rsinout["capex"] =  0#capexSubArray
             rsinout["opex"] = 0#opexSubArray
             rsinout["tecnologia"] = 0#capexOpexValue
@@ -500,6 +524,7 @@ def main():
             
             inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
             outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
+            outboundExistentLandfill = outboundExistentLandfill + (rsinout["outbound-existente"] * trashSubArray)
             rsinout["lixo"] = trashSubArray
             rsinout["total"] = capexOpexValue + rsinout["inbound"] + rsinout["outbound"]
             sub.append(rsinout)
@@ -514,6 +539,7 @@ def main():
         new["lixo-array"] = trashArray
         new["inbound"] = inboundArray/trashArray
         new["outbound"] = outboundArray/trashArray
+        new["outbound-existente"] = outboundExistentLandfill/trashArray
         new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
         data.append(new)
 
@@ -537,7 +563,7 @@ def main():
 
 
             for x in range(len(d["sub"])):
-                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["tecnologia"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + ";1\n")
+                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro-existente"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["tecnologia"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + ";1\n")
 
                 report.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
                 report.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
@@ -555,8 +581,7 @@ def main():
     for i in range(len(data)):
         if i % 1000 != 0:
             continue
-        output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["capexopex"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + ";1\n")
-
+        output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["capexopex"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + ";" + repr(data[i]["outbound-existente"]) + "\n")
 
         report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
         report.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
@@ -566,7 +591,7 @@ def main():
         report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
         report.write("-- Sub-arranjos:\n")
         for x in range(len(data[i]["sub"])):
-            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["utvr"]) + ";" + repr(data[i]["sub"][x]["total"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["tecnologia"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + ";1\n")
+            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["aterro-existente"]) + ";" + repr(data[i]["sub"][x]["utvr"]) + ";" + repr(data[i]["sub"][x]["total"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["tecnologia"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + ";" + repr(data[i]["sub"][x]["outbound-existente"]) + "\n")
 
             report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
             report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")

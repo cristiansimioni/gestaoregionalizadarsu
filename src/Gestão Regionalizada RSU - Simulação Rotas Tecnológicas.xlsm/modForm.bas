@@ -17,7 +17,7 @@ Public Function validateForm()
     validateForm = True
 End Function
 
-Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal title As String)
+Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal title As String, Optional ByVal bgWhite As Boolean)
     
     Dim frmBackColor As Double
     Dim btnBackColor, btnForeColor As Double
@@ -67,7 +67,11 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
             Ctrl.FontName = "Open Sans"
             Ctrl.FontBold = False
         ElseIf TypeName(Ctrl) = "TextBox" Then
-            Ctrl.ForeColor = txtForeColor
+            If bgWhite Then
+                Ctrl.ForeColor = RGB(0, 0, 0)
+            Else
+                Ctrl.ForeColor = txtForeColor
+            End If
             Ctrl.TextAlign = txtAlign
             Ctrl.SpecialEffect = 0
             Ctrl.BorderStyle = 1
