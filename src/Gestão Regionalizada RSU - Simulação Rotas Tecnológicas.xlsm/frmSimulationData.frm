@@ -105,20 +105,8 @@ Private Sub txtValuationEfficiency_Change()
 End Sub
 
 Private Sub UserForm_Initialize()
-    Me.Caption = APPNAME & " - Metas para a Simulação do Estudo de Caso"
-    Me.BackColor = ApplicationColors.frmBgColorLevel3
-    
     'Form Appearance
-    Me.Caption = APPNAME & " - Gravimetria do RSU"
-    Me.BackColor = ApplicationColors.frmBgColorLevel3
-    
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.bgColorLevel3
-            Ctrl.ForeColor = ApplicationColors.fgColorLevel3
-         End If
-    Next Ctrl
+    Call modForm.applyLookAndFeel(Me, 3, "Metas para a Simulação do Estudo de Caso")
     
     LandfillDeviationTarget = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
     ExpectedDeadline = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)

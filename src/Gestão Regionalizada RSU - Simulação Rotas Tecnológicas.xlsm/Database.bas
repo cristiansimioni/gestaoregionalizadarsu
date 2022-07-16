@@ -55,10 +55,10 @@ Function Validate(ByVal name As String, ByVal value As String, Optional ByRef me
     Dim varMaxValue As Double
     
     varType = GetDatabaseValue(name, DatabaseColumn.colType)
-    varMinValue = GetDatabaseValue(name, DatabaseColumn.colMinValue)
-    varMaxValue = GetDatabaseValue(name, DatabaseColumn.colMaxValue)
     
     If varType = "Double" Then
+        varMinValue = GetDatabaseValue(name, DatabaseColumn.colMinValue)
+        varMaxValue = GetDatabaseValue(name, DatabaseColumn.colMaxValue)
         If IsNumeric(value) Then
             Dim number As Double
             number = CDbl(value)

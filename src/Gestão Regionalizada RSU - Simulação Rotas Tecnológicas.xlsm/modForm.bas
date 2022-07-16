@@ -31,14 +31,14 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
             btnBackColor = ApplicationColors.bgColorLevel1
             btnForeColor = ApplicationColors.fgColorLevel1
             txtForeColor = ApplicationColors.txtFgColorLevel1
-            txtAlign = 0
+            txtAlign = 1
         Case 2
             form.Caption = APPSHORTNAME & " - " & title
             frmBackColor = ApplicationColors.frmBgColorLevel2
             btnBackColor = ApplicationColors.bgColorLevel2
             btnForeColor = ApplicationColors.fgColorLevel2
             txtForeColor = ApplicationColors.txtFgColorLevel2
-            txtAlign = 0
+            txtAlign = 1
         Case 3
             form.Caption = APPSHORTNAME & " - " & title
             frmBackColor = ApplicationColors.frmBgColorLevel3
@@ -63,9 +63,16 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
         If TypeName(Ctrl) = "CommandButton" And Ctrl.name <> "btnAbout" And Ctrl.name <> "btnHelp" And Ctrl.name <> "btnClean" Then
             Ctrl.BackColor = btnBackColor
             Ctrl.ForeColor = btnForeColor
+            Ctrl.Font.Size = 9
+            Ctrl.FontName = "Open Sans"
+            Ctrl.FontBold = False
         ElseIf TypeName(Ctrl) = "TextBox" Then
             Ctrl.ForeColor = txtForeColor
             Ctrl.TextAlign = txtAlign
+            Ctrl.SpecialEffect = 0
+            Ctrl.BorderStyle = 1
+            Ctrl.Font.Size = 9
+            Ctrl.FontName = "Open Sans"
         End If
     Next Ctrl
     

@@ -16,12 +16,65 @@ Attribute VB_Exposed = False
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
-    Unload Me
+    If FormChanged Then
+        answer = MsgBox(MSG_CHANGED_NOT_SAVED, vbQuestion + vbYesNo + vbDefaultButton2, MSG_CHANGED_NOT_SAVED_TITLE)
+        If answer = vbYes Then
+          Call btnSave_Click
+        Else
+          Unload Me
+        End If
+    Else
+        Unload Me
+    End If
+End Sub
+
+Function validateForm() As Boolean
+    validateForm = True
+End Function
+
+Private Sub txtISSTax_Change()
+Call modForm.textBoxChange(txtISSTax, "ISSTax", FormChanged)
+End Sub
+Private Sub txtICMSTax_Change()
+Call modForm.textBoxChange(txtICMSTax, "ICMSTax", FormChanged)
+End Sub
+Private Sub txtCSLLTax_Change()
+Call modForm.textBoxChange(txtCSLLTax, "CSLLTax", FormChanged)
+End Sub
+Private Sub txtIRPJTax_Change()
+Call modForm.textBoxChange(txtIRPJTax, "IRPJTax", FormChanged)
 End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 4, "Impostos")
+    Call modForm.applyLookAndFeel(Me, 3, "Impostos")
     
+    txtISSTax = Database.GetDatabaseValue("ISSTax", colUserValue)
+    txtICMSTax = Database.GetDatabaseValue("ICMSTax", colUserValue)
+    txtCSLLTax = Database.GetDatabaseValue("CSLLTax", colUserValue)
+    txtIRPJTax = Database.GetDatabaseValue("IRPJTax", colUserValue)
+
     FormChanged = False
 End Sub
+
+Private Sub btnSave_Click()
+    If modForm.validateForm() Then
+        Call Database.SetDatabaseValue("ISSTax", colUserValue, CDbl(txtISSTax.Text))
+        Call Database.SetDatabaseValue("ICMSTax", colUserValue, CDbl(txtICMSTax.Text))
+        Call Database.SetDatabaseValue("CSLLTax", colUserValue, CDbl(txtCSLLTax.Text))
+        Call Database.SetDatabaseValue("IRPJTax", colUserValue, CDbl(txtIRPJTax.Text))
+
+        FormChanged = False
+        Unload Me
+    Else
+        answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
+    End If
+End Sub
+
+Private Sub btnDefault_Click()
+    txtISSTax = Database.GetDatabaseValue("ISSTax", colDefaultValue)
+    txtICMSTax = Database.GetDatabaseValue("ICMSTax", colDefaultValue)
+    txtCSLLTax = Database.GetDatabaseValue("CSLLTax", colDefaultValue)
+    txtIRPJTax = Database.GetDatabaseValue("IRPJTax", colDefaultValue)
+End Sub
+

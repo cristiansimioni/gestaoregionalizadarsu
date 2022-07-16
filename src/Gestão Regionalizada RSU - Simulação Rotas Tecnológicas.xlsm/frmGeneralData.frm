@@ -79,14 +79,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Me.Caption = APPNAME & " - Definição do Estudo de Caso"
-    Me.BackColor = ApplicationColors.frmBgColorLevel3
-    Dim Ctrl As Control
-    For Each Ctrl In Me.Controls
-        If TypeName(Ctrl) = "ToggleButton" Or TypeName(Ctrl) = "CommandButton" Then
-            Ctrl.BackColor = ApplicationColors.bgColorLevel3
-         End If
-    Next Ctrl
+    Call modForm.applyLookAndFeel(Me, 3, "Definição do Estudo de Caso")
     
     'Read database values
     COEmission = Database.GetDatabaseValue("COEmission", colUserValue)
