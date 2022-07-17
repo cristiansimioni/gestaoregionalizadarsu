@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "Selecionar Cidades"
-   ClientHeight    =   9045.001
+   ClientHeight    =   9330.001
    ClientLeft      =   225
    ClientTop       =   915
    ClientWidth     =   10980

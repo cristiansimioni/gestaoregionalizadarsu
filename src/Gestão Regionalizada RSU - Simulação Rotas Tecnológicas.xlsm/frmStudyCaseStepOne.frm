@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne
    ClientHeight    =   3390
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7680
+   ClientWidth     =   9675.001
    OleObjectBlob   =   "frmStudyCaseStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

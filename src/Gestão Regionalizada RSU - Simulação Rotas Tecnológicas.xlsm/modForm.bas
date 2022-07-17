@@ -78,6 +78,22 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
             Ctrl.Font.Size = 9
             Ctrl.FontName = "Open Sans"
         End If
+        
+        If Ctrl.name = "imgLogo" Then
+            Ctrl.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGLOGOEXTRASMALL)
+            Ctrl.width = 110
+            Ctrl.Height = 40
+            Ctrl.Left = 10
+            Ctrl.Top = 10
+            Ctrl.BackColor = RGB(240, 240, 240)
+            Ctrl.BorderStyle = 0
+        End If
+        
+        If Ctrl.name = "lblTitle" Then
+            Ctrl.Left = 130
+            Ctrl.Top = 20
+            Ctrl.BackColor = RGB(240, 240, 240)
+        End If
     Next Ctrl
     
     'Repaint form

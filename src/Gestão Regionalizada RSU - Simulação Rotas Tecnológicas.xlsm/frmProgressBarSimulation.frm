@@ -226,14 +226,20 @@ Private Sub executeSimulation()
                     strFormula = "="
                     Dim element As Integer
                     element = 1
-                    For Each r In consolidatedRows
-                        ColumnLetter = Split(Cells(1, x).Address, "$")(1)
-                        If element <> 1 Then
-                            strFormula = strFormula & "+"
-                        End If
-                        strFormula = strFormula & ColumnLetter & r
-                        element = element + 1
-                    Next r
+                    ColumnLetter = Split(Cells(1, x).Address, "$")(1)
+                    'Prazo de Contrato
+                    If x = 8 Then
+                        strFormula = ColumnLetter & consolidatedRows(1)
+                    Else
+                        For Each r In consolidatedRows
+                            
+                            If element <> 1 Then
+                                strFormula = strFormula & "+"
+                            End If
+                            strFormula = strFormula & ColumnLetter & r
+                            element = element + 1
+                        Next r
+                    End If
                     wksDefinedArrays.Cells(row, x).Formula = strFormula
                 Next x
                 

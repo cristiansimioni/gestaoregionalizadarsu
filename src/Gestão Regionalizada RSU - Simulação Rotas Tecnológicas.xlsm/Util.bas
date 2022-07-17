@@ -24,6 +24,10 @@ Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
 Public Const ICONCHECK              As String = "check-icon.jpg"
 Public Const ICONWARNING            As String = "error-icon.jpg"
 
+'Images
+Public Const imgLogo                As String = "logo-grey.jpg"
+Public Const IMGLOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
+
 'Messages
 Public Const MSG_ATTENTION                          As String = "Atenção"
 Public Const MSG_CLEAN_DATABASE                     As String = "Tem certeza que você deseja apagar tudo? Todos os dados inseridos serão apagados."
