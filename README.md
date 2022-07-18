@@ -1,6 +1,6 @@
 # Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição
 
-<img src="https://github.com/cristiansimioni/gestaoregionalizadarsu/blob/main/assets/logo.jpg" width=275>
+<img src="https://github.com/cristiansimioni/gestaoregionalizadarsu/blob/main/assets/logo.png" width=275>
 
 ## 📃 Resumo do projeto
 Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição

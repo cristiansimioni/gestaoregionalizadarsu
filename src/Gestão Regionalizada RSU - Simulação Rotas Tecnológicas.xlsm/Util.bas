@@ -19,6 +19,7 @@ Public Const FOLDERALGORITHM        As String = "Algoritmo"
 Public Const FOLDERBASEMARKET       As String = "Mercado Base"
 Public Const FOLDEROPTIMIZEDMARKET  As String = "Mercado Otimizado"
 Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
+Public Const FOLDERCHART            As String = "Gráficos"
 
 'Icons
 Public Const ICONCHECK              As String = "check-icon.jpg"
@@ -159,7 +160,7 @@ Dim errorCode As Integer
 
 'Provide file path to Python.exe
 PythonExe = Database.GetDatabaseValue("PythonPath", colUserValue)
-PythonScript = Application.ActiveWorkbook.Path & "\src\combinations\combinations.py"
+PythonScript = Application.ThisWorkbook.Path & "\src\combinations\combinations.py"
 
 Dim maxCluster, trashThreshold As Double
 maxCluster = Database.GetDatabaseValue("MaxClusters", colUserValue)

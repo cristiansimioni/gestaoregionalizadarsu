@@ -80,7 +80,7 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
         End If
         
         If Ctrl.name = "imgLogo" Then
-            Ctrl.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGLOGOEXTRASMALL)
+            Ctrl.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGLOGOEXTRASMALL)
             Ctrl.width = 110
             Ctrl.Height = 40
             Ctrl.Left = 10

@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
-   ClientHeight    =   9000.001
+   ClientHeight    =   8595.001
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   12600
+   ClientWidth     =   15240
    OleObjectBlob   =   "frmTool.frx":0000
    ShowModal       =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -28,7 +28,7 @@ Private Sub btnClean_Click()
 End Sub
 
 Private Sub btnHelp_Click()
-    ActiveWorkbook.FollowHyperlink (Application.ActiveWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
+    ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
 End Sub
 
 Private Sub btnStepFive_Click()
@@ -63,10 +63,10 @@ Private Sub UserForm_Initialize()
     lblApplicationSubName = APPSUBNAME
     lblApplicationVersion = "Versão: " & APPVERSION
     
-    imgStepOneStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    imgStepTwoStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    imgStepThreeStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    imgStepFourStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    imgStepFiveStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    imgStepSixStatus.Picture = LoadPicture(Application.ActiveWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    imgStepOneStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    imgStepTwoStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    imgStepThreeStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    imgStepSixStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
 End Sub

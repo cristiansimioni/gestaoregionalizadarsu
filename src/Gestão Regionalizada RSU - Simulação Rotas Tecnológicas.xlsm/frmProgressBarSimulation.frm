@@ -95,28 +95,32 @@ Private Sub executeSimulation()
                             wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-A"
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-A"
                             row = row + 1
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-B"
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-B"
                             row = row + 1
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-C"
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-C"
                             row = row + 1
                         Else
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = r
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & r
                             row = row + 1
                         End If
                         
                         'Create routes from 1 to 5 for all markets
                         newFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & r & ".xlsm"
-                        templateFile = Application.ActiveWorkbook.Path & "\templates\Base Ferramenta 3 - " & r & ".xlsm"
+                        templateFile = Application.ThisWorkbook.Path & "\templates\Base Ferramenta 3 - " & r & ".xlsm"
                         
                         lblFile = "Processando arquivo: " & newFile
                         percent = processed / total
@@ -139,7 +143,7 @@ Private Sub executeSimulation()
                     'Create tool 2 for array
                     Dim toolTwoFile, templateToolTwoFile As String
                     toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & " - Ferramenta 2.xlsm"
-                    templateFile = Application.ActiveWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsm"
+                    templateFile = Application.ThisWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsm"
                     
                     
                     lblFile = "Processando arquivo: " & toolTwoFile
@@ -180,8 +184,9 @@ Private Sub executeSimulation()
                     
                     wksDefinedArrays.Cells(row, 1).value = m
                     wksDefinedArrays.Cells(row, 2).value = a.vCode
-                    wksDefinedArrays.Cells(row, 3).value = "Consolidado"
+                    wksDefinedArrays.Cells(row, 3).value = s.vCode & "(Consolidado)"
                     wksDefinedArrays.Cells(row, 4).value = "NA"
+                    wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
                     For x = 6 To 62
                         wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(selectedRow, x).value
@@ -216,9 +221,10 @@ Private Sub executeSimulation()
                     
                 'Read data from tool 2 and insert into sheet
                 wksDefinedArrays.Cells(row, 1).value = m
-                wksDefinedArrays.Cells(row, 2).value = "Consolidado"
+                wksDefinedArrays.Cells(row, 2).value = a.vCode & "(Consolidado)"
                 wksDefinedArrays.Cells(row, 3).value = "NA"
                 wksDefinedArrays.Cells(row, 4).value = "NA"
+                wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & a.vCode
                 
                 For x = 6 To 62
                     Dim strFormula As String
@@ -227,18 +233,35 @@ Private Sub executeSimulation()
                     Dim element As Integer
                     element = 1
                     ColumnLetter = Split(Cells(1, x).Address, "$")(1)
-                    'Prazo de Contrato
-                    If x = 8 Then
-                        strFormula = ColumnLetter & consolidatedRows(1)
-                    Else
+                    
+                    If x = 8 Then 'Prazo de Contrato
+                        strFormula = strFormula & ColumnLetter & consolidatedRows(1)
+                    ElseIf x >= 9 And x <= 21 Then 'Somatório
                         For Each r In consolidatedRows
-                            
                             If element <> 1 Then
                                 strFormula = strFormula & "+"
                             End If
                             strFormula = strFormula & ColumnLetter & r
                             element = element + 1
                         Next r
+                    Else 'Soma Ponderada
+                        Dim divisionPart As String
+                        Dim sumPart As String
+                        sumPart = "("
+                        divisionPart = "("
+                        For Each r In consolidatedRows
+                            If element <> 1 Then
+                                divisionPart = divisionPart & "+"
+                                sumPart = sumPart & "+"
+                            End If
+                            sumPart = sumPart & ColumnLetter & r & "*V" & r
+                            divisionPart = divisionPart & "V" & r
+                            element = element + 1
+                        Next r
+                        sumPart = sumPart & ")"
+                        divisionPart = divisionPart & ")"
+                        
+                        strFormula = strFormula & sumPart & "/" & divisionPart
                     End If
                     wksDefinedArrays.Cells(row, x).Formula = strFormula
                 Next x
