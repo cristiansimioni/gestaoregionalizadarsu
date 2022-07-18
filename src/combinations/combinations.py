@@ -534,7 +534,6 @@ def main():
         
         new["arranjo"] = i
         new["sub"] = sub
-        new["capexopex"] = 0 #cpopfinalValue
         new["capexopex"] = cpopfinalValue
         new["lixo-array"] = trashArray
         new["inbound"] = inboundArray/trashArray
@@ -559,11 +558,11 @@ def main():
             report.write("-- Outbound: " + repr(d["outbound"]) + "\n\n")
             report.write("-- Sub-arranjos:\n")
 
-            output.write(repr(d["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(d["total"]) + ";" + repr(d["lixo-array"]) + ";" + repr(d["capexopex"]) + ";" + repr(d["inbound"])  + ";" + repr(d["outbound"]) + ";1\n")
+            output.write(repr(d["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(d["total"]) + ";" + repr(d["lixo-array"]) + ";" + repr(d["capexopex"]) + ";" + repr(d["inbound"]) + ";" + repr(d["outbound"]) + ";" + repr(d["outbound-existente"]) + "\n")
 
 
             for x in range(len(d["sub"])):
-                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro-existente"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["tecnologia"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + ";1\n")
+                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro-existente"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["tecnologia"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + ";" + repr(d["sub"][x]["outbound-existente"]) + "\n")
 
                 report.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
                 report.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
