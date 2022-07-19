@@ -49,7 +49,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Parametrizar Algoritmo")
+    Call modForm.applyLookAndFeel(Me, 3, "Parametrizar Algoritmo", True)
     
     
     'Read database values

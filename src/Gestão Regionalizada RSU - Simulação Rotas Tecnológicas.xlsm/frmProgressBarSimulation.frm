@@ -154,7 +154,7 @@ Private Sub executeSimulation()
                         FileCopy templateFile, toolTwoFile
                      End If
                     
-                    Call EditToolTwoData(toolTwoFile, routeFiles, s)
+                    Call EditToolTwoData(toolTwoFile, routeFiles, s, m)
                     
                     Call CopyDataFromToolTwo(toolTwoFile, row)
                     

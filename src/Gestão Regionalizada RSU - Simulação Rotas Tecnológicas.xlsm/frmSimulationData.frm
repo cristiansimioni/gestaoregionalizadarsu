@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
-   ClientHeight    =   4920
+   ClientHeight    =   5235
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   7875
+   ClientWidth     =   9600.001
    OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -115,7 +115,7 @@ Private Sub UserForm_Initialize()
     CurrentLandfillCost = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
     CurrentCostRSU = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
     LandfillCurrentDeviation = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
-    ValuationEfficiency = Database.GetDatabaseValue("ValuationEfficiency", colUserValue)
+    ValuationEfficiency = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 2)
     
     If LandfillDeviationTarget + ExpectedDeadline + MixedRecyclingIndex + TargetExpectation + CurrentLandfillCost + CurrentCostRSU + LandfillCurrentDeviation + ValuationEfficiency > 0 Then
         txtLandfillDeviationTarget.Text = LandfillDeviationTarget

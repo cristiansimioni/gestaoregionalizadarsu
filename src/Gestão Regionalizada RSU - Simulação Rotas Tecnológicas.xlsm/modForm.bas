@@ -76,6 +76,7 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
             Ctrl.SpecialEffect = 0
             Ctrl.BorderStyle = 1
             Ctrl.Font.Size = 9
+            Ctrl.FontBold = False
             Ctrl.FontName = "Open Sans"
         End If
         
