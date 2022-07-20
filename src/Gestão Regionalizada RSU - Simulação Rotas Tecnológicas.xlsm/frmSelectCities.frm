@@ -123,7 +123,21 @@ Private Sub UserForm_Initialize()
                 Exit For
             End If
         Next index
-        If inList = False Then cbxUF.AddItem (city.vUF)
+        If inList = False Then
+            Dim added As Boolean
+            added = False
+            For index = 0 To cbxUF.ListCount - 1
+                UF = cbxUF.List(index)
+                If city.vUF < UF Then
+                    cbxUF.AddItem (city.vUF), index
+                    added = True
+                    Exit For
+                End If
+            Next index
+            If added = False Then
+                cbxUF.AddItem (city.vUF)
+            End If
+        End If
     Next city
     
     'Show current selected cities

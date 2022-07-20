@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceValAutoconsumo 
    Caption         =   "Preços para Valorização - Autoconsumo"
-   ClientHeight    =   2985
+   ClientHeight    =   3915
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   8295.001
+   ClientWidth     =   9255.001
    OleObjectBlob   =   "frmPriceValAutoconsumo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -16,12 +16,77 @@ Attribute VB_Exposed = False
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
-    Unload Me
+    If FormChanged Then
+        answer = MsgBox(MSG_CHANGED_NOT_SAVED, vbQuestion + vbYesNo + vbDefaultButton2, MSG_CHANGED_NOT_SAVED_TITLE)
+        If answer = vbYes Then
+          Call btnSave_Click
+        Else
+          Unload Me
+        End If
+    Else
+        Unload Me
+    End If
+End Sub
+
+Function validateForm() As Boolean
+    validateForm = True
+End Function
+
+Private Sub txtCostPurchaseElectricityConcessionaireBase_Change()
+Call modForm.textBoxChange(txtCostPurchaseElectricityConcessionaireBase, "CostPurchaseElectricityConcessionaireBase", FormChanged)
+End Sub
+Private Sub txtReferencePublicFuelCostAutBase_Change()
+Call modForm.textBoxChange(txtReferencePublicFuelCostAutBase, "ReferencePublicFuelCostAutBase", FormChanged)
+End Sub
+Private Sub txtProposedPriceBiofuelAutBase_Change()
+Call modForm.textBoxChange(txtProposedPriceBiofuelAutBase, "ProposedPriceBiofuelAutBase", FormChanged)
+End Sub
+Private Sub txtCostPurchaseElectricityConcessionaireOptimized_Change()
+Call modForm.textBoxChange(txtCostPurchaseElectricityConcessionaireOptimized, "CostPurchaseElectricityConcessionaireOptimized", FormChanged)
+End Sub
+Private Sub txtReferencePublicFuelCostAutOptimized_Change()
+Call modForm.textBoxChange(txtReferencePublicFuelCostAutOptimized, "ReferencePublicFuelCostAutOptimized", FormChanged)
+End Sub
+Private Sub txtProposedPriceBiofuelAutOptimized_Change()
+Call modForm.textBoxChange(txtProposedPriceBiofuelAutOptimized, "ProposedPriceBiofuelAutOptimized", FormChanged)
 End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 4, "BBBBBBBBBBBBBBB")
+    Call modForm.applyLookAndFeel(Me, 3, "Autoconsumo")
     
+    txtCostPurchaseElectricityConcessionaireBase = Database.GetDatabaseValue("CostPurchaseElectricityConcessionaireBase", colUserValue)
+    txtReferencePublicFuelCostAutBase = Database.GetDatabaseValue("ReferencePublicFuelCostAutBase", colUserValue)
+    txtProposedPriceBiofuelAutBase = Database.GetDatabaseValue("ProposedPriceBiofuelAutBase", colUserValue)
+    txtCostPurchaseElectricityConcessionaireOptimized = Database.GetDatabaseValue("CostPurchaseElectricityConcessionaireOptimized", colUserValue)
+    txtReferencePublicFuelCostAutOptimized = Database.GetDatabaseValue("ReferencePublicFuelCostAutOptimized", colUserValue)
+    txtProposedPriceBiofuelAutOptimized = Database.GetDatabaseValue("ProposedPriceBiofuelAutOptimized", colUserValue)
+
     FormChanged = False
 End Sub
+
+Private Sub btnSave_Click()
+    If modForm.validateForm() Then
+        Call Database.SetDatabaseValue("CostPurchaseElectricityConcessionaireBase", colUserValue, CDbl(txtCostPurchaseElectricityConcessionaireBase.Text))
+        Call Database.SetDatabaseValue("ReferencePublicFuelCostAutBase", colUserValue, CDbl(txtReferencePublicFuelCostAutBase.Text))
+        Call Database.SetDatabaseValue("ProposedPriceBiofuelAutBase", colUserValue, CDbl(txtProposedPriceBiofuelAutBase.Text))
+        Call Database.SetDatabaseValue("CostPurchaseElectricityConcessionaireOptimized", colUserValue, CDbl(txtCostPurchaseElectricityConcessionaireOptimized.Text))
+        Call Database.SetDatabaseValue("ReferencePublicFuelCostAutOptimized", colUserValue, CDbl(txtReferencePublicFuelCostAutOptimized.Text))
+        Call Database.SetDatabaseValue("ProposedPriceBiofuelAutOptimized", colUserValue, CDbl(txtProposedPriceBiofuelAutOptimized.Text))
+        FormChanged = False
+        Unload Me
+    Else
+        answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
+    End If
+End Sub
+
+Private Sub btnDefault_Click()
+    txtCostPurchaseElectricityConcessionaireBase = Database.GetDatabaseValue("CostPurchaseElectricityConcessionaireBase", colDefaultValue)
+    txtReferencePublicFuelCostAutBase = Database.GetDatabaseValue("ReferencePublicFuelCostAutBase", colDefaultValue)
+    txtProposedPriceBiofuelAutBase = Database.GetDatabaseValue("ProposedPriceBiofuelAutBase", colDefaultValue)
+    txtCostPurchaseElectricityConcessionaireOptimized = Database.GetDatabaseValue("CostPurchaseElectricityConcessionaireOptimized", colDefaultValue)
+    txtReferencePublicFuelCostAutOptimized = Database.GetDatabaseValue("ReferencePublicFuelCostAutOptimized", colDefaultValue)
+    txtProposedPriceBiofuelAutOptimized = Database.GetDatabaseValue("ProposedPriceBiofuelAutOptimized", colDefaultValue)
+End Sub
+
+

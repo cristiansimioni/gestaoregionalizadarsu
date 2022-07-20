@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAlgorithmParameter 
    Caption         =   "UserForm1"
-   ClientHeight    =   3300
+   ClientHeight    =   4140
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   10830
+   ClientWidth     =   8040
    OleObjectBlob   =   "frmAlgorithmParameter.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -31,6 +31,23 @@ Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
     FormChanged = True
 End Sub
 
+Private Sub btnPythonExecutable_Click()
+    Dim sPython As String
+    With Application.FileDialog(msoFileDialogFilePicker)
+        .title = "Selecione o executável (.exe) do Python"
+        .Filters.Add "Python", "*.exe", 1
+        .AllowMultiSelect = False
+        If .Show = -1 Then
+            sPython = .SelectedItems(1)
+        End If
+    End With
+    
+    If sPython <> "" Then
+        txtPythonPath.Text = sPython
+        FormChanged = True
+    End If
+End Sub
+
 Private Sub btnSave_Click()
     Call Database.SetDatabaseValue("PythonPath", colUserValue, txtPythonPath.Text)
     Call Database.SetDatabaseValue("TrashThreshold", colUserValue, CDbl(txtTrashThreshold.Text))
@@ -49,8 +66,10 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Parametrizar Algoritmo", True)
-    
+    Call modForm.applyLookAndFeel(Me, 3, "Parametrizar Algoritmo")
+    'Special Configuration
+    txtPythonPath.ForeColor = RGB(0, 0, 0)
+    txtPythonPath.TextAlign = fmTextAlignLeft
     
     'Read database values
     txtPythonPath = Database.GetDatabaseValue("PythonPath", colUserValue)
@@ -58,5 +77,4 @@ Private Sub UserForm_Initialize()
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colUserValue)
     
     FormChanged = False
-    
 End Sub
