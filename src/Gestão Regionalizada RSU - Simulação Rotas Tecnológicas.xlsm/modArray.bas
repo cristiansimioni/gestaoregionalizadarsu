@@ -63,6 +63,7 @@ Public Function readArrays()
             subArr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
             subArr.vLandfill = Replace(subArr.vLandfill, "'", "")
             subArr.vExistentLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colExistentLandfill).value
+            subArr.vExistentLandfill = Replace(subArr.vExistentLandfill, "'", "")
             subArr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             subArr.vUTVR = Replace(subArr.vUTVR, "'", "")
             subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)

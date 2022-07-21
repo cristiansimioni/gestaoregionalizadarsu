@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmOpexData
    ClientHeight    =   8445.001
    ClientLeft      =   240
    ClientTop       =   930
-   ClientWidth     =   10785
+   ClientWidth     =   11055
    OleObjectBlob   =   "frmOpexData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -31,6 +31,10 @@ End Sub
 Function validateForm() As Boolean
     validateForm = True
 End Function
+
+Private Sub cbxHiringRegimeManualOperator_Change()
+FormChanged = True
+End Sub
 
 Private Sub txtAverageSalaryManager_Change()
 Call modForm.textBoxChange(txtAverageSalaryManager, "AverageSalaryManager", FormChanged)
@@ -88,6 +92,20 @@ Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Dados Indexadores de Opex")
     
+    'Combo box
+    Dim index As Integer
+    index = 0
+    Dim valuesHiringRegimeManualOperator
+    valuesHiringRegimeManualOperator = Split(Database.GetDatabaseValue("HiringRegimeManualOperator", colUnit), ",")
+    For Each v In valuesHiringRegimeManualOperator
+        cbxHiringRegimeManualOperator.AddItem v
+        If v = Database.GetDatabaseValue("HiringRegimeManualOperator", colUserValue) Then
+            cbxHiringRegimeManualOperator.ListIndex = index
+        End If
+        index = index + 1
+    Next v
+    index = 0
+    
     txtAverageSalaryManager = Database.GetDatabaseValue("AverageSalaryManager", colUserValue)
     txtAverageSalarySupervision = Database.GetDatabaseValue("AverageSalarySupervision", colUserValue)
     txtAverageSalaryOperational = Database.GetDatabaseValue("AverageSalaryOperational", colUserValue)
@@ -114,7 +132,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("AverageSalaryManager", colUserValue, CDbl(txtAverageSalaryManager.Text))
         Call Database.SetDatabaseValue("AverageSalarySupervision", colUserValue, CDbl(txtAverageSalarySupervision.Text))
         Call Database.SetDatabaseValue("AverageSalaryOperational", colUserValue, CDbl(txtAverageSalaryOperational.Text))
-        Call Database.SetDatabaseValue("HiringRegimeManualOperator", colUserValue, CDbl(txtHiringRegimeManualOperator.Text))
+        Call Database.SetDatabaseValue("HiringRegimeManualOperator", colUserValue, cbxHiringRegimeManualOperator.value)
         Call Database.SetDatabaseValue("AverageSalaryManualOperator", colUserValue, CDbl(txtAverageSalaryManualOperator.Text))
         Call Database.SetDatabaseValue("AverageCostElectricityConsumption", colUserValue, CDbl(txtAverageCostElectricityConsumption.Text))
         Call Database.SetDatabaseValue("FixedCostDemandContractedElectricity", colUserValue, CDbl(txtFixedCostDemandContractedElectricity.Text))
@@ -136,10 +154,21 @@ Private Sub btnSave_Click()
 End Sub
 
 Private Sub btnDefault_Click()
+    Dim index As Integer
+    index = 0
+    Dim valuesHiringRegimeManualOperator
+    valuesHiringRegimeManualOperator = Split(Database.GetDatabaseValue("HiringRegimeManualOperator", colUnit), ",")
+    For Each v In valuesHiringRegimeManualOperator
+        If v = Database.GetDatabaseValue("HiringRegimeManualOperator", colDefaultValue) Then
+            cbxHiringRegimeManualOperator.ListIndex = index
+        End If
+        index = index + 1
+    Next v
+    index = 0
+    
     txtAverageSalaryManager = Database.GetDatabaseValue("AverageSalaryManager", colDefaultValue)
     txtAverageSalarySupervision = Database.GetDatabaseValue("AverageSalarySupervision", colDefaultValue)
     txtAverageSalaryOperational = Database.GetDatabaseValue("AverageSalaryOperational", colDefaultValue)
-    txtHiringRegimeManualOperator = Database.GetDatabaseValue("HiringRegimeManualOperator", colDefaultValue)
     txtAverageSalaryManualOperator = Database.GetDatabaseValue("AverageSalaryManualOperator", colDefaultValue)
     txtAverageCostElectricityConsumption = Database.GetDatabaseValue("AverageCostElectricityConsumption", colDefaultValue)
     txtFixedCostDemandContractedElectricity = Database.GetDatabaseValue("FixedCostDemandContractedElectricity", colDefaultValue)

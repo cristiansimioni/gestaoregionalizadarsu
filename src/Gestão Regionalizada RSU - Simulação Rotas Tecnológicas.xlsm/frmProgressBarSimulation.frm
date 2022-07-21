@@ -254,8 +254,8 @@ Private Sub executeSimulation()
                                 divisionPart = divisionPart & "+"
                                 sumPart = sumPart & "+"
                             End If
-                            sumPart = sumPart & ColumnLetter & r & "*V" & r
-                            divisionPart = divisionPart & "V" & r
+                            sumPart = sumPart & ColumnLetter & r & "*K" & r
+                            divisionPart = divisionPart & "K" & r
                             element = element + 1
                         Next r
                         sumPart = sumPart & ")"

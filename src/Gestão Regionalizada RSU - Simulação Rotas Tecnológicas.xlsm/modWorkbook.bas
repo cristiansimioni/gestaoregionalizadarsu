@@ -11,6 +11,7 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     
     If market = FOLDERLANDFILLMARKET Then
         ActiveWorkbook.Sheets("R-Definição").range("E121") = "Existente"
+        ActiveWorkbook.Sheets("R&C-Painel de Controle").range("D88") = arr.vOutboundExistentLandfill
     End If
     
     'Valores da ferramenta
@@ -58,6 +59,10 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
     ' Valores sub-arranjo
     ActiveWorkbook.Sheets("ANÁLISE DE SITES MULTICRITÉRIO").range("H48") = arr.vInbound
     ActiveWorkbook.Sheets("ANÁLISE DE SITES MULTICRITÉRIO").range("H52") = arr.vOutbound
+    
+    If market = FOLDERLANDFILLMARKET Then
+        ActiveWorkbook.Sheets("ANÁLISE DE SITES MULTICRITÉRIO").range("H52") = arr.vOutboundExistentLandfill
+    End If
     
     'Valores da ferramenta
     Dim wksDatabase As Worksheet

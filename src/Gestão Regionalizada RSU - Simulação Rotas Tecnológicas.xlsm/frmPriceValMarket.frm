@@ -32,6 +32,14 @@ Function validateForm() As Boolean
     validateForm = True
 End Function
 
+Private Sub cbxDonationRevenueRecyclablesBase_Change()
+    FormChanged = True
+End Sub
+
+Private Sub cbxDonationRevenueRecyclablesOptimized_Change()
+FormChanged = True
+End Sub
+
 Private Sub txtElectricEnergyBiomassBase_Change()
 Call modForm.textBoxChange(txtElectricEnergyBiomassBase, "ElectricEnergyBiomassBase", FormChanged)
 End Sub
@@ -121,12 +129,34 @@ Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Comercialização Mercado")
     
+    'Combo box
+    Dim index As Integer
+    index = 0
+    Dim valuesDonationRevenueRecyclablesBase
+    valuesDonationRevenueRecyclablesBase = Split(Database.GetDatabaseValue("DonationRevenueRecyclablesBase", colUnit), ",")
+    For Each v In valuesDonationRevenueRecyclablesBase
+        cbxDonationRevenueRecyclablesBase.AddItem v
+        If v = Database.GetDatabaseValue("DonationRevenueRecyclablesBase", colUserValue) Then
+            cbxDonationRevenueRecyclablesBase.ListIndex = index
+        End If
+        index = index + 1
+    Next v
+    index = 0
+    Dim valuesDonationRevenueRecyclablesOptimized
+    valuesDonationRevenueRecyclablesOptimized = Split(Database.GetDatabaseValue("DonationRevenueRecyclablesOptimized", colUnit), ",")
+    For Each v In valuesDonationRevenueRecyclablesOptimized
+        cbxDonationRevenueRecyclablesOptimized.AddItem v
+        If v = Database.GetDatabaseValue("DonationRevenueRecyclablesOptimized", colUserValue) Then
+            cbxDonationRevenueRecyclablesOptimized.ListIndex = index
+        End If
+        index = index + 1
+    Next v
+    
     txtElectricEnergyBiomassBase = Database.GetDatabaseValue("ElectricEnergyBiomassBase", colUserValue)
     txtElectricEnergySolidWasteBase = Database.GetDatabaseValue("ElectricEnergySolidWasteBase", colUserValue)
     txtBiomethaneBase = Database.GetDatabaseValue("BiomethaneBase", colUserValue)
     txtCDRBase = Database.GetDatabaseValue("CDRBase", colUserValue)
     txtOrganicCompoundBase = Database.GetDatabaseValue("OrganicCompoundBase", colUserValue)
-    txtDonationRevenueRecyclablesBase = Database.GetDatabaseValue("DonationRevenueRecyclablesBase", colUserValue)
     txtDonationRevenueCollectorsBase = Database.GetDatabaseValue("DonationRevenueCollectorsBase", colUserValue)
     txtSalesRecyclablesOutsideStateBase = Database.GetDatabaseValue("SalesRecyclablesOutsideStateBase", colUserValue)
     txtSalePricePaperBase = Database.GetDatabaseValue("SalePricePaperBase", colUserValue)
@@ -140,7 +170,6 @@ Private Sub UserForm_Initialize()
     txtBiomethaneOptimized = Database.GetDatabaseValue("BiomethaneOptimized", colUserValue)
     txtCDROptimized = Database.GetDatabaseValue("CDROptimized", colUserValue)
     txtOrganicCompoundOptimized = Database.GetDatabaseValue("OrganicCompoundOptimized", colUserValue)
-    txtDonationRevenueRecyclablesOptimized = Database.GetDatabaseValue("DonationRevenueRecyclablesOptimized", colUserValue)
     txtDonationRevenueCollectorsOptimized = Database.GetDatabaseValue("DonationRevenueCollectorsOptimized", colUserValue)
     txtSalesRecyclablesOutsideStateOptimized = Database.GetDatabaseValue("SalesRecyclablesOutsideStateOptimized", colUserValue)
     txtSalePricePaperOptimized = Database.GetDatabaseValue("SalePricePaperOptimized", colUserValue)
@@ -160,7 +189,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("BiomethaneBase", colUserValue, CDbl(txtBiomethaneBase.Text))
         Call Database.SetDatabaseValue("CDRBase", colUserValue, CDbl(txtCDRBase.Text))
         Call Database.SetDatabaseValue("OrganicCompoundBase", colUserValue, CDbl(txtOrganicCompoundBase.Text))
-        Call Database.SetDatabaseValue("DonationRevenueRecyclablesBase", colUserValue, txtDonationRevenueRecyclablesBase.Text)
+        Call Database.SetDatabaseValue("DonationRevenueRecyclablesBase", colUserValue, cbxDonationRevenueRecyclablesBase.value)
         Call Database.SetDatabaseValue("DonationRevenueCollectorsBase", colUserValue, CDbl(txtDonationRevenueCollectorsBase.Text))
         Call Database.SetDatabaseValue("SalesRecyclablesOutsideStateBase", colUserValue, CDbl(txtSalesRecyclablesOutsideStateBase.Text))
         Call Database.SetDatabaseValue("SalePricePaperBase", colUserValue, CDbl(txtSalePricePaperBase.Text))
@@ -174,7 +203,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("BiomethaneOptimized", colUserValue, CDbl(txtBiomethaneOptimized.Text))
         Call Database.SetDatabaseValue("CDROptimized", colUserValue, CDbl(txtCDROptimized.Text))
         Call Database.SetDatabaseValue("OrganicCompoundOptimized", colUserValue, CDbl(txtOrganicCompoundOptimized.Text))
-        Call Database.SetDatabaseValue("DonationRevenueRecyclablesOptimized", colUserValue, txtDonationRevenueRecyclablesOptimized.Text)
+        Call Database.SetDatabaseValue("DonationRevenueRecyclablesOptimized", colUserValue, cbxDonationRevenueRecyclablesOptimized.value)
         Call Database.SetDatabaseValue("DonationRevenueCollectorsOptimized", colUserValue, CDbl(txtDonationRevenueCollectorsOptimized.Text))
         Call Database.SetDatabaseValue("SalesRecyclablesOutsideStateOptimized", colUserValue, CDbl(txtSalesRecyclablesOutsideStateOptimized.Text))
         Call Database.SetDatabaseValue("SalePricePaperOptimized", colUserValue, CDbl(txtSalePricePaperOptimized.Text))
@@ -191,12 +220,33 @@ Private Sub btnSave_Click()
 End Sub
 
 Private Sub btnDefault_Click()
+
+    'Combo box
+    Dim index As Integer
+    index = 0
+    Dim valuesDonationRevenueRecyclablesBase
+    valuesDonationRevenueRecyclablesBase = Split(Database.GetDatabaseValue("DonationRevenueRecyclablesBase", colUnit), ",")
+    For Each v In valuesDonationRevenueRecyclablesBase
+        If v = Database.GetDatabaseValue("DonationRevenueRecyclablesBase", colDefaultValue) Then
+            cbxDonationRevenueRecyclablesBase.ListIndex = index
+        End If
+        index = index + 1
+    Next v
+    index = 0
+    Dim valuesDonationRevenueRecyclablesOptimized
+    valuesDonationRevenueRecyclablesOptimized = Split(Database.GetDatabaseValue("DonationRevenueRecyclablesOptimized", colUnit), ",")
+    For Each v In valuesDonationRevenueRecyclablesOptimized
+        If v = Database.GetDatabaseValue("DonationRevenueRecyclablesOptimized", colDefaultValue) Then
+            cbxDonationRevenueRecyclablesOptimized.ListIndex = index
+        End If
+        index = index + 1
+    Next v
+    
     txtElectricEnergyBiomassBase = Database.GetDatabaseValue("ElectricEnergyBiomassBase", colDefaultValue)
     txtElectricEnergySolidWasteBase = Database.GetDatabaseValue("ElectricEnergySolidWasteBase", colDefaultValue)
     txtBiomethaneBase = Database.GetDatabaseValue("BiomethaneBase", colDefaultValue)
     txtCDRBase = Database.GetDatabaseValue("CDRBase", colDefaultValue)
     txtOrganicCompoundBase = Database.GetDatabaseValue("OrganicCompoundBase", colDefaultValue)
-    txtDonationRevenueRecyclablesBase = Database.GetDatabaseValue("DonationRevenueRecyclablesBase", colDefaultValue)
     txtDonationRevenueCollectorsBase = Database.GetDatabaseValue("DonationRevenueCollectorsBase", colDefaultValue)
     txtSalesRecyclablesOutsideStateBase = Database.GetDatabaseValue("SalesRecyclablesOutsideStateBase", colDefaultValue)
     txtSalePricePaperBase = Database.GetDatabaseValue("SalePricePaperBase", colDefaultValue)
@@ -210,7 +260,6 @@ Private Sub btnDefault_Click()
     txtBiomethaneOptimized = Database.GetDatabaseValue("BiomethaneOptimized", colDefaultValue)
     txtCDROptimized = Database.GetDatabaseValue("CDROptimized", colDefaultValue)
     txtOrganicCompoundOptimized = Database.GetDatabaseValue("OrganicCompoundOptimized", colDefaultValue)
-    txtDonationRevenueRecyclablesOptimized = Database.GetDatabaseValue("DonationRevenueRecyclablesOptimized", colDefaultValue)
     txtDonationRevenueCollectorsOptimized = Database.GetDatabaseValue("DonationRevenueCollectorsOptimized", colDefaultValue)
     txtSalesRecyclablesOutsideStateOptimized = Database.GetDatabaseValue("SalesRecyclablesOutsideStateOptimized", colDefaultValue)
     txtSalePricePaperOptimized = Database.GetDatabaseValue("SalePricePaperOptimized", colDefaultValue)
