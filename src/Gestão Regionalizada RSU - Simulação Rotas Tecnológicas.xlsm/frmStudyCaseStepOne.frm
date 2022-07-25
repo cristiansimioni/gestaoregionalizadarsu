@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne 
    Caption         =   "Dados de Definição do Estudo de Caso"
    ClientHeight    =   3915
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   8640.001
+   ClientLeft      =   240
+   ClientTop       =   930
+   ClientWidth     =   8625.001
    OleObjectBlob   =   "frmStudyCaseStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -32,18 +32,19 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub btnSave_Click()
-    If validateForm() Then
+    If ValidateForm() Then
         Call Database.SetDatabaseValue("GenerationPerCapitaRDO", colUserValue, CDbl(txtGenerationPerCapitaRDO.Text))
         Call Database.SetDatabaseValue("IndexSelectiveColletionRSU", colUserValue, CDbl(txtIndexSelectiveColletionRSU.Text))
         Call Database.SetDatabaseValue("AnnualGrowthPopulation", colUserValue, CDbl(txtAnnualGrowthPopulation.Text))
         Call Database.SetDatabaseValue("AnnualGrowthCollect", colUserValue, CDbl(txtAnnualGrowthCollect.Text))
         FormChanged = False
         Unload Me
+        frmStepOne.updateForm
     Else
         answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
     End If

@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTaxes 
    Caption         =   "UserForm1"
-   ClientHeight    =   3540
-   ClientLeft      =   120
-   ClientTop       =   465
+   ClientHeight    =   3555
+   ClientLeft      =   240
+   ClientTop       =   930
    ClientWidth     =   8400.001
    OleObjectBlob   =   "frmTaxes.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtISSTax_Change()
@@ -58,7 +58,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("ISSTax", colUserValue, CDbl(txtISSTax.Text))
         Call Database.SetDatabaseValue("ICMSTax", colUserValue, CDbl(txtICMSTax.Text))
         Call Database.SetDatabaseValue("CSLLTax", colUserValue, CDbl(txtCSLLTax.Text))

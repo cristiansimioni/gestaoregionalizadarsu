@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmRSUGravimetry 
    Caption         =   "Dados de Gravimetria do RSU"
-   ClientHeight    =   8475.001
-   ClientLeft      =   240
-   ClientTop       =   930
-   ClientWidth     =   8400.001
+   ClientHeight    =   8460.001
+   ClientLeft      =   360
+   ClientTop       =   1395
+   ClientWidth     =   8385.001
    OleObjectBlob   =   "frmRSUGravimetry.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -29,17 +29,17 @@ Dim MineralResidues As Double
 Dim Others As Double
 Dim FormChanged As Boolean
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub btnBack_Click()
     If FormChanged Then
         answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
         If answer = vbYes Then
-          Call btnSave_Click
+            Call btnSave_Click
         Else
-          Unload Me
+            Unload Me
         End If
     Else
         Unload Me
@@ -82,7 +82,7 @@ Private Sub btnDefaultValues_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If validateForm() Then
+    If ValidateForm() Then
         Call Database.SetDatabaseValue("FoodWaste", colUserValue, FoodWaste)
         Call Database.SetDatabaseValue("GreenWaste", colUserValue, GreenWaste)
         Call Database.SetDatabaseValue("Paper", colUserValue, Paper)
@@ -99,6 +99,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("Others", colUserValue, Others)
         FormChanged = False
         Unload Me
+        frmStepOne.updateForm
     Else
         answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
     End If

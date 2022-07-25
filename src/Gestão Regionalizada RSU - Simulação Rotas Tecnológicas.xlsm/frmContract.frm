@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtCostCollectionTransportSelectiveDry_Change()
@@ -81,7 +81,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("CostCollectionTransportSelectiveDry", colUserValue, CDbl(txtCostCollectionTransportSelectiveDry.Text))
         Call Database.SetDatabaseValue("CostCollectionTransportOrganicSelection", colUserValue, CDbl(txtCostCollectionTransportOrganicSelection.Text))
         Call Database.SetDatabaseValue("CostCollectionTransportMixedTailings", colUserValue, CDbl(txtCostCollectionTransportMixedTailings.Text))

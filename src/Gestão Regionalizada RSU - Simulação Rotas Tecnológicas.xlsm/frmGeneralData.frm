@@ -32,12 +32,12 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub btnSave_Click()
-    If validateForm() Then
+    If ValidateForm() Then
         Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))
         Call Database.SetDatabaseValue("AverageCostTransportation", colUserValue, CDbl(txtAverageCostTransportation.Text))
         Call Database.SetDatabaseValue("ReducingCostMovimentation", colUserValue, CDbl(txtReducingCostMovimentation.Text))

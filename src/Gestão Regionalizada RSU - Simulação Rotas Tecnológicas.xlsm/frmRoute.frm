@@ -34,7 +34,7 @@ Private Sub btnDefault_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("MixedWasteToBeSorted", colUserValue, CDbl(txtMixedWasteToBeSorted.Text))
         Call Database.SetDatabaseValue("MechanizedSortingEfficiency", colUserValue, CDbl(txtMechanizedSortingEfficiency.Text))
         FormChanged = False

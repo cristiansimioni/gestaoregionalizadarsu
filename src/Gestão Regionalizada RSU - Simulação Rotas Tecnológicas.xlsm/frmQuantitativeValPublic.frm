@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtVehicleQuantityBase_Change()
@@ -74,7 +74,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("VehicleQuantityBase", colUserValue, CDbl(txtVehicleQuantityBase.Text))
         Call Database.SetDatabaseValue("MileageVehicleBase", colUserValue, CDbl(txtMileageVehicleBase.Text))
         Call Database.SetDatabaseValue("FleetRenewalTermVehicleBase", colUserValue, CDbl(txtFleetRenewalTermVehicleBase.Text))

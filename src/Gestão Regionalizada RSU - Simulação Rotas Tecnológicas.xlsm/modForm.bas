@@ -13,8 +13,8 @@ Public Sub textBoxChange(ByRef txtBox, ByVal varName As String, ByRef FormChange
     FormChanged = True
 End Sub
 
-Public Function validateForm()
-    validateForm = True
+Public Function ValidateForm()
+    ValidateForm = True
 End Function
 
 Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal title As String, Optional ByVal bgWhite As Boolean)
@@ -33,21 +33,21 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
             txtForeColor = ApplicationColors.txtFgColorLevel1
             txtAlign = 1
         Case 2
-            form.Caption = APPSHORTNAME & " - " & title
+            form.Caption = APPSHORTNAME & " > " & title
             frmBackColor = ApplicationColors.frmBgColorLevel2
             btnBackColor = ApplicationColors.bgColorLevel2
             btnForeColor = ApplicationColors.fgColorLevel2
             txtForeColor = ApplicationColors.txtFgColorLevel2
             txtAlign = 1
         Case 3
-            form.Caption = APPSHORTNAME & " - " & title
+            form.Caption = APPSHORTNAME & " > " & title
             frmBackColor = ApplicationColors.frmBgColorLevel3
             btnBackColor = ApplicationColors.bgColorLevel3
             btnForeColor = ApplicationColors.fgColorLevel3
             txtForeColor = ApplicationColors.txtFgColorLevel3
             txtAlign = 2
         Case Else
-            form.Caption = APPSHORTNAME & " - " & title
+            form.Caption = APPSHORTNAME & " > " & title
             frmBackColor = ApplicationColors.frmBgColorLevel1
             btnBackColor = ApplicationColors.bgColorLevel1
             btnForeColor = ApplicationColors.fgColorLevel1

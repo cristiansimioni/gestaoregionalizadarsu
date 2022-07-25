@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmUserBase 
    Caption         =   "UserForm1"
-   ClientHeight    =   6330
-   ClientLeft      =   120
-   ClientTop       =   465
+   ClientHeight    =   6315
+   ClientLeft      =   240
+   ClientTop       =   930
    ClientWidth     =   9360.001
    OleObjectBlob   =   "frmUserBase.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtHistoricalWaterConsumption_Change()
@@ -86,7 +86,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("HistoricalWaterConsumption", colUserValue, CDbl(txtHistoricalWaterConsumption.Text))
         Call Database.SetDatabaseValue("MSWManagementUsers", colUserValue, CDbl(txtMSWManagementUsers.Text))
         Call Database.SetDatabaseValue("RegulatoryServiceCost", colUserValue, CDbl(txtRegulatoryServiceCost.Text))

@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtRealEuro_Change()
@@ -135,7 +135,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("RealEuro", colUserValue, CDbl(txtRealEuro.Text))
         Call Database.SetDatabaseValue("RealDollar", colUserValue, CDbl(txtRealDollar.Text))
         Call Database.SetDatabaseValue("TaxesImportationEquipment", colUserValue, CDbl(txtTaxesImportationEquipment.Text))

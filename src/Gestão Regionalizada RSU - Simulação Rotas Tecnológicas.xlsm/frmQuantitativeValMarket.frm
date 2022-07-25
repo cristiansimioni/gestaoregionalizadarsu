@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtBiomethaneSaleBase_Change()
@@ -58,7 +58,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("BiomethaneSaleBase", colUserValue, CDbl(txtBiomethaneSaleBase.Text))
         Call Database.SetDatabaseValue("InfrastructureCTVRBase", colUserValue, CDbl(txtInfrastructureCTVRBase.Text))
         Call Database.SetDatabaseValue("BiomethaneSaleOptimized", colUserValue, CDbl(txtBiomethaneSaleOptimized.Text))

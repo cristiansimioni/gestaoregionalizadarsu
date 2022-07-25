@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub txtCostPurchaseElectricityConcessionaireBase_Change()
@@ -66,7 +66,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("CostPurchaseElectricityConcessionaireBase", colUserValue, CDbl(txtCostPurchaseElectricityConcessionaireBase.Text))
         Call Database.SetDatabaseValue("ReferencePublicFuelCostAutBase", colUserValue, CDbl(txtReferencePublicFuelCostAutBase.Text))
         Call Database.SetDatabaseValue("ProposedPriceBiofuelAutBase", colUserValue, CDbl(txtProposedPriceBiofuelAutBase.Text))

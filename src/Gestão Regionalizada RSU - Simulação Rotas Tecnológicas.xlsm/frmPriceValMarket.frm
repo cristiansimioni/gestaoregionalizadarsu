@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub cbxDonationRevenueRecyclablesBase_Change()
@@ -183,7 +183,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("ElectricEnergyBiomassBase", colUserValue, CDbl(txtElectricEnergyBiomassBase.Text))
         Call Database.SetDatabaseValue("ElectricEnergySolidWasteBase", colUserValue, CDbl(txtElectricEnergySolidWasteBase.Text))
         Call Database.SetDatabaseValue("BiomethaneBase", colUserValue, CDbl(txtBiomethaneBase.Text))

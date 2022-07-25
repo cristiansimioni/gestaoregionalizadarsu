@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "Selecionar Cidades"
-   ClientHeight    =   9330.001
-   ClientLeft      =   225
-   ClientTop       =   915
-   ClientWidth     =   10980
+   ClientHeight    =   9315.001
+   ClientLeft      =   345
+   ClientTop       =   1380
+   ClientWidth     =   11025
    OleObjectBlob   =   "frmSelectCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -84,6 +84,9 @@ Private Sub btnSave_Click()
         End If
         row = row + 1
     Next city
+    
+    Unload Me
+    frmStepOne.updateForm
     
 End Sub
 

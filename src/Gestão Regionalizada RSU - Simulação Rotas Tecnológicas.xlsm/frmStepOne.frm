@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepOne 
    Caption         =   "Passo 1"
-   ClientHeight    =   6675
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   8685.001
+   ClientHeight    =   6660
+   ClientLeft      =   240
+   ClientTop       =   930
+   ClientWidth     =   8925.001
    OleObjectBlob   =   "frmStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -21,10 +21,12 @@ Private Sub btnBack_Click()
         If answer = vbYes Then
           Call btnSave_Click
         Else
-          Unload Me
+            Unload Me
+            frmTool.updateForm
         End If
     Else
         Unload Me
+        frmTool.updateForm
     End If
 End Sub
 
@@ -47,6 +49,7 @@ Private Sub btnSave_Click()
     Call Database.SetDatabaseValue("ProjectName", DatabaseColumn.colUserValue, txtProjectName.Text)
     Call Database.SetDatabaseValue("ProjectPathFolder", DatabaseColumn.colUserValue, txtPath.Text)
     Unload Me
+    frmTool.updateForm
 End Sub
 
 Private Sub btnSelectCities_Click()
@@ -70,6 +73,20 @@ Private Sub txtProjectName_Change()
     FormChanged = True
 End Sub
 
+Public Function updateForm()
+    imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgRSUGravimetry.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    
+    If ValidateFormRules("frmRSUGravimetry") Then imgRSUGravimetry.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmStudyCaseStepOne") Then imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmSimulationData") Then imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmStepOne") Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If readSelectedCities.Count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+End Function
+
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 1")
@@ -78,5 +95,19 @@ Private Sub UserForm_Initialize()
     txtProjectName.Text = Database.GetDatabaseValue("ProjectName", colUserValue)
     txtPath.Text = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
     
+    'Validation
+    imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgRSUGravimetry.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    
+    If ValidateFormRules("frmRSUGravimetry") Then imgRSUGravimetry.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmStudyCaseStepOne") Then imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmSimulationData") Then imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmStepOne") Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If readSelectedCities.Count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    
     FormChanged = False
+    
 End Sub

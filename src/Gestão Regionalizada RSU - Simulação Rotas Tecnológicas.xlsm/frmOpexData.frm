@@ -28,8 +28,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub cbxHiringRegimeManualOperator_Change()
@@ -128,7 +128,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.validateForm() Then
+    If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("AverageSalaryManager", colUserValue, CDbl(txtAverageSalaryManager.Text))
         Call Database.SetDatabaseValue("AverageSalarySupervision", colUserValue, CDbl(txtAverageSalarySupervision.Text))
         Call Database.SetDatabaseValue("AverageSalaryOperational", colUserValue, CDbl(txtAverageSalaryOperational.Text))

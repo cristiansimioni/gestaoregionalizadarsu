@@ -2,8 +2,8 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
    ClientHeight    =   5235
-   ClientLeft      =   120
-   ClientTop       =   465
+   ClientLeft      =   240
+   ClientTop       =   930
    ClientWidth     =   9600.001
    OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -24,8 +24,8 @@ Dim ValuationEfficiency As Double
 
 Dim FormChanged As Boolean
 
-Function validateForm() As Boolean
-    validateForm = True
+Function ValidateForm() As Boolean
+    ValidateForm = True
 End Function
 
 Private Sub btnBack_Click()
@@ -42,7 +42,7 @@ Private Sub btnBack_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If validateForm() Then
+    If ValidateForm() Then
         Call Database.SetDatabaseValue("LandfillDeviationTarget", colUserValue, CDbl(txtLandfillDeviationTarget.Text))
         Call Database.SetDatabaseValue("ExpectedDeadline", colUserValue, CDbl(txtExpectedDeadline.Text))
         Call Database.SetDatabaseValue("MixedRecyclingIndex", colUserValue, CDbl(txtMixedRecyclingIndex.Text))
@@ -54,6 +54,7 @@ Private Sub btnSave_Click()
         
         FormChanged = False
         Unload Me
+        frmStepOne.updateForm
     Else
         answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
     End If
