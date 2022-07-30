@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnBack_Click()
+    frmTool.updateForm
     Unload Me
 End Sub
 
@@ -24,6 +25,29 @@ End Sub
 Private Sub btnAlgorithParameter_Click()
     frmAlgorithmParameter.Show
 End Sub
+
+Public Function updateForm()
+    imgGeneralData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgUTVR.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgParameterAlgorithm.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgAlgorithm.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgArrays.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    
+    btnRunAlgorithm.Enabled = False
+    btnSelectArrays.Enabled = False
+    
+    If ValidateFormRules("frmGeneralData") Then imgGeneralData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmAlgorithmParameter") Then
+        imgParameterAlgorithm.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnRunAlgorithm.Enabled = True
+    End If
+    If Database.GetDatabaseValue("AlgorithmStatus", colUserValue) = "Sim" Then
+        imgAlgorithm.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnSelectArrays.Enabled = True
+    End If
+    'If ValidateFormRules("frmStepOne") Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    'If readSelectedCities.Count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+End Function
 
 Private Sub btnRunAlgorithm_Click()
     btnRunAlgorithm.Enabled = False
@@ -48,13 +72,14 @@ Private Sub btnRunAlgorithm_Click()
     Call Util.saveAsCSV(prjName, algPath, "distance")
     
     'Run the algorithm
-    Call Util.RunPythonScript(algPath, prjName)
-    
-    'Load the result into the workbook
-    Call Util.CSVImport(algPath, prjName)
+    If Util.RunPythonScript(algPath, prjName) Then
+        'Load the result into the workbook
+        Call Util.CSVImport(algPath, prjName)
+    End If
     
     btnRunAlgorithm.Enabled = True
     
+    Call updateForm
 End Sub
 
 Private Sub btnSelectArrays_Click()
@@ -69,4 +94,5 @@ Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 2")
     
+    Call updateForm
 End Sub

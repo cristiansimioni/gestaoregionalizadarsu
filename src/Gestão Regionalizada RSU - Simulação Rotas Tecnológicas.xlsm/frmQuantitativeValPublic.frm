@@ -84,6 +84,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("FleetRenewalTermVehicleOptimized", colUserValue, CDbl(txtFleetRenewalTermVehicleOptimized.Text))
         Call Database.SetDatabaseValue("InfrastructureCommercialOptimized", colUserValue, CDbl(txtInfrastructureCommercialOptimized.Text))
         FormChanged = False
+        frmStepFour.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

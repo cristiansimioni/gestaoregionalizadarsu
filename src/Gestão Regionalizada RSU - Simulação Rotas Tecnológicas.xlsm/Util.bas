@@ -6,7 +6,7 @@ Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simu
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "1.0.0"
-Public Const APPLASTUPDATED         As String = "18.07.2022"
+Public Const APPLASTUPDATED         As String = "29.07.2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -28,6 +28,9 @@ Public Const ICONWARNING            As String = "error-icon.jpg"
 'Images
 Public Const imgLogo                As String = "logo-grey.jpg"
 Public Const IMGLOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
+
+'Files
+Public Const FILEMANUAL             As String = "Manual da Ferramenta.pdf"
 
 'Messages
 Public Const MSG_ATTENTION                          As String = "Atenção"
@@ -148,7 +151,7 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
 End Sub
 
 
-Sub RunPythonScript(ByVal algPath As String, ByVal prjName As String)
+Public Function RunPythonScript(ByVal algPath As String, ByVal prjName As String)
 
 'Declare Variables
 Dim PythonExe, PythonScript, Params, cmd As String
@@ -160,21 +163,21 @@ Dim errorCode As Integer
 
 'Provide file path to Python.exe
 PythonExe = Database.GetDatabaseValue("PythonPath", colUserValue)
-PythonScript = Application.ThisWorkbook.Path & "\src\combinations\combinations.py"
+PythonScript = Chr(34) & Application.ThisWorkbook.Path & "\src\combinations\combinations.py" & Chr(34)
 
 Dim maxCluster, trashThreshold As Double
 maxCluster = Database.GetDatabaseValue("MaxClusters", colUserValue)
 trashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
 
-Params = algPath & "\cidades-" & prjName & ".csv" & _
+Params = Chr(34) & algPath & "\cidades-" & prjName & ".csv" & Chr(34) & _
          " " & _
-         algPath & "\distancias-" & prjName & ".csv" & _
+         Chr(34) & algPath & "\distancias-" & prjName & ".csv" & Chr(34) & _
          " " & _
          maxCluster & " " & trashThreshold & _
          " " & _
-         algPath & "\relatório-" & prjName & ".txt" & _
+         Chr(34) & algPath & "\relatório-" & prjName & ".txt" & Chr(34) & _
          " " & _
-         algPath & "\output-" & prjName & ".csv"
+         Chr(34) & algPath & "\output-" & prjName & ".csv" & Chr(34)
 
 cmd = "%comspec% /c " & Chr(34) & PythonExe & " " & PythonScript & " " & Params & Chr(34)
 'Run the Python Script
@@ -182,12 +185,16 @@ errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
 
 If errorCode = 0 Then
     'Insert your code here
-    MsgBox "Algoritmo finalizado com sucesso!"
+    MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY
+    Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Sim")
+    RunPythonScript = True
 Else
-    MsgBox "Program exited with error code " & errorCode & "."
+    MsgBox MSG_ALGORITHM_COMPLETE_FAILED
+    Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Não")
+    RunPythonScript = False
 End If
 
-End Sub
+End Function
 
 Public Function FolderCreate(ByVal strPathToFolder As String, ByVal strFolder As String) As Variant
     'The function FolderCreate attemps to create the folder strFolder on the path strPathToFolder _

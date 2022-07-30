@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnBack_Click()
+    frmTool.updateForm
     Unload Me
 End Sub
 
@@ -45,7 +46,27 @@ Private Sub btnUserBase_Click()
     frmUserBase.Show
 End Sub
 
+Public Function updateForm()
+    imgRouteDefinition.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgCapexData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgOpexData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgTaxes.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgContract.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgFinancialAssumptions.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgUserBase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    
+    If ValidateFormRules("frmRoute") Then imgRouteDefinition.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmCapexData") Then imgCapexData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmOpexData") Then imgOpexData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmTaxes") Then imgTaxes.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmContract") Then imgContract.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmFinancialAssumptions") Then imgFinancialAssumptions.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmUserBase") Then imgUserBase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+End Function
+
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 3")
+    
+    Call updateForm
 End Sub

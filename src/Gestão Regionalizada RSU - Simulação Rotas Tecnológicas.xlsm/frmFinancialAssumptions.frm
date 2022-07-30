@@ -196,6 +196,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("VariableShareholder", colUserValue, cbxVariableShareholder.value)
         Call Database.SetDatabaseValue("TargetShareholder", colUserValue, CDbl(txtTargetShareholder.Text))
         FormChanged = False
+        frmStepThree.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

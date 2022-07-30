@@ -22,6 +22,7 @@ End Sub
 
 Private Sub btnSave_Click()
     updateCityValues cities
+    frmStepTwo.updateForm
     Unload Me
 End Sub
 

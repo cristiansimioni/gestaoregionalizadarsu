@@ -38,6 +38,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("MixedWasteToBeSorted", colUserValue, CDbl(txtMixedWasteToBeSorted.Text))
         Call Database.SetDatabaseValue("MechanizedSortingEfficiency", colUserValue, CDbl(txtMechanizedSortingEfficiency.Text))
         FormChanged = False
+        frmStepThree.updateForm
         Unload Me
     Else
         answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")

@@ -53,6 +53,7 @@ Private Sub btnSave_Click()
     Call Database.SetDatabaseValue("TrashThreshold", colUserValue, CDbl(txtTrashThreshold.Text))
     Call Database.SetDatabaseValue("MaxClusters", colUserValue, CDbl(txtMaxClusters.Text))
     FormChanged = False
+    frmStepTwo.updateForm
     Unload Me
 End Sub
 

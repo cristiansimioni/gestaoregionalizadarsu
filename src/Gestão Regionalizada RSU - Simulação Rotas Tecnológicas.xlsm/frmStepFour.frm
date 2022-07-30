@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnBack_Click()
+    frmTool.updateForm
     Unload Me
 End Sub
 
@@ -57,7 +58,29 @@ Private Sub btnQuantitativeValPublic_Click()
     frmQuantitativeValPublic.Show
 End Sub
 
+Public Function updateForm()
+    imgPriceValRevenue.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgPriceValMarket.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgPriceValAutoconsumo.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgPriceValPublic.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgQuantitativeValMarket.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgQuantitativeValAutoconsumo.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgQuantitativeValPublic.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgExecuteSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    
+    If ValidateFormRules("frmPriceValRevenue") Then imgPriceValRevenue.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmPriceValMarket") Then imgPriceValMarket.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmPriceValAutoconsumo") Then imgPriceValAutoconsumo.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmPriceValPublic") Then imgPriceValPublic.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmQuantitativeValMarket") Then imgQuantitativeValMarket.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmQuantitativeValAutoconsumo") Then imgQuantitativeValAutoconsumo.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If ValidateFormRules("frmQuantitativeValPublic") Then imgQuantitativeValPublic.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    'If ValidateFormRules("frmUserBase") Then imgExecuteSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+End Function
+
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 4")
+    
+    Call updateForm
 End Sub

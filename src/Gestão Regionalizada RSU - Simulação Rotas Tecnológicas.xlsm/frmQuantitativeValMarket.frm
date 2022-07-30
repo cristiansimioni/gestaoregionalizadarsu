@@ -64,6 +64,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("BiomethaneSaleOptimized", colUserValue, CDbl(txtBiomethaneSaleOptimized.Text))
         Call Database.SetDatabaseValue("InfrastructureCTVROptimized", colUserValue, CDbl(txtInfrastructureCTVROptimized.Text))
         FormChanged = False
+        frmStepFour.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

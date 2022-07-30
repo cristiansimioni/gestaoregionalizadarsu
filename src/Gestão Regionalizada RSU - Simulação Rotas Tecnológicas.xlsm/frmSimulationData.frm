@@ -50,7 +50,6 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("CurrentLandfillCost", colUserValue, CDbl(txtCurrentLandfillCost.Text))
         Call Database.SetDatabaseValue("CurrentCostRSU", colUserValue, CDbl(txtCurrentCostRSU.Text))
         Call Database.SetDatabaseValue("LandfillCurrentDeviation", colUserValue, CDbl(txtLandfillCurrentDeviation.Text))
-        Call Database.SetDatabaseValue("ValuationEfficiency", colUserValue, CDbl(txtValuationEfficiency.Text))
         
         FormChanged = False
         Unload Me
@@ -102,12 +101,13 @@ End Sub
 
 
 Private Sub txtValuationEfficiency_Change()
-    Call textBoxChange(txtValuationEfficiency, "ValuationEfficiency")
+    'Call textBoxChange(txtValuationEfficiency, "ValuationEfficiency")
 End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Metas para a Simulação do Estudo de Caso")
+    txtValuationEfficiency.ForeColor = RGB(0, 0, 0)
     
     LandfillDeviationTarget = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
     ExpectedDeadline = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)

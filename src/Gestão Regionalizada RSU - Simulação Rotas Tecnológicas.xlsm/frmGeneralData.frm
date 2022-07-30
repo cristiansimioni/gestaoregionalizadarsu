@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmGeneralData 
    Caption         =   "UserForm1"
-   ClientHeight    =   3780
+   ClientHeight    =   3435
    ClientLeft      =   240
    ClientTop       =   930
    ClientWidth     =   7800
@@ -16,7 +16,6 @@ Attribute VB_Exposed = False
 Dim COEmission As Double
 Dim AverageCostTransportation As Double
 Dim ReducingCostMovimentation As Double
-Dim CostWasteExistingLandfills As Double
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
@@ -41,8 +40,8 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))
         Call Database.SetDatabaseValue("AverageCostTransportation", colUserValue, CDbl(txtAverageCostTransportation.Text))
         Call Database.SetDatabaseValue("ReducingCostMovimentation", colUserValue, CDbl(txtReducingCostMovimentation.Text))
-        Call Database.SetDatabaseValue("CostWasteExistingLandfills", colUserValue, CDbl(txtCostWasteExistingLandfills.Text))
         FormChanged = False
+        frmStepTwo.updateForm
         Unload Me
     Else
         answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
@@ -69,10 +68,6 @@ Private Sub txtAverageCostTransportation_Change()
     Call textBoxChange(txtAverageCostTransportation, "AverageCostTransportation")
 End Sub
 
-Private Sub txtCostWasteExistingLandfills_Change()
-    Call textBoxChange(txtCostWasteExistingLandfills, "CostWasteExistingLandfills")
-End Sub
-
 Private Sub txtReducingCostMovimentation_Change()
     Call textBoxChange(txtReducingCostMovimentation, "ReducingCostMovimentation")
 End Sub
@@ -85,14 +80,12 @@ Private Sub UserForm_Initialize()
     COEmission = Database.GetDatabaseValue("COEmission", colUserValue)
     AverageCostTransportation = Database.GetDatabaseValue("AverageCostTransportation", colUserValue)
     ReducingCostMovimentation = Database.GetDatabaseValue("ReducingCostMovimentation", colUserValue)
-    CostWasteExistingLandfills = Database.GetDatabaseValue("CostWasteExistingLandfills", colUserValue)
 
     'Only show the data if it's available
     If COEmission + AverageCostTransportation + ReducingCostMovimentation + CostWasteExistingLandfills <> 0 Then
         txtCOEmission.Text = COEmission
         txtAverageCostTransportation.Text = AverageCostTransportation
         txtReducingCostMovimentation.Text = ReducingCostMovimentation
-        txtCostWasteExistingLandfills.Text = CostWasteExistingLandfills
     End If
     
     FormChanged = False

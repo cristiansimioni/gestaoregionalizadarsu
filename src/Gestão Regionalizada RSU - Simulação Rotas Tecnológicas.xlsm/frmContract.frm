@@ -92,6 +92,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("InvestmentCostsContractSpecificItems", colUserValue, CDbl(txtInvestmentCostsContractSpecificItems.Text))
         Call Database.SetDatabaseValue("AmountRPUPublicCleaningDisposal", colUserValue, CDbl(txtAmountRPUPublicCleaningDisposal.Text))
         FormChanged = False
+        frmStepThree.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

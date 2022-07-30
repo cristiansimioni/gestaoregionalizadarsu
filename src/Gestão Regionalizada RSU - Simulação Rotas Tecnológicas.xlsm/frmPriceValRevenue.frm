@@ -49,6 +49,7 @@ Private Sub btnSave_Click()
     If modForm.ValidateForm() Then
         Call Database.SetDatabaseValue("ExtraordinaryTariffAffordability", colUserValue, CDbl(txtExtraordinaryTariffAffordability.Text))
         FormChanged = False
+        frmStepFour.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

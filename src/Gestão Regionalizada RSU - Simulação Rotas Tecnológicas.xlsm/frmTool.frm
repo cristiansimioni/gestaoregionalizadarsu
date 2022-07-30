@@ -24,11 +24,14 @@ Private Sub btnClean_Click()
     answer = MsgBox(MSG_CLEAN_DATABASE, vbExclamation + vbYesNo + vbDefaultButton2, MSG_ATTENTION)
     If answer = vbYes Then
         Database.Clean
+        Call updateForm
     End If
 End Sub
 
 Private Sub btnHelp_Click()
-    ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\assets\manual\Manual da Ferramenta.pdf")
+    On Error Resume Next
+        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUAL)
+    On Error GoTo 0
 End Sub
 
 Private Sub btnStepFive_Click()
@@ -62,6 +65,12 @@ Public Function updateForm()
     imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepSixStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    btnStepOne.Enabled = True
+    btnStepTwo.Enabled = False
+    btnStepThree.Enabled = False
+    btnStepFour.Enabled = False
+    btnStepFive.Enabled = False
+    btnStepSix.Enabled = False
     
     If ValidateFormRules("frmRSUGravimetry") And _
         ValidateFormRules("frmStudyCaseStepOne") And _
@@ -69,7 +78,41 @@ Public Function updateForm()
         ValidateFormRules("frmStepOne") And _
         readSelectedCities.Count >= 2 Then
         imgStepOneStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnStepTwo.Enabled = True
     End If
+    
+    If ValidateFormRules("frmGeneralData") And _
+        ValidateFormRules("frmAlgorithmParameter") And _
+        btnStepTwo.Enabled = True Then
+        imgStepTwoStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnStepThree.Enabled = True
+    End If
+    
+    If ValidateFormRules("frmRoute") And _
+        ValidateFormRules("frmCapexData") And _
+        ValidateFormRules("frmOpexData") And _
+        ValidateFormRules("frmTaxes") And _
+        ValidateFormRules("frmContract") And _
+        ValidateFormRules("frmFinancialAssumptions") And _
+        ValidateFormRules("frmUserBase") And _
+        btnStepThree.Enabled = True Then
+        imgStepThreeStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnStepFour.Enabled = True
+    End If
+    
+    If ValidateFormRules("frmPriceValRevenue") And _
+        ValidateFormRules("frmPriceValMarket") And _
+        ValidateFormRules("frmPriceValAutoconsumo") And _
+        ValidateFormRules("frmPriceValPublic") And _
+        ValidateFormRules("frmQuantitativeValMarket") And _
+        ValidateFormRules("frmQuantitativeValAutoconsumo") And _
+        ValidateFormRules("frmQuantitativeValPublic") And _
+        btnStepFour.Enabled = True Then
+        imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnStepFive.Enabled = True
+        btnStepSix.Enabled = True
+    End If
+    
 End Function
 
 Private Sub UserForm_Initialize()

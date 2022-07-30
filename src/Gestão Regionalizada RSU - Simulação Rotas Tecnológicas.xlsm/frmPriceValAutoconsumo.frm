@@ -74,6 +74,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("ReferencePublicFuelCostAutOptimized", colUserValue, CDbl(txtReferencePublicFuelCostAutOptimized.Text))
         Call Database.SetDatabaseValue("ProposedPriceBiofuelAutOptimized", colUserValue, CDbl(txtProposedPriceBiofuelAutOptimized.Text))
         FormChanged = False
+        frmStepFour.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

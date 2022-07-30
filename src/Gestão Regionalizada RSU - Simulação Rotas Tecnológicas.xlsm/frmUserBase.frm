@@ -99,6 +99,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("UserSavingsPublicPhilanthropicCategory", colUserValue, CDbl(txtUserSavingsPublicPhilanthropicCategory.Text))
         Call Database.SetDatabaseValue("UserSavingsIndustrialCategory", colUserValue, CDbl(txtUserSavingsIndustrialCategory.Text))
         FormChanged = False
+        frmStepThree.updateForm
         Unload Me
     Else
         answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)

@@ -21,6 +21,7 @@ End Sub
 
 Private Sub btnSave_Click()
     updateValues arrays
+    frmStepTwo.updateForm
     Unload Me
 End Sub
 
