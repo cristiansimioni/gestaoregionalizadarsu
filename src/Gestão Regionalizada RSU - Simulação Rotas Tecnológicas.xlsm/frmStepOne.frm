@@ -17,7 +17,7 @@ Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
     If FormChanged Then
-        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        answer = MsgBox(MSG_CHANGED_NOT_SAVED, vbQuestion + vbYesNo + vbDefaultButton2, MSG_CHANGED_NOT_SAVED_TITLE)
         If answer = vbYes Then
           Call btnSave_Click
         Else
@@ -41,6 +41,7 @@ Private Sub btnFolder_Click()
     
     If sFolder <> "" Then
         txtPath.Text = sFolder
+        imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         FormChanged = True
     End If
 End Sub
@@ -83,8 +84,8 @@ Public Function updateForm()
     If ValidateFormRules("frmRSUGravimetry") Then imgRSUGravimetry.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmStudyCaseStepOne") Then imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmSimulationData") Then imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    If ValidateFormRules("frmStepOne") Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    If readSelectedCities.Count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If Dir(txtPath.Text, vbDirectory) <> "." Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If readSelectedCities.count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
 End Function
 
 Private Sub UserForm_Initialize()

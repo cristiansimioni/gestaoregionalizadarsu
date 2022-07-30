@@ -35,7 +35,7 @@ End Function
 
 Private Sub btnBack_Click()
     If FormChanged Then
-        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        answer = MsgBox(MSG_CHANGED_NOT_SAVED, vbQuestion + vbYesNo + vbDefaultButton2, MSG_CHANGED_NOT_SAVED_TITLE)
         If answer = vbYes Then
             Call btnSave_Click
         Else
@@ -97,6 +97,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("Wood", colUserValue, Wood)
         Call Database.SetDatabaseValue("MineralResidues", colUserValue, MineralResidues)
         Call Database.SetDatabaseValue("Others", colUserValue, Others)
+        Call Database.SetDatabaseValue("GravimetrySum", colUserValue, CDbl(txtTotal.Text))
         FormChanged = False
         Unload Me
         frmStepOne.updateForm
@@ -176,6 +177,10 @@ Private Sub txtTextiles_Change()
     Call validateEntry(txtTextiles, Textiles)
 End Sub
 
+Private Sub txtTotal_Change()
+    Call modForm.textBoxChange(txtTotal, "GravimetrySum", FormChanged)
+End Sub
+
 Private Sub txtWood_Change()
     Call validateEntry(txtWood, Wood)
 End Sub
@@ -244,12 +249,7 @@ Sub calculateTotal()
     total = FoodWaste + GreenWaste + Paper + PlasticFilm + HardPlastics + _
             Glass + FerrousMetals + NonFerrousMetals + Textiles + Rubber + _
             Diapers + Wood + MineralResidues + Others
-    lblTotal.Caption = total
-    If total > 100 Then
-        lblTotal.BackColor = ApplicationColors.bgColorInvalidTextBox
-    Else
-        lblTotal.BackColor = ApplicationColors.bgColorValidTextBox
-    End If
+    txtTotal.Text = total
 End Sub
 
 

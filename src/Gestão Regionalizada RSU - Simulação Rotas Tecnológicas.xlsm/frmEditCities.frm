@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities 
    Caption         =   "Editar Cidades"
-   ClientHeight    =   7995
+   ClientHeight    =   8115
    ClientLeft      =   360
    ClientTop       =   1395
    ClientWidth     =   15600
@@ -181,6 +181,8 @@ Private Sub updateUTVR(ByRef chkBox, ByVal index As Integer)
         cities.Item(i).vUTVR = chkBox.value
     End If
 End Sub
+
+
 
 Private Sub txtConventionalCost1_Change()
     Call updateConventionalCost(txtConventionalCost1, 1)
@@ -372,8 +374,8 @@ Private Sub UserForm_Initialize()
     Set cities = readSelectedCities
     
     vScrollBar.Min = 1
-    If cities.Count >= 10 Then
-        vScrollBar.Max = cities.Count - 9
+    If cities.count >= 10 Then
+        vScrollBar.Max = cities.count - 9
     Else
         vScrollBar.Enabled = False
     End If
@@ -390,7 +392,7 @@ Sub GetRangeToDisplay(currentValue As Integer)
     Debug.Print currentValue
     Dim i As Integer
     i = 1
-    If cities.Count > 10 Then
+    If cities.count > 10 Then
         i = currentValue
     End If
     

@@ -43,7 +43,7 @@ Private Sub executeSimulation()
     Dim arrays As Collection
     Set arrays = readArrays
     
-    total = arrays.Count
+    total = arrays.count
     
     Dim markets, routes As Variant
     markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
@@ -65,7 +65,7 @@ Private Sub executeSimulation()
     total = 0
     For Each a In arrays
         If a.vSelected Then
-            total = total + a.vSubArray.Count
+            total = total + a.vSubArray.count
         End If
     Next a
     total = total * (UBound(markets) - LBound(markets) + 1) * (UBound(routes) - LBound(routes) + 1 + 1) '+1 Ferramenta 2

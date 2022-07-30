@@ -18,13 +18,29 @@ Public Enum DatabaseArrayColumn
     colOutboundExistentLandfill = 14
 End Enum
 
+
+Public Function countSelectedArrays()
+    Dim arrays As New Collection
+    Dim count As Integer
+    Dim e As Variant
+    count = 0
+    Set arrays = readArrays
+    For Each e In arrays
+        If e.vSelected Then
+            count = count + 1
+        End If
+    Next e
+    
+    countSelectedArrays = count
+End Function
+
 Public Function readArrays()
     Dim arrays As New Collection
     Dim wksDatabase As Worksheet
     Set wksDatabase = Util.GetArraysWorksheet
     Dim lastRow As Integer
     Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
     
     
     Dim arr As clsArray
@@ -84,7 +100,7 @@ Public Function updateValues(ByVal arrays As Collection)
     Set wksDatabase = Util.GetArraysWorksheet
     Dim lastRow As Integer
     Dim r, id As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
     
     For r = 2 To lastRow
         id = wksDatabase.Cells(r, DatabaseArrayColumn.colId).value

@@ -19,7 +19,7 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     Set wksDatabase = Util.GetDatabaseWorksheet
     Dim lastRow As Integer
     Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, DatabaseColumn.colName).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
     For r = 2 To lastRow
         If wksDatabase.Cells(r, DatabaseColumn.colWorkbook).value = "Ferramenta 1" Then
             Dim var, sheet, range, unit As String
@@ -69,7 +69,7 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
     Set wksDatabase = Util.GetDatabaseWorksheet
     Dim lastRow As Integer
     Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, DatabaseColumn.colName).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
     For r = 2 To lastRow
         If wksDatabase.Cells(r, DatabaseColumn.colWorkbook).value = "Ferramenta 2" Then
             Dim var, sheet, range, unit, description As String

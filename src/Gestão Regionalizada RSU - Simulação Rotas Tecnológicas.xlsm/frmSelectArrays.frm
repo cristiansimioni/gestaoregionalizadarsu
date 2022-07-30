@@ -53,7 +53,7 @@ Private Sub UserForm_Initialize()
     
     'txtArray2.Text = arrays(2).vArrayRaw
     vScrollBar.Min = 1
-    vScrollBar.Max = arrays.Count - 1
+    vScrollBar.Max = arrays.count - 1
 End Sub
 
 Private Sub vScrollBar_Change()
@@ -79,7 +79,7 @@ Private Sub vScrollBar_Change()
     
     'Fill sub array
     t = 1
-    While t <= arrays(currentValue).vSubArray.Count
+    While t <= arrays(currentValue).vSubArray.count
         Me.Controls("txtSubArray" & t).value = arrays.Item(currentValue).vSubArray(t).vArrayRaw
         Me.Controls("txtSubArrayLandfill" & t).value = arrays.Item(currentValue).vSubArray(t).vLandfill
         Me.Controls("txtSubArrayExistentLandfill" & t).value = arrays.Item(currentValue).vSubArray(t).vExistentLandfill

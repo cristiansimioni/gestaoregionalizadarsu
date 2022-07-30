@@ -30,7 +30,7 @@ End Function
 
 Private Sub btnBack_Click()
     If FormChanged Then
-        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        answer = MsgBox(MSG_CHANGED_NOT_SAVED, vbQuestion + vbYesNo + vbDefaultButton2, MSG_CHANGED_NOT_SAVED_TITLE)
         If answer = vbYes Then
           Call btnSave_Click
         Else
@@ -73,10 +73,12 @@ End Sub
 
 Private Sub txtCurrentCostRSU_Change()
     Call textBoxChange(txtCurrentCostRSU, "CurrentCostRSU")
+    Call calculateValuationEfficiency
 End Sub
 
 Private Sub txtCurrentLandfillCost_Change()
     Call textBoxChange(txtCurrentLandfillCost, "CurrentLandfillCost")
+    Call calculateValuationEfficiency
 End Sub
 
 Private Sub txtExpectedDeadline_Change()
@@ -85,10 +87,12 @@ End Sub
 
 Private Sub txtLandfillCurrentDeviation_Change()
     Call textBoxChange(txtLandfillCurrentDeviation, "LandfillCurrentDeviation")
+    Call calculateValuationEfficiency
 End Sub
 
 Private Sub txtLandfillDeviationTarget_Change()
     Call textBoxChange(txtLandfillDeviationTarget, "LandfillDeviationTarget")
+    Call calculateValuationEfficiency
 End Sub
 
 Private Sub txtMixedRecyclingIndex_Change()
@@ -97,11 +101,23 @@ End Sub
 
 Private Sub txtTargetExpectation_Change()
     Call textBoxChange(txtTargetExpectation, "TargetExpectation")
+    Call calculateValuationEfficiency
 End Sub
-
 
 Private Sub txtValuationEfficiency_Change()
     'Call textBoxChange(txtValuationEfficiency, "ValuationEfficiency")
+End Sub
+
+
+Private Sub calculateValuationEfficiency()
+    If IsNumeric(txtTargetExpectation.Text) And IsNumeric(txtCurrentCostRSU.Text) And IsNumeric(txtLandfillDeviationTarget.Text) And IsNumeric(txtLandfillCurrentDeviation.Text) And _
+       IsNumeric(txtCurrentLandfillCost.Text) Then
+       ValuationEfficiency = (((CDbl(txtTargetExpectation.Text) - CDbl(txtCurrentCostRSU.Text)) + ((CDbl(txtLandfillDeviationTarget.Text) / 100) - (CDbl(txtLandfillCurrentDeviation.Text) / 100)) * CDbl(txtCurrentLandfillCost.Text)) / CDbl(txtTargetExpectation.Text)) * 100
+       txtValuationEfficiency = ValuationEfficiency
+    Else
+       txtValuationEfficiency = 0
+    End If
+    
 End Sub
 
 Private Sub UserForm_Initialize()
@@ -109,25 +125,14 @@ Private Sub UserForm_Initialize()
     Call modForm.applyLookAndFeel(Me, 3, "Metas para a Simulação do Estudo de Caso")
     txtValuationEfficiency.ForeColor = RGB(0, 0, 0)
     
-    LandfillDeviationTarget = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
-    ExpectedDeadline = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
-    MixedRecyclingIndex = Database.GetDatabaseValue("MixedRecyclingIndex", colUserValue)
-    TargetExpectation = Database.GetDatabaseValue("TargetExpectation", colUserValue)
-    CurrentLandfillCost = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
-    CurrentCostRSU = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
-    LandfillCurrentDeviation = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
-    ValuationEfficiency = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 2)
-    
-    If LandfillDeviationTarget + ExpectedDeadline + MixedRecyclingIndex + TargetExpectation + CurrentLandfillCost + CurrentCostRSU + LandfillCurrentDeviation + ValuationEfficiency > 0 Then
-        txtLandfillDeviationTarget.Text = LandfillDeviationTarget
-        txtExpectedDeadline.Text = ExpectedDeadline
-        txtMixedRecyclingIndex.Text = MixedRecyclingIndex
-        txtTargetExpectation.Text = TargetExpectation
-        txtCurrentLandfillCost = CurrentLandfillCost
-        txtCurrentCostRSU = CurrentCostRSU
-        txtLandfillCurrentDeviation = LandfillCurrentDeviation
-        txtValuationEfficiency = ValuationEfficiency
-    End If
+    txtLandfillDeviationTarget.Text = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
+    txtExpectedDeadline.Text = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
+    txtMixedRecyclingIndex.Text = Database.GetDatabaseValue("MixedRecyclingIndex", colUserValue)
+    txtTargetExpectation.Text = Database.GetDatabaseValue("TargetExpectation", colUserValue)
+    txtCurrentLandfillCost.Text = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
+    txtCurrentCostRSU.Text = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
+    txtLandfillCurrentDeviation.Text = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
+    txtValuationEfficiency.Text = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 2)
     
     FormChanged = False
 End Sub

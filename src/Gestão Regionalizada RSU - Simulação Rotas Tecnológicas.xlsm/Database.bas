@@ -25,7 +25,7 @@ Function LocateVariableRow(ByVal name As String)
     Set wksDatabase = Util.GetDatabaseWorksheet
     Dim lastRow As Integer
     Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, DatabaseColumn.colName).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
     For r = 2 To lastRow
         If wksDatabase.Cells(r, DatabaseColumn.colName).value = name Then
             LocateVariableRow = r
@@ -92,7 +92,7 @@ Function ValidateFormRules(ByVal formName As String)
     Dim r As Integer
     Dim status As Boolean
     status = True
-    lastRow = wksDatabase.Cells(Rows.Count, DatabaseColumn.colName).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
     For r = 2 To lastRow
         If wksDatabase.Cells(r, DatabaseColumn.colForm).value = formName Then
             If wksDatabase.Cells(r, DatabaseColumn.colValid).value = "Não" Then

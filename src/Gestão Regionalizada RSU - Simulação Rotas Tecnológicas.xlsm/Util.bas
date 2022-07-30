@@ -130,10 +130,10 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     Dim lCol As Long
     
     'Find the last non-blank cell in column A(1)
-    lRow = wks.Cells(Rows.Count, 1).End(xlUp).row
+    lRow = wks.Cells(Rows.count, 1).End(xlUp).row
     
     'Find the last non-blank cell in row 1
-    lCol = wks.Cells(1, Columns.Count).End(xlToLeft).column
+    lCol = wks.Cells(1, Columns.count).End(xlToLeft).column
     wks.range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
 
     'Open a new XLS workbook, save it as the file name
@@ -185,11 +185,11 @@ errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
 
 If errorCode = 0 Then
     'Insert your code here
-    MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY
+    MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY, vbInformation
     Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Sim")
     RunPythonScript = True
 Else
-    MsgBox MSG_ALGORITHM_COMPLETE_FAILED
+    MsgBox MSG_ALGORITHM_COMPLETE_FAILED, vbCritical
     Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Não")
     RunPythonScript = False
 End If
@@ -246,7 +246,7 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
     Dim ws As Worksheet, strFile As String, sPath As String
 
     Set ws = ActiveWorkbook.Sheets("Arranjos") 'set to current worksheet name
-    ws.Rows("2:" & Rows.Count).ClearContents
+    ws.Rows("2:" & Rows.count).ClearContents
 
     Dim line As String
     Dim arrayOfElements
@@ -271,7 +271,7 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
             End If
             ws.Cells(ImportToRow, 1) = ArrayId
             
-            If ArrayId = 1 Then 'Centralized array
+            If ArrayId <= 4 Then 'Centralized array
                 ws.Cells(ImportToRow, 2) = "Sim"
             Else
                 ws.Cells(ImportToRow, 2) = "Não"

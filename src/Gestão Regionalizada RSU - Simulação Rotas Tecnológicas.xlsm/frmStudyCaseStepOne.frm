@@ -21,7 +21,7 @@ Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
     If FormChanged Then
-        answer = MsgBox("Você realizou alterações, gostaria de salvar?", vbQuestion + vbYesNo + vbDefaultButton2, "Salvar Alterações")
+        answer = MsgBox(MSG_CHANGED_NOT_SAVED, vbQuestion + vbYesNo + vbDefaultButton2, MSG_CHANGED_NOT_SAVED_TITLE)
         If answer = vbYes Then
           Call btnSave_Click
         Else
