@@ -178,10 +178,6 @@ Private Sub executeSimulation()
                         End If
                     Next rowRoute
                     
-                    Debug.Print minTarifa
-                    Debug.Print maxEficiencia
-                    Debug.Print selectedRow
-                    
                     wksDefinedArrays.Cells(row, 1).value = m
                     wksDefinedArrays.Cells(row, 2).value = a.vCode
                     wksDefinedArrays.Cells(row, 3).value = s.vCode & "(Consolidado)"

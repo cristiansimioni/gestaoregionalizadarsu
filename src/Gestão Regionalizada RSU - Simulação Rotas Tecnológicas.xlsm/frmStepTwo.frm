@@ -39,14 +39,27 @@ Public Function updateForm()
     If ValidateFormRules("frmGeneralData") Then imgGeneralData.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmAlgorithmParameter") Then
         imgParameterAlgorithm.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-        btnRunAlgorithm.Enabled = True
     End If
     If Database.GetDatabaseValue("AlgorithmStatus", colUserValue) = "Sim" Then
         imgAlgorithm.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnSelectArrays.Enabled = True
     End If
-    If validateDatabaseCities Then imgUTVR.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    If countSelectedArrays = 4 Then imgArrays.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If validateDatabaseCities Then
+        imgUTVR.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        Call Database.SetDatabaseValue("CityStatus", colUserValue, "Sim")
+    Else
+        Call Database.SetDatabaseValue("CityStatus", colUserValue, "")
+    End If
+    If countSelectedArrays = 4 Then
+        imgArrays.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        Call Database.SetDatabaseValue("ArrayStatus", colUserValue, "Sim")
+    Else
+        Call Database.SetDatabaseValue("ArrayStatus", colUserValue, "")
+    End If
+    
+    If ValidateFormRules("frmAlgorithmParameter") And validateDatabaseCities Then
+        btnRunAlgorithm.Enabled = True
+    End If
 End Function
 
 Private Sub btnRunAlgorithm_Click()

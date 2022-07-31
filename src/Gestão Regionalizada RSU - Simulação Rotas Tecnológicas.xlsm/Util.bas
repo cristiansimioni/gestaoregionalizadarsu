@@ -190,7 +190,7 @@ If errorCode = 0 Then
     RunPythonScript = True
 Else
     MsgBox MSG_ALGORITHM_COMPLETE_FAILED, vbCritical
-    Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Não")
+    Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "")
     RunPythonScript = False
 End If
 
@@ -287,7 +287,6 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
             For Each element In arrayOfElements
                 ws.Cells(ImportToRow, StartColumn).value = element
                 StartColumn = StartColumn + 1
-                Debug.Print element
             Next
             
             SubArrayId = SubArrayId + 1

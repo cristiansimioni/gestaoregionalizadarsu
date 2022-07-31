@@ -83,6 +83,7 @@ Public Function updateForm()
     
     If ValidateFormRules("frmGeneralData") And _
         ValidateFormRules("frmAlgorithmParameter") And _
+        ValidateFormRules("frmStepTwo") And _
         btnStepTwo.Enabled = True Then
         imgStepTwoStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepThree.Enabled = True
@@ -110,7 +111,8 @@ Public Function updateForm()
         btnStepFour.Enabled = True Then
         imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepFive.Enabled = True
-        btnStepSix.Enabled = True
+        imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        'btnStepSix.Enabled = True
     End If
     
 End Function

@@ -389,7 +389,6 @@ Private Sub vScrollBar_Change()
 End Sub
 
 Sub GetRangeToDisplay(currentValue As Integer)
-    Debug.Print currentValue
     Dim i As Integer
     i = 1
     If cities.count > 10 Then
