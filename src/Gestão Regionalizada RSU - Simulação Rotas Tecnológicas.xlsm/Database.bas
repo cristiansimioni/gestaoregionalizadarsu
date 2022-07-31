@@ -82,7 +82,38 @@ Function checkStepStatus(ByVal step As String)
 End Function
 
 Sub Clean()
-
+    'Clean Database
+    Dim wksDatabase As Worksheet
+    Set wksDatabase = Util.GetDatabaseWorksheet
+    Dim lastRow As Integer
+    Dim r As Integer
+    Dim status As Boolean
+    status = True
+    lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
+    For r = 2 To lastRow
+        If wksDatabase.Cells(r, DatabaseColumn.colFormula).value = "Não" Then
+            wksDatabase.Cells(r, DatabaseColumn.colUserValue).value = ""
+        End If
+    Next r
+    
+    'Clear currect selected cities worksheet
+    Dim wksSelectedCities As Worksheet
+    Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
+    wksSelectedCities.range("A2:B100").ClearContents
+    wksSelectedCities.range("G2:L100").ClearContents
+    
+    'Clear arrays
+    Dim wksArrays As Worksheet
+    Set wksArrays = Util.GetArraysWorksheet
+    wksArrays.range("A2:N200").ClearContents
+    
+    'Clear defined arrays
+    Dim wksDefinedArrays As Worksheet
+    Set wksDefinedArrays = Util.GetDefinedArraysWorksheet
+    wksDefinedArrays.range("A2:BJ500").ClearContents
+    
+    frmTool.updateForm
+    
 End Sub
 
 Function ValidateFormRules(ByVal formName As String)
