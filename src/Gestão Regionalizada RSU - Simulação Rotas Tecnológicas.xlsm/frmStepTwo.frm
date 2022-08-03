@@ -50,7 +50,7 @@ Public Function updateForm()
     Else
         Call Database.SetDatabaseValue("CityStatus", colUserValue, "")
     End If
-    If countSelectedArrays = 4 Then
+    If modArray.countSelectedArrays = 4 Then
         imgArrays.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         Call Database.SetDatabaseValue("ArrayStatus", colUserValue, "Sim")
     Else

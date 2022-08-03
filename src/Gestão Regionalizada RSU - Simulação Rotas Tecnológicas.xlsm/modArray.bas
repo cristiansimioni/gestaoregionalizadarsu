@@ -25,11 +25,13 @@ Public Function countSelectedArrays()
     Dim e As Variant
     count = 0
     Set arrays = readArrays
-    For Each e In arrays
-        If e.vSelected Then
-            count = count + 1
-        End If
-    Next e
+    If arrays.count <> 0 Then
+        For Each e In arrays
+            If e.vSelected Then
+                count = count + 1
+            End If
+        Next e
+    End If
     
     countSelectedArrays = count
 End Function
@@ -91,7 +93,9 @@ Public Function readArrays()
             arr.vSubArray.Add subArr
         End If
     Next r
-    arrays.Add arr
+    If Not arr Is Nothing Then
+        arrays.Add arr
+    End If
     Set readArrays = arrays
 End Function
 

@@ -132,7 +132,7 @@ Private Sub UserForm_Initialize()
     txtCurrentLandfillCost.Text = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
     txtCurrentCostRSU.Text = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
     txtLandfillCurrentDeviation.Text = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
-    txtValuationEfficiency.Text = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 2)
+    txtValuationEfficiency.Text = Database.GetDatabaseValue("ValuationEfficiency", colUserValue)
     
     FormChanged = False
 End Sub
