@@ -9,7 +9,7 @@ def clusterization(data, distance, max):
     clusters = []
     for d in data:
         city = []
-        city.append(d["name"])
+        city.append(d)
         clusters.append(city)
     
     # Only reduce the number of cities if necessary
@@ -86,12 +86,7 @@ def getCityAttribute(data, city, attribute):
         raise SystemExit(f"City: {city} or attribute: {attribute} not found.")
 
 def getDistanceBetweenCites(data, distance, cityA, cityB):
-    for i in range(len(data)):
-        if data[i]["name"] == cityA:
-            indexA = i
-        if data[i]["name"] == cityB:
-            indexB = i
-    return distance[indexA][indexB]
+    return distance[data[cityA]["position"]][data[cityB]["position"]]
 
 def getFaixa(sumTrash, rsutrash):
     for i in range(len(rsutrash)):
@@ -115,29 +110,22 @@ def removeArraysWithoutUTVR(combinations, utvrs):
 
 def removeArraysTrashThreshold(data, combinations, threshold):
     comb = combinations.copy()
-    sublist = list()
-    trashtotallist = list()
-    for c in range(len(comb)):
-        if c % (len(comb)/10.0) == 0:
-            logging.info("Progreso: %d%%", c/len(comb)*100)
-        for sub in comb[c]:
-            lixo = 0
-            if sub in sublist:
-                lixo = trashtotallist[sublist.index(sub)]
-            else:
-                for cluster in sub:
-                    lixo = lixo + getSubTrash(data, cluster)
-                #sublist.append(sub)
-                #trashtotallist.append(lixo)
-            if lixo < threshold:
-                combinations.remove(comb[c])
-                break
+    for c in comb:
+        for sub in c:
+            trash = 0
+            for cluster in sub:
+                for city in cluster:
+                    trash = trash + data[city]["trash"]
+            if trash < threshold:
+                combinations.remove(c)
+                break        
+
     return combinations
 
 def funccentrodemassa(data, cluster):
     max = 0
     for i in cluster:
-        trash = getCityAttribute(data, i, "trash")
+        trash = data[i]["trash"]
         if trash > max:
             max = trash
             c_centrodemassa = i
@@ -155,33 +143,33 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
             entry["sub-arranjo"] = subarray
             entry["utvr"] = utvr_city
             for other_city in subarray:
-                conventional_cost = getCityAttribute(cdata, other_city, "conventional-cost")
-                transshipment_cost = getCityAttribute(cdata, other_city, "transshipment-cost")
-                cost_post_transhipment = getCityAttribute(cdata, other_city, "cost-post-transhipment")
-                trash = getCityAttribute(cdata, other_city, "trash")
+                conventional_cost = cdata[other_city]["conventional-cost"]
+                transshipment_cost = cdata[other_city]["transshipment-cost"]
+                cost_post_transhipment = cdata[other_city]["cost-post-transhipment"]
+                trash = cdata[other_city]["trash"]
                 sum_inbound = sum_inbound + ((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, utvr_city, other_city))) * trash
-                
-                if isCentralized and utvr_city == "Presidente Prudente":
-                    logging.debug("Inbound atual = %f", sum_inbound)
-            if isCentralized and utvr_city == "Presidente Prudente":
-                logging.debug("Inbound Final = %f / %f = %f \n", sum_inbound, getSubTrash(cdata, subarray),  sum_inbound / getSubTrash(cdata, subarray))
+                sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
+        
+            sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
             sum_inbound = sum_inbound / getSubTrash(cdata, subarray)
+
             sum_inbound = (CAPEX_INBOUND/35.0 + sum_inbound) /  1.0
             entry["inbound"] = sum_inbound
+            entry["co2"] = sum_co2
             dist = 999999
             for a in existentlandfill:
                 distCities = getDistanceBetweenCites(cdata, distance, utvr_city, a)
                 if distCities < dist:
                     dist = distCities
                     sum_outbound = 0
-                    sum_outbound = sum_outbound + (distCities * (0.7 * getCityAttribute(cdata, utvr_city, "cost-post-transhipment"))) * 0.5
+                    sum_outbound = sum_outbound + (distCities * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * 0.5
                     entry["aterro-existente"] = a
                     entry["outbound-existente"] = (CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0
         
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
-                sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * getCityAttribute(cdata, utvr_city, "cost-post-transhipment"))) * 0.5
+                sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * 0.5
                 e["aterro"] = a
                 e["outbound"] = (CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0
                 e["total"] = sum_inbound + sum_outbound
@@ -332,13 +320,13 @@ def getSubOpex(range, trashSum, rsutrash):
 def getCities(data):
     cities = list()
     for d in data:
-        cities.append(d["name"])
+        cities.append(d)
     return cities
 
 def getTrash(data):
     trash = list()
     for d in data:
-        trash.append(d["trash"])
+        trash.append(data[d]["trash"])
     return trash
 
 def getLandfill(data):
@@ -365,7 +353,13 @@ def getUTVR(data):
 def getSubTrash(data, cluster):
     total = 0
     for c in cluster:
-        total = total + getCityAttribute(data, c, "trash")
+        total = total + data[c]["trash"]
+    return total
+
+def getSubPopulation(data, cluster):
+    total = 0
+    for c in cluster:
+        total = total + data[c]["population"]
     return total
 
 def main():
@@ -404,15 +398,16 @@ def main():
     rsutrash = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325, 330, 335, 340, 345, 350, 355, 360, 365, 370, 375, 380, 385, 390, 395, 400, 405, 410, 415, 420, 425, 430, 435, 440, 445, 450, 455, 460, 465, 470, 475, 480, 485, 490, 495, 500, 505, 510, 515, 520, 525, 530, 535, 540, 545, 550, 555, 560, 565, 570, 575, 580, 585, 590, 595, 600, 605, 610, 615, 620, 625, 630, 635, 640, 645, 650, 655, 660, 665, 670, 675, 680, 685, 690, 695, 700, 705, 710, 715, 720, 725, 730, 735, 740, 745, 750, 755, 760, 765, 770, 775, 780, 785, 790, 795, 800, 805, 810, 815, 820, 825, 830, 835, 840, 845, 850, 855, 860, 865, 870, 875, 880, 885, 890, 895, 900, 905, 910, 915, 920, 925, 930, 935, 940, 945, 950, 955, 960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045, 1050, 1055, 1060, 1065, 1070, 1075, 1080, 1085, 1090, 1095, 1100, 1105, 1110, 1115, 1120, 1125, 1130, 1135, 1140, 1145, 1150, 1155, 1160, 1165, 1170, 1175, 1180, 1185, 1190, 1195, 1200, 1205, 1210, 1215, 1220, 1225, 1230, 1235, 1240, 1245, 1250, 1255, 1260, 1265, 1270, 1275, 1280, 1285, 1290, 1295, 1300, 1305, 1310, 1315, 1320, 1325, 1330, 1335, 1340, 1345, 1350, 1355, 1360, 1365, 1370, 1375, 1380, 1385, 1390, 1395, 1400, 1405, 1410, 1415, 1420, 1425, 1430, 1435, 1440, 1445, 1450, 1455, 1460, 1465, 1470, 1475, 1480, 1485, 1490, 1495, 1500, 1505, 1510, 1515, 1520, 1525, 1530, 1535, 1540, 1545, 1550, 1555, 1560, 1565, 1570, 1575, 1580, 1585, 1590, 1595, 1600, 1605, 1610, 1615, 1620, 1625, 1630, 1635, 1640, 1645, 1650, 1655, 1660, 1665, 1670, 1675, 1680, 1685, 1690, 1695, 1700, 1705, 1710, 1715, 1720, 1725, 1730, 1735, 1740, 1745, 1750, 1755, 1760, 1765, 1770, 1775, 1780, 1785, 1790, 1795, 1800, 1805, 1810, 1815, 1820, 1825, 1830, 1835, 1840, 1845, 1850, 1855, 1860, 1865, 1870, 1875, 1880, 1885, 1890, 1895, 1900, 1905, 1910, 1915, 1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050, 2055, 2060, 2065, 2070, 2075, 2080, 2085, 2090, 2095, 2100, 2105, 2110, 2115, 2120, 2125, 2130, 2135, 2140, 2145, 2150, 2155, 2160, 2165, 2170, 2175, 2180, 2185, 2190, 2195, 2200, 2205, 2210, 2215, 2220, 2225, 2230, 2235, 2240, 2245, 2250, 2255, 2260, 2265, 2270, 2275, 2280, 2285, 2290, 2295, 2300, 2305, 2310, 2315, 2320, 2325, 2330, 2335, 2340, 2345, 2350, 2355, 2360, 2365, 2370, 2375, 2380, 2385, 2390, 2395, 2400, 2405, 2410, 2415, 2420, 2425, 2430, 2435, 2440, 2445, 2450, 2455, 2460, 2465, 2470, 2475, 2480, 2485, 2490, 2495, 2500]
     
     citiesdata = []
+    citiesdic = { }
     clusters = []
     with open(CSVCITIES, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
-            if line_count == 0:
-                line_count += 1
             city = {}
             city["name"] = row["Município"]
+            city["position"] = line_count
+            city["population"] = float(row["População"])
             city["trash"] = float(row["Lixo (t/d)"])
             if row["UTVR"] == "Sim":
                 city["utvr"] = True
@@ -430,7 +425,8 @@ def main():
             city["transshipment-cost"] = float(row["Custo de Coleta e Transbordo de Resíduos Mistos"])
             city["cost-post-transhipment"] = float(row["Custo de Transporte Pós Transbordo"])
             citiesdata.append(city)
-            line_count += 1
+            citiesdic[city["name"]] = city
+            #line_count += 1
 
     # Read distances from CSV file
     distance = np.loadtxt(open(CSVDISTANCE, "rb"), delimiter=",", skiprows=0)
@@ -439,7 +435,7 @@ def main():
         logging.info("Gerando clusters...")
         logging.debug("Quantidade de cidades superior a %d o algoritmo irá clusterizar as cidades.", MAX_CITIES)
     # Call clusterization to reduce the number of cities or just to build a list of list
-    clusters = clusterization(citiesdata, distance, MAX_CITIES)
+    clusters = clusterization(citiesdic, distance, MAX_CITIES)
 
     # Print landfills in the report file
     report.write("============= ATERROS POTENCIAIS ============= \n")
@@ -477,7 +473,7 @@ def main():
 
     if TRASH_THRESHOLD > 0.0:
         logging.info("Removendo combinaçãoes cujo sub-arranjo não possui a quantidade de lixo necessária...")
-        combinations = removeArraysTrashThreshold(citiesdata, combinations, TRASH_THRESHOLD)
+        combinations = removeArraysTrashThreshold(citiesdic, combinations, TRASH_THRESHOLD)
         logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
     report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): " + repr(len(combinations)) + "\n\n\n")
 
@@ -505,6 +501,8 @@ def main():
         inboundArray = 0
         outboundArray = 0
         outboundExistentLandfill = 0
+        populationArray = 0
+        co2Array = 0
         logging.debug("Arranjo: %s", i)
         new = {}
 
@@ -515,22 +513,23 @@ def main():
         sub = list()
         for y in i:
             logging.debug("Sub-arranjo: %s", y)
-            trashSubArray = getSubTrash(citiesdata, y)
+            trashSubArray = getSubTrash(citiesdic, y)
             capexSubArray = getSubCapex(getFaixa(trashSubArray, rsutrash), trashSubArray, rsutrash)
             opexSubArray = getSubOpex(getFaixa(trashSubArray, rsutrash), trashSubArray, rsutrash)
+            populationSubArray = getSubPopulation(citiesdic, y)
             capexOpexValue = (capexSubArray/35.0 + opexSubArray)/ 1.0
             trashArray = trashArray + trashSubArray
             capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
-            rsinout = inboundoutbound(citiesdata, distance, y, centralizado, utvrs, landfill, existentlandfill)
-            rsinout["capex"] =  0#capexSubArray
-            rsinout["opex"] = 0#opexSubArray
-            rsinout["tecnologia"] = 0#capexOpexValue
+            rsinout = inboundoutbound(citiesdic, distance, y, centralizado, utvrs, landfill, existentlandfill)
             rsinout["capex"] =  capexSubArray
             rsinout["opex"] = opexSubArray
             rsinout["tecnologia"] = capexOpexValue
+            rsinout["pop"] = populationSubArray
             
+            populationArray = populationArray + populationSubArray
             inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
             outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
+            co2Array = co2Array + (rsinout["c02"] * trashSubArray)
             outboundExistentLandfill = outboundExistentLandfill + (rsinout["outbound-existente"] * trashSubArray)
             rsinout["lixo"] = trashSubArray
             rsinout["total"] = capexOpexValue + rsinout["inbound"] + rsinout["outbound"]
@@ -545,8 +544,10 @@ def main():
         new["lixo-array"] = trashArray
         new["inbound"] = inboundArray/trashArray
         new["outbound"] = outboundArray/trashArray
+        new["c02"] = co2Array/trashArray
         new["outbound-existente"] = outboundExistentLandfill/trashArray
         new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
+        new["population-array"] = populationArray
         data.append(new)
 
         current = current + 1
@@ -565,11 +566,11 @@ def main():
             report.write("-- Outbound: " + repr(d["outbound"]) + "\n\n")
             report.write("-- Sub-arranjos:\n")
 
-            output.write(repr(d["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(d["total"]) + ";" + repr(d["lixo-array"]) + ";" + repr(d["capexopex"]) + ";" + repr(d["inbound"]) + ";" + repr(d["outbound"]) + ";" + repr(d["outbound-existente"]) + "\n")
+            output.write(repr(d["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(d["population-array"]) + ";" + repr(d["total"]) + ";" + repr(d["lixo-array"]) + ";" + repr(d["capexopex"]) + ";" + repr(d["inbound"]) + ";" + repr(d["outbound"]) + ";" + repr(d["outbound-existente"]) + "\n")
 
 
             for x in range(len(d["sub"])):
-                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro-existente"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["tecnologia"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + ";" + repr(d["sub"][x]["outbound-existente"]) + "\n")
+                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro-existente"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]["pop"]) + ";" + repr(d["sub"][x]["total"]) + ";" + repr(d["sub"][x]["lixo"]) + ";" + repr(d["sub"][x]["tecnologia"]) + ";" + repr(d["sub"][x]["inbound"])  + ";" + repr(d["sub"][x]["outbound"]) + ";" + repr(d["sub"][x]["outbound-existente"]) + "\n")
 
                 report.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
                 report.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
@@ -587,7 +588,7 @@ def main():
     for i in range(len(data)):
         if i % 1000 != 0:
             continue
-        output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["capexopex"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + ";" + repr(data[i]["outbound-existente"]) + "\n")
+        output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["population-array"]) + ";" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["capexopex"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + ";" + repr(data[i]["outbound-existente"]) + "\n")
 
         report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
         report.write("- Lixo: " + repr(data[i]["lixo-array"]) + "\n")
@@ -597,7 +598,7 @@ def main():
         report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n\n")
         report.write("-- Sub-arranjos:\n")
         for x in range(len(data[i]["sub"])):
-            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["aterro-existente"]) + ";" + repr(data[i]["sub"][x]["utvr"]) + ";" + repr(data[i]["sub"][x]["total"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["tecnologia"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + ";" + repr(data[i]["sub"][x]["outbound-existente"]) + "\n")
+            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["aterro-existente"]) + ";" + repr(data[i]["sub"][x]["utvr"]) + ";" + repr(data[i]["sub"][x]["pop"]) + ";" + repr(data[i]["sub"][x]["total"]) + ";" + repr(data[i]["sub"][x]["lixo"]) + ";" + repr(data[i]["sub"][x]["tecnologia"]) + ";" + repr(data[i]["sub"][x]["inbound"])  + ";" + repr(data[i]["sub"][x]["outbound"]) + ";" + repr(data[i]["sub"][x]["outbound-existente"]) + "\n")
 
             report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
             report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
