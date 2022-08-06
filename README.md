@@ -18,7 +18,7 @@ Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposi�
 
 ## Script
 
-``python3 combinations.py sample-data/cidades-demo.csv sample-data/distancia-demo.csv 10 0 demo-report.txt demo-tool.csv``
+``python3 combinations.py .\sample-data\cidades-demo.csv .\sample-data\distancias-demo.csv 10 0 demo-report.txt demo-tool.csv``
 
 ## 📁 Acesso ao projeto
 Você pode acessar os arquivos do projeto clicando [aqui](https://github.com/cristiansimioni/gestaoregionalizadarsu/tree/main/).
