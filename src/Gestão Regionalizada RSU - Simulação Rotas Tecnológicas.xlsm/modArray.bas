@@ -10,12 +10,13 @@ Public Enum DatabaseArrayColumn
     colLandfill = 6
     colExistentLandfill = 7
     colUTVR = 8
-    colTotal = 9
-    colTrash = 10
-    colTechnology = 11
-    colInbound = 12
-    colOutbound = 13
-    colOutboundExistentLandfill = 14
+    colPopulation = 9
+    colTotal = 10
+    colTrash = 11
+    colTechnology = 12
+    colInbound = 13
+    colOutbound = 14
+    colOutboundExistentLandfill = 15
 End Enum
 
 
@@ -64,6 +65,7 @@ Public Function readArrays()
             arr.vLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colLandfill).value
             arr.vExistentLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colExistentLandfill).value
             arr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
+            arr.vPopulation = wksDatabase.Cells(r, DatabaseArrayColumn.colPopulation).value
             arr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
             arr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
             arr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
@@ -84,6 +86,7 @@ Public Function readArrays()
             subArr.vExistentLandfill = Replace(subArr.vExistentLandfill, "'", "")
             subArr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             subArr.vUTVR = Replace(subArr.vUTVR, "'", "")
+            subArr.vPopulation = wksDatabase.Cells(r, DatabaseArrayColumn.colPopulation).value
             subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
             subArr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
             subArr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)

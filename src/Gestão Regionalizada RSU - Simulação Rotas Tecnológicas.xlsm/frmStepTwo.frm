@@ -50,7 +50,7 @@ Public Function updateForm()
     Else
         Call Database.SetDatabaseValue("CityStatus", colUserValue, "")
     End If
-    If modArray.countSelectedArrays = 4 Then
+    If modArray.countSelectedArrays <= 4 Then
         imgArrays.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         Call Database.SetDatabaseValue("ArrayStatus", colUserValue, "Sim")
     Else
@@ -107,5 +107,5 @@ Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 2")
     
-    Call updateForm
+    Call frmStepTwo.updateForm
 End Sub

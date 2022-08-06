@@ -15,6 +15,7 @@ Public vCode As String
 Public vLandfill As String
 Public vExistentLandfill As String
 Public vUTVR As String
+Public vPopulation As Double
 Public vTotal As Double
 Public vTrash As Double
 Public vTechnology As Double

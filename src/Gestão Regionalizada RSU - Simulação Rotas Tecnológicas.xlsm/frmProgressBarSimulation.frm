@@ -169,12 +169,12 @@ Private Sub executeSimulation()
                     
                     For rowRoute = row - 7 To row - 1
 
-                        If minTarifa > wksDefinedArrays.Cells(rowRoute, 6).value Then
-                            minTarifa = wksDefinedArrays.Cells(rowRoute, 6).value
+                        If minTarifa > wksDefinedArrays.Cells(rowRoute, 9).value Then
+                            minTarifa = wksDefinedArrays.Cells(rowRoute, 9).value
                             selectedRow = rowRoute
                         End If
-                        If maxEficiencia < wksDefinedArrays.Cells(rowRoute, 7).value Then
-                            maxEficiencia = wksDefinedArrays.Cells(rowRoute, 7).value
+                        If maxEficiencia < wksDefinedArrays.Cells(rowRoute, 10).value Then
+                            maxEficiencia = wksDefinedArrays.Cells(rowRoute, 10).value
                         End If
                     Next rowRoute
                     
@@ -184,20 +184,20 @@ Private Sub executeSimulation()
                     wksDefinedArrays.Cells(row, 4).value = "NA"
                     wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
-                    For x = 6 To 62
+                    For x = 6 To 65
                         wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(selectedRow, x).value
                     Next x
                     
                     If tarifaLiquidaBase > minTarifa Then
-                        wksDefinedArrays.Cells(row, 6).Interior.Color = ApplicationColors.bgColorValidTextBox
+                        wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
                     Else
-                        wksDefinedArrays.Cells(row, 6).Interior.Color = ApplicationColors.bgColorInvalidTextBox
+                        wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorInvalidTextBox
                     End If
                     
                     If eficienciaBase < maxEficiencia Then
-                        wksDefinedArrays.Cells(row, 7).Interior.Color = ApplicationColors.bgColorValidTextBox
+                        wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorValidTextBox
                     Else
-                        wksDefinedArrays.Cells(row, 7).Interior.Color = ApplicationColors.bgColorInvalidTextBox
+                        wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorInvalidTextBox
                     End If
                     
                     consolidatedRows.Add row
@@ -222,7 +222,7 @@ Private Sub executeSimulation()
                 wksDefinedArrays.Cells(row, 4).value = "NA"
                 wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & a.vCode
                 
-                For x = 6 To 62
+                For x = 6 To 65
                     Dim strFormula As String
                     Dim ColumnLetter As String
                     strFormula = "="
@@ -230,9 +230,9 @@ Private Sub executeSimulation()
                     element = 1
                     ColumnLetter = Split(Cells(1, x).Address, "$")(1)
                     
-                    If x = 8 Then 'Prazo de Contrato
+                    If x = 11 Or x = 5 Or x = 6 Or x = 7 Then 'Fixas
                         strFormula = strFormula & ColumnLetter & consolidatedRows(1)
-                    ElseIf x >= 9 And x <= 21 Then 'Somatório
+                    ElseIf x >= 12 And x <= 23 Then 'Somatório
                         For Each r In consolidatedRows
                             If element <> 1 Then
                                 strFormula = strFormula & "+"
@@ -250,8 +250,8 @@ Private Sub executeSimulation()
                                 divisionPart = divisionPart & "+"
                                 sumPart = sumPart & "+"
                             End If
-                            sumPart = sumPart & ColumnLetter & r & "*K" & r
-                            divisionPart = divisionPart & "K" & r
+                            sumPart = sumPart & ColumnLetter & r & "*N" & r
+                            divisionPart = divisionPart & "N" & r
                             element = element + 1
                         Next r
                         sumPart = sumPart & ")"

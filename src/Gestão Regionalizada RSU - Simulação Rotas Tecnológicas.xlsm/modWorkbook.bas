@@ -6,6 +6,7 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     
     ' Valores sub-arranjo
     ActiveWorkbook.Sheets("R-Entrada").range("E10") = arr.vTrash
+    ActiveWorkbook.Sheets("R-Entrada").range("E8") = arr.vPopulation
     ActiveWorkbook.Sheets("R&C-Painel de Controle").range("D84") = arr.vInbound
     ActiveWorkbook.Sheets("R&C-Painel de Controle").range("D88") = arr.vOutbound
     
@@ -57,11 +58,11 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
     Workbooks.Open filename
     
     ' Valores sub-arranjo
-    ActiveWorkbook.Sheets("ANÁLISE DE SITES MULTICRITÉRIO").range("H48") = arr.vInbound
-    ActiveWorkbook.Sheets("ANÁLISE DE SITES MULTICRITÉRIO").range("H52") = arr.vOutbound
+    ActiveWorkbook.Sheets("RESUMO GERAL Valoriz. RT´s").range("C30") = arr.vInbound
+    ActiveWorkbook.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutbound
     
     If market = FOLDERLANDFILLMARKET Then
-        ActiveWorkbook.Sheets("ANÁLISE DE SITES MULTICRITÉRIO").range("H52") = arr.vOutboundExistentLandfill
+        ActiveWorkbook.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutboundExistentLandfill
     End If
     
     'Valores da ferramenta
@@ -125,7 +126,7 @@ Public Sub CopyDataFromToolTwo(ByVal filename, ByVal row)
     route5Row = row - 1
     
     colStartTool = 6
-    rowLastToolTwo = 65
+    rowLastToolTwo = 68
     
     Dim tarifaLiquida, eficiencia As Double
     tarifaLiquida = Database.GetDatabaseValue("TargetExpectation", colUserValue)
@@ -144,80 +145,80 @@ Public Sub CopyDataFromToolTwo(ByVal filename, ByVal row)
         wks.Cells(route5Row, colStartTool) = wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 9).value
         
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 3).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 3).value < tarifaLiquida Then
             wks.Cells(route1ARow, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route1ARow, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 3).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 3).value > eficiencia Then
             wks.Cells(route1ARow, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route1ARow, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 4).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 4).value < tarifaLiquida Then
             wks.Cells(route1BRow, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route1BRow, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 4).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 4).value > eficiencia Then
             wks.Cells(route1BRow, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route1BRow, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 5).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 5).value < tarifaLiquida Then
             wks.Cells(route1CRow, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route1CRow, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 5).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 5).value > eficiencia Then
             wks.Cells(route1CRow, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route1CRow, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 6).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 6).value < tarifaLiquida Then
             wks.Cells(route2Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route2Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 6).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 6).value > eficiencia Then
             wks.Cells(route2Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route2Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 7).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 7).value < tarifaLiquida Then
             wks.Cells(route3Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route3Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 7).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 7).value > eficiencia Then
             wks.Cells(route3Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route3Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 8).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 8).value < tarifaLiquida Then
             wks.Cells(route4Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route4Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 8).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 8).value > eficiencia Then
             wks.Cells(route4Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route4Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
-        If rowStartToolTwo = 9 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 9).value < tarifaLiquida Then
+        If rowStartToolTwo = 12 And colStartTool = 6 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 9).value < tarifaLiquida Then
             wks.Cells(route5Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 9 And colStartTool = 6 Then
+        ElseIf rowStartToolTwo = 12 And colStartTool = 6 Then
             wks.Cells(route5Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
-        If rowStartToolTwo = 10 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 9).value > eficiencia Then
+        If rowStartToolTwo = 13 And colStartTool = 7 And wbk.Worksheets("RESUMO GERAL Valoriz. RT´s").Cells(rowStartToolTwo, 9).value > eficiencia Then
             wks.Cells(route5Row, colStartTool).Interior.Color = ApplicationColors.bgColorValidTextBox
-        ElseIf rowStartToolTwo = 10 And colStartTool = 7 Then
+        ElseIf rowStartToolTwo = 13 And colStartTool = 7 Then
             wks.Cells(route5Row, colStartTool).Interior.Color = ApplicationColors.bgColorInvalidTextBox
         End If
         
