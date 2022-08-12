@@ -38,7 +38,11 @@ Function GetDatabaseValue(ByVal name As String, ByVal column As DatabaseColumn)
     Set wksDatabase = Util.GetDatabaseWorksheet
     Dim row As Integer
     row = LocateVariableRow(name)
-    GetDatabaseValue = wksDatabase.Cells(row, column).value
+    If row <> 0 Then
+        GetDatabaseValue = wksDatabase.Cells(row, column).value
+    Else
+        GetDatabaseValue = ""
+    End If
 End Function
 
 Sub SetDatabaseValue(ByVal name As String, ByVal column As DatabaseColumn, ByVal v)

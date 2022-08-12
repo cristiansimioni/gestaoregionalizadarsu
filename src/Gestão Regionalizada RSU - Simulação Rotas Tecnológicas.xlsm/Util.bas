@@ -41,6 +41,7 @@ Public Const MSG_INVALID_DATA_TITLE                 As String = "Dados Inválidos
 Public Const MSG_INVALID_DATA                       As String = "Um ou mais dados estão preechidos de maneira incorreta. Favor verificar!"
 Public Const MSG_ALGORITHM_COMPLETE_SUCCESSFULLY    As String = "A execução do algoritmo terminou com sucesso."
 Public Const MSG_ALGORITHM_COMPLETE_FAILED          As String = "A execução do algoritmo falhou."
+Public Const MSG_ALGORITHM_STARTUP                  As String = "Uma tela preta (terminal) irá abrir para a execução do algoritmo. Quando a execução terminar a tela irá fechar automaticamente. O tempo de processamento depende dos parâmetros selecionados e capacidade da sua máquina."
 
 'Look and feel
 Public Enum ApplicationColors

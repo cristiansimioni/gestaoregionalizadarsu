@@ -85,6 +85,7 @@ Private Sub btnRunAlgorithm_Click()
     Call Util.saveAsCSV(prjName, algPath, "distance")
     
     'Run the algorithm
+    MsgBox MSG_ALGORITHM_STARTUP, vbInformation
     If Util.RunPythonScript(algPath, prjName) Then
         'Load the result into the workbook
         Call Util.CSVImport(algPath, prjName)
