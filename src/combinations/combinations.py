@@ -138,6 +138,7 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
     for utvr_city in subarray:
         entry = {}
         sum_inbound = 0
+        #sum_co2 = 0
         if utvr_city in utvrs_only:
             logging.debug("%s é uma UTVR...", utvr_city)
             entry["sub-arranjo"] = subarray
@@ -148,14 +149,14 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 cost_post_transhipment = cdata[other_city]["cost-post-transhipment"]
                 trash = cdata[other_city]["trash"]
                 sum_inbound = sum_inbound + ((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, utvr_city, other_city))) * trash
-                sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
+                #sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
         
-            sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
+            #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
             sum_inbound = sum_inbound / getSubTrash(cdata, subarray)
 
             sum_inbound = (CAPEX_INBOUND/35.0 + sum_inbound) /  1.0
             entry["inbound"] = sum_inbound
-            entry["co2"] = sum_co2
+            entry["co2"] = 0 #sum_co2
             dist = 999999
             for a in existentlandfill:
                 distCities = getDistanceBetweenCites(cdata, distance, utvr_city, a)
@@ -529,7 +530,7 @@ def main():
             populationArray = populationArray + populationSubArray
             inboundArray = inboundArray + (rsinout["inbound"] * trashSubArray)
             outboundArray = outboundArray + (rsinout["outbound"] * trashSubArray)
-            co2Array = co2Array + (rsinout["c02"] * trashSubArray)
+            #co2Array = co2Array + (rsinout["c02"] * trashSubArray)
             outboundExistentLandfill = outboundExistentLandfill + (rsinout["outbound-existente"] * trashSubArray)
             rsinout["lixo"] = trashSubArray
             rsinout["total"] = capexOpexValue + rsinout["inbound"] + rsinout["outbound"]
@@ -544,7 +545,7 @@ def main():
         new["lixo-array"] = trashArray
         new["inbound"] = inboundArray/trashArray
         new["outbound"] = outboundArray/trashArray
-        new["c02"] = co2Array/trashArray
+        #new["c02"] = co2Array/trashArray
         new["outbound-existente"] = outboundExistentLandfill/trashArray
         new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
         new["population-array"] = populationArray
@@ -563,6 +564,7 @@ def main():
             report.write("- Custo Total: " + repr(d["total"]) + "\n")
             report.write("-- Inbound: " + repr(d["inbound"]) + "\n")
             report.write("-- Tecnologia: " + repr(d["capexopex"]) + "\n")
+            #report.write("-- CO2: " + repr(d["co2"]) + "\n")
             report.write("-- Outbound: " + repr(d["outbound"]) + "\n\n")
             report.write("-- Sub-arranjos:\n")
 

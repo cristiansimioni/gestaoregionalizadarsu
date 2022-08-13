@@ -39,8 +39,8 @@ Private Sub cbxCharts_Change()
     prjPath = Util.FolderCreate(prjPath, prjName)
     chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
     For Each c In Sheets("Dashboard").ChartObjects
-        If c.name = currentChart Then
-            Fname = chartPath & "\" & c.name & ".jpg"
+        If c.Chart.ChartTitle.Text = currentChart Then
+            Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
             Me.Image1.Picture = LoadPicture(Fname)
         End If
     Next c
@@ -50,11 +50,10 @@ Private Sub cbxCharts_Change()
 End Sub
 
 
-
-
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 5")
+    txtChartDescription.TextAlign = fmTextAlignCenter
     
     Dim prjPath As String
     Dim prjName As String
@@ -71,9 +70,9 @@ Private Sub UserForm_Initialize()
     Dim Fname As String
     
     For Each c In Sheets("Dashboard").ChartObjects
-        cbxCharts.AddItem c.name
+        cbxCharts.AddItem c.Chart.ChartTitle.Text
         c.Activate
-        Fname = chartPath & "\" & c.name & ".jpg"
+        Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
         c.Chart.Export filename:=Fname, FilterName:="jpg"
     Next c
     
