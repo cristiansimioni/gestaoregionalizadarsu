@@ -75,7 +75,9 @@ Public Function updateForm()
     If ValidateFormRules("frmQuantitativeValMarket") Then imgQuantitativeValMarket.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmQuantitativeValAutoconsumo") Then imgQuantitativeValAutoconsumo.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmQuantitativeValPublic") Then imgQuantitativeValPublic.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    'If ValidateFormRules("frmUserBase") Then imgExecuteSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If Database.GetDatabaseValue("SimulationStatus", colUserValue) = "Sim" Then
+        imgExecuteSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    End If
 End Function
 
 Private Sub UserForm_Initialize()

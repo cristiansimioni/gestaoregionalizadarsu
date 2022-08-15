@@ -275,8 +275,12 @@ Private Sub executeSimulation()
     Application.ScreenUpdating = True
     Application.AskToUpdateLinks = True
     
+    Call Database.SetDatabaseValue("SimulationStatus", colUserValue, "Sim")
+    
     Me.Caption = "Concluído"
     lblFile.Visible = False
+    frmStepFour.updateForm
+    
 End Sub
 
 Private Sub UserForm_Activate()
