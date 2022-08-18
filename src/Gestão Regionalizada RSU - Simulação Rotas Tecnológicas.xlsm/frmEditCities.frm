@@ -283,7 +283,7 @@ Private Sub updateCostPostTranshipment(ByRef txtBox, ByVal index As Integer)
     End If
     
     If IsNumeric(txtBox.Text) And changeValues Then
-        cities.Item(i).vCostPostTranshipment = CDbl(txtBox.Text)
+        cities.Item(i).vCostPostTransshipment = CDbl(txtBox.Text)
     End If
 End Sub
 
@@ -398,7 +398,7 @@ Sub GetRangeToDisplay(currentValue As Integer)
     changeValues = False
     
     t = 1
-    While t <= 10
+    While t <= 10 And t <= cities.count
         Me.Controls("txtCity" & t).value = cities.Item(i).vCityName
         Me.Controls("txtPopulation" & t).value = cities.Item(i).vPopulation
         Me.Controls("txtTrash" & t).value = cities.Item(i).vTrash

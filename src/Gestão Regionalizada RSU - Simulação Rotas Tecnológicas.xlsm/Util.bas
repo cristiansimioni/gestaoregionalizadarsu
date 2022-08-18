@@ -42,6 +42,9 @@ Public Const MSG_INVALID_DATA                       As String = "Um ou mais dado
 Public Const MSG_ALGORITHM_COMPLETE_SUCCESSFULLY    As String = "A execução do algoritmo terminou com sucesso."
 Public Const MSG_ALGORITHM_COMPLETE_FAILED          As String = "A execução do algoritmo falhou."
 Public Const MSG_ALGORITHM_STARTUP                  As String = "Uma tela preta (terminal) irá abrir para a execução do algoritmo. Quando a execução terminar a tela irá fechar automaticamente. O tempo de processamento depende dos parâmetros selecionados e capacidade da sua máquina."
+Public Const MSG_WRONG_NUMBER_CITIES_TITLE          As String = "Quantidade insuficiente"
+Public Const MSG_WRONG_NUMBER_CITIES                As String = "Quantidade de cidades insuficiente, selecione ao menos duas."
+
 
 'Look and feel
 Public Enum ApplicationColors

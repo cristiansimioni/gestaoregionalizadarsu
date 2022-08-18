@@ -55,38 +55,42 @@ End Sub
 Private Sub btnSave_Click()
     Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
     
-    'Clear currect selected cities worksheet
-    wksSelectedCities.range("A2:B100").ClearContents
-    wksSelectedCities.range("G2:L100").ClearContents
-    
-    'Fill with current values
-    row = 2
-    For Each city In selectedCities
-        wksSelectedCities.Cells(row, SelectedCityColumn.colCityName) = city.vCityName
-        wksSelectedCities.Cells(row, SelectedCityColumn.colIBGECode) = city.vIBGECode
-        wksSelectedCities.Cells(row, SelectedCityColumn.colConventionalCost) = city.vConventionalCost
-        wksSelectedCities.Cells(row, SelectedCityColumn.colTransshipmentCost) = city.vTransshipmentCost
-        wksSelectedCities.Cells(row, SelectedCityColumn.colCostPostTransshipment) = city.vCostPostTransshipment
-        If city.vUTVR Then
-            wksSelectedCities.Cells(row, SelectedCityColumn.colUTVR) = "Sim"
-        Else
-            wksSelectedCities.Cells(row, SelectedCityColumn.colUTVR) = "Não"
-        End If
-        If city.vExistentLandfill Then
-            wksSelectedCities.Cells(row, SelectedCityColumn.colExistentLandfill) = "Sim"
-        Else
-            wksSelectedCities.Cells(row, SelectedCityColumn.colExistentLandfill) = "Não"
-        End If
-        If city.vPotentialLandfill Then
-            wksSelectedCities.Cells(row, SelectedCityColumn.colPotentialLandfill) = "Sim"
-        Else
-            wksSelectedCities.Cells(row, SelectedCityColumn.colPotentialLandfill) = "Não"
-        End If
-        row = row + 1
-    Next city
-    
-    Unload Me
-    frmStepOne.updateForm
+    If selectedCities.count >= 2 Then
+        'Clear currect selected cities worksheet
+        wksSelectedCities.range("A2:B100").ClearContents
+        wksSelectedCities.range("G2:L100").ClearContents
+        
+        'Fill with current values
+        row = 2
+        For Each city In selectedCities
+            wksSelectedCities.Cells(row, SelectedCityColumn.colCityName) = city.vCityName
+            wksSelectedCities.Cells(row, SelectedCityColumn.colIBGECode) = city.vIBGECode
+            wksSelectedCities.Cells(row, SelectedCityColumn.colConventionalCost) = city.vConventionalCost
+            wksSelectedCities.Cells(row, SelectedCityColumn.colTransshipmentCost) = city.vTransshipmentCost
+            wksSelectedCities.Cells(row, SelectedCityColumn.colCostPostTransshipment) = city.vCostPostTransshipment
+            If city.vUTVR Then
+                wksSelectedCities.Cells(row, SelectedCityColumn.colUTVR) = "Sim"
+            Else
+                wksSelectedCities.Cells(row, SelectedCityColumn.colUTVR) = "Não"
+            End If
+            If city.vExistentLandfill Then
+                wksSelectedCities.Cells(row, SelectedCityColumn.colExistentLandfill) = "Sim"
+            Else
+                wksSelectedCities.Cells(row, SelectedCityColumn.colExistentLandfill) = "Não"
+            End If
+            If city.vPotentialLandfill Then
+                wksSelectedCities.Cells(row, SelectedCityColumn.colPotentialLandfill) = "Sim"
+            Else
+                wksSelectedCities.Cells(row, SelectedCityColumn.colPotentialLandfill) = "Não"
+            End If
+            row = row + 1
+        Next city
+        
+        Unload Me
+        frmStepOne.updateForm
+    Else
+        answer = MsgBox(MSG_WRONG_NUMBER_CITIES, vbInformation, MSG_WRONG_NUMBER_CITIES_TITLE)
+    End If
     
 End Sub
 
