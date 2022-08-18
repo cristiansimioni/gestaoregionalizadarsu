@@ -6,7 +6,7 @@ Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simu
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "1.0.0"
-Public Const APPLASTUPDATED         As String = "17.08.2022"
+Public Const APPLASTUPDATED         As String = "18.08.2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -31,6 +31,11 @@ Public Const IMGLOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
 
 'Files
 Public Const FILEMANUAL             As String = "Manual da Ferramenta.pdf"
+Public Const FILEMANUALSTEP1        As String = "Manual da Ferramenta.pdf"
+Public Const FILEMANUALSTEP2        As String = "Manual da Ferramenta.pdf"
+Public Const FILEMANUALSTEP3        As String = "Manual da Ferramenta.pdf"
+Public Const FILEMANUALSTEP4        As String = "Manual da Ferramenta.pdf"
+Public Const FILEMANUALSTEP5        As String = "Manual da Ferramenta.pdf"
 
 'Messages
 Public Const MSG_ATTENTION                          As String = "Atenção"

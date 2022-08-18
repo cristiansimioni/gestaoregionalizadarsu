@@ -30,6 +30,12 @@ Private Sub btnExecuteSimulation_Click()
     frmProgressBarSimulation.Show
 End Sub
 
+Private Sub btnHelpStep_Click()
+    On Error Resume Next
+        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP4)
+    On Error GoTo 0
+End Sub
+
 Private Sub btnPriceValAutoconsumo_Click()
     frmPriceValAutoconsumo.Show
 End Sub

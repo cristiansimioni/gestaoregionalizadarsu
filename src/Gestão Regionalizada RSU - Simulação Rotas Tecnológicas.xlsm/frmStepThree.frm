@@ -30,6 +30,12 @@ Private Sub btnFinancialAssumptions_Click()
     frmFinancialAssumptions.Show
 End Sub
 
+Private Sub btnHelpStep_Click()
+    On Error Resume Next
+        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP3)
+    On Error GoTo 0
+End Sub
+
 Private Sub btnOpexData_Click()
     frmOpexData.Show
 End Sub

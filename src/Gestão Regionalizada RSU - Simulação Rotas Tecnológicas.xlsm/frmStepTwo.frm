@@ -62,6 +62,12 @@ Public Function updateForm()
     End If
 End Function
 
+Private Sub btnHelpStep_Click()
+    On Error Resume Next
+        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP2)
+    On Error GoTo 0
+End Sub
+
 Private Sub btnRunAlgorithm_Click()
     btnRunAlgorithm.Enabled = False
     'Calculate cities distance

@@ -46,6 +46,12 @@ Private Sub btnFolder_Click()
     End If
 End Sub
 
+Private Sub btnHelpStep_Click()
+    On Error Resume Next
+        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP1)
+    On Error GoTo 0
+End Sub
+
 Private Sub btnSave_Click()
     Call Database.SetDatabaseValue("ProjectName", DatabaseColumn.colUserValue, txtProjectName.Text)
     Call Database.SetDatabaseValue("ProjectPathFolder", DatabaseColumn.colUserValue, txtPath.Text)

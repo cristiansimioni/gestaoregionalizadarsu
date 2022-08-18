@@ -29,6 +29,12 @@ Private Sub btnFiles_Click()
     ThisWorkbook.FollowHyperlink prjPath
 End Sub
 
+Private Sub btnHelpStep_Click()
+    On Error Resume Next
+        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP5)
+    On Error GoTo 0
+End Sub
+
 Private Sub cbxCharts_Change()
     currentChart = cbxCharts
     Dim chartPath As String
@@ -45,7 +51,7 @@ Private Sub cbxCharts_Change()
         End If
     Next c
     
-    txtChartDescription.Text = GetDatabaseValue(currentChart, colUserValue)
+    txtChartDescription.Text = GetDatabaseValue(currentChart, colDefaultValue)
     txtChartDescription.Visible = True
 End Sub
 
