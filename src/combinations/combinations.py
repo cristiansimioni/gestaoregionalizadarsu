@@ -590,6 +590,8 @@ def main():
     for i in range(len(data)):
         #if i % 1000 != 0:
         #    continue
+        if i >= 10:
+            break
         output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["population-array"]) + ";" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["capexopex"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + ";" + repr(data[i]["outbound-existente"]) + "\n")
 
         report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
