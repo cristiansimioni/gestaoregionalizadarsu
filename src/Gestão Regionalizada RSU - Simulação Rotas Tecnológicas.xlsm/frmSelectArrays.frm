@@ -40,6 +40,7 @@ Private Sub UserForm_Initialize()
     Set arrays = readArrays
     
     'Centralized Array is always the first one
+    lblCentralizedCode.Caption = arrays(1).vCode
     txtCentralizedArray.Text = arrays(1).vSubArray(1).vArrayRaw
     txtCentralizedLandfill.Text = arrays(1).vSubArray(1).vLandfill
     txtCentralizedExistentLandfill.Text = arrays(1).vSubArray(1).vExistentLandfill
@@ -94,6 +95,7 @@ Private Sub vScrollBar_Change()
     Wend
     
     'Fill array
+    lblArrayCode.Caption = arrays.Item(currentValue).vCode
     txtArrayTotal.Text = arrays.Item(currentValue).vTotal
     txtArrayTrash.Text = arrays.Item(currentValue).vTrash
     txtArrayTechnology.Text = arrays.Item(currentValue).vTechnology
