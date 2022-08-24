@@ -188,7 +188,7 @@ Params = Chr(34) & algPath & "\cidades-" & prjName & ".csv" & Chr(34) & _
          " " & _
          Chr(34) & algPath & "\output-" & prjName & ".csv" & Chr(34)
 
-cmd = "%comspec% /c " & Chr(34) & PythonExe & " " & PythonScript & " " & Params & Chr(34)
+cmd = "%comspec% /c " & Chr(34) & Chr(34) & PythonExe & Chr(34) & " " & PythonScript & " " & Params & Chr(34)
 'Run the Python Script
 errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
 
