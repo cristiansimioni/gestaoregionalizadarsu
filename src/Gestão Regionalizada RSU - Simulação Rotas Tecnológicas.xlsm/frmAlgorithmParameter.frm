@@ -77,5 +77,10 @@ Private Sub UserForm_Initialize()
     txtTrashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colUserValue)
     
+    If txtPythonPath = "" Then
+        strPath = CreateObject("WScript.Shell").Exec("where python").StdOut.ReadAll
+        txtPythonPath = Left(strPath, Len(strPath) - 2)
+    End If
+    
     FormChanged = False
 End Sub
