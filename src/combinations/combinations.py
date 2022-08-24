@@ -1,3 +1,4 @@
+from decimal import DecimalException
 import sys
 import logging
 import numpy as np
@@ -86,7 +87,7 @@ def getCityAttribute(data, city, attribute):
         raise SystemExit(f"City: {city} or attribute: {attribute} not found.")
 
 def getDistanceBetweenCites(data, distance, cityA, cityB):
-    return distance[data[cityA]["position"]][data[cityB]["position"]]
+    return round(distance[data[cityA]["position"]][data[cityB]["position"]], 3)
 
 def getFaixa(sumTrash, rsutrash):
     for i in range(len(rsutrash)):
@@ -107,6 +108,7 @@ def removeArraysWithoutUTVR(combinations, utvrs):
             if not find:
                 combinations.remove(comb[c])
                 break
+    return combinations
 
 def removeArraysTrashThreshold(data, combinations, threshold):
     comb = combinations.copy()
@@ -148,13 +150,15 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 transshipment_cost = cdata[other_city]["transshipment-cost"]
                 cost_post_transhipment = cdata[other_city]["cost-post-transhipment"]
                 trash = cdata[other_city]["trash"]
-                sum_inbound = sum_inbound + ((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, utvr_city, other_city))) * trash
+                sum_inbound = sum_inbound + round(((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, other_city, utvr_city))) * trash, 3)
                 #sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
-        
-            #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
-            sum_inbound = sum_inbound / getSubTrash(cdata, subarray)
 
-            sum_inbound = (CAPEX_INBOUND/35.0 + sum_inbound) /  1.0
+            #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
+            sum_inbound = round(sum_inbound / getSubTrash(cdata, subarray), 3)
+            
+            
+
+            sum_inbound = round((CAPEX_INBOUND/35.0 + sum_inbound) /  1.0, 3)
             entry["inbound"] = sum_inbound
             entry["co2"] = 0 #sum_co2
             dist = 999999
@@ -172,7 +176,7 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 sum_outbound = 0
                 sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * 0.5
                 e["aterro"] = a
-                e["outbound"] = (CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0
+                e["outbound"] = round((CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0, 3)
                 e["total"] = sum_inbound + sum_outbound
                 
                 logging.debug("Adicionando: %s", e)
@@ -408,8 +412,8 @@ def main():
             city = {}
             city["name"] = row["Município"]
             city["position"] = line_count
-            city["population"] = float(row["População"])
-            city["trash"] = float(row["Lixo (t/d)"])
+            city["population"] = round(float(row["População"]), 3)
+            city["trash"] = round(float(row["Lixo (t/d)"]), 3)
             if row["UTVR"] == "Sim":
                 city["utvr"] = True
             else:
@@ -422,12 +426,12 @@ def main():
                 city["existent-landfill"] = True
             else:
                 city["existent-landfill"] = False
-            city["conventional-cost"] = float(row["Custo de Coleta Mista Convencional"])
-            city["transshipment-cost"] = float(row["Custo de Coleta e Transbordo de Resíduos Mistos"])
-            city["cost-post-transhipment"] = float(row["Custo de Transporte Pós Transbordo"])
+            city["conventional-cost"] = round(float(row["Custo de Coleta Mista Convencional"]), 3)
+            city["transshipment-cost"] = round(float(row["Custo de Coleta e Transbordo de Resíduos Mistos"]), 3)
+            city["cost-post-transhipment"] = round(float(row["Custo de Transporte Pós Transbordo"]), 3)
             citiesdata.append(city)
             citiesdic[city["name"]] = city
-            #line_count += 1
+            line_count += 1
 
     # Read distances from CSV file
     distance = np.loadtxt(open(CSVDISTANCE, "rb"), delimiter=",", skiprows=0)
@@ -468,7 +472,7 @@ def main():
     utvrs = getUTVR(citiesdata)
     if len(utvrs) != len(citiesdata):
         logging.info("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
-        combinations = removeArraysWithoutUTVR(combinations)
+        combinations = removeArraysWithoutUTVR(combinations, utvrs)
         logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
     report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos sem UTVR): " + repr(len(combinations)) + "\n")
 
