@@ -101,6 +101,10 @@ Function GetDefinedArraysWorksheet() As Worksheet
     Set GetDefinedArraysWorksheet = ThisWorkbook.Worksheets("Arranjos Consolidados")
 End Function
 
+Function GetChartDataWorksheet() As Worksheet
+    Set GetChartDataWorksheet = ThisWorkbook.Worksheets("Dados - Gráfico")
+End Function
+
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean
     validateRange = True
     If IsNumeric(value) Then
