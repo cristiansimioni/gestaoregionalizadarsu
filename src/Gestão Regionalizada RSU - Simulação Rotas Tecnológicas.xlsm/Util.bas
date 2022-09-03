@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "1.0.1"
-Public Const APPLASTUPDATED         As String = "26.08.2022"
+Public Const APPVERSION             As String = "1.0.2"
+Public Const APPLASTUPDATED         As String = "03.09.2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -178,15 +178,22 @@ Dim errorCode As Integer
 PythonExe = Database.GetDatabaseValue("PythonPath", colUserValue)
 PythonScript = Chr(34) & Application.ThisWorkbook.Path & "\src\combinations\combinations.py" & Chr(34)
 
-Dim maxCluster, trashThreshold As Double
+Dim maxCluster, trashThreshold, capexInbound, capexOutbound, paymentPeriod, movimentationCost, landfillDeviation As Double
 maxCluster = Database.GetDatabaseValue("MaxClusters", colUserValue)
 trashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
+capexInbound = Database.GetDatabaseValue("CapexInbound", colUserValue)
+capexOutbound = Database.GetDatabaseValue("CapexOutbound", colUserValue)
+paymentPeriod = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
+movimentationCost = (100 - Database.GetDatabaseValue("ReducingCostMovimentation", colUserValue)) / 100#
+landfillDeviation = (100 - Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)) / 100#
 
 Params = Chr(34) & algPath & "\cidades-" & prjName & ".csv" & Chr(34) & _
          " " & _
          Chr(34) & algPath & "\distancias-" & prjName & ".csv" & Chr(34) & _
          " " & _
-         maxCluster & " " & trashThreshold & _
+         maxCluster & " " & trashThreshold & " " & capexInbound & " " & capexOutbound & _
+         " " & paymentPeriod & " " & Replace(CStr(movimentationCost), ",", ".") & _
+         " " & Replace(CStr(landfillDeviation), ",", ".") & _
          " " & _
          Chr(34) & algPath & "\relatório-" & prjName & ".txt" & Chr(34) & _
          " " & _

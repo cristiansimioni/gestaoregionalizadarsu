@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmGeneralData 
    Caption         =   "UserForm1"
-   ClientHeight    =   3435
+   ClientHeight    =   3795
    ClientLeft      =   240
    ClientTop       =   930
    ClientWidth     =   7800
@@ -38,8 +38,9 @@ End Function
 Private Sub btnSave_Click()
     If ValidateForm() Then
         Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))
-        Call Database.SetDatabaseValue("AverageCostTransportation", colUserValue, CDbl(txtAverageCostTransportation.Text))
         Call Database.SetDatabaseValue("ReducingCostMovimentation", colUserValue, CDbl(txtReducingCostMovimentation.Text))
+        Call Database.SetDatabaseValue("CapexInbound", colUserValue, CDbl(txtCapexInbound.Text))
+        Call Database.SetDatabaseValue("CapexOutbound", colUserValue, CDbl(txtCapexOutbound.Text))
         FormChanged = False
         frmStepTwo.updateForm
         Unload Me
@@ -64,28 +65,35 @@ Private Sub txtCOEmission_Change()
     Call textBoxChange(txtCOEmission, "COEmission")
 End Sub
 
-Private Sub txtAverageCostTransportation_Change()
-    Call textBoxChange(txtAverageCostTransportation, "AverageCostTransportation")
-End Sub
 
 Private Sub txtReducingCostMovimentation_Change()
     Call textBoxChange(txtReducingCostMovimentation, "ReducingCostMovimentation")
 End Sub
 
+Private Sub txtCapexInbound_Change()
+    Call textBoxChange(txtCapexInbound, "CapexInbound")
+End Sub
+
+Private Sub txtCapexOutbound_Change()
+    Call textBoxChange(txtCapexOutbound, "CapexOutbound")
+End Sub
+
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Definição do Estudo de Caso")
+    Call modForm.applyLookAndFeel(Me, 3, "Dados Gerais")
     
     'Read database values
     COEmission = Database.GetDatabaseValue("COEmission", colUserValue)
-    AverageCostTransportation = Database.GetDatabaseValue("AverageCostTransportation", colUserValue)
     ReducingCostMovimentation = Database.GetDatabaseValue("ReducingCostMovimentation", colUserValue)
+    capexInbound = Database.GetDatabaseValue("CapexInbound", colUserValue)
+    capexOutbound = Database.GetDatabaseValue("CapexOutbound", colUserValue)
 
     'Only show the data if it's available
-    If COEmission + AverageCostTransportation + ReducingCostMovimentation + CostWasteExistingLandfills <> 0 Then
+    If COEmission + ReducingCostMovimentation + CostWasteExistingLandfills + capexInbound + capexOutbound <> 0 Then
         txtCOEmission.Text = COEmission
-        txtAverageCostTransportation.Text = AverageCostTransportation
         txtReducingCostMovimentation.Text = ReducingCostMovimentation
+        txtCapexInbound = capexInbound
+        txtCapexOutbound = capexOutbound
     End If
     
     FormChanged = False

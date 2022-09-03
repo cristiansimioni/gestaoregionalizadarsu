@@ -1,4 +1,3 @@
-from decimal import DecimalException
 import sys
 import logging
 import numpy as np
@@ -78,14 +77,6 @@ def clusterization(data, distance, max):
         
     return clusters
 
-def getCityAttribute(data, city, attribute):
-    try:
-        for d in data:
-            if d["name"] == city:
-                return d[attribute]
-    except IndexError:
-        raise SystemExit(f"City: {city} or attribute: {attribute} not found.")
-
 def getDistanceBetweenCites(data, distance, cityA, cityB):
     return round(distance[data[cityA]["position"]][data[cityB]["position"]], 3)
 
@@ -97,7 +88,7 @@ def getFaixa(sumTrash, rsutrash):
 def removeArraysWithoutUTVR(combinations, utvrs):
     comb = combinations.copy()
     for c in range(len(comb)):
-        if c % (len(comb)/10.0) == 0:
+        if c % (round(len(comb)+1/10.0)) == 0:
             logging.info("Progreso: %d%%", c/len(comb)*100)
         for sub in comb[c]:
             find = False
@@ -108,20 +99,23 @@ def removeArraysWithoutUTVR(combinations, utvrs):
             if not find:
                 combinations.remove(comb[c])
                 break
+    logging.info("Progreso: 100%")
     return combinations
 
 def removeArraysTrashThreshold(data, combinations, threshold):
     comb = combinations.copy()
-    for c in comb:
-        for sub in c:
+    for c in range(len(comb)):
+        if c % (round(len(comb)+1/10.0)) == 0:
+            logging.info("Progreso: %d%%", c/len(comb)*100)
+        for sub in comb[c]:
             trash = 0
             for cluster in sub:
                 for city in cluster:
                     trash = trash + data[city]["trash"]
             if trash < threshold:
-                combinations.remove(c)
+                combinations.remove(comb[c])
                 break        
-
+    logging.info("Progreso: 100%")
     return combinations
 
 def funccentrodemassa(data, cluster):
@@ -133,10 +127,8 @@ def funccentrodemassa(data, cluster):
             c_centrodemassa = i
     return c_centrodemassa
 
-def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only, existentlandfill):
+def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION):
     data = []
-    CAPEX_INBOUND = 150
-    CAPEX_OUTBOUND = 25
     for utvr_city in subarray:
         entry = {}
         sum_inbound = 0
@@ -155,10 +147,9 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
 
             #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
             sum_inbound = round(sum_inbound / getSubTrash(cdata, subarray), 3)
+            #sum_inbound = round((CAPEX_INBOUND/PAYMENT_PERIOD + sum_inbound), 3)
             
-            
-
-            sum_inbound = round((CAPEX_INBOUND/35.0 + sum_inbound) /  1.0, 3)
+            sum_inbound = round((CAPEX_INBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_inbound, 3)
             entry["inbound"] = sum_inbound
             entry["co2"] = 0 #sum_co2
             dist = 999999
@@ -167,16 +158,17 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 if distCities < dist:
                     dist = distCities
                     sum_outbound = 0
-                    sum_outbound = sum_outbound + (distCities * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * 0.5
+                    sum_outbound = sum_outbound + (distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
                     entry["aterro-existente"] = a
-                    entry["outbound-existente"] = (CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0
+                    entry["outbound-existente"] = round((CAPEX_OUTBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_outbound, 3)
         
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
-                sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * 0.5
+                #sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
+                sum_outbound = sum_outbound + ((getSubTrash(cdata, subarray) * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/getSubTrash(cdata, subarray)
                 e["aterro"] = a
-                e["outbound"] = round((CAPEX_OUTBOUND/35.0 + sum_outbound) / 1.0, 3)
+                e["outbound"] = round((CAPEX_OUTBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_outbound, 3)
                 e["total"] = sum_inbound + sum_outbound
                 
                 logging.debug("Adicionando: %s", e)
@@ -371,7 +363,6 @@ def main():
     # Configure logs
     logging.basicConfig(
         stream=sys.stderr, 
-        #level=logging.DEBUG,
         level=logging.INFO,
         format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
     )
@@ -380,12 +371,25 @@ def main():
     try:
         CSVCITIES = sys.argv[1]                 # Cities file
         CSVDISTANCE = sys.argv[2]               # Distance matrix file
-        MAX_CITIES = int(sys.argv[3])           # The maximium number of allowed cities to generate the combinations due to performance issues
+        MAX_CITIES = int(sys.argv[3])           # The maximum number of allowed cities to generate the combinations due to performance issues
         TRASH_THRESHOLD = float(sys.argv[4])    # The minimun of trash for a sub-array
-        REPORTFILE = sys.argv[5]                # The report file name
-        OUTPUTFILE = sys.argv[6]                # The output file name
+        CAPEX_INBOUND = float(sys.argv[5]) 
+        CAPEX_OUTBOUND = float(sys.argv[6]) 
+        PAYMENT_PERIOD = int(sys.argv[7]) 
+        MOVIMENTATION_COST = float(sys.argv[8])
+        LANDFILL_DEVIATION = float(sys.argv[9]) 
+        REPORTFILE = sys.argv[10]                # The report file name
+        OUTPUTFILE = sys.argv[11]               # The output file name
+        if len(sys.argv) > 12:
+            CSVRSU = sys.argv[12]
+        else:
+            CSVRSU = "rsu.csv"
     except IndexError:
-        raise SystemExit(f"Usage: {sys.argv[0]} <cities.csv> <distance.csv> <max cities> <trash threshold> <report.txt> <output.csv>")
+        raise SystemExit(f"Usage: {sys.argv[0]} <cities.csv> <distance.csv> <max cities> <trash threshold> <capex inbound> <opex inbound> <paymnent period> <movimentation cost> <landfill deviation> <report.txt> <output.csv> <rsu.cvs>")
+
+    # Static variables
+    MAX_SUB_ARRAYS = 3                          # Max sub-arrays per array
+    MAX_ARRAYS = 10                             # Top # arrays that will be exported
 
     # Output files
     report = open(REPORTFILE, "w")
@@ -395,11 +399,17 @@ def main():
     report.write("============= PARÂMETROS ============= \n")
     report.write("Arquivo de cidades: " + repr(CSVCITIES) + "\n")
     report.write("Arquivo de distâncias: " + repr(CSVDISTANCE) + "\n")
+    report.write("Arquivo de RSU: " + repr(CSVRSU) + "\n")
     report.write("Máximo de cidades: " + repr(MAX_CITIES) + "\n")
-    report.write("Quantidade de lixo mínimo para um sub-arranjo: " + repr(TRASH_THRESHOLD) + "\n\n\n")
+    report.write("Quantidade de lixo mínimo para um sub-arranjo: " + repr(TRASH_THRESHOLD) + "\n")
+    report.write("Capex Inbound: " + repr(CAPEX_INBOUND) + "\n")
+    report.write("Capex Outbound: " + repr(CAPEX_OUTBOUND) + "\n")
+    report.write("Prazo: " + repr(PAYMENT_PERIOD) + "\n")
+    report.write("Desvio Aterro (%): " + repr(LANDFILL_DEVIATION) + "\n")
+    report.write("Redução Custo de Transporte (%): " + repr(MOVIMENTATION_COST) + "\n\n\n")
+
 
     # RSU
-    #rsutrash = [0,25,75,150,250,350,700,1250,2500,5000]
     rsutrash = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160, 165, 170, 175, 180, 185, 190, 195, 200, 205, 210, 215, 220, 225, 230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290, 295, 300, 305, 310, 315, 320, 325, 330, 335, 340, 345, 350, 355, 360, 365, 370, 375, 380, 385, 390, 395, 400, 405, 410, 415, 420, 425, 430, 435, 440, 445, 450, 455, 460, 465, 470, 475, 480, 485, 490, 495, 500, 505, 510, 515, 520, 525, 530, 535, 540, 545, 550, 555, 560, 565, 570, 575, 580, 585, 590, 595, 600, 605, 610, 615, 620, 625, 630, 635, 640, 645, 650, 655, 660, 665, 670, 675, 680, 685, 690, 695, 700, 705, 710, 715, 720, 725, 730, 735, 740, 745, 750, 755, 760, 765, 770, 775, 780, 785, 790, 795, 800, 805, 810, 815, 820, 825, 830, 835, 840, 845, 850, 855, 860, 865, 870, 875, 880, 885, 890, 895, 900, 905, 910, 915, 920, 925, 930, 935, 940, 945, 950, 955, 960, 965, 970, 975, 980, 985, 990, 995, 1000, 1005, 1010, 1015, 1020, 1025, 1030, 1035, 1040, 1045, 1050, 1055, 1060, 1065, 1070, 1075, 1080, 1085, 1090, 1095, 1100, 1105, 1110, 1115, 1120, 1125, 1130, 1135, 1140, 1145, 1150, 1155, 1160, 1165, 1170, 1175, 1180, 1185, 1190, 1195, 1200, 1205, 1210, 1215, 1220, 1225, 1230, 1235, 1240, 1245, 1250, 1255, 1260, 1265, 1270, 1275, 1280, 1285, 1290, 1295, 1300, 1305, 1310, 1315, 1320, 1325, 1330, 1335, 1340, 1345, 1350, 1355, 1360, 1365, 1370, 1375, 1380, 1385, 1390, 1395, 1400, 1405, 1410, 1415, 1420, 1425, 1430, 1435, 1440, 1445, 1450, 1455, 1460, 1465, 1470, 1475, 1480, 1485, 1490, 1495, 1500, 1505, 1510, 1515, 1520, 1525, 1530, 1535, 1540, 1545, 1550, 1555, 1560, 1565, 1570, 1575, 1580, 1585, 1590, 1595, 1600, 1605, 1610, 1615, 1620, 1625, 1630, 1635, 1640, 1645, 1650, 1655, 1660, 1665, 1670, 1675, 1680, 1685, 1690, 1695, 1700, 1705, 1710, 1715, 1720, 1725, 1730, 1735, 1740, 1745, 1750, 1755, 1760, 1765, 1770, 1775, 1780, 1785, 1790, 1795, 1800, 1805, 1810, 1815, 1820, 1825, 1830, 1835, 1840, 1845, 1850, 1855, 1860, 1865, 1870, 1875, 1880, 1885, 1890, 1895, 1900, 1905, 1910, 1915, 1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020, 2025, 2030, 2035, 2040, 2045, 2050, 2055, 2060, 2065, 2070, 2075, 2080, 2085, 2090, 2095, 2100, 2105, 2110, 2115, 2120, 2125, 2130, 2135, 2140, 2145, 2150, 2155, 2160, 2165, 2170, 2175, 2180, 2185, 2190, 2195, 2200, 2205, 2210, 2215, 2220, 2225, 2230, 2235, 2240, 2245, 2250, 2255, 2260, 2265, 2270, 2275, 2280, 2285, 2290, 2295, 2300, 2305, 2310, 2315, 2320, 2325, 2330, 2335, 2340, 2345, 2350, 2355, 2360, 2365, 2370, 2375, 2380, 2385, 2390, 2395, 2400, 2405, 2410, 2415, 2420, 2425, 2430, 2435, 2440, 2445, 2450, 2455, 2460, 2465, 2470, 2475, 2480, 2485, 2490, 2495, 2500]
     
     citiesdata = []
@@ -432,6 +442,13 @@ def main():
             citiesdata.append(city)
             citiesdic[city["name"]] = city
             line_count += 1
+
+    # Read RSU file
+    #reader = csv.DictReader(open(CSVRSU, mode='r', encoding="utf8"))
+    #rsu = []
+    #for r in reader:
+    #    rsu.append(r)
+    #    print(r)
 
     # Read distances from CSV file
     distance = np.loadtxt(open(CSVDISTANCE, "rb"), delimiter=",", skiprows=0)
@@ -498,7 +515,7 @@ def main():
     data = []
     current = 0
     for i in new_comb:
-        if current % (len(new_comb)/10.0) == 0:
+        if current % (round(len(new_comb)+1/10.0)) == 0:
             logging.info("Progreso: %d%%", current/len(new_comb)*100)
 
         trashArray = 0
@@ -522,10 +539,10 @@ def main():
             capexSubArray = getSubCapex(getFaixa(trashSubArray, rsutrash), trashSubArray, rsutrash)
             opexSubArray = getSubOpex(getFaixa(trashSubArray, rsutrash), trashSubArray, rsutrash)
             populationSubArray = getSubPopulation(citiesdic, y)
-            capexOpexValue = (capexSubArray/35.0 + opexSubArray)/ 1.0
+            capexOpexValue = (capexSubArray/PAYMENT_PERIOD + opexSubArray)
             trashArray = trashArray + trashSubArray
             capexOpexArray = (capexOpexValue * trashSubArray) + capexOpexArray
-            rsinout = inboundoutbound(citiesdic, distance, y, centralizado, utvrs, landfill, existentlandfill)
+            rsinout = inboundoutbound(citiesdic, distance, y, centralizado, utvrs, landfill, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION)
             rsinout["capex"] =  capexSubArray
             rsinout["opex"] = opexSubArray
             rsinout["tecnologia"] = capexOpexValue
@@ -557,9 +574,11 @@ def main():
 
         current = current + 1
 
+    logging.info("Progreso: 100%")
     logging.info("Ordenando combinações...")
     data = sorted(data, key = lambda k: (k["total"]))
 
+    logging.info("Escrevendo relatórios...")
     report.write("\n\n============= ARRANJO CENTRALIZADO ============= \n")
     for d in data:
         if len(d["arranjo"]) == 1:
@@ -590,12 +609,11 @@ def main():
                 report.write("\t-- Outbound: " + repr(d["sub"][x]["outbound"]) + "\n\n")
                 break
 
-    report.write("\n\n============= TOP 5 ARRANJOS ============= \n")
+    report.write("\n\n============= TOP " + repr(MAX_ARRAYS) + " ARRANJOS ============= \n")
     for i in range(len(data)):
-        #if i % 1000 != 0:
-        #    continue
-        if i >= 10:
+        if i >= MAX_ARRAYS:
             break
+
         output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["population-array"]) + ";" + repr(data[i]["total"]) + ";" + repr(data[i]["lixo-array"]) + ";" + repr(data[i]["capexopex"]) + ";" + repr(data[i]["inbound"])  + ";" + repr(data[i]["outbound"]) + ";" + repr(data[i]["outbound-existente"]) + "\n")
 
         report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
