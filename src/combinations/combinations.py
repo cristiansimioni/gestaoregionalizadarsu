@@ -149,7 +149,7 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
             sum_inbound = round(sum_inbound / getSubTrash(cdata, subarray), 3)
             #sum_inbound = round((CAPEX_INBOUND/PAYMENT_PERIOD + sum_inbound), 3)
             
-            sum_inbound = round((CAPEX_INBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_inbound, 3)
+            #sum_inbound = round((CAPEX_INBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_inbound, 3)
             entry["inbound"] = sum_inbound
             entry["co2"] = 0 #sum_co2
             dist = 999999
@@ -158,9 +158,9 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 if distCities < dist:
                     dist = distCities
                     sum_outbound = 0
-                    sum_outbound = sum_outbound + (distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
+                    sum_outbound = sum_outbound + sum_outbound + (distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
                     entry["aterro-existente"] = a
-                    entry["outbound-existente"] = round((CAPEX_OUTBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_outbound, 3)
+                    entry["outbound-existente"] = sum_outbound #round((CAPEX_OUTBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_outbound, 3)
         
             for a in aterros_only:
                 e = copy.deepcopy(entry)
@@ -168,7 +168,7 @@ def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterro
                 #sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
                 sum_outbound = sum_outbound + ((getSubTrash(cdata, subarray) * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/getSubTrash(cdata, subarray)
                 e["aterro"] = a
-                e["outbound"] = round((CAPEX_OUTBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_outbound, 3)
+                e["outbound"] = sum_outbound #round((CAPEX_OUTBOUND*1000000)/(getSubTrash(cdata, subarray) * 313 * PAYMENT_PERIOD) + sum_outbound, 3)
                 e["total"] = sum_inbound + sum_outbound
                 
                 logging.debug("Adicionando: %s", e)
@@ -564,11 +564,11 @@ def main():
         new["sub"] = sub
         new["capexopex"] = cpopfinalValue
         new["lixo-array"] = trashArray
-        new["inbound"] = inboundArray/trashArray
-        new["outbound"] = outboundArray/trashArray
+        new["inbound"] = round((CAPEX_INBOUND*1000000)/(trashArray * 313 * PAYMENT_PERIOD), 3) + (inboundArray/trashArray) #inboundArray/trashArray
+        new["outbound"] = round((CAPEX_OUTBOUND*1000000)/(trashArray * 313 * PAYMENT_PERIOD), 3) + (outboundArray/trashArray) #outboundArray/trashArray
         #new["c02"] = co2Array/trashArray
-        new["outbound-existente"] = outboundExistentLandfill/trashArray
-        new["total"] = cpopfinalValue + (inboundArray/trashArray) + (outboundArray/trashArray)
+        new["outbound-existente"] = round((CAPEX_OUTBOUND*1000000)/(trashArray * 313 * PAYMENT_PERIOD), 3) + (outboundExistentLandfill/trashArray) #outboundExistentLandfill/trashArray
+        new["total"] = cpopfinalValue + new["inbound"] + new["outbound"]
         new["population-array"] = populationArray
         data.append(new)
 

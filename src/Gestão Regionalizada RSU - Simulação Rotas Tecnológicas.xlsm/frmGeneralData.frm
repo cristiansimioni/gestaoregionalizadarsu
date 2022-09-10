@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Dim COEmission As Double
 Dim AverageCostTransportation As Double
 Dim ReducingCostMovimentation As Double
@@ -60,6 +61,7 @@ Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
     End If
     FormChanged = True
 End Sub
+
 
 Private Sub txtCOEmission_Change()
     Call textBoxChange(txtCOEmission, "COEmission")

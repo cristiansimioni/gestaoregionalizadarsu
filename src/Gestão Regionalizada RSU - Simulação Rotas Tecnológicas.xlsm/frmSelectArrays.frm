@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectArrays 
    Caption         =   "UserForm1"
-   ClientHeight    =   12075
+   ClientHeight    =   11595
    ClientLeft      =   240
    ClientTop       =   930
-   ClientWidth     =   26130
+   ClientWidth     =   24255
    OleObjectBlob   =   "frmSelectArrays.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Dim arrays As Collection
 
 Private Sub btnBack_Click()
@@ -35,7 +36,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Definir Arranjos Centralizados", True)
+    Call modForm.applyLookAndFeel(Me, 3, "Definir Arranjos Consolidados", True)
     
     Set arrays = readArrays
     
@@ -45,14 +46,13 @@ Private Sub UserForm_Initialize()
     txtCentralizedLandfill.Text = arrays(1).vSubArray(1).vLandfill
     txtCentralizedExistentLandfill.Text = arrays(1).vSubArray(1).vExistentLandfill
     txtCentralizedUTVR.Text = arrays(1).vSubArray(1).vUTVR
-    txtCentralizedTotal.Text = arrays(1).vSubArray(1).vTotal
-    txtCentralizedTrash.Text = arrays(1).vSubArray(1).vTrash
-    txtCentralizedTechnology = arrays(1).vSubArray(1).vTechnology
-    txtCentralizedInbound.Text = arrays(1).vSubArray(1).vInbound
-    txtCentralizedOutbound.Text = arrays(1).vSubArray(1).vOutbound
-    txtCentralizedOutboundExistent.Text = arrays(1).vSubArray(1).vOutboundExistentLandfill
+    txtCentralizedTotal.Text = arrays(1).vTotal
+    txtCentralizedTrash.Text = arrays(1).vTrash
+    txtCentralizedTechnology = arrays(1).vTechnology
+    txtCentralizedInbound.Text = arrays(1).vInbound
+    txtCentralizedOutbound.Text = arrays(1).vOutbound
+    txtCentralizedOutboundExistent.Text = arrays(1).vOutboundExistentLandfill
     
-    'txtArray2.Text = arrays(2).vArrayRaw
     vScrollBar.Min = 1
     vScrollBar.Max = arrays.count - 1
 End Sub
@@ -64,7 +64,7 @@ Private Sub vScrollBar_Change()
     
     'Clear
     t = 1
-    While t <= 6
+    While t <= 3
         Me.Controls("txtSubArray" & t).value = ""
         Me.Controls("txtSubArrayLandfill" & t).value = ""
         Me.Controls("txtSubArrayExistentLandfill" & t).value = ""

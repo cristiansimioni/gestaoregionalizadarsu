@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Dim GenerationPerCapitaRDO As Double
 Dim IndexSelectiveColletionRSU As Double
 Dim AnnualGrowthPopulation As Double
