@@ -127,7 +127,7 @@ Function ValidateFormRules(ByVal formName As String)
     Dim r As Integer
     Dim status As Boolean
     status = True
-    lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
+    lastRow = wksDatabase.Cells(wksDatabase.Rows.count, DatabaseColumn.colName).End(xlUp).row
     For r = 2 To lastRow
         If wksDatabase.Cells(r, DatabaseColumn.colForm).value = formName Then
             If wksDatabase.Cells(r, DatabaseColumn.colValid).value = "Não" Then

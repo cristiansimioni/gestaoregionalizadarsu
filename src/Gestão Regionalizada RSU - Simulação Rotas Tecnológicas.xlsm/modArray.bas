@@ -66,12 +66,12 @@ Public Function readArrays()
             arr.vExistentLandfill = wksDatabase.Cells(r, DatabaseArrayColumn.colExistentLandfill).value
             arr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             arr.vPopulation = wksDatabase.Cells(r, DatabaseArrayColumn.colPopulation).value
-            arr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
-            arr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
-            arr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
-            arr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 2)
-            arr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 2)
-            arr.vOutboundExistentLandfill = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutboundExistentLandfill).value, 2)
+            arr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 3)
+            arr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 3)
+            arr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 3)
+            arr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 3)
+            arr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 3)
+            arr.vOutboundExistentLandfill = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutboundExistentLandfill).value, 3)
             Set arr.vSubArray = New Collection
         Else
             Set subArr = New clsArray
@@ -87,12 +87,12 @@ Public Function readArrays()
             subArr.vUTVR = wksDatabase.Cells(r, DatabaseArrayColumn.colUTVR).value
             subArr.vUTVR = Replace(subArr.vUTVR, "'", "")
             subArr.vPopulation = wksDatabase.Cells(r, DatabaseArrayColumn.colPopulation).value
-            subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 2)
-            subArr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 2)
-            subArr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 2)
-            subArr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 2)
-            subArr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 2)
-            subArr.vOutboundExistentLandfill = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutboundExistentLandfill).value, 2)
+            subArr.vTotal = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTotal).value, 3)
+            subArr.vTrash = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTrash).value, 3)
+            subArr.vTechnology = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colTechnology).value, 3)
+            subArr.vInbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colInbound).value, 3)
+            subArr.vOutbound = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutbound).value, 3)
+            subArr.vOutboundExistentLandfill = Round(wksDatabase.Cells(r, DatabaseArrayColumn.colOutboundExistentLandfill).value, 3)
             arr.vSubArray.Add subArr
         End If
     Next r
