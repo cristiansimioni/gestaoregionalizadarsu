@@ -535,7 +535,7 @@ def main():
 
     logging.info("Progreso: 100%")
     logging.info("Ordenando combinações...")
-    data = sorted(data, key = lambda k: (k["total"]))
+    data = sorted(data, key = lambda k: (k["total-capex"]))
 
     logging.info("Escrevendo relatórios...")
     report.write("\n\n============= ARRANJO CENTRALIZADO ============= \n")

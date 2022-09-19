@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool
    ClientHeight    =   8595.001
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   15240
+   ClientWidth     =   15225
    OleObjectBlob   =   "frmTool.frx":0000
    ShowModal       =   0   'False
    StartUpPosition =   1  'CenterOwner
