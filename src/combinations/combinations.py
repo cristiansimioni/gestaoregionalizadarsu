@@ -507,8 +507,12 @@ def main():
         # Add capex value to inbound and outbound
         for subArray in subArrayResultList:
             subArray['inbound-capex'] = subArray['inbound'] + capexInbound * ((subArray['inbound']*subArray['trash'])/arrayResult['inbound-sum'])
-            subArray['outbound-capex'] = subArray['outbound'] + capexOutbound * ((subArray['outbound']*subArray['trash'])/arrayResult['outbound-sum'])
-            subArray['outbound-capex-existent-landfill'] = subArray['outbound-existent-landfill'] + capexOutbound * ((subArray['outbound-existent-landfill']*subArray['trash'])/arrayResult['outbound-sum'])
+            if arrayResult['outbound-sum'] > 0:
+                subArray['outbound-capex'] = subArray['outbound'] + capexOutbound * ((subArray['outbound']*subArray['trash'])/arrayResult['outbound-sum'])
+                subArray['outbound-capex-existent-landfill'] = subArray['outbound-existent-landfill'] + capexOutbound * ((subArray['outbound-existent-landfill']*subArray['trash'])/arrayResult['outbound-sum'])
+            else:
+                subArray['outbound-capex'] = 0
+                subArray['outbound-capex-existent-landfill'] = 0
             subArray["total-capex"] = subArray['technology'] + subArray["inbound"] + subArray["outbound"]
             arrayResult['inbound'] = arrayResult['inbound'] + (subArray['inbound'] * subArray['trash'])
             arrayResult['outbound'] = arrayResult['outbound'] + (subArray['outbound'] * subArray['trash'])
