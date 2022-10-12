@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive
    ClientHeight    =   11700
    ClientLeft      =   240
    ClientTop       =   930
-   ClientWidth     =   18345
+   ClientWidth     =   18360
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -57,6 +57,53 @@ Private Sub cbxArray_Change()
     
     End If
     
+End Sub
+
+Private Sub cbxArraySelected_Change()
+
+    'Clear
+    t = 1
+    While t <= 3
+        Me.Controls("txtSubArray" & t).value = ""
+        Me.Controls("txtSubArrayLandfill" & t).value = ""
+        Me.Controls("txtSubArrayExistentLandfill" & t).value = ""
+        Me.Controls("txtSubArrayUTVR" & t).value = ""
+        Me.Controls("txtSubArrayTotal" & t).value = ""
+        Me.Controls("txtSubArrayTrash" & t).value = ""
+        Me.Controls("txtSubArrayTechnology" & t).value = ""
+        Me.Controls("txtSubArrayInbound" & t).value = ""
+        Me.Controls("txtSubArrayOutbound" & t).value = ""
+        Me.Controls("txtSubArrayOutboundExistent" & t).value = ""
+        t = t + 1
+    Wend
+    
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArraySelected.value Then
+                txtArrayTotal.Text = a.vTotal
+                txtArrayTrash.Text = a.vTrash
+                txtArrayTechnology.Text = a.vTechnology
+                txtArrayInbound.Text = a.vInbound
+                txtArrayOutbound.Text = a.vOutbound
+                txtArrayOutboundExistent.Text = a.vOutboundExistentLandfill
+                
+                t = 1
+                For Each s In a.vSubArray
+                    Me.Controls("txtSubArray" & t).value = s.vArrayRaw
+                    Me.Controls("txtSubArrayLandfill" & t).value = s.vLandfill
+                    Me.Controls("txtSubArrayExistentLandfill" & t).value = s.vExistentLandfill
+                    Me.Controls("txtSubArrayUTVR" & t).value = s.vUTVR
+                    Me.Controls("txtSubArrayTotal" & t).value = s.vTotal
+                    Me.Controls("txtSubArrayTrash" & t).value = s.vTrash
+                    Me.Controls("txtSubArrayTechnology" & t).value = s.vTechnology
+                    Me.Controls("txtSubArrayInbound" & t).value = s.vInbound
+                    Me.Controls("txtSubArrayOutbound" & t).value = s.vOutbound
+                    Me.Controls("txtSubArrayOutboundExistent" & t).value = s.vOutboundExistentLandfill
+                    t = t + 1
+                Next s
+            End If
+        End If
+    Next
 End Sub
 
 Private Sub cbxCharts_Change()
@@ -162,6 +209,7 @@ Private Sub UserForm_Initialize()
     For Each a In arrays
         If a.vSelected Then
             cbxArray.AddItem a.vCode
+            cbxArraySelected.AddItem a.vCode
         End If
     Next
 
