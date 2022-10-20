@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Dim COEmission As Double
 Dim AverageCostTransportation As Double
 Dim ReducingCostMovimentation As Double

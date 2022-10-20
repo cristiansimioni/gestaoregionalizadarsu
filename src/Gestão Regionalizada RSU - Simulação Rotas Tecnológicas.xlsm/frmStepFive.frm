@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive
    ClientHeight    =   11700
    ClientLeft      =   240
    ClientTop       =   930
-   ClientWidth     =   18360
+   ClientWidth     =   18345
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,6 +13,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 
 Dim arrays As Collection
 
@@ -36,6 +37,25 @@ Private Sub btnHelpStep_Click()
     On Error Resume Next
         ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP5)
     On Error GoTo 0
+End Sub
+
+Private Sub cbxArrayRoute_Change()
+    cbxSubArrayRoute.Clear
+    
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArrayRoute.value Then
+                For Each s In a.vSubArray
+                    cbxSubArrayRoute.AddItem s.vCode
+                Next s
+            End If
+        End If
+    Next
+    
+    If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
+        Call ChangeRoute
+    End If
+    
 End Sub
 
 Private Sub cbxArray_Change()
@@ -126,42 +146,75 @@ Private Sub cbxCharts_Change()
     txtChartDescription.Visible = True
 End Sub
 
+Private Sub ChangeRoute()
+    Dim wksChartData As Worksheet
+    Set wksChartData = Util.GetChartDataWorksheet
+    
+    wksChartData.Cells(39, 4).value = cbxMarket.value
+    wksChartData.Cells(39, 5).value = cbxArray.value
+    wksChartData.Cells(39, 6).value = cbxSubArray.value
+    
+    If cbxRoute.value = "RT1-A" Or cbxRoute.value = "RT1-B" Or cbxRoute.value = "RT1-C" Then
+        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONE)
+    ElseIf cbxRoute.value = "RT2" Then
+        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETWO)
+    ElseIf cbxRoute.value = "RT3" Then
+        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETHREE)
+    ElseIf cbxRoute.value = "RT4" Then
+        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFOUR)
+    Else
+        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFIVE)
+    End If
+    
+    
+    
+End Sub
 
 Private Sub PlotGraph()
     Dim prjPath As String
-        Dim prjName As String
+    Dim prjName As String
         
-        prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
-        prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
-        prjPath = Util.FolderCreate(prjPath, prjName)
+    prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
+    prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
+    prjPath = Util.FolderCreate(prjPath, prjName)
         
-        'Create base market folder
-        Dim chartPath As String
-        chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
+    'Create base market folder
+    DimchartPath As String
+    chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
     
-        Dim wksChartData As Worksheet
-        Set wksChartData = Util.GetChartDataWorksheet
+    Dim wksChartData As Worksheet
+    Set wksChartData = Util.GetChartDataWorksheet
         
-        wksChartData.Cells(27, 4).value = cbxMarket.value
-        wksChartData.Cells(27, 5).value = cbxArray.value
-        wksChartData.Cells(27, 6).value = cbxSubArray.value
+    wksChartData.Cells(27, 4).value = cbxMarket.value
+    wksChartData.Cells(27, 5).value = cbxArray.value
+    wksChartData.Cells(27, 6).value = cbxSubArray.value
         
-        For Each c In Sheets("Dashboard").ChartObjects
-            If c.name = "Avaliação" Then
-                c.Activate
-                c.Chart.ChartTitle.Text = "Avaliação de Custos para o Município de Tratamento de RSU" & " - " & cbxMarket.value & cbxSubArray.value
-                Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
-                c.Chart.Export filename:=Fname, FilterName:="jpg"
-                Me.Image2.Picture = LoadPicture(Fname)
-            End If
-        Next c
+    For Each c In Sheets("Dashboard").ChartObjects
+        If c.name = "Avaliação" Then
+            c.Activate
+            c.Chart.ChartTitle.Text = "Avaliação de Custos para o Município de Tratamento de RSU" & " - " & cbxMarket.value & cbxSubArray.value
+            Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
+            c.Chart.Export filename:=Fname, FilterName:="jpg"
+            Me.Image2.Picture = LoadPicture(Fname)
+        End If
+    Next c
 End Sub
 
 Private Sub cbxMarket_Change()
     If cbxMarket.value <> "" And cbxArray.value <> "" And cbxSubArray.value <> "" Then
-    
         Call PlotGraph
-    
+    End If
+End Sub
+
+Private Sub cbxMarketRoute_Change()
+    If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
+        Call ChangeRoute
+    End If
+End Sub
+
+Private Sub cbxRoute_Change()
+    If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
+        Call ChangeRoute
     End If
 End Sub
 
@@ -170,6 +223,12 @@ Private Sub cbxSubArray_Change()
     
         Call PlotGraph
     
+    End If
+End Sub
+
+Private Sub cbxSubArrayRoute_Change()
+    If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
+        Call ChangeRoute
     End If
 End Sub
 
@@ -206,9 +265,22 @@ Private Sub UserForm_Initialize()
     cbxMarket.AddItem "M2"
     cbxMarket.AddItem "M3"
     
+    cbxMarketRoute.AddItem "M1"
+    cbxMarketRoute.AddItem "M2"
+    cbxMarketRoute.AddItem "M3"
+    
+    cbxRoute.AddItem "RT1-A"
+    cbxRoute.AddItem "RT1-B"
+    cbxRoute.AddItem "RT1-C"
+    cbxRoute.AddItem "RT2"
+    cbxRoute.AddItem "RT3"
+    cbxRoute.AddItem "RT4"
+    cbxRoute.AddItem "RT5"
+    
     For Each a In arrays
         If a.vSelected Then
             cbxArray.AddItem a.vCode
+            cbxArrayRoute.AddItem a.vCode
             cbxArraySelected.AddItem a.vCode
         End If
     Next

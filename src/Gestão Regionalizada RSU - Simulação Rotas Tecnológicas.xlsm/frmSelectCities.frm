@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Dim databaseCities As New Collection
 Dim selectedCities As New Collection
 Dim FormChanged As Boolean

@@ -14,6 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
 Dim LandfillDeviationTarget As Double
 Dim ExpectedDeadline As Double
 Dim MixedRecyclingIndex As Double
