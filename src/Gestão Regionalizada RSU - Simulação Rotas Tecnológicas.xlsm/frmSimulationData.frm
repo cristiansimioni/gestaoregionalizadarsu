@@ -114,8 +114,8 @@ End Sub
 Private Sub calculateValuationEfficiency()
     If IsNumeric(txtTargetExpectation.Text) And IsNumeric(txtCurrentCostRSU.Text) And IsNumeric(txtLandfillDeviationTarget.Text) And IsNumeric(txtLandfillCurrentDeviation.Text) And _
        IsNumeric(txtCurrentLandfillCost.Text) Then
-       ValuationEfficiency = (((CDbl(txtTargetExpectation.Text) - CDbl(txtCurrentCostRSU.Text)) + ((CDbl(txtLandfillDeviationTarget.Text) / 100) - (CDbl(txtLandfillCurrentDeviation.Text) / 100)) * CDbl(txtCurrentLandfillCost.Text)) / CDbl(txtTargetExpectation.Text)) * 100
-       txtValuationEfficiency = ValuationEfficiency
+       ValuationEfficiency = Round((((CDbl(txtTargetExpectation.Text) - CDbl(txtCurrentCostRSU.Text)) + ((CDbl(txtLandfillDeviationTarget.Text) / 100) - (CDbl(txtLandfillCurrentDeviation.Text) / 100)) * CDbl(txtCurrentLandfillCost.Text)) / CDbl(txtTargetExpectation.Text)) * 100, 1)
+       txtValuationEfficiency.Text = ValuationEfficiency
     Else
        txtValuationEfficiency = 0
     End If
@@ -134,7 +134,7 @@ Private Sub UserForm_Initialize()
     txtCurrentLandfillCost.Text = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
     txtCurrentCostRSU.Text = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
     txtLandfillCurrentDeviation.Text = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
-    txtValuationEfficiency.Text = Database.GetDatabaseValue("ValuationEfficiency", colUserValue)
+    txtValuationEfficiency.Text = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 1)
     
     FormChanged = False
 End Sub

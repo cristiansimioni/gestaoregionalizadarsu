@@ -42,12 +42,13 @@ End Sub
 Private Sub cbxArrayRoute_Change()
     cbxSubArrayRoute.Clear
     
-    For Each a In arrays
-        If a.vSelected Then
-            If a.vCode = cbxArrayRoute.value Then
-                For Each s In a.vSubArray
+    For Each A In arrays
+        If A.vSelected Then
+            If A.vCode = cbxArrayRoute.value Then
+                For Each s In A.vSubArray
                     cbxSubArrayRoute.AddItem s.vCode
                 Next s
+                cbxSubArrayRoute.AddItem "Consolidado"
             End If
         End If
     Next
@@ -61,10 +62,10 @@ End Sub
 Private Sub cbxArray_Change()
     cbxSubArray.Clear
     
-    For Each a In arrays
-        If a.vSelected Then
-            If a.vCode = cbxArray.value Then
-                For Each s In a.vSubArray
+    For Each A In arrays
+        If A.vSelected Then
+            If A.vCode = cbxArray.value Then
+                For Each s In A.vSubArray
                     cbxSubArray.AddItem s.vCode
                 Next s
             End If
@@ -97,18 +98,18 @@ Private Sub cbxArraySelected_Change()
         t = t + 1
     Wend
     
-    For Each a In arrays
-        If a.vSelected Then
-            If a.vCode = cbxArraySelected.value Then
-                txtArrayTotal.Text = a.vTotal
-                txtArrayTrash.Text = a.vTrash
-                txtArrayTechnology.Text = a.vTechnology
-                txtArrayInbound.Text = a.vInbound
-                txtArrayOutbound.Text = a.vOutbound
-                txtArrayOutboundExistent.Text = a.vOutboundExistentLandfill
+    For Each A In arrays
+        If A.vSelected Then
+            If A.vCode = cbxArraySelected.value Then
+                txtArrayTotal.Text = A.vTotal
+                txtArrayTrash.Text = A.vTrash
+                txtArrayTechnology.Text = A.vTechnology
+                txtArrayInbound.Text = A.vInbound
+                txtArrayOutbound.Text = A.vOutbound
+                txtArrayOutboundExistent.Text = A.vOutboundExistentLandfill
                 
                 t = 1
-                For Each s In a.vSubArray
+                For Each s In A.vSubArray
                     Me.Controls("txtSubArray" & t).value = s.vArrayRaw
                     Me.Controls("txtSubArrayLandfill" & t).value = s.vLandfill
                     Me.Controls("txtSubArrayExistentLandfill" & t).value = s.vExistentLandfill
@@ -150,23 +151,51 @@ Private Sub ChangeRoute()
     Dim wksChartData As Worksheet
     Set wksChartData = Util.GetChartDataWorksheet
     
-    wksChartData.Cells(39, 4).value = cbxMarket.value
-    wksChartData.Cells(39, 5).value = cbxArray.value
-    wksChartData.Cells(39, 6).value = cbxSubArray.value
+    wksChartData.Cells(39, 4).value = cbxMarketRoute.value
+    wksChartData.Cells(39, 5).value = cbxArrayRoute.value
+    wksChartData.Cells(39, 6).value = cbxSubArrayRoute.value
     
-    If cbxRoute.value = "RT1-A" Or cbxRoute.value = "RT1-B" Or cbxRoute.value = "RT1-C" Then
-        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONE)
-    ElseIf cbxRoute.value = "RT2" Then
-        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETWO)
-    ElseIf cbxRoute.value = "RT3" Then
-        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETHREE)
-    ElseIf cbxRoute.value = "RT4" Then
-        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFOUR)
+    Dim lineData As Integer
+    
+    If cbxSubArrayRoute.value = "Consolidado" Then
+        lineData = 50
     Else
-        imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFIVE)
+        If cbxRoute.value = "RT1-A" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEA)
+            lineData = 43
+        ElseIf cbxRoute.value = "RT1-B" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEBC)
+            lineData = 44
+        ElseIf cbxRoute.value = "RT1-C" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEBC)
+            lineData = 45
+        ElseIf cbxRoute.value = "RT2" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETWO)
+            lineData = 46
+        ElseIf cbxRoute.value = "RT3" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETHREE)
+            lineData = 47
+        ElseIf cbxRoute.value = "RT4" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFOUR)
+            lineData = 48
+        ElseIf cbxRoute.value = "RT5" Then
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFIVE)
+            lineData = 49
+        End If
     End If
     
-    
+    If lineData <> 0 Then
+        capexRouteData.Caption = wksChartData.Cells(lineData, 4).value
+        opexRouteData.Caption = wksChartData.Cells(lineData, 5).value
+        inputRouteData.Caption = wksChartData.Cells(lineData, 6).value
+        opexRouteData.Caption = wksChartData.Cells(lineData, 7).value
+        reciclableRouteData.Caption = wksChartData.Cells(lineData, 8).value
+        cdrRouteData.Caption = wksChartData.Cells(lineData, 9).value
+        landfillRouteData.Caption = wksChartData.Cells(lineData, 10).value
+        organicCompoundRouteData.Caption = wksChartData.Cells(lineData, 11).value
+        lossWeightRouteData.Caption = wksChartData.Cells(lineData, 12).value
+        finalUsageRouteData.Caption = wksChartData.Cells(lineData, 13).value
+        End If
     
 End Sub
 
@@ -179,7 +208,7 @@ Private Sub PlotGraph()
     prjPath = Util.FolderCreate(prjPath, prjName)
         
     'Create base market folder
-    DimchartPath As String
+    Dim chartPath As String
     chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
     
     Dim wksChartData As Worksheet
@@ -227,7 +256,15 @@ Private Sub cbxSubArray_Change()
 End Sub
 
 Private Sub cbxSubArrayRoute_Change()
-    If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
+    If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" Then
+        If cbxSubArrayRoute.value = "Consolidado" Then
+            cbxRoute.Visible = False
+            lblRoute.Visible = False
+        Else
+            cbxRoute.Visible = True
+            lblRoute.Visible = True
+        End If
+        
         Call ChangeRoute
     End If
 End Sub
@@ -277,11 +314,11 @@ Private Sub UserForm_Initialize()
     cbxRoute.AddItem "RT4"
     cbxRoute.AddItem "RT5"
     
-    For Each a In arrays
-        If a.vSelected Then
-            cbxArray.AddItem a.vCode
-            cbxArrayRoute.AddItem a.vCode
-            cbxArraySelected.AddItem a.vCode
+    For Each A In arrays
+        If A.vSelected Then
+            cbxArray.AddItem A.vCode
+            cbxArrayRoute.AddItem A.vCode
+            cbxArraySelected.AddItem A.vCode
         End If
     Next
 

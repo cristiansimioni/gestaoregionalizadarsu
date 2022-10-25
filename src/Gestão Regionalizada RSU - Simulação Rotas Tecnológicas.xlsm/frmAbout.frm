@@ -18,5 +18,5 @@ Private Sub UserForm_Initialize()
     lblAppName = APPNAME
     lblAppSubname = APPSUBNAME
     lblVersion = "Versão: " & APPVERSION
-    lblReleaseDate = "Data: " & APPLASTUPDATED
+    lblReleaseDate = "Última Atualização: " & APPLASTUPDATED
 End Sub
