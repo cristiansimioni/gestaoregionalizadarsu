@@ -79,7 +79,7 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
             range = Database.GetDatabaseValue(var, colCell)
             unit = Database.GetDatabaseValue(var, colUnit)
             description = Database.GetDatabaseValue(var, colDescription)
-            If InStr(description, "- Otimizado") = 0 And InStr(description, "- Otimizado") = 0 Then
+            If InStr(description, "- Base") = 0 And InStr(description, "- Otimizado") = 0 Then
                 If unit = "%" Then
                     ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
                 Else

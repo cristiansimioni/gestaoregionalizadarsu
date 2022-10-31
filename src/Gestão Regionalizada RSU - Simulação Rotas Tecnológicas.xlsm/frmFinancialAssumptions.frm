@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmFinancialAssumptions 
    Caption         =   "UserForm1"
-   ClientHeight    =   7515
+   ClientHeight    =   6915
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   9600.001
+   ClientWidth     =   10080
    OleObjectBlob   =   "frmFinancialAssumptions.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
@@ -35,10 +33,58 @@ Function ValidateForm() As Boolean
 End Function
 
 Private Sub cbxFinancingInstitutionProject_Change()
+    If cbxFinancingInstitutionProject.value <> "Usuário" Then
+        txtRealInterestRateProject.Enabled = False
+        txtLoanAmortizationPeriodProject.Enabled = False
+        txtGracePeriodPaymentProject.Enabled = False
+        txtInterestRateProject.Enabled = False
+    Else
+        txtRealInterestRateProject.Enabled = True
+        txtLoanAmortizationPeriodProject.Enabled = True
+        txtGracePeriodPaymentProject.Enabled = True
+        txtInterestRateProject.Enabled = True
+    End If
+    
+    If cbxFinancingInstitutionProject.value = "Caixa" Then
+        txtRealInterestRateProject = Database.GetDatabaseValue("RealInterestRateProjectCaixa", colUserValue)
+        txtLoanAmortizationPeriodProject = Database.GetDatabaseValue("LoanAmortizationPeriodProjectCaixa", colUserValue)
+        txtGracePeriodPaymentProject = Database.GetDatabaseValue("GracePeriodPaymentProjectCaixa", colUserValue)
+        txtInterestRateProject = Database.GetDatabaseValue("RealInterestRateProjectCaixa", colUserValue)
+    ElseIf cbxFinancingInstitutionProject.value = "BNDES" Then
+        txtRealInterestRateProject = Database.GetDatabaseValue("RealInterestRateProjectBNDES", colUserValue)
+        txtLoanAmortizationPeriodProject = Database.GetDatabaseValue("LoanAmortizationPeriodProjectBNDES", colUserValue)
+        txtGracePeriodPaymentProject = Database.GetDatabaseValue("GracePeriodPaymentProjectBNDES", colUserValue)
+        txtInterestRateProject = Database.GetDatabaseValue("RealInterestRateProjectBNDES", colUserValue)
+    End If
+    
     FormChanged = True
 End Sub
 
 Private Sub cbxFinancingInstitutionShareholder_Change()
+    If cbxFinancingInstitutionShareholder.value <> "Usuário" Then
+        txtRealInterestRateShareholder.Enabled = False
+        txtLoanAmortizationPeriodShareholder.Enabled = False
+        txtGracePeriodPaymentShareholder.Enabled = False
+        txtInterestRateShareholder.Enabled = False
+    Else
+        txtRealInterestRateShareholder.Enabled = True
+        txtLoanAmortizationPeriodShareholder.Enabled = True
+        txtGracePeriodPaymentShareholder.Enabled = True
+        txtInterestRateShareholder.Enabled = True
+    End If
+    
+    If cbxFinancingInstitutionShareholder.value = "Caixa" Then
+        txtRealInterestRateShareholder = Database.GetDatabaseValue("RealInterestRateShareholderCaixa", colUserValue)
+        txtLoanAmortizationPeriodShareholder = Database.GetDatabaseValue("LoanAmortizationPeriodShareholderCaixa", colUserValue)
+        txtGracePeriodPaymentShareholder = Database.GetDatabaseValue("GracePeriodPaymentShareholderCaixa", colUserValue)
+        txtInterestRateShareholder = Database.GetDatabaseValue("RealInterestRateShareholderCaixa", colUserValue)
+    ElseIf cbxFinancingInstitutionShareholder.value = "BNDES" Then
+        txtRealInterestRateShareholder = Database.GetDatabaseValue("RealInterestRateShareholderBNDES", colUserValue)
+        txtLoanAmortizationPeriodShareholder = Database.GetDatabaseValue("LoanAmortizationPeriodShareholderBNDES", colUserValue)
+        txtGracePeriodPaymentShareholder = Database.GetDatabaseValue("GracePeriodPaymentShareholderBNDES", colUserValue)
+        txtInterestRateShareholder = Database.GetDatabaseValue("RealInterestRateShareholderBNDES", colUserValue)
+    End If
+    
     FormChanged = True
 End Sub
 
@@ -50,9 +96,6 @@ Private Sub cbxVariableShareholder_Change()
     FormChanged = True
 End Sub
 
-Private Sub txtContractTerm_Change()
-Call modForm.textBoxChange(txtContractTerm, "ContractTerm", FormChanged)
-End Sub
 Private Sub txtContractTermEquityProject_Change()
 Call modForm.textBoxChange(txtContractTermEquityProject, "ContractTermEquityProject", FormChanged)
 End Sub
@@ -157,7 +200,11 @@ Private Sub UserForm_Initialize()
         index = index + 1
     Next v
     
-    txtContractTerm = Database.GetDatabaseValue("ContractTerm", colUserValue)
+    
+    'Set ContractTerm value as ExpectedDeadline is defined in step 1
+    Call Database.SetDatabaseValue("ContractTerm", colUserValue, CDbl(Database.GetDatabaseValue("ExpectedDeadline", colUserValue)))
+    lblContractTerm.Caption = "*Nota: Prazo de Contrato de " & Database.GetDatabaseValue("ContractTerm", colUserValue) & " anos"
+    
     txtContractTermEquityProject = Database.GetDatabaseValue("ContractTermEquityProject", colUserValue)
     txtOwnCapitalCostProject = Database.GetDatabaseValue("OwnCapitalCostProject", colUserValue)
     txtRealInterestRateProject = Database.GetDatabaseValue("RealInterestRateProject", colUserValue)
@@ -178,7 +225,6 @@ End Sub
 
 Private Sub btnSave_Click()
     If modForm.ValidateForm() Then
-        Call Database.SetDatabaseValue("ContractTerm", colUserValue, CDbl(txtContractTerm.Text))
         Call Database.SetDatabaseValue("ContractTermEquityProject", colUserValue, CDbl(txtContractTermEquityProject.Text))
         Call Database.SetDatabaseValue("FinancingInstitutionProject", colUserValue, cbxFinancingInstitutionProject.value)
         Call Database.SetDatabaseValue("OwnCapitalCostProject", colUserValue, CDbl(txtOwnCapitalCostProject.Text))
@@ -246,7 +292,6 @@ Private Sub btnDefault_Click()
         index = index + 1
     Next v
     
-    txtContractTerm = Database.GetDatabaseValue("ContractTerm", colDefaultValue)
     txtContractTermEquityProject = Database.GetDatabaseValue("ContractTermEquityProject", colDefaultValue)
     txtOwnCapitalCostProject = Database.GetDatabaseValue("OwnCapitalCostProject", colDefaultValue)
     txtRealInterestRateProject = Database.GetDatabaseValue("RealInterestRateProject", colDefaultValue)
