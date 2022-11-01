@@ -161,24 +161,31 @@ Private Sub ChangeRoute()
         lineData = 50
     Else
         If cbxRoute.value = "RT1-A" Then
+            lblRouteTitle = "RT 1A | UTMB C/ PRODUÇÃO ELETRICIDADE"
             imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEA)
             lineData = 43
         ElseIf cbxRoute.value = "RT1-B" Then
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEBC)
+            lblRouteTitle = "RT 1B | UTMB C/ PROD. E.E. + BIOMETANO"
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEB)
             lineData = 44
         ElseIf cbxRoute.value = "RT1-C" Then
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEBC)
+            lblRouteTitle = "RT 1C | UTMB C/ PRODUÇÃO BIOMETANO"
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEC)
             lineData = 45
         ElseIf cbxRoute.value = "RT2" Then
+            lblRouteTitle = "RT 2 | UTMB C/ PROD. COMPOSTO ORGÂNICO"
             imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETWO)
             lineData = 46
         ElseIf cbxRoute.value = "RT3" Then
+            lblRouteTitle = "RT 3 | UTMB C/ PROD.Cdr: COMB.DERIV.RESÍD."
             imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETHREE)
             lineData = 47
         ElseIf cbxRoute.value = "RT4" Then
+            lblRouteTitle = "RT 4 | INCINERAÇÃO P/ PROD. E. ELÉTRICA"
             imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFOUR)
             lineData = 48
         ElseIf cbxRoute.value = "RT5" Then
+            lblRouteTitle = "RT 5 | INCINERAÇÃO P/ PROD. E. ELÉTRICA"
             imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFIVE)
             lineData = 49
         End If
@@ -188,14 +195,14 @@ Private Sub ChangeRoute()
         capexRouteData.Caption = wksChartData.Cells(lineData, 4).value
         opexRouteData.Caption = wksChartData.Cells(lineData, 5).value
         inputRouteData.Caption = wksChartData.Cells(lineData, 6).value
-        opexRouteData.Caption = wksChartData.Cells(lineData, 7).value
-        reciclableRouteData.Caption = wksChartData.Cells(lineData, 8).value
-        cdrRouteData.Caption = wksChartData.Cells(lineData, 9).value
-        landfillRouteData.Caption = wksChartData.Cells(lineData, 10).value
-        organicCompoundRouteData.Caption = wksChartData.Cells(lineData, 11).value
+        reciclableRouteData.Caption = wksChartData.Cells(lineData, 7).value
+        cdrRouteData.Caption = wksChartData.Cells(lineData, 8).value
+        'cdrRouteData.Caption = wksChartData.Cells(lineData, 9).value
+        landfillRouteData.Caption = wksChartData.Cells(lineData, 11).value
+        organicCompoundRouteData.Caption = wksChartData.Cells(lineData, 10).value
         lossWeightRouteData.Caption = wksChartData.Cells(lineData, 12).value
         finalUsageRouteData.Caption = wksChartData.Cells(lineData, 13).value
-        End If
+    End If
     
 End Sub
 
@@ -244,6 +251,7 @@ End Sub
 Private Sub cbxRoute_Change()
     If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
         Call ChangeRoute
+        Call enableDisableRouteLabels(True, cbxRoute.value)
     End If
 End Sub
 
@@ -260,6 +268,8 @@ Private Sub cbxSubArrayRoute_Change()
         If cbxSubArrayRoute.value = "Consolidado" Then
             cbxRoute.Visible = False
             lblRoute.Visible = False
+            Call enableDisableRouteLabels(False, cbxRoute.value)
+            cbxRoute.ListIndex = -1
         Else
             cbxRoute.Visible = True
             lblRoute.Visible = True
@@ -321,5 +331,60 @@ Private Sub UserForm_Initialize()
             cbxArraySelected.AddItem A.vCode
         End If
     Next
+    
+    
+    Call enableDisableRouteLabels(False, "")
+    
+End Sub
 
+Sub enableDisableRouteLabels(ByVal onoff As Boolean, ByVal route As String)
+    
+    lblRouteTitle.Visible = onoff
+    imgRoute.Visible = onoff
+    
+    For Each Ctrl In Me.Controls
+        If InStr(Ctrl.name, "RouteData") > 0 Then
+            Ctrl.Visible = onoff
+        End If
+    Next Ctrl
+    
+    
+    lossWeightRouteData.Left = 492
+    lossWeightRouteData.Top = 90
+    lossWeightRouteDataUnit.Left = 522
+    lossWeightRouteDataUnit.Top = 90
+    cdrRouteData.Left = 18
+    cdrRouteData.Top = 243
+    cdrRouteDataUnit.Left = 48
+    cdrRouteDataUnit.Top = 243
+    
+    
+    
+    If route <> "RT4" Or route <> "RT5" Then
+        landfillDangerRouteData.Visible = False
+        landfillDangerRouteDataUnit.Visible = False
+    End If
+    
+    If route = "RT2" Then
+        finalUsageRouteData.Visible = False
+        finalUsageRouteDataUnit.Visible = False
+        lossWeightRouteData.Left = 378
+        lossWeightRouteData.Top = 216
+        lossWeightRouteDataUnit.Left = 408
+        lossWeightRouteDataUnit.Top = 216
+    ElseIf route = "RT3" Then
+        organicCompoundRouteData.Visible = False
+        organicCompoundRouteDataUnit.Visible = False
+        cdrRouteData.Left = 642
+        cdrRouteData.Top = 318
+        cdrRouteDataUnit.Left = 672
+        cdrRouteDataUnit.Top = 318
+    ElseIf route = "RT4" Or route = "RT5" Then
+        cdrRouteData.Visible = False
+        cdrRouteDataUnit.Visible = False
+        organicCompoundRouteData.Visible = False
+        organicCompoundRouteDataUnit.Visible = False
+    End If
+    
+    
 End Sub
