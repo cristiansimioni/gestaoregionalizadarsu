@@ -60,40 +60,42 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
     
     Dim Ctrl As Control
     For Each Ctrl In form.Controls
-        If TypeName(Ctrl) = "CommandButton" And Ctrl.name <> "btnAbout" And Ctrl.name <> "btnHelp" And Ctrl.name <> "btnClean" Then
-            Ctrl.BackColor = btnBackColor
-            Ctrl.ForeColor = btnForeColor
-            Ctrl.Font.Size = 9
-            Ctrl.FontName = "Open Sans"
-            Ctrl.FontBold = False
-        ElseIf TypeName(Ctrl) = "TextBox" Then
-            If bgWhite Then
-                Ctrl.ForeColor = RGB(0, 0, 0)
-            Else
-                Ctrl.ForeColor = txtForeColor
+        If InStr(Ctrl.Tag, "DO-NOT-APPLY-UI") = 0 Then
+            If TypeName(Ctrl) = "CommandButton" And Ctrl.name <> "btnAbout" And Ctrl.name <> "btnHelp" And Ctrl.name <> "btnClean" Then
+                Ctrl.BackColor = btnBackColor
+                Ctrl.ForeColor = btnForeColor
+                Ctrl.Font.Size = 9
+                Ctrl.FontName = "Open Sans"
+                Ctrl.FontBold = False
+            ElseIf TypeName(Ctrl) = "TextBox" Then
+                If bgWhite Then
+                    Ctrl.ForeColor = RGB(0, 0, 0)
+                Else
+                    Ctrl.ForeColor = txtForeColor
+                End If
+                Ctrl.TextAlign = txtAlign
+                Ctrl.SpecialEffect = 0
+                Ctrl.BorderStyle = 1
+                Ctrl.Font.Size = 9
+                Ctrl.FontBold = False
+                Ctrl.FontName = "Open Sans"
             End If
-            Ctrl.TextAlign = txtAlign
-            Ctrl.SpecialEffect = 0
-            Ctrl.BorderStyle = 1
-            Ctrl.Font.Size = 9
-            Ctrl.FontBold = False
-            Ctrl.FontName = "Open Sans"
-        End If
-        
-        If Ctrl.name = "imgLogo" Then
-            Ctrl.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGLOGOEXTRASMALL)
-            Ctrl.width = 110
-            Ctrl.Height = 40
-            Ctrl.Left = 10
-            Ctrl.Top = 10
-            Ctrl.BackColor = RGB(240, 240, 240)
-            Ctrl.BorderStyle = 0
-        End If
-        
-        If Ctrl.name = "lblTitle" Then
-            Ctrl.Left = 130
-            Ctrl.Top = 20
-            Ctrl.BackColor = RGB(240, 240, 240)
+            
+            If Ctrl.name = "imgLogo" Then
+                Ctrl.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGLOGOEXTRASMALL)
+                Ctrl.width = 110
+                Ctrl.Height = 40
+                Ctrl.Left = 10
+                Ctrl.Top = 10
+                Ctrl.BackColor = RGB(240, 240, 240)
+                Ctrl.BorderStyle = 0
+            End If
+            
+            If Ctrl.name = "lblTitle" Then
+                Ctrl.Left = 130
+                Ctrl.Top = 20
+                Ctrl.BackColor = RGB(240, 240, 240)
+            End If
         End If
     Next Ctrl
     
