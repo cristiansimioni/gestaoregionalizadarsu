@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmFinancialAssumptions
    ClientHeight    =   6915
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   10080
+   ClientWidth     =   11505
    OleObjectBlob   =   "frmFinancialAssumptions.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -89,10 +89,26 @@ Private Sub cbxFinancingInstitutionShareholder_Change()
 End Sub
 
 Private Sub cbxVariableProject_Change()
+    If cbxVariableProject.value = "TIR" Or cbxVariableProject.value = "Taxa de Lucratividade Investimento" Then
+        lblUnitProject.Caption = "%"
+    ElseIf cbxVariableProject.value = "Payback" Then
+        lblUnitProject.Caption = "Anos"
+    Else
+        lblUnitProject.Caption = "R$"
+    End If
+    
     FormChanged = True
 End Sub
 
 Private Sub cbxVariableShareholder_Change()
+    If cbxVariableShareholder.value = "TIR" Or cbxVariableShareholder.value = "Taxa de Lucratividade Investimento" Then
+        lblUnitShareholder.Caption = "%"
+    ElseIf cbxVariableShareholder.value = "Payback" Then
+        lblUnitShareholder.Caption = "Anos"
+    Else
+        lblUnitShareholder.Caption = "R$"
+    End If
+    
     FormChanged = True
 End Sub
 
