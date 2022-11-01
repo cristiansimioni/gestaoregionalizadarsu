@@ -232,7 +232,7 @@ Private Sub updateConventionalCost(ByRef txtBox, ByVal index As Integer)
         i = i + vScrollBar.value - 1
     End If
     
-    If Util.validateRange(txtBox.Text, 0#, 500#, errorMsg) Then
+    If Util.validateRange(txtBox.Text, 0#, 1000#, errorMsg) Then
         txtBox.BackColor = ApplicationColors.bgColorValidTextBox
         txtBox.ControlTipText = errorMsg
     Else
