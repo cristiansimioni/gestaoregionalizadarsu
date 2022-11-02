@@ -81,7 +81,10 @@ Private Sub UserForm_Initialize()
     
     If txtPythonPath = "" Then
         strPath = CreateObject("WScript.Shell").Exec("where python").StdOut.ReadAll
-        txtPythonPath = Left(strPath, Len(strPath) - 2)
+        strPath = Replace(strPath, vbCrLf, vbCr)
+        strPath = Replace(strPath, vbLf, vbCr)
+        splitLineBreaks = Split(strPath, vbCr)
+        txtPythonPath = splitLineBreaks(0) 'Left(strPath, Len(strPath) - 2)
     End If
     
     FormChanged = False
