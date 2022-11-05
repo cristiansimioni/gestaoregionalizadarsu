@@ -56,9 +56,9 @@ Private Sub executeSimulation()
     Set wksDefinedArrays = Util.GetDefinedArraysWorksheet
     
     Dim row As Integer
-    row = 2
+    row = 3
     
-    wksDefinedArrays.range("A2:BJ2000").ClearContents
+    wksDefinedArrays.range("A3:BJ2000").ClearContents
     
     Application.DisplayAlerts = False
     Application.ScreenUpdating = False
@@ -183,7 +183,7 @@ Private Sub executeSimulation()
                     wksDefinedArrays.Cells(row, 1).value = m
                     wksDefinedArrays.Cells(row, 2).value = A.vCode
                     wksDefinedArrays.Cells(row, 3).value = s.vCode & "(Consolidado)"
-                    wksDefinedArrays.Cells(row, 4).value = "NA"
+                    wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(selectedRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
                     wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
                     For x = 6 To 65
@@ -271,8 +271,7 @@ Private Sub executeSimulation()
             
         End If
     Next A
-    
-    
+      
     Application.DisplayAlerts = True
     Application.ScreenUpdating = True
     Application.AskToUpdateLinks = True

@@ -205,6 +205,7 @@ Private Sub ChangeRoute()
         organicCompoundRouteData.Caption = wksChartData.Cells(lineData, 10).value
         lossWeightRouteData.Caption = wksChartData.Cells(lineData, 12).value
         finalUsageRouteData.Caption = wksChartData.Cells(lineData, 13).value
+        finalUsage2RouteData.Caption = wksChartData.Cells(lineData, 14).value
     End If
     
 End Sub
@@ -335,6 +336,22 @@ Private Sub UserForm_Initialize()
         End If
     Next
     
+    'Ajustar arranjos selecionados na aba de "Dados - Gráfico"
+    Dim wksChartData As Worksheet
+    Set wksChartData = Util.GetChartDataWorksheet
+    Dim markets As Variant
+    markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
+    Dim row As Integer
+    row = 4
+    For Each m In markets
+        For Each A In arrays
+            If A.vSelected Then
+                wksChartData.Cells(row, 1).value = GetMarketCode(m) & A.vCode
+                row = row + 1
+            End If
+        Next
+    Next m
+    
     
     Call enableDisableRouteLabels(False, "")
     
@@ -364,15 +381,25 @@ Sub enableDisableRouteLabels(ByVal onoff As Boolean, ByVal route As String)
     finalUsageRouteDataUnit.Top = 192
     landfillRouteData.Top = 360
     landfillRouteDataUnit.Top = 360
+    finalUsage2RouteData.Visible = False
+    finalUsage2RouteDataUnit.Visible = False
     
     If route <> "RT4" Or route <> "RT5" Then
         landfillDangerRouteData.Visible = False
         landfillDangerRouteDataUnit.Visible = False
     End If
     
-    If route = "RT1-C" Then
+    If route = "RT1-A" Then
+        finalUsageRouteDataUnit.Caption = "MWh/a"
+    ElseIf route = "RT1-B" Then
+        finalUsageRouteDataUnit.Caption = "Kl Diesel Equiv./a"
+        finalUsage2RouteData.Visible = True
+        finalUsage2RouteDataUnit.Visible = True
+        finalUsage2RouteDataUnit.Caption = "Nm3/a"
+    ElseIf route = "RT1-C" Then
         finalUsageRouteData.Top = 360
         finalUsageRouteDataUnit.Top = 360
+        finalUsageRouteDataUnit.Caption = "Nm3/a"
     ElseIf route = "RT2" Then
         finalUsageRouteData.Visible = False
         finalUsageRouteDataUnit.Visible = False
@@ -408,6 +435,7 @@ Sub enableDisableRouteLabels(ByVal onoff As Boolean, ByVal route As String)
         lossWeightRouteDataUnit.Top = 75
         landfillRouteData.Top = 348
         landfillRouteDataUnit.Top = 348
+        finalUsageRouteDataUnit.Caption = "MWh/a"
     End If
 
 End Sub
