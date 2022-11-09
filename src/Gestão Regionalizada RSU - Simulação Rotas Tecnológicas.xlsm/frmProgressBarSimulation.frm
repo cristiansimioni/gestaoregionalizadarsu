@@ -59,6 +59,8 @@ Private Sub executeSimulation()
     row = 3
     
     wksDefinedArrays.range("A3:BJ2000").ClearContents
+    wksDefinedArrays.range("A3:BJ2000").Interior.Color = xlNone
+    wksDefinedArrays.range("A3:BJ2000").Font.Bold = False
     
     Application.DisplayAlerts = False
     Application.ScreenUpdating = False
@@ -170,6 +172,18 @@ Private Sub executeSimulation()
                     maxEficiencia = -100#
                     
                     For rowRoute = row - 7 To row - 1
+                    
+                        If tarifaLiquidaBase > wksDefinedArrays.Cells(rowRoute, 9).value Then
+                            wksDefinedArrays.Cells(rowRoute, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
+                        Else
+                            wksDefinedArrays.Cells(rowRoute, 9).Interior.Color = ApplicationColors.bgColorInvalidTextBox
+                        End If
+                        
+                        If eficienciaBase < wksDefinedArrays.Cells(rowRoute, 10) Then
+                            wksDefinedArrays.Cells(rowRoute, 10).Interior.Color = ApplicationColors.bgColorValidTextBox
+                        Else
+                            wksDefinedArrays.Cells(rowRoute, 10).Interior.Color = ApplicationColors.bgColorInvalidTextBox
+                        End If
 
                         If minTarifa > wksDefinedArrays.Cells(rowRoute, 9).value Then
                             minTarifa = wksDefinedArrays.Cells(rowRoute, 9).value
@@ -186,21 +200,25 @@ Private Sub executeSimulation()
                     wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(selectedRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
                     wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
+                    Dim rngRow As range
+                    Set rngRow = Rows(row)
+                    rngRow.EntireRow.Interior.Color = RGB(255, 242, 204)
+                    
                     For x = 6 To 65
                         wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(selectedRow, x).value
                     Next x
                     
-                    If tarifaLiquidaBase > minTarifa Then
-                        wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
-                    Else
-                        wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorInvalidTextBox
-                    End If
+                    'If tarifaLiquidaBase > minTarifa Then
+                    '    wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
+                    'Else
+                    '    wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorInvalidTextBox
+                    'End If
                     
-                    If eficienciaBase < maxEficiencia Then
-                        wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorValidTextBox
-                    Else
-                        wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorInvalidTextBox
-                    End If
+                    'If eficienciaBase < maxEficiencia Then
+                    '    wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorValidTextBox
+                    'Else
+                    '    wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorInvalidTextBox
+                    'End If
                     
                     consolidatedRows.Add row
                     
@@ -223,6 +241,10 @@ Private Sub executeSimulation()
                 wksDefinedArrays.Cells(row, 3).value = "NA"
                 wksDefinedArrays.Cells(row, 4).value = "NA"
                 wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & A.vCode
+                
+                Set rngRow = Rows(row)
+                rngRow.EntireRow.Font.Bold = True
+                rngRow.EntireRow.Interior.Color = RGB(233, 196, 106)
                 
                 For x = 6 To 65
                     Dim strFormula As String

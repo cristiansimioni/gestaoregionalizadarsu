@@ -204,8 +204,8 @@ Private Sub ChangeRoute()
         landfillRouteData.Caption = wksChartData.Cells(lineData, 9).value
         organicCompoundRouteData.Caption = wksChartData.Cells(lineData, 10).value
         lossWeightRouteData.Caption = wksChartData.Cells(lineData, 12).value
-        finalUsageRouteData.Caption = wksChartData.Cells(lineData, 13).value
-        finalUsage2RouteData.Caption = wksChartData.Cells(lineData, 14).value
+        finalUsageRouteData.Caption = Format(wksChartData.Cells(lineData, 13).value, "#,##0")
+        finalUsage2RouteData.Caption = Format(wksChartData.Cells(lineData, 14).value, "#,##0")
     End If
     
 End Sub
