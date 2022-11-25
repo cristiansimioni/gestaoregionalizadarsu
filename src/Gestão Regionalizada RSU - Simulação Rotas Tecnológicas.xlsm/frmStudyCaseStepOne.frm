@@ -34,12 +34,8 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
-
 Private Sub btnSave_Click()
-    If ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("GenerationPerCapitaRDO", colUserValue, CDbl(txtGenerationPerCapitaRDO.Text))
         Call Database.SetDatabaseValue("IndexSelectiveColletionRSU", colUserValue, CDbl(txtIndexSelectiveColletionRSU.Text))
         Call Database.SetDatabaseValue("AnnualGrowthPopulation", colUserValue, CDbl(txtAnnualGrowthPopulation.Text))
@@ -47,9 +43,11 @@ Private Sub btnSave_Click()
         FormChanged = False
         Unload Me
         frmStepOne.updateForm
-    Else
-        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
+
 End Sub
 
 Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)

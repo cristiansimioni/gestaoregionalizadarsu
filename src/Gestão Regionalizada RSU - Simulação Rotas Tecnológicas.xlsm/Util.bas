@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "2.0.1"
-Public Const APPLASTUPDATED         As String = "05/11/2022"
+Public Const APPVERSION             As String = "2.0.2"
+Public Const APPLASTUPDATED         As String = "24/11/2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -110,6 +110,10 @@ End Function
 
 Function GetChartDataWorksheet() As Worksheet
     Set GetChartDataWorksheet = ThisWorkbook.Worksheets("Dados - Gráfico")
+End Function
+
+Function GetBridgeDataWorksheet() As Worksheet
+    Set GetBridgeDataWorksheet = ThisWorkbook.Worksheets("Dados - Bridges")
 End Function
 
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean

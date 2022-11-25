@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive 
    Caption         =   "UserForm1"
-   ClientHeight    =   11700
+   ClientHeight    =   11715
    ClientLeft      =   240
    ClientTop       =   930
-   ClientWidth     =   18345
+   ClientWidth     =   18360
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -21,7 +21,6 @@ Private Sub btnBack_Click()
     frmTool.updateForm
     Unload Me
 End Sub
-
 
 Private Sub btnFiles_Click()
     Dim chartPath As String
@@ -55,10 +54,6 @@ Private Sub cbxArrayRoute_Change()
     
     cbxRoute.ListIndex = -1
     Call enableDisableRouteLabels(False, "")
-    
-    'If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
-    '    Call ChangeRoute
-    'End If
     
 End Sub
 
@@ -252,6 +247,72 @@ Private Sub cbxMarketRoute_Change()
     End If
 End Sub
 
+Private Sub cbxMarketValuation_Change()
+    If cbxMarketValuation.value <> "" Then
+        Dim wksBridgeData As Worksheet
+        Set wksBridgeData = Util.GetBridgeDataWorksheet
+        wksBridgeData.Cells(2, 1).value = cbxMarketValuation.value
+        
+        Dim prjPath As String
+        Dim prjName As String
+        
+        prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
+        prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
+        prjPath = Util.FolderCreate(prjPath, prjName)
+        Dim chartPath As String
+        chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
+        For Each c In Sheets("Bridges").ChartObjects
+            c.Activate
+            Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".bmp"
+            c.Chart.Export filename:=Fname, FilterName:="bmp"
+        Next c
+        
+        Me.imgEffort1.Picture = LoadPicture(chartPath & "\" & "Esforço - " & cbxMarketValuation.value & lblArray1.Caption & ".bmp")
+        Me.imgEffort2.Picture = LoadPicture(chartPath & "\" & "Esforço - " & cbxMarketValuation.value & lblArray2.Caption & ".bmp")
+        Me.imgEffort3.Picture = LoadPicture(chartPath & "\" & "Esforço - " & cbxMarketValuation.value & lblArray3.Caption & ".bmp")
+        Me.imgEffort4.Picture = LoadPicture(chartPath & "\" & "Esforço - " & cbxMarketValuation.value & lblArray4.Caption & ".bmp")
+        Me.imgIndirect1.Picture = LoadPicture(chartPath & "\" & "Ganhos Indiretos - " & cbxMarketValuation.value & lblArray1.Caption & ".bmp")
+        Me.imgIndirect2.Picture = LoadPicture(chartPath & "\" & "Ganhos Indiretos - " & cbxMarketValuation.value & lblArray2.Caption & ".bmp")
+        Me.imgIndirect3.Picture = LoadPicture(chartPath & "\" & "Ganhos Indiretos - " & cbxMarketValuation.value & lblArray3.Caption & ".bmp")
+        Me.imgIndirect4.Picture = LoadPicture(chartPath & "\" & "Ganhos Indiretos - " & cbxMarketValuation.value & lblArray4.Caption & ".bmp")
+        Me.imgPublic1.Picture = LoadPicture(chartPath & "\" & "Desoneração Gestão Pública - " & cbxMarketValuation.value & lblArray1.Caption & ".bmp")
+        Me.imgPublic2.Picture = LoadPicture(chartPath & "\" & "Desoneração Gestão Pública - " & cbxMarketValuation.value & lblArray2.Caption & ".bmp")
+        Me.imgPublic3.Picture = LoadPicture(chartPath & "\" & "Desoneração Gestão Pública - " & cbxMarketValuation.value & lblArray3.Caption & ".bmp")
+        Me.imgPublic4.Picture = LoadPicture(chartPath & "\" & "Desoneração Gestão Pública - " & cbxMarketValuation.value & lblArray4.Caption & ".bmp")
+        
+        formulaUp1.Caption = wksBridgeData.Cells(3, 25).value
+        formulaDown1.Caption = wksBridgeData.Cells(3, 26).value
+        formulaResult1 = wksBridgeData.Cells(3, 27).value
+        
+        formulaUp2.Caption = wksBridgeData.Cells(5, 25).value
+        formulaDown2.Caption = wksBridgeData.Cells(5, 26).value
+        formulaResult2 = wksBridgeData.Cells(5, 27).value
+        
+        formulaUp3.Caption = wksBridgeData.Cells(7, 25).value
+        formulaDown3.Caption = wksBridgeData.Cells(7, 26).value
+        formulaResult3 = wksBridgeData.Cells(7, 27).value
+        
+        formulaUp4.Caption = wksBridgeData.Cells(9, 25).value
+        formulaDown4.Caption = wksBridgeData.Cells(9, 26).value
+        formulaResult4 = wksBridgeData.Cells(9, 27).value
+        
+        For Each Ctrl In Me.Controls
+            If InStr(Ctrl.name, "formula") > 0 Then
+                Ctrl.Visible = True
+            End If
+        Next Ctrl
+        
+    Else
+        For Each Ctrl In Me.Controls
+            If InStr(Ctrl.name, "formula") > 0 Then
+                Ctrl.Visible = False
+            ElseIf InStr(Ctrl.name, "imgEffort") > 0 Then
+                Ctrl.Picture = Nothing
+            End If
+        Next Ctrl
+    End If
+End Sub
+
 Private Sub cbxRoute_Change()
     If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
         Call ChangeRoute
@@ -282,6 +343,10 @@ Private Sub cbxSubArrayRoute_Change()
         Call ChangeRoute
     End If
 End Sub
+
+
+
+
 
 Private Sub UserForm_Initialize()
     'Form Appearance
@@ -315,10 +380,12 @@ Private Sub UserForm_Initialize()
     cbxMarket.AddItem "M1"
     cbxMarket.AddItem "M2"
     cbxMarket.AddItem "M3"
-    
     cbxMarketRoute.AddItem "M1"
     cbxMarketRoute.AddItem "M2"
     cbxMarketRoute.AddItem "M3"
+    cbxMarketValuation.AddItem "M1"
+    cbxMarketValuation.AddItem "M2"
+    cbxMarketValuation.AddItem "M3"
     
     cbxRoute.AddItem "RT1-A"
     cbxRoute.AddItem "RT1-B"
@@ -337,21 +404,33 @@ Private Sub UserForm_Initialize()
     Next
     
     'Ajustar arranjos selecionados na aba de "Dados - Gráfico"
-    Dim wksChartData As Worksheet
+    Dim wksChartData, wksBridgeData As Worksheet
     Set wksChartData = Util.GetChartDataWorksheet
+    Set wksBridgeData = Util.GetBridgeDataWorksheet
     Dim markets As Variant
     markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
-    Dim row As Integer
+    Dim row, selected, rowBridge As Integer
     row = 4
     For Each m In markets
+        selected = 1
+        rowBridge = 3
         For Each A In arrays
             If A.vSelected Then
                 wksChartData.Cells(row, 1).value = GetMarketCode(m) & A.vCode
+                wksBridgeData.Cells(rowBridge, 1).value = A.vCode
+                Me.Controls("lblArray" & selected).Caption = A.vCode
                 row = row + 1
+                rowBridge = rowBridge + 2
+                selected = selected + 1
             End If
         Next
     Next m
     
+    For Each Ctrl In Me.Controls
+        If InStr(Ctrl.name, "formula") > 0 Then
+            Ctrl.Visible = False
+        End If
+    Next Ctrl
     
     Call enableDisableRouteLabels(False, "")
     

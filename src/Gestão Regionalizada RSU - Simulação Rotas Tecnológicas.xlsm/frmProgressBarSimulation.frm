@@ -204,9 +204,9 @@ Private Sub executeSimulation()
                     Set rngRow = Rows(row)
                     rngRow.EntireRow.Interior.Color = RGB(255, 242, 204)
                     
-                    For x = 6 To 65
-                        wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(selectedRow, x).value
-                    Next x
+                    For X = 6 To 65
+                        wksDefinedArrays.Cells(row, X).value = wksDefinedArrays.Cells(selectedRow, X).value
+                    Next X
                     
                     'If tarifaLiquidaBase > minTarifa Then
                     '    wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
@@ -246,17 +246,17 @@ Private Sub executeSimulation()
                 rngRow.EntireRow.Font.Bold = True
                 rngRow.EntireRow.Interior.Color = RGB(233, 196, 106)
                 
-                For x = 6 To 65
+                For X = 6 To 65
                     Dim strFormula As String
                     Dim ColumnLetter As String
                     strFormula = "="
                     Dim element As Integer
                     element = 1
-                    ColumnLetter = Split(Cells(1, x).Address, "$")(1)
+                    ColumnLetter = Split(Cells(1, X).Address, "$")(1)
                     
-                    If x = 11 Or x = 5 Or x = 6 Or x = 7 Then 'Fixas
+                    If X = 11 Or X = 5 Or X = 6 Or X = 7 Then 'Fixas
                         strFormula = strFormula & ColumnLetter & consolidatedRows(1)
-                    ElseIf x >= 12 And x <= 23 Then 'Somatório
+                    ElseIf X >= 12 And X <= 23 Then 'Somatório
                         For Each r In consolidatedRows
                             If element <> 1 Then
                                 strFormula = strFormula & "+"
@@ -283,8 +283,8 @@ Private Sub executeSimulation()
                         
                         strFormula = strFormula & sumPart & "/" & divisionPart
                     End If
-                    wksDefinedArrays.Cells(row, x).Formula = strFormula
-                Next x
+                    wksDefinedArrays.Cells(row, X).Formula = strFormula
+                Next X
                 
                 row = row + 1
                 
