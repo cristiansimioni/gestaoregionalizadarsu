@@ -306,7 +306,7 @@ Private Sub cbxMarketValuation_Change()
         For Each Ctrl In Me.Controls
             If InStr(Ctrl.name, "formula") > 0 Then
                 Ctrl.Visible = False
-            ElseIf InStr(Ctrl.name, "imgEffort") > 0 Then
+            ElseIf InStr(Ctrl.name, "imgEffort") > 0 Or InStr(Ctrl.name, "imgIndirect") > 0 Or InStr(Ctrl.name, "imgPublic") > 0 Then
                 Ctrl.Picture = Nothing
             End If
         Next Ctrl

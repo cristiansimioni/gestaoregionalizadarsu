@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "2.0.2"
-Public Const APPLASTUPDATED         As String = "24/11/2022"
+Public Const APPVERSION             As String = "3.0.0"
+Public Const APPLASTUPDATED         As String = "29/11/2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -20,6 +20,7 @@ Public Const FOLDERBASEMARKET       As String = "Mercado Base"
 Public Const FOLDEROPTIMIZEDMARKET  As String = "Mercado Otimizado"
 Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
 Public Const FOLDERCHART            As String = "Gráficos"
+Public Const FOLDERREPORT           As String = "Relatórios"
 
 'Icons
 Public Const ICONCHECK              As String = "check-icon.jpg"
@@ -43,6 +44,7 @@ Public Const FILEMANUALSTEP2        As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP3        As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP4        As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP5        As String = "Manual da Ferramenta.pdf"
+Public Const FILEMANUALSTEP6        As String = "Manual da Ferramenta.pdf"
 
 'Messages
 Public Const MSG_ATTENTION                          As String = "Atenção"
@@ -114,6 +116,10 @@ End Function
 
 Function GetBridgeDataWorksheet() As Worksheet
     Set GetBridgeDataWorksheet = ThisWorkbook.Worksheets("Dados - Bridges")
+End Function
+
+Function GetReportWorksheet() As Worksheet
+    Set GetReportWorksheet = ThisWorkbook.Worksheets("Relatório")
 End Function
 
 Function validateRange(ByVal value As String, ByVal down, ByVal up, ByRef message As String) As Boolean

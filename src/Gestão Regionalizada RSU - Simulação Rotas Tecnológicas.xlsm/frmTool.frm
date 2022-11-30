@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
-   ClientHeight    =   7635
+   ClientHeight    =   8580.001
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   15225
@@ -46,6 +46,10 @@ Private Sub btnStepOne_Click()
     frmStepOne.Show
 End Sub
 
+Private Sub btnStepSix_Click()
+    frmStepSix.Show
+End Sub
+
 Private Sub btnStepThree_Click()
     frmStepThree.Show
 End Sub
@@ -60,11 +64,13 @@ Public Function updateForm()
     imgStepThreeStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgStepSixStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     btnStepOne.Enabled = True
     btnStepTwo.Enabled = False
     btnStepThree.Enabled = False
     btnStepFour.Enabled = False
     btnStepFive.Enabled = False
+    btnStepSix.Enabled = False
     
     If ValidateFormRules("frmRSUGravimetry") And _
         ValidateFormRules("frmStudyCaseStepOne") And _
@@ -106,6 +112,8 @@ Public Function updateForm()
         imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepFive.Enabled = True
         imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+        btnStepSix.Enabled = True
+        imgStepSixStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     End If
     
 End Function
