@@ -34,6 +34,13 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
+Private Sub btnDefault_Click()
+    txtGenerationPerCapitaRDO.Text = Database.GetDatabaseValue("GenerationPerCapitaRDO", colDefaultValue)
+    txtAnnualGrowthPopulation.Text = Database.GetDatabaseValue("AnnualGrowthPopulation", colDefaultValue)
+    txtIndexSelectiveColletionRSU.Text = Database.GetDatabaseValue("IndexSelectiveColletionRSU", colDefaultValue)
+    txtAnnualGrowthCollect.Text = Database.GetDatabaseValue("AnnualGrowthCollect", colDefaultValue)
+End Sub
+
 Private Sub btnSave_Click()
     On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("GenerationPerCapitaRDO", colUserValue, CDbl(txtGenerationPerCapitaRDO.Text))
@@ -46,7 +53,7 @@ Private Sub btnSave_Click()
     Exit Sub
     
 ErrorHandler:
-    Call MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
 
 End Sub
 

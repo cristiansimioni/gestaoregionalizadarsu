@@ -37,6 +37,13 @@ Function ValidateForm() As Boolean
     ValidateForm = True
 End Function
 
+Private Sub btnDefault_Click()
+    txtCOEmission.Text = Database.GetDatabaseValue("COEmission", colDefaultValue)
+    txtReducingCostMovimentation.Text = Database.GetDatabaseValue("ReducingCostMovimentation", colDefaultValue)
+    txtCapexInbound = Database.GetDatabaseValue("CapexInbound", colDefaultValue)
+    txtCapexOutbound = Database.GetDatabaseValue("CapexOutbound", colDefaultValue)
+End Sub
+
 Private Sub btnSave_Click()
     If ValidateForm() Then
         Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))

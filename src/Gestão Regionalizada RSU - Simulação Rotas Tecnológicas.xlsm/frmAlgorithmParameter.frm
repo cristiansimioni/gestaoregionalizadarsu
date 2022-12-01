@@ -33,6 +33,11 @@ Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
     FormChanged = True
 End Sub
 
+Private Sub btnDefault_Click()
+    txtTrashThreshold = Database.GetDatabaseValue("TrashThreshold", colDefaultValue)
+    txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colDefaultValue)
+End Sub
+
 Private Sub btnPythonExecutable_Click()
     Dim sPython As String
     With Application.FileDialog(msoFileDialogFilePicker)

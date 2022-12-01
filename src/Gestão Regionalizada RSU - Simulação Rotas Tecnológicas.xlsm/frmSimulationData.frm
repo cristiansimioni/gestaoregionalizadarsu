@@ -43,6 +43,16 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
+Private Sub btnDefault_Click()
+    txtLandfillDeviationTarget.Text = Database.GetDatabaseValue("LandfillDeviationTarget", colDefaultValue)
+    txtExpectedDeadline.Text = Database.GetDatabaseValue("ExpectedDeadline", colDefaultValue)
+    txtMixedRecyclingIndex.Text = Database.GetDatabaseValue("MixedRecyclingIndex", colDefaultValue)
+    txtTargetExpectation.Text = Database.GetDatabaseValue("TargetExpectation", colDefaultValue)
+    txtCurrentLandfillCost.Text = Database.GetDatabaseValue("CurrentLandfillCost", colDefaultValue)
+    txtCurrentCostRSU.Text = Database.GetDatabaseValue("CurrentCostRSU", colDefaultValue)
+    txtLandfillCurrentDeviation.Text = Database.GetDatabaseValue("LandfillCurrentDeviation", colDefaultValue)
+End Sub
+
 Private Sub btnSave_Click()
     If ValidateForm() Then
         Call Database.SetDatabaseValue("LandfillDeviationTarget", colUserValue, CDbl(txtLandfillDeviationTarget.Text))
