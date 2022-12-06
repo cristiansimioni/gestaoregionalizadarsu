@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim arrays As Collection
 
 Private Sub btnBack_Click()
@@ -22,9 +20,22 @@ Private Sub btnBack_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    updateValues arrays
-    frmStepTwo.updateForm
-    Unload Me
+    Dim count As Integer
+    Dim e As Variant
+    count = 0
+    For Each e In arrays
+        If e.vSelected Then
+            count = count + 1
+        End If
+    Next e
+    
+    If count = 4 Then
+        updateValues arrays
+        frmStepTwo.updateForm
+        Unload Me
+    Else
+        Call MsgBox(MSG_WRONG_NUMBER_ARRAYS, vbCritical, MSG_WRONG_NUMBER_ARRAYS_TITLE)
+    End If
 End Sub
 
 
