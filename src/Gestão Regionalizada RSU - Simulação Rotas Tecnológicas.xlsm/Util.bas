@@ -6,7 +6,7 @@ Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simu
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "3.0.1"
-Public Const APPLASTUPDATED         As String = "01/12/2022"
+Public Const APPLASTUPDATED         As String = "05/12/2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -58,6 +58,8 @@ Public Const MSG_ALGORITHM_COMPLETE_FAILED          As String = "A execução do a
 Public Const MSG_ALGORITHM_STARTUP                  As String = "Uma tela preta (terminal) irá abrir para a execução do algoritmo. Quando a execução terminar a tela irá fechar automaticamente. O tempo de processamento depende dos parâmetros selecionados e capacidade da sua máquina."
 Public Const MSG_WRONG_NUMBER_CITIES_TITLE          As String = "Quantidade insuficiente"
 Public Const MSG_WRONG_NUMBER_CITIES                As String = "Quantidade de cidades insuficiente, selecione ao menos duas."
+Public Const MSG_WRONG_NUMBER_ARRAYS_TITLE          As String = "Quantidade de arranjos incorreta"
+Public Const MSG_WRONG_NUMBER_ARRAYS                As String = "Quantidade de arranjos incorreta. Você deve selecionar três arranjos obrigatoriamente."
 
 
 'Look and feel

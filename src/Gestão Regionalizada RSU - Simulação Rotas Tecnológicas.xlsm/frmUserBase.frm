@@ -88,7 +88,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("HistoricalWaterConsumption", colUserValue, CDbl(txtHistoricalWaterConsumption.Text))
         Call Database.SetDatabaseValue("MSWManagementUsers", colUserValue, CDbl(txtMSWManagementUsers.Text))
         Call Database.SetDatabaseValue("RegulatoryServiceCost", colUserValue, CDbl(txtRegulatoryServiceCost.Text))
@@ -103,9 +103,10 @@ Private Sub btnSave_Click()
         FormChanged = False
         frmStepThree.updateForm
         Unload Me
-    Else
-        answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
 End Sub
 
 Private Sub btnDefault_Click()

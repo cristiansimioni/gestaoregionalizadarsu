@@ -76,7 +76,7 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("QuantityTrucksBase", colUserValue, CDbl(txtQuantityTrucksBase.Text))
         Call Database.SetDatabaseValue("MileageTruckBase", colUserValue, CDbl(txtMileageTruckBase.Text))
         Call Database.SetDatabaseValue("FleetRenewalTermTruckBase", colUserValue, CDbl(txtFleetRenewalTermTruckBase.Text))
@@ -88,9 +88,10 @@ Private Sub btnSave_Click()
         FormChanged = False
         frmStepFour.updateForm
         Unload Me
-    Else
-        answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
 End Sub
 
 Private Sub btnDefault_Click()

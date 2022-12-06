@@ -33,10 +33,6 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
-
 Private Sub btnDefault_Click()
     txtCOEmission.Text = Database.GetDatabaseValue("COEmission", colDefaultValue)
     txtReducingCostMovimentation.Text = Database.GetDatabaseValue("ReducingCostMovimentation", colDefaultValue)
@@ -45,7 +41,7 @@ Private Sub btnDefault_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("COEmission", colUserValue, CDbl(txtCOEmission.Text))
         Call Database.SetDatabaseValue("ReducingCostMovimentation", colUserValue, CDbl(txtReducingCostMovimentation.Text))
         Call Database.SetDatabaseValue("CapexInbound", colUserValue, CDbl(txtCapexInbound.Text))
@@ -53,9 +49,11 @@ Private Sub btnSave_Click()
         FormChanged = False
         frmStepTwo.updateForm
         Unload Me
-    Else
-        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
+    
 End Sub
 
 Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)

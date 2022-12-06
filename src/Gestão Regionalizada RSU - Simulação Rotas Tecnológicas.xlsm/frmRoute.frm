@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()
@@ -36,15 +34,17 @@ Private Sub btnDefault_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("MixedWasteToBeSorted", colUserValue, CDbl(txtMixedWasteToBeSorted.Text))
         Call Database.SetDatabaseValue("MechanizedSortingEfficiency", colUserValue, CDbl(txtMechanizedSortingEfficiency.Text))
         FormChanged = False
         frmStepThree.updateForm
         Unload Me
-    Else
-        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
+    
 End Sub
 
 Private Sub txtMechanizedSortingEfficiency_Change()

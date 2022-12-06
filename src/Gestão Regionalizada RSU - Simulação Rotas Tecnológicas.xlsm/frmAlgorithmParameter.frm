@@ -56,12 +56,18 @@ Private Sub btnPythonExecutable_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    Call Database.SetDatabaseValue("PythonPath", colUserValue, txtPythonPath.Text)
-    Call Database.SetDatabaseValue("TrashThreshold", colUserValue, CDbl(txtTrashThreshold.Text))
-    Call Database.SetDatabaseValue("MaxClusters", colUserValue, CDbl(txtMaxClusters.Text))
-    FormChanged = False
-    frmStepTwo.updateForm
-    Unload Me
+    On Error GoTo ErrorHandler
+        Call Database.SetDatabaseValue("PythonPath", colUserValue, txtPythonPath.Text)
+        Call Database.SetDatabaseValue("TrashThreshold", colUserValue, CDbl(txtTrashThreshold.Text))
+        Call Database.SetDatabaseValue("MaxClusters", colUserValue, CDbl(txtMaxClusters.Text))
+        FormChanged = False
+        frmStepTwo.updateForm
+        Unload Me
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
+    
 End Sub
 
 Private Sub txtMaxClusters_Change()

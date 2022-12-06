@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Private Sub btnBack_Click()
     frmTool.updateForm
     Unload Me
@@ -52,7 +50,7 @@ Public Function updateForm()
     Else
         Call Database.SetDatabaseValue("CityStatus", colUserValue, "")
     End If
-    If modArray.countSelectedArrays <= 4 And Database.GetDatabaseValue("AlgorithmStatus", colUserValue) = "Sim" Then
+    If modArray.countSelectedArrays = 4 And Database.GetDatabaseValue("AlgorithmStatus", colUserValue) = "Sim" Then
         imgArrays.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         Call Database.SetDatabaseValue("ArrayStatus", colUserValue, "Sim")
     Else

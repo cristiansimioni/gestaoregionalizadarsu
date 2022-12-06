@@ -48,14 +48,15 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub btnSave_Click()
-    If modForm.ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("ExtraordinaryTariffAffordability", colUserValue, CDbl(txtExtraordinaryTariffAffordability.Text))
         FormChanged = False
         frmStepFour.updateForm
         Unload Me
-    Else
-        answer = MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
 End Sub
 
 Private Sub btnDefault_Click()
