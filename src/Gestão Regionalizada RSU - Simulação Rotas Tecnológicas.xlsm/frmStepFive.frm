@@ -189,6 +189,12 @@ Private Sub ChangeRoute()
         End If
     End If
     
+    If wksChartData.Cells(50, 2).value = cbxRoute.value And wksChartData.Cells(50, 2).value <> "" Then
+        lblSelectedRoute.Visible = True
+    Else
+        lblSelectedRoute.Visible = False
+    End If
+    
     If lineData <> 0 Then
         capexRouteData.Caption = wksChartData.Cells(lineData, 4).value
         opexRouteData.Caption = wksChartData.Cells(lineData, 5).value
@@ -333,8 +339,9 @@ Private Sub cbxSubArrayRoute_Change()
         If cbxSubArrayRoute.value = "Consolidado" Then
             cbxRoute.Visible = False
             lblRoute.Visible = False
-            Call enableDisableRouteLabels(False, cbxRoute.value)
+            Call enableDisableRouteLabels(False, "")
             cbxRoute.ListIndex = -1
+            lblSelectedRoute.Visible = False
         Else
             cbxRoute.Visible = True
             lblRoute.Visible = True
