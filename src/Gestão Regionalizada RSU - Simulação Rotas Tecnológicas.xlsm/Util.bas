@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "3.0.1"
-Public Const APPLASTUPDATED         As String = "05/12/2022"
+Public Const APPVERSION             As String = "3.0.2"
+Public Const APPLASTUPDATED         As String = "07/12/2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -48,7 +48,7 @@ Public Const FILEMANUALSTEP6        As String = "Manual da Ferramenta.pdf"
 
 'Messages
 Public Const MSG_ATTENTION                          As String = "Atenção"
-Public Const MSG_CLEAN_DATABASE                     As String = "Tem certeza que você deseja apagar tudo? Todos os dados inseridos serão apagados."
+Public Const MSG_CLEAN_DATABASE                     As String = "Tem certeza que você deseja apagar tudo? Todos os dados inseridos serão perdidos e você terá que começar o seu projeto novamente."
 Public Const MSG_CHANGED_NOT_SAVED_TITLE            As String = "Salvar Alterações"
 Public Const MSG_CHANGED_NOT_SAVED                  As String = "Você realizou alterações no formulário. Gostaria de salvar?"
 Public Const MSG_INVALID_DATA_TITLE                 As String = "Dados Inválidos"
