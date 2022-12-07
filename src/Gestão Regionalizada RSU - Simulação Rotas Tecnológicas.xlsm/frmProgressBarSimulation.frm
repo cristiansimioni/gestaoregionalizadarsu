@@ -201,24 +201,12 @@ Private Sub executeSimulation()
                     wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
                     Dim rngRow As range
-                    Set rngRow = Rows(row)
+                    Set rngRow = wksDefinedArrays.Rows(row)
                     rngRow.EntireRow.Interior.Color = RGB(255, 242, 204)
                     
                     For X = 6 To 65
                         wksDefinedArrays.Cells(row, X).value = wksDefinedArrays.Cells(selectedRow, X).value
                     Next X
-                    
-                    'If tarifaLiquidaBase > minTarifa Then
-                    '    wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
-                    'Else
-                    '    wksDefinedArrays.Cells(row, 9).Interior.Color = ApplicationColors.bgColorInvalidTextBox
-                    'End If
-                    
-                    'If eficienciaBase < maxEficiencia Then
-                    '    wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorValidTextBox
-                    'Else
-                    '    wksDefinedArrays.Cells(row, 10).Interior.Color = ApplicationColors.bgColorInvalidTextBox
-                    'End If
                     
                     consolidatedRows.Add row
                     
@@ -242,7 +230,8 @@ Private Sub executeSimulation()
                 wksDefinedArrays.Cells(row, 4).value = "NA"
                 wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & A.vCode
                 
-                Set rngRow = Rows(row)
+                
+                Set rngRow = wksDefinedArrays.Rows(row)
                 rngRow.EntireRow.Font.Bold = True
                 rngRow.EntireRow.Interior.Color = RGB(233, 196, 106)
                 
