@@ -54,7 +54,7 @@ Private Sub btnDefault_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("LandfillDeviationTarget", colUserValue, CDbl(txtLandfillDeviationTarget.Text))
         Call Database.SetDatabaseValue("ExpectedDeadline", colUserValue, CDbl(txtExpectedDeadline.Text))
         Call Database.SetDatabaseValue("MixedRecyclingIndex", colUserValue, CDbl(txtMixedRecyclingIndex.Text))
@@ -66,9 +66,10 @@ Private Sub btnSave_Click()
         FormChanged = False
         Unload Me
         frmStepOne.updateForm
-    Else
-        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
 End Sub
 
 Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
