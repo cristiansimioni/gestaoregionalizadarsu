@@ -3,10 +3,48 @@ import logging
 import numpy as np
 import csv
 import copy
-from more_itertools import set_partitions
 
 # Global variables
 ROUND = 3
+
+def sorted_k_partitions(seq, k):
+    """Returns a list of all unique k-partitions of `seq`.
+
+    Each partition is a list of parts, and each part is a tuple.
+
+    The parts in each individual partition will be sorted in shortlex
+    order (i.e., by length first, then lexicographically).
+
+    The overall list of partitions will then be sorted by the length
+    of their first part, the length of their second part, ...,
+    the length of their last part, and then lexicographically.
+    """
+    n = len(seq)
+    groups = []  # a list of lists, currently empty
+
+    def generate_partitions(i):
+        if i >= n:
+            yield list(map(tuple, groups))
+        else:
+            if n - i > k - len(groups):
+                for group in groups:
+                    group.append(seq[i])
+                    yield from generate_partitions(i + 1)
+                    group.pop()
+
+            if len(groups) < k:
+                groups.append([seq[i]])
+                yield from generate_partitions(i + 1)
+                groups.pop()
+
+    result = generate_partitions(0)
+
+    # Sort the parts in each partition in shortlex order
+    #result = [sorted(ps, key = lambda p: (len(p), p)) for ps in result]
+    # Sort partitions by the length of each part, then lexicographically.
+    #result = sorted(result, key = lambda ps: (*map(len, ps), ps))
+
+    return result
 
 def clusterization(data, distance, max):
     clusters = []
@@ -332,7 +370,7 @@ def main():
 
     # Static variables
     MAX_SUB_ARRAYS = 3                          # Max sub-arrays per array
-    MAX_ARRAYS = 10                             # Top # arrays that will be exported
+    MAX_ARRAYS = 15                             # Top # arrays that will be exported
 
     # Output files
     report = open(REPORTFILE, "w")
@@ -427,7 +465,8 @@ def main():
     report.write("\n\n\n============= ESTATÍSTICAS ============= \n")
     logging.info("Cálculando combinaçãoes...")
     combinations = list()
-    combinations += list(set_partitions(clusters))
+    for i in range(MAX_SUB_ARRAYS+1):
+        combinations = combinations + list(sorted_k_partitions(clusters,i))
     logging.info("Quantidade de combinações: %d", len(combinations))
     report.write("Quantidade de combinações: " + repr(len(combinations)) + "\n")
 
@@ -605,7 +644,7 @@ def main():
             report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
             report.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
             report.write("\t-- Lixo: " + repr(data[i]["sub"][x]['trash']) + "\n")
-            report.write("\t-- População: " + repr(d["sub"][x]['population']) + "\n")
+            report.write("\t-- População: " + repr(data[i]["sub"][x]['population']) + "\n")
             report.write("\t-- Total: " + repr(data[i]["sub"][x]["total"]) + "\n")
             report.write("\t-- Total + Capex: " + repr(data[i]["sub"][x]["total-capex"]) + "\n")
             report.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
