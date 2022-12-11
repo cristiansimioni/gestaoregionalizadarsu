@@ -109,7 +109,7 @@ Sub Clean()
     'Clear arrays
     Dim wksArrays As Worksheet
     Set wksArrays = Util.GetArraysWorksheet
-    wksArrays.range("A3:O200").ClearContents
+    wksArrays.range("A2:O200").ClearContents
     
     'Clear defined arrays
     Dim wksDefinedArrays As Worksheet
