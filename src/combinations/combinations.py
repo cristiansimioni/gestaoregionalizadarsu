@@ -159,12 +159,12 @@ def removeArraysTrashThreshold(data, combinations, threshold):
     logging.info("Progreso: 100%")
     return combinations
 
-def funccentrodemassa(data, cluster):
+def funccentrodemassa(data, cluster, utvrs):
     max = 0
     c_centrodemassa = ""
     for i in cluster:
         trash = data[i]["trash"]
-        if trash > max:
+        if trash > max and i in utvrs:
             max = trash
             c_centrodemassa = i
     return c_centrodemassa
@@ -215,68 +215,7 @@ def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_onl
     data = sorted(data, key = lambda k: (k["total"]))
     if isCentralized:
         #Retorna a UTVR sendo o centro de massa, não o mais eficaz
-        cmassa = funccentrodemassa(cdata, subarray)
-        for d in data:
-            if d["utvr"] == cmassa:
-                return d
-    else:
-        return data[0]
-
-def inboundoutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION, totalTrash):
-    data = []
-
-    capexInbound = (CAPEX_INBOUND*1000000)/(totalTrash * 313 * PAYMENT_PERIOD)
-    capexOutbound = (CAPEX_OUTBOUND*1000000)/(totalTrash * 313 * PAYMENT_PERIOD)
-
-    for utvr_city in subarray:
-        entry = {}
-        sum_inbound = 0
-        #sum_co2 = 0
-        if utvr_city in utvrs_only:
-            logging.debug("%s é uma UTVR...", utvr_city)
-            entry["sub-arranjo"] = subarray
-            entry["utvr"] = utvr_city
-            for other_city in subarray:
-                conventional_cost = cdata[other_city]["conventional-cost"]
-                transshipment_cost = cdata[other_city]["transshipment-cost"]
-                cost_post_transhipment = cdata[other_city]["cost-post-transhipment"]
-                trash = cdata[other_city]["trash"]
-                sum_inbound = sum_inbound + round(((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, other_city, utvr_city))) * trash, 3)
-                #sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
-
-            #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
-            sum_inbound = round(sum_inbound / getSubArrayTrash(cdata, subarray), 3)
-            #sum_inbound = round((CAPEX_INBOUND/PAYMENT_PERIOD + sum_inbound), 3)
-            
-            sum_inbound = round((capexInbound*(getSubArrayTrash(cdata, subarray)/totalTrash)) + sum_inbound, 3)
-            entry["inbound"] = sum_inbound
-            entry["co2"] = 0 #sum_co2
-            dist = 999999
-            for a in existentlandfill:
-                distCities = getDistanceBetweenCites(cdata, distance, utvr_city, a)
-                if distCities < dist:
-                    dist = distCities
-                    sum_outbound = 0
-                    sum_outbound = sum_outbound + (distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
-                    entry["aterro-existente"] = a
-                    entry['outbound-existent-landfill'] = round((capexOutbound*(getSubArrayTrash(cdata, subarray)/totalTrash)) + sum_outbound, 3)
-        
-            for a in aterros_only:
-                e = copy.deepcopy(entry)
-                sum_outbound = 0
-                #sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
-                sum_outbound = sum_outbound + ((getSubArrayTrash(cdata, subarray) * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/getSubArrayTrash(cdata, subarray)
-                e["aterro"] = a
-                e["outbound"] = round((capexOutbound*(getSubArrayTrash(cdata, subarray)/totalTrash)) + sum_outbound, 3)
-                e["total"] = sum_inbound + sum_outbound
-                
-                logging.debug("Adicionando: %s", e)
-                data.append(e)
-    
-    data = sorted(data, key = lambda k: (k["total"]))
-    if isCentralized:
-        #Retorna a UTVR sendo o centro de massa, não o mais eficaz
-        cmassa = funccentrodemassa(cdata, subarray)
+        cmassa = funccentrodemassa(cdata, subarray, utvrs_only)
         for d in data:
             if d["utvr"] == cmassa:
                 return d
