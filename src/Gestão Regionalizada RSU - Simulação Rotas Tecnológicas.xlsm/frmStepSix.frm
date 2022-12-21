@@ -54,9 +54,45 @@ ErrorHandler:
     
 End Sub
 
+Private Sub txtArray_Change()
+    Call Database.SetDatabaseValue("ArrayText", colUserValue, txtArray.Text)
+End Sub
+
+Private Sub txtConclusion_Change()
+    Call Database.SetDatabaseValue("ConclusionText", colUserValue, txtConclusion.Text)
+End Sub
+
+Private Sub txtIntroduction_Change()
+    Call Database.SetDatabaseValue("IntroductionText", colUserValue, txtIntroduction.Text)
+End Sub
+
+Private Sub txtMarket_Change()
+    Call Database.SetDatabaseValue("MarketText", colUserValue, txtMarket.Text)
+End Sub
+
+Private Sub txtObjectives_Change()
+    Call Database.SetDatabaseValue("ObjectivesText", colUserValue, txtObjectives.Text)
+End Sub
+
+Private Sub txtRoutes_Change()
+    Call Database.SetDatabaseValue("RoutesText", colUserValue, txtRoutes.Text)
+End Sub
+
+Private Sub txtValuation_Change()
+    Call Database.SetDatabaseValue("ValuationText", colUserValue, txtValuation.Text)
+End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 2, "Passo 6")
+    
+    'Read database values
+    txtIntroduction.Text = Database.GetDatabaseValue("IntroductionText", colUserValue)
+    txtObjectives.Text = Database.GetDatabaseValue("ObjectivesText", colUserValue)
+    txtArray.Text = Database.GetDatabaseValue("ArrayText", colUserValue)
+    txtRoutes.Text = Database.GetDatabaseValue("RoutesText", colUserValue)
+    txtMarket.Text = Database.GetDatabaseValue("MarketText", colUserValue)
+    txtValuation.Text = Database.GetDatabaseValue("ValuationText", colUserValue)
+    txtConclusion.Text = Database.GetDatabaseValue("ConclusionText", colUserValue)
 
 End Sub
