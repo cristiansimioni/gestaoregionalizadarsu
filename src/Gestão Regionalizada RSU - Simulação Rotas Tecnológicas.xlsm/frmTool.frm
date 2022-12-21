@@ -129,3 +129,7 @@ Private Sub UserForm_Initialize()
     updateForm
     
 End Sub
+
+Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
+    Application.Visible = True
+End Sub
