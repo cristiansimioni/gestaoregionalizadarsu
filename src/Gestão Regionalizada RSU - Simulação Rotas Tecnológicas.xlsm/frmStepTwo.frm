@@ -71,7 +71,9 @@ End Sub
 Private Sub btnRunAlgorithm_Click()
     btnRunAlgorithm.Enabled = False
     'Calculate cities distance
-    Call modCity.calculateDistances
+    If APPDISTANCECALCULATION Then
+        Call modCity.calculateDistances
+    End If
     
     'Create project folder
     Dim prjPath As String
