@@ -22,6 +22,34 @@ Private Sub btnBack_Click()
     Unload Me
 End Sub
 
+
+
+Private Sub MultiPage1_Change()
+'Purpose: mark current page caption by a checkmark
+    With Me.MultiPage1
+        Dim pg As MSForms.Page
+    'a) de-mark old caption
+        Set pg = oldPage(Me.MultiPage1)
+        pg.Caption = Replace(pg.Caption, ChkMark, vbNullString)
+    'b) mark new caption & remember latest multipage value
+        Set pg = .Pages(.value)
+        pg.Caption = ChkMark & pg.Caption
+        .Tag = .value                         ' << remember latest page index
+    End With
+End Sub
+
+Function oldPage(mp As MSForms.MultiPage) As MSForms.Page
+'Purpose: return currently marked page in given multipage
+    With mp
+        Set oldPage = .Pages(Val(.Tag))
+    End With
+End Function
+
+Function ChkMark() As String
+'Purpose: return ballot box with check + blank space
+    ChkMark = ChrW(&H2611) & ChrW(&HA0)  ' ballot box with check + blank
+End Function
+
 Private Sub btnFiles_Click()
     Dim chartPath As String
     Dim prjPath As String
@@ -41,10 +69,10 @@ End Sub
 Private Sub cbxArrayRoute_Change()
     cbxSubArrayRoute.Clear
     
-    For Each A In arrays
-        If A.vSelected Then
-            If A.vCode = cbxArrayRoute.value Then
-                For Each s In A.vSubArray
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArrayRoute.value Then
+                For Each s In a.vSubArray
                     cbxSubArrayRoute.AddItem s.vCode
                 Next s
                 cbxSubArrayRoute.AddItem "Consolidado"
@@ -54,16 +82,17 @@ Private Sub cbxArrayRoute_Change()
     
     cbxRoute.ListIndex = -1
     Call enableDisableRouteLabels(False, "")
+    Call enableDisableConsolidado(False)
     
 End Sub
 
 Private Sub cbxArray_Change()
     cbxSubArray.Clear
     
-    For Each A In arrays
-        If A.vSelected Then
-            If A.vCode = cbxArray.value Then
-                For Each s In A.vSubArray
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArray.value Then
+                For Each s In a.vSubArray
                     cbxSubArray.AddItem s.vCode
                 Next s
             End If
@@ -96,18 +125,18 @@ Private Sub cbxArraySelected_Change()
         t = t + 1
     Wend
     
-    For Each A In arrays
-        If A.vSelected Then
-            If A.vCode = cbxArraySelected.value Then
-                txtArrayTotal.Text = A.vTotal
-                txtArrayTrash.Text = A.vTrash
-                txtArrayTechnology.Text = A.vTechnology
-                txtArrayInbound.Text = A.vInbound
-                txtArrayOutbound.Text = A.vOutbound
-                txtArrayOutboundExistent.Text = A.vOutboundExistentLandfill
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArraySelected.value Then
+                txtArrayTotal.Text = a.vTotal
+                txtArrayTrash.Text = a.vTrash
+                txtArrayTechnology.Text = a.vTechnology
+                txtArrayInbound.Text = a.vInbound
+                txtArrayOutbound.Text = a.vOutbound
+                txtArrayOutboundExistent.Text = a.vOutboundExistentLandfill
                 
                 t = 1
-                For Each s In A.vSubArray
+                For Each s In a.vSubArray
                     Me.Controls("txtSubArray" & t).value = s.vArrayRaw
                     Me.Controls("txtSubArrayLandfill" & t).value = s.vLandfill
                     Me.Controls("txtSubArrayExistentLandfill" & t).value = s.vExistentLandfill
@@ -250,6 +279,9 @@ End Sub
 Private Sub cbxMarketRoute_Change()
     If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" And cbxRoute.value <> "" Then
         Call ChangeRoute
+    ElseIf cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value = "Consolidado" Then
+        Call ChangeRoute
+        Call updateConsolidadoValues
     End If
 End Sub
 
@@ -336,23 +368,93 @@ End Sub
 
 Private Sub cbxSubArrayRoute_Change()
     If cbxMarketRoute.value <> "" And cbxArrayRoute.value <> "" And cbxSubArrayRoute.value <> "" Then
+    
+        Call ChangeRoute
+        
         If cbxSubArrayRoute.value = "Consolidado" Then
             cbxRoute.Visible = False
             lblRoute.Visible = False
             Call enableDisableRouteLabels(False, "")
             cbxRoute.ListIndex = -1
             lblSelectedRoute.Visible = False
+            Call updateConsolidadoValues
+            Call enableDisableConsolidado(True)
         Else
             cbxRoute.Visible = True
             lblRoute.Visible = True
+            Call enableDisableConsolidado(False)
         End If
         
-        Call ChangeRoute
+        
     End If
 End Sub
 
 
-
+Sub updateConsolidadoValues()
+    Dim wksChartData As Worksheet
+    Set wksChartData = Util.GetChartDataWorksheet
+    
+    idSubConsolidado1.Caption = wksChartData.Cells(57, 1)
+    idSubConsolidado2.Caption = wksChartData.Cells(58, 1)
+    idSubConsolidado3.Caption = wksChartData.Cells(59, 1)
+    idArrayConsolidado.Caption = wksChartData.Cells(60, 1)
+    
+    routeSubConsolidado1.Text = wksChartData.Cells(57, 2)
+    routeSubConsolidado2.Text = wksChartData.Cells(58, 2)
+    routeSubConsolidado3.Text = wksChartData.Cells(59, 2)
+    
+    capexSubConsolidado1.Text = wksChartData.Cells(57, 4)
+    capexSubConsolidado2.Text = wksChartData.Cells(58, 4)
+    capexSubConsolidado3.Text = wksChartData.Cells(59, 4)
+    capexArrayConsolidado.Text = wksChartData.Cells(60, 4)
+    
+    opexSubConsolidado1.Text = wksChartData.Cells(57, 5)
+    opexSubConsolidado2.Text = wksChartData.Cells(58, 5)
+    opexSubConsolidado3.Text = wksChartData.Cells(59, 5)
+    opexArrayConsolidado.Text = wksChartData.Cells(60, 5)
+    
+    entradaSubConsolidado1.Text = wksChartData.Cells(57, 6)
+    entradaSubConsolidado2.Text = wksChartData.Cells(58, 6)
+    entradaSubConsolidado3.Text = wksChartData.Cells(59, 6)
+    entradaArrayConsolidado.Text = wksChartData.Cells(60, 6)
+    
+    reciclaveisSubConsolidado1.Text = wksChartData.Cells(57, 7)
+    reciclaveisSubConsolidado2.Text = wksChartData.Cells(58, 7)
+    reciclaveisSubConsolidado3.Text = wksChartData.Cells(59, 7)
+    reciclaveisArrayConsolidado.Text = wksChartData.Cells(60, 7)
+    
+    cdrSubConsolidado1.Text = wksChartData.Cells(57, 8)
+    cdrSubConsolidado2.Text = wksChartData.Cells(58, 8)
+    cdrSubConsolidado3.Text = wksChartData.Cells(59, 8)
+    cdrArrayConsolidado.Text = wksChartData.Cells(60, 8)
+    
+    rejeitosSubConsolidado1.Text = wksChartData.Cells(57, 9)
+    rejeitosSubConsolidado2.Text = wksChartData.Cells(58, 9)
+    rejeitosSubConsolidado3.Text = wksChartData.Cells(59, 9)
+    rejeitosArrayConsolidado.Text = wksChartData.Cells(60, 9)
+    
+    compostoSubConsolidado1.Text = wksChartData.Cells(57, 10)
+    compostoSubConsolidado2.Text = wksChartData.Cells(58, 10)
+    compostoSubConsolidado3.Text = wksChartData.Cells(59, 10)
+    compostoArrayConsolidado.Text = wksChartData.Cells(60, 10)
+    
+    destinacaoSubConsolidado1.Text = wksChartData.Cells(57, 11)
+    destinacaoSubConsolidado2.Text = wksChartData.Cells(58, 11)
+    destinacaoSubConsolidado3.Text = wksChartData.Cells(59, 11)
+    destinacaoArrayConsolidado.Text = wksChartData.Cells(60, 11)
+    
+    perdaMassaSubConsolidado1.Text = wksChartData.Cells(57, 12)
+    perdaMassaSubConsolidado2.Text = wksChartData.Cells(58, 12)
+    perdaMassaSubConsolidado3.Text = wksChartData.Cells(59, 12)
+    perdaMassaArrayConsolidado.Text = wksChartData.Cells(60, 12)
+    
+    usoFinalSubConsolidado1.Text = wksChartData.Cells(57, 13)
+    usoFinalSubConsolidado2.Text = wksChartData.Cells(58, 13)
+    usoFinalSubConsolidado3.Text = wksChartData.Cells(59, 13)
+    usoFinalArrayConsolidado.Text = wksChartData.Cells(60, 13)
+    
+    
+End Sub
 
 
 Private Sub UserForm_Initialize()
@@ -402,11 +504,11 @@ Private Sub UserForm_Initialize()
     cbxRoute.AddItem "RT4"
     cbxRoute.AddItem "RT5"
     
-    For Each A In arrays
-        If A.vSelected Then
-            cbxArray.AddItem A.vCode
-            cbxArrayRoute.AddItem A.vCode
-            cbxArraySelected.AddItem A.vCode
+    For Each a In arrays
+        If a.vSelected Then
+            cbxArray.AddItem a.vCode
+            cbxArrayRoute.AddItem a.vCode
+            cbxArraySelected.AddItem a.vCode
         End If
     Next
     
@@ -421,11 +523,11 @@ Private Sub UserForm_Initialize()
     For Each m In markets
         selected = 1
         rowBridge = 3
-        For Each A In arrays
-            If A.vSelected Then
-                wksChartData.Cells(row, 1).value = GetMarketCode(m) & A.vCode
-                wksBridgeData.Cells(rowBridge, 1).value = A.vCode
-                Me.Controls("lblArray" & selected).Caption = A.vCode
+        For Each a In arrays
+            If a.vSelected Then
+                wksChartData.Cells(row, 1).value = GetMarketCode(m) & a.vCode
+                wksBridgeData.Cells(rowBridge, 1).value = a.vCode
+                Me.Controls("lblArray" & selected).Caption = a.vCode
                 row = row + 1
                 rowBridge = rowBridge + 2
                 selected = selected + 1
@@ -441,6 +543,22 @@ Private Sub UserForm_Initialize()
     
     Call enableDisableRouteLabels(False, "")
     
+    Const startIndx As Long = 0
+    With Me.MultiPage1
+        .Pages(startIndx).Caption = ChkMark & .Pages(startIndx).Caption
+        .Tag = startIndx
+    End With
+    
+    Call enableDisableConsolidado(False)
+    
+End Sub
+
+Sub enableDisableConsolidado(ByVal onoff As Boolean)
+    For Each Ctrl In Me.Controls
+        If InStr(Ctrl.name, "Consolidado") > 0 Then
+            Ctrl.Visible = onoff
+        End If
+    Next Ctrl
 End Sub
 
 Sub enableDisableRouteLabels(ByVal onoff As Boolean, ByVal route As String)
