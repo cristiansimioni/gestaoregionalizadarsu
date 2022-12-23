@@ -2,7 +2,7 @@ Attribute VB_Name = "modArray"
 Option Explicit
 
 Public Enum DatabaseArrayColumn
-    colId = 1
+    colID = 1
     colSelected = 2
     colCode = 3
     colArrayRaw = 4
@@ -110,7 +110,7 @@ Public Function updateValues(ByVal arrays As Collection)
     lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
     
     For r = 2 To lastRow
-        id = wksDatabase.Cells(r, DatabaseArrayColumn.colId).value
+        id = wksDatabase.Cells(r, DatabaseArrayColumn.colID).value
         If arrays(id).vSelected Then
             wksDatabase.Cells(r, DatabaseArrayColumn.colSelected) = "Sim"
         Else

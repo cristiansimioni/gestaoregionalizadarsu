@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "3.0.4"
-Public Const APPLASTUPDATED         As String = "20/12/2022"
+Public Const APPVERSION             As String = "3.0.5"
+Public Const APPLASTUPDATED         As String = "23/12/2022"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 Public Const APPDISTANCECALCULATION As Boolean = True

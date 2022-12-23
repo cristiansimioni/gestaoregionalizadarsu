@@ -13,9 +13,25 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim arrays As Collection
+
+Public Enum ArrayConsolidado
+    colID = 1
+    colRota = 2
+    colTarifaBruta = 4
+    colTarifaLiquida = 5
+    colEficienciaValorizacao = 6
+    colCapex = 7
+    colOpex = 8
+    colEntradaPlanta = 9
+    colReciclaveis = 10
+    colCDR = 11
+    colRejeitos = 12
+    colComposto = 13
+    colPerdaMassa = 14
+    colBiometano = 15
+    colEnergiaEletrica = 16
+End Enum
 
 Private Sub btnBack_Click()
     frmTool.updateForm
@@ -394,65 +410,85 @@ Sub updateConsolidadoValues()
     Dim wksChartData As Worksheet
     Set wksChartData = Util.GetChartDataWorksheet
     
-    idSubConsolidado1.Caption = wksChartData.Cells(57, 1)
-    idSubConsolidado2.Caption = wksChartData.Cells(58, 1)
-    idSubConsolidado3.Caption = wksChartData.Cells(59, 1)
-    idArrayConsolidado.Caption = wksChartData.Cells(60, 1)
+    Dim rowSubArray1, rowSubArray2, rowSubArray3, rowArray
+    rowSubArray1 = 57
+    rowSubArray2 = 58
+    rowSubArray3 = 59
+    rowArray = 60
     
-    routeSubConsolidado1.Text = wksChartData.Cells(57, 2)
-    routeSubConsolidado2.Text = wksChartData.Cells(58, 2)
-    routeSubConsolidado3.Text = wksChartData.Cells(59, 2)
+    idSubConsolidado1.Caption = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colID)
+    idSubConsolidado2.Caption = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colID)
+    idSubConsolidado3.Caption = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colID)
+    idArrayConsolidado.Caption = wksChartData.Cells(rowArray, ArrayConsolidado.colID)
     
-    capexSubConsolidado1.Text = wksChartData.Cells(57, 4)
-    capexSubConsolidado2.Text = wksChartData.Cells(58, 4)
-    capexSubConsolidado3.Text = wksChartData.Cells(59, 4)
-    capexArrayConsolidado.Text = wksChartData.Cells(60, 4)
+    routeSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colRota)
+    routeSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colRota)
+    routeSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colRota)
     
-    opexSubConsolidado1.Text = wksChartData.Cells(57, 5)
-    opexSubConsolidado2.Text = wksChartData.Cells(58, 5)
-    opexSubConsolidado3.Text = wksChartData.Cells(59, 5)
-    opexArrayConsolidado.Text = wksChartData.Cells(60, 5)
+    tarifaBrutaSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colTarifaBruta)
+    tarifaBrutaSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colTarifaBruta)
+    tarifaBrutaSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colTarifaBruta)
+    tarifaBrutaArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colTarifaBruta)
     
-    entradaSubConsolidado1.Text = wksChartData.Cells(57, 6)
-    entradaSubConsolidado2.Text = wksChartData.Cells(58, 6)
-    entradaSubConsolidado3.Text = wksChartData.Cells(59, 6)
-    entradaArrayConsolidado.Text = wksChartData.Cells(60, 6)
+    tarifaLiquidaSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colTarifaLiquida)
+    tarifaLiquidaSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colTarifaLiquida)
+    tarifaLiquidaSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colTarifaLiquida)
+    tarifaLiquidaArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colTarifaLiquida)
     
-    reciclaveisSubConsolidado1.Text = wksChartData.Cells(57, 7)
-    reciclaveisSubConsolidado2.Text = wksChartData.Cells(58, 7)
-    reciclaveisSubConsolidado3.Text = wksChartData.Cells(59, 7)
-    reciclaveisArrayConsolidado.Text = wksChartData.Cells(60, 7)
+    eficienciaSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colEficienciaValorizacao)
+    eficienciaSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colEficienciaValorizacao)
+    eficienciaSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colEficienciaValorizacao)
+    eficienciaArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colEficienciaValorizacao)
     
-    cdrSubConsolidado1.Text = wksChartData.Cells(57, 8)
-    cdrSubConsolidado2.Text = wksChartData.Cells(58, 8)
-    cdrSubConsolidado3.Text = wksChartData.Cells(59, 8)
-    cdrArrayConsolidado.Text = wksChartData.Cells(60, 8)
+    capexSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colCapex)
+    capexSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colCapex)
+    capexSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colCapex)
+    capexArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colCapex)
     
-    rejeitosSubConsolidado1.Text = wksChartData.Cells(57, 9)
-    rejeitosSubConsolidado2.Text = wksChartData.Cells(58, 9)
-    rejeitosSubConsolidado3.Text = wksChartData.Cells(59, 9)
-    rejeitosArrayConsolidado.Text = wksChartData.Cells(60, 9)
+    opexSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colOpex)
+    opexSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colOpex)
+    opexSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colOpex)
+    opexArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colOpex)
     
-    compostoSubConsolidado1.Text = wksChartData.Cells(57, 10)
-    compostoSubConsolidado2.Text = wksChartData.Cells(58, 10)
-    compostoSubConsolidado3.Text = wksChartData.Cells(59, 10)
-    compostoArrayConsolidado.Text = wksChartData.Cells(60, 10)
+    entradaSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colEntradaPlanta)
+    entradaSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colEntradaPlanta)
+    entradaSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colEntradaPlanta)
+    entradaArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colEntradaPlanta)
     
-    destinacaoSubConsolidado1.Text = wksChartData.Cells(57, 11)
-    destinacaoSubConsolidado2.Text = wksChartData.Cells(58, 11)
-    destinacaoSubConsolidado3.Text = wksChartData.Cells(59, 11)
-    destinacaoArrayConsolidado.Text = wksChartData.Cells(60, 11)
+    reciclaveisSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colReciclaveis)
+    reciclaveisSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colReciclaveis)
+    reciclaveisSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colReciclaveis)
+    reciclaveisArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colReciclaveis)
     
-    perdaMassaSubConsolidado1.Text = wksChartData.Cells(57, 12)
-    perdaMassaSubConsolidado2.Text = wksChartData.Cells(58, 12)
-    perdaMassaSubConsolidado3.Text = wksChartData.Cells(59, 12)
-    perdaMassaArrayConsolidado.Text = wksChartData.Cells(60, 12)
+    cdrSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colCDR)
+    cdrSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colCDR)
+    cdrSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colCDR)
+    cdrArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colCDR)
     
-    usoFinalSubConsolidado1.Text = wksChartData.Cells(57, 13)
-    usoFinalSubConsolidado2.Text = wksChartData.Cells(58, 13)
-    usoFinalSubConsolidado3.Text = wksChartData.Cells(59, 13)
-    usoFinalArrayConsolidado.Text = wksChartData.Cells(60, 13)
+    rejeitosSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colRejeitos)
+    rejeitosSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colRejeitos)
+    rejeitosSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colRejeitos)
+    rejeitosArrayConsolidado.Text = wksChartData.Cells(rowArray, 9)
     
+    compostoSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colComposto)
+    compostoSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colComposto)
+    compostoSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colComposto)
+    compostoArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colComposto)
+    
+    perdaMassaSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colPerdaMassa)
+    perdaMassaSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colPerdaMassa)
+    perdaMassaSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colPerdaMassa)
+    perdaMassaArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colPerdaMassa)
+    
+    biometanoSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colBiometano)
+    biometanoSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colBiometano)
+    biometanoSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colBiometano)
+    biometanoArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colBiometano)
+    
+    energiaSubConsolidado1.Text = wksChartData.Cells(rowSubArray1, ArrayConsolidado.colEnergiaEletrica)
+    energiaSubConsolidado2.Text = wksChartData.Cells(rowSubArray2, ArrayConsolidado.colEnergiaEletrica)
+    energiaSubConsolidado3.Text = wksChartData.Cells(rowSubArray3, ArrayConsolidado.colEnergiaEletrica)
+    energiaArrayConsolidado.Text = wksChartData.Cells(rowArray, ArrayConsolidado.colEnergiaEletrica)
     
 End Sub
 
