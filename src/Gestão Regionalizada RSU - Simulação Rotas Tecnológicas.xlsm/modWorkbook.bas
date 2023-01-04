@@ -2,17 +2,18 @@ Attribute VB_Name = "modWorkbook"
 Option Explicit
 
 Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
-    Workbooks.Open filename
-    
+    Dim wb As Workbook
+    Set wb = Workbooks.Open(filename)
+
     ' Valores sub-arranjo
-    ActiveWorkbook.Sheets("R-Entrada").range("E10") = arr.vTrash
-    ActiveWorkbook.Sheets("R-Entrada").range("E8") = arr.vPopulation
-    ActiveWorkbook.Sheets("R&C-Painel de Controle").range("D84") = arr.vInbound
-    ActiveWorkbook.Sheets("R&C-Painel de Controle").range("D88") = arr.vOutbound
+    wb.Sheets("R-Entrada").range("E10") = arr.vTrash
+    wb.Sheets("R-Entrada").range("E8") = arr.vPopulation
+    wb.Sheets("R&C-Painel de Controle").range("D84") = arr.vInbound
+    wb.Sheets("R&C-Painel de Controle").range("D88") = arr.vOutbound
     
     If market = FOLDERLANDFILLMARKET Then
-        ActiveWorkbook.Sheets("R-Definição").range("E121") = "Existente"
-        ActiveWorkbook.Sheets("R&C-Painel de Controle").range("D88") = arr.vOutboundExistentLandfill
+        wb.Sheets("R-Definição").range("E121") = "Existente"
+        wb.Sheets("R&C-Painel de Controle").range("D88") = arr.vOutboundExistentLandfill
     End If
     
     'Valores da ferramenta
@@ -29,9 +30,9 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
             range = Database.GetDatabaseValue(var, colCell)
             unit = Database.GetDatabaseValue(var, colUnit)
             If unit = "%" Then
-                ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
             Else
-                ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
             End If
         End If
     Next r
@@ -50,19 +51,20 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     
     Run "'" & filename & "'!" & MacroName, varProject, targetProject, varShareholder, targetShareholder
     
-    ActiveWorkbook.Save
-    ActiveWindow.Close
+    wb.Save
+    wb.Close
 End Sub
 
 Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal market As String)
-    Workbooks.Open filename
+    Dim wb As Workbook
+    Set wb = Workbooks.Open(filename)
     
     ' Valores sub-arranjo
-    ActiveWorkbook.Sheets("RESUMO GERAL Valoriz. RT´s").range("C30") = arr.vInbound
-    ActiveWorkbook.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutbound
+    wb.Sheets("RESUMO GERAL Valoriz. RT´s").range("C30") = arr.vInbound
+    wb.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutbound
     
     If market = FOLDERLANDFILLMARKET Then
-        ActiveWorkbook.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutboundExistentLandfill
+        wb.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutboundExistentLandfill
     End If
     
     'Valores da ferramenta
@@ -81,21 +83,21 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
             description = Database.GetDatabaseValue(var, colDescription)
             If InStr(description, "- Base") = 0 And InStr(description, "- Otimizado") = 0 Then
                 If unit = "%" Then
-                    ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
                 Else
-                    ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
                 End If
             ElseIf InStr(description, "- Otimizado") > 0 And market = FOLDEROPTIMIZEDMARKET Then
                 If unit = "%" Then
-                    ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
                 Else
-                    ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
                 End If
             ElseIf InStr(description, "- Base") > 0 And (market = FOLDERBASEMARKET Or market = FOLDERLANDFILLMARKET) Then
                 If unit = "%" Then
-                    ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
                 Else
-                    ActiveWorkbook.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
                 End If
             End If
         End If
@@ -105,8 +107,8 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
     MacroName = "updateRoutesData"
     Run "'" & filename & "'!" & MacroName, routeFiles(1), routeFiles(2), routeFiles(3), routeFiles(4), routeFiles(5)
     
-    ActiveWorkbook.Save
-    ActiveWindow.Close
+    wb.Save
+    wb.Close
 End Sub
 
 Public Sub CopyDataFromToolTwo(ByVal filename, ByVal row)

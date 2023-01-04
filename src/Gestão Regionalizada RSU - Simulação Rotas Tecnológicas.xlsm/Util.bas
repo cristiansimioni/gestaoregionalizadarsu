@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "3.0.5"
-Public Const APPLASTUPDATED         As String = "23/12/2022"
+Public Const APPVERSION             As String = "3.0.6"
+Public Const APPLASTUPDATED         As String = "03/01/2023"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 Public Const APPDISTANCECALCULATION As Boolean = True
@@ -28,7 +28,7 @@ Public Const ICONCHECK              As String = "check-icon.jpg"
 Public Const ICONWARNING            As String = "error-icon.jpg"
 
 'Images
-Public Const imgLogo                As String = "logo-grey.jpg"
+Public Const IMGLOGO                As String = "logo-grey.jpg"
 Public Const IMGLOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
 Public Const IMGSCREENROUTEONEA     As String = "screen-rt-1-a.jpg"
 Public Const IMGSCREENROUTEONEB     As String = "screen-rt-1-b.jpg"
@@ -144,7 +144,7 @@ End Function
 
 Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     Dim sFileName As String
-    Dim WB As Workbook
+    Dim wb As Workbook
     Dim wks As Worksheet
 
     Application.DisplayAlerts = False
@@ -170,8 +170,8 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     wks.range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
 
     'Open a new XLS workbook, save it as the file name
-    Set WB = Workbooks.Add
-    With WB
+    Set wb = Workbooks.Add
+    With wb
         .title = "Cidades"
         .Subject = projectName
         .Sheets(1).Select
@@ -285,7 +285,7 @@ End Function
 Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
     Dim ws As Worksheet, strFile As String, sPath As String
 
-    Set ws = ActiveWorkbook.Sheets("Arranjos") 'set to current worksheet name
+    Set ws = ThisWorkbook.Sheets("Arranjos") 'set to current worksheet name
     ws.Rows("2:" & Rows.count).ClearContents
 
     Dim line As String

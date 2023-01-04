@@ -30,7 +30,7 @@ End Sub
 
 Private Sub btnHelp_Click()
     On Error Resume Next
-        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUAL)
+        ThisWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUAL)
     On Error GoTo 0
 End Sub
 

@@ -78,7 +78,7 @@ End Sub
 
 Private Sub btnHelpStep_Click()
     On Error Resume Next
-        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP5)
+        ThisWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP5)
     On Error GoTo 0
 End Sub
 
@@ -179,7 +179,7 @@ Private Sub cbxCharts_Change()
     prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
     prjPath = Util.FolderCreate(prjPath, prjName)
     chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
-    For Each c In Sheets("Dashboard").ChartObjects
+    For Each c In ThisWorkbook.Sheets("Dashboard").ChartObjects
         If c.Chart.ChartTitle.Text = currentChart Then
             Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
             Me.Image1.Picture = LoadPicture(Fname)
@@ -275,7 +275,7 @@ Private Sub PlotGraph()
     wksChartData.Cells(27, 5).value = cbxArray.value
     wksChartData.Cells(27, 6).value = cbxSubArray.value
         
-    For Each c In Sheets("Dashboard").ChartObjects
+    For Each c In ThisWorkbook.Sheets("Dashboard").ChartObjects
         If c.name = "Avaliação" Then
             c.Activate
             c.Chart.ChartTitle.Text = "Avaliação de Custos para o Município de Tratamento de RSU" & " - " & cbxMarket.value & cbxSubArray.value
@@ -315,7 +315,7 @@ Private Sub cbxMarketValuation_Change()
         prjPath = Util.FolderCreate(prjPath, prjName)
         Dim chartPath As String
         chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
-        For Each c In Sheets("Bridges").ChartObjects
+        For Each c In ThisWorkbook.Sheets("Bridges").ChartObjects
             c.Activate
             Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".bmp"
             c.Chart.Export filename:=Fname, FilterName:="bmp"
@@ -512,7 +512,7 @@ Private Sub UserForm_Initialize()
     Dim MyChart As Chart
     Dim Fname As String
     
-    For Each c In Sheets("Dashboard").ChartObjects
+    For Each c In ThisWorkbook.Sheets("Dashboard").ChartObjects
         cbxCharts.AddItem c.Chart.ChartTitle.Text
         c.Activate
         Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"

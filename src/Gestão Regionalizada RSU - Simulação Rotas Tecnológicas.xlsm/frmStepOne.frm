@@ -50,7 +50,7 @@ End Sub
 
 Private Sub btnHelpStep_Click()
     On Error Resume Next
-        ActiveWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP1)
+        ThisWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUALSTEP1)
     On Error GoTo 0
 End Sub
 
