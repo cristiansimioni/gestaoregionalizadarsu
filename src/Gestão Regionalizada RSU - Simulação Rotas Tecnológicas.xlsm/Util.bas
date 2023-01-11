@@ -28,7 +28,7 @@ Public Const ICONCHECK              As String = "check-icon.jpg"
 Public Const ICONWARNING            As String = "error-icon.jpg"
 
 'Images
-Public Const IMGLOGO                As String = "logo-grey.jpg"
+Public Const imgLogo                As String = "logo-grey.jpg"
 Public Const IMGLOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
 Public Const IMGSCREENROUTEONEA     As String = "screen-rt-1-a.jpg"
 Public Const IMGSCREENROUTEONEB     As String = "screen-rt-1-b.jpg"
