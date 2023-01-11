@@ -404,8 +404,11 @@ def main():
     report.write("\n\n\n============= ESTATÍSTICAS ============= \n")
     logging.info("Cálculando combinaçãoes...")
     combinations = list()
-    for i in range(MAX_SUB_ARRAYS+1):
+    #for i in range(MAX_SUB_ARRAYS+1):
+    i = 1
+    while i <= MAX_SUB_ARRAYS and i <= MAX_CITIES:
         combinations = combinations + list(sorted_k_partitions(clusters,i))
+        i = i + 1
     logging.info("Quantidade de combinações: %d", len(combinations))
     report.write("Quantidade de combinações: " + repr(len(combinations)) + "\n")
 
@@ -428,6 +431,7 @@ def main():
     capexOutbound = (CAPEX_OUTBOUND * 1000000)/(totalTrash * 313 * PAYMENT_PERIOD)
 
     new_comb = list()
+    #sub_arrays = set()
     for c in combinations:
         xcomb = list()
         for sub in c:
@@ -435,8 +439,13 @@ def main():
             for cluster in sub:   
                 for city in cluster:
                     subarray.append(city)
+            #sub_arrays.add(tuple(subarray))
             xcomb.append(subarray)
         new_comb.append(xcomb)
+        
+    #logging.info("Quantidade de subarranjos diferentes: %d", len(sub_arrays))
+
+    
 
     data = []
     current = 0
