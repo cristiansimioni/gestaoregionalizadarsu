@@ -24,7 +24,10 @@ Private Sub executeSimulation()
     'Create project folder
     Dim prjPath As String
     Dim prjName As String
+    Dim StartTimeTotal As Double
+    Dim SecondsElapsedTotal As Double
     
+    StartTimeTotal = Timer
     
     lblFile = "Criando arquivos..."
     DoEvents
@@ -45,6 +48,10 @@ Private Sub executeSimulation()
     Dim arrays As Collection
     Set arrays = readArrays
     
+    Dim StartTime As Double
+    Dim SecondsElapsed As Double
+    
+
     total = arrays.count
     
     Dim markets, routes As Variant
@@ -65,6 +72,8 @@ Private Sub executeSimulation()
     Application.DisplayAlerts = False
     Application.ScreenUpdating = False
     Application.AskToUpdateLinks = False
+    Application.Calculation = xlCalculationManual
+    Application.EnableEvents = False
     
     total = 0
     For Each a In arrays
@@ -122,6 +131,8 @@ Private Sub executeSimulation()
                             row = row + 1
                         End If
                         
+                        StartTime = Timer
+                        
                         'Create routes from 1 to 5 for all markets
                         newFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & r & ".xlsm"
                         templateFile = Application.ThisWorkbook.Path & "\templates\Base Ferramenta 3 - " & r & ".xlsm"
@@ -142,6 +153,10 @@ Private Sub executeSimulation()
                         
                         Call EditRouteToolData(newFile, s, m)
                         
+                        SecondsElapsed = Round(Timer - StartTime, 2)
+                        
+                        Debug.Print "Criar e editar: " & newFile & " - Tempo: " & SecondsElapsed
+                        
                     Next r
 
                     'Create tool 2 for array
@@ -149,6 +164,7 @@ Private Sub executeSimulation()
                     toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & " - Ferramenta 2.xlsm"
                     templateFile = Application.ThisWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsm"
                     
+                    StartTime = Timer
                     
                     lblFile = "Processando arquivo: " & toolTwoFile
                     DoEvents
@@ -159,8 +175,13 @@ Private Sub executeSimulation()
                      End If
                     
                     Call EditToolTwoData(toolTwoFile, routeFiles, s, m)
+                    SecondsElapsed = Round(Timer - StartTime, 2)
+                    Debug.Print "Criar e editar: " & toolTwoFile & " - Tempo: " & SecondsElapsed
                     
+                    StartTime = Timer
                     Call CopyDataFromToolTwo(toolTwoFile, row)
+                    SecondsElapsed = Round(Timer - StartTime, 2)
+                    Debug.Print "Copiar: " & toolTwoFile & " - Tempo: " & SecondsElapsed
                     
                     
                     'Verificar qual é a melhor rota
@@ -286,12 +307,17 @@ Private Sub executeSimulation()
     Application.DisplayAlerts = True
     Application.ScreenUpdating = True
     Application.AskToUpdateLinks = True
+    Application.Calculation = xlCalculationAutomatic
+    Application.EnableEvents = True
     
     Call Database.SetDatabaseValue("SimulationStatus", colUserValue, "Sim")
     
     Me.Caption = "Concluído"
     lblFile.Visible = False
     frmStepFour.updateForm
+    
+    SecondsElapsedTotal = Round(Timer - StartTimeTotal, 2)
+    Debug.Print "Tempo total: " & SecondsElapsedTotal
     
 End Sub
 

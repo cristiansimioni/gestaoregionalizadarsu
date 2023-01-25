@@ -8,6 +8,11 @@ Private Declare PtrSafe Function GetWindowLong Lib "User32" Alias "GetWindowLong
 'Função que altera o estilo da janela do UserForm
 Private Declare PtrSafe Function SetWindowLong Lib "User32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
+Sub OpenTool()
+    Application.Visible = False
+    frmTool.Show
+End Sub
+
 Public Sub textBoxChange(ByRef txtBox, ByVal varName As String, ByRef FormChanged As Boolean)
     Dim errorMsg As String
     If Database.Validate(varName, txtBox.Text, errorMsg) Then

@@ -65,6 +65,7 @@ Public Function updateForm()
     imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepSixStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
+    imgPartnersBottom.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGPARTNERS)
     btnStepOne.Enabled = True
     btnStepTwo.Enabled = False
     btnStepThree.Enabled = False
@@ -108,6 +109,7 @@ Public Function updateForm()
         ValidateFormRules("frmQuantitativeValMarket") And _
         ValidateFormRules("frmQuantitativeValAutoconsumo") And _
         ValidateFormRules("frmQuantitativeValPublic") And _
+        ValidateFormRules("frmStepFour") And _
         btnStepFour.Enabled = True Then
         imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepFive.Enabled = True
