@@ -91,11 +91,16 @@ Private Sub UserForm_Initialize()
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colUserValue)
     
     If txtPythonPath = "" Then
-        strPath = CreateObject("WScript.Shell").Exec("where python").StdOut.ReadAll
-        strPath = Replace(strPath, vbCrLf, vbCr)
-        strPath = Replace(strPath, vbLf, vbCr)
-        splitLineBreaks = Split(strPath, vbCr)
-        txtPythonPath = splitLineBreaks(0) 'Left(strPath, Len(strPath) - 2)
+        pythonVersion = CreateObject("WScript.Shell").Exec("python --version").StdOut.ReadAll
+        If pythonVersion <> "" Then
+            strPath = CreateObject("WScript.Shell").Exec("where python").StdOut.ReadAll
+            strPath = Replace(strPath, vbCrLf, vbCr)
+            strPath = Replace(strPath, vbLf, vbCr)
+            splitLineBreaks = Split(strPath, vbCr)
+            txtPythonPath = splitLineBreaks(0) 'Left(strPath, Len(strPath) - 2)
+        Else
+            Call MsgBox("O Python não está instalado na sua máquina, favor instalar para poder executar o algoritmo.", vbCritical, "Python não encontrado")
+        End If
     End If
     
     FormChanged = False
