@@ -376,10 +376,25 @@ Private Sub UserForm_Initialize()
     Set cities = readSelectedCities
     
     vScrollBar.Min = 1
-    If cities.count >= 10 Then
+    If cities.count > 10 Then
         vScrollBar.Max = cities.count - 9
     Else
-        vScrollBar.Enabled = False
+        'Desabilitar barra de rolagem
+        vScrollBar.Visible = False
+        'Desabilitar todos os campos maiores que cities.count
+        element = cities.count + 1
+        Do While element <= 10
+            Me.Controls("txtCity" & element).Visible = False
+            Me.Controls("txtPopulation" & element).Visible = False
+            Me.Controls("txtTrash" & element).Visible = False
+            Me.Controls("txtConventionalCost" & element).Visible = False
+            Me.Controls("txtTransshipmentCost" & element).Visible = False
+            Me.Controls("txtCostPostTranshipment" & element).Visible = False
+            Me.Controls("cbUTVR" & element).Visible = False
+            Me.Controls("cbExistentLandfill" & element).Visible = False
+            Me.Controls("cbPotentialLandfill" & element).Visible = False
+            element = element + 1
+        Loop
     End If
     
     changeValues = True
