@@ -509,18 +509,40 @@ Private Sub UserForm_Initialize()
     Dim chartPath As String
     chartPath = Util.FolderCreate(prjPath, FOLDERCHART)
     
+    Set arrays = readArrays
+    
+    'Ajustar arranjos selecionados na aba de "Dados - Gráfico"
+    Dim wksChartData, wksBridgeData As Worksheet
+    Set wksChartData = Util.GetChartDataWorksheet
+    Set wksBridgeData = Util.GetBridgeDataWorksheet
+    Dim markets As Variant
+    markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
+    Dim row, selected, rowBridge As Integer
+    row = 4
+    For Each m In markets
+        selected = 1
+        rowBridge = 3
+        For Each a In arrays
+            If a.vSelected Then
+                wksChartData.Cells(row, 1).value = GetMarketCode(m) & a.vCode
+                wksBridgeData.Cells(rowBridge, 1).value = a.vCode
+                Me.Controls("lblArray" & selected).Caption = a.vCode
+                row = row + 1
+                rowBridge = rowBridge + 2
+                selected = selected + 1
+            End If
+        Next
+    Next m
+    
     Dim MyChart As Chart
     Dim Fname As String
     
     For Each c In ThisWorkbook.Sheets("Dashboard").ChartObjects
         cbxCharts.AddItem c.Chart.ChartTitle.Text
-        c.Activate
+        'c.Activate
         Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
         c.Chart.Export filename:=Fname, FilterName:="jpg"
     Next c
-    
-    
-    Set arrays = readArrays
     
     cbxMarket.AddItem "M1"
     cbxMarket.AddItem "M2"
@@ -548,28 +570,7 @@ Private Sub UserForm_Initialize()
         End If
     Next
     
-    'Ajustar arranjos selecionados na aba de "Dados - Gráfico"
-    Dim wksChartData, wksBridgeData As Worksheet
-    Set wksChartData = Util.GetChartDataWorksheet
-    Set wksBridgeData = Util.GetBridgeDataWorksheet
-    Dim markets As Variant
-    markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
-    Dim row, selected, rowBridge As Integer
-    row = 4
-    For Each m In markets
-        selected = 1
-        rowBridge = 3
-        For Each a In arrays
-            If a.vSelected Then
-                wksChartData.Cells(row, 1).value = GetMarketCode(m) & a.vCode
-                wksBridgeData.Cells(rowBridge, 1).value = a.vCode
-                Me.Controls("lblArray" & selected).Caption = a.vCode
-                row = row + 1
-                rowBridge = rowBridge + 2
-                selected = selected + 1
-            End If
-        Next
-    Next m
+    
     
     For Each Ctrl In Me.Controls
         If InStr(Ctrl.name, "formula") > 0 Then
