@@ -130,7 +130,7 @@ def removeArraysWithoutUTVR(combinations, utvrs):
     comb = combinations.copy()
     for c in range(len(comb)):
         if c % (round(len(comb)+1/10.0)) == 0:
-            logging.info("Progreso: %d%%", c/len(comb)*100)
+            logging.info("Progresso: %d%%", c/len(comb)*100)
         for sub in comb[c]:
             find = False
             for cluster in sub:
@@ -140,14 +140,14 @@ def removeArraysWithoutUTVR(combinations, utvrs):
             if not find:
                 combinations.remove(comb[c])
                 break
-    logging.info("Progreso: 100%")
+    logging.info("Progresso: 100%")
     return combinations
 
 def removeArraysTrashThreshold(data, combinations, threshold):
     comb = combinations.copy()
     for c in range(len(comb)):
         if c % (round(len(comb)+1/10.0)) == 0:
-            logging.info("Progreso: %d%%", c/len(comb)*100)
+            logging.info("Progresso: %d%%", c/len(comb)*100)
         for sub in comb[c]:
             trash = 0
             for cluster in sub:
@@ -156,7 +156,7 @@ def removeArraysTrashThreshold(data, combinations, threshold):
             if trash < threshold:
                 combinations.remove(comb[c])
                 break        
-    logging.info("Progreso: 100%")
+    logging.info("Progresso: 100%")
     return combinations
 
 def funccentrodemassa(data, cluster, utvrs):
@@ -450,9 +450,7 @@ def main():
     data = []
     current = 0
     for i in new_comb:
-        if current % (round(len(new_comb)+1/10.0)) == 0:
-            logging.info("Progreso: %d%%", current/len(new_comb)*100)
-
+        logging.info("Progresso: %d de %d", current, len(new_comb))
         isCentralized = False
         if len(i) == 1:
             isCentralized = True
@@ -527,7 +525,7 @@ def main():
         data.append(arrayResult)
         current = current + 1
 
-    logging.info("Progreso: 100%")
+    logging.info("Progresso: 100%")
     logging.info("Ordenando combinações...")
     data = sorted(data, key = lambda k: (k["total-capex"]))
 
