@@ -138,7 +138,11 @@ Public Sub calculateDistances()
     col = 1
     For Each CityRow In cities
         For Each CityCol In cities
-            distance = modCity.GetDistanceCoord(CityRow.vLatitude, CityRow.vLongitude, CityCol.vLatitude, CityCol.vLongitude, "K")
+            If CityRow.vCityName = CityCol.vCityName Then
+                distance = 0
+            Else
+                distance = modCity.GetDistanceCoord(CityRow.vLatitude, CityRow.vLongitude, CityCol.vLatitude, CityCol.vLongitude, "K")
+            End If
             wksCitiesDistance.Cells(row, col).value = distance
             col = col + 1
         Next CityCol
