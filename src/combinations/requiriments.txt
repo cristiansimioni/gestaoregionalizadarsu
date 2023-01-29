@@ -1,2 +1,0 @@
-numpy
-more_itertools
