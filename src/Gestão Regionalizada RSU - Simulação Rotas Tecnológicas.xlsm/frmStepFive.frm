@@ -539,7 +539,7 @@ Private Sub UserForm_Initialize()
     
     For Each c In ThisWorkbook.Sheets("Dashboard").ChartObjects
         cbxCharts.AddItem c.Chart.ChartTitle.Text
-        'c.Activate
+        c.Activate
         Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
         c.Chart.Export filename:=Fname, FilterName:="jpg"
     Next c

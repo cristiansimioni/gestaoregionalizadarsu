@@ -23,7 +23,12 @@ Private Sub btnGeneralData_Click()
 End Sub
 
 Private Sub btnAlgorithParameter_Click()
-    frmAlgorithmParameter.Show
+    pythonVersion = CreateObject("WScript.Shell").Exec("python --version").StdOut.ReadAll
+    If pythonVersion <> "" Then
+        frmAlgorithmParameter.Show
+    Else
+        Call MsgBox("O Python não está instalado na sua máquina, favor instalar para poder executar o algoritmo.", vbCritical, "Python não encontrado")
+    End If
 End Sub
 
 Public Function updateForm()

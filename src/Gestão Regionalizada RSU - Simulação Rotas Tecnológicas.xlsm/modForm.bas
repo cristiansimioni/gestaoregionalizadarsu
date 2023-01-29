@@ -9,7 +9,7 @@ Private Declare PtrSafe Function GetWindowLong Lib "User32" Alias "GetWindowLong
 Private Declare PtrSafe Function SetWindowLong Lib "User32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 Sub OpenTool()
-    Application.Visible = False
+    'Application.Visible = False
     frmTool.Show
 End Sub
 

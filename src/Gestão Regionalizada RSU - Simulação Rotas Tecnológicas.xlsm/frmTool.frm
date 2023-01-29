@@ -133,5 +133,6 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
-    Application.Visible = True
+    ThisWorkbook.Save
+    'Application.Visible = True
 End Sub

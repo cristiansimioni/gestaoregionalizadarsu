@@ -66,6 +66,7 @@ Private Sub btnSave_Click()
         FormChanged = False
         Unload Me
         frmStepOne.updateForm
+        ThisWorkbook.Save
     Exit Sub
     
 ErrorHandler:

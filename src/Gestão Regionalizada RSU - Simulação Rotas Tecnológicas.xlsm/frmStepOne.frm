@@ -29,6 +29,7 @@ Private Sub btnBack_Click()
     Else
         Unload Me
         frmTool.updateForm
+        ThisWorkbook.Save
     End If
 End Sub
 
@@ -59,6 +60,7 @@ Private Sub btnSave_Click()
     Call Database.SetDatabaseValue("ProjectPathFolder", DatabaseColumn.colUserValue, txtPath.Text)
     Unload Me
     frmTool.updateForm
+    ThisWorkbook.Save
 End Sub
 
 Private Sub btnSelectCities_Click()

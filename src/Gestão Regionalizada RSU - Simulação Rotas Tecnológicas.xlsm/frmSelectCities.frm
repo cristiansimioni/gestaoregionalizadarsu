@@ -90,6 +90,7 @@ Private Sub btnSave_Click()
         
         Unload Me
         frmStepOne.updateForm
+        ThisWorkbook.Save
     Else
         answer = MsgBox(MSG_WRONG_NUMBER_CITIES, vbInformation, MSG_WRONG_NUMBER_CITIES_TITLE)
     End If

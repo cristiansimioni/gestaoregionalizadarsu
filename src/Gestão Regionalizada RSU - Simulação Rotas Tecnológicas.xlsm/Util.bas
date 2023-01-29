@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "3.0.8"
-Public Const APPLASTUPDATED         As String = "24/01/2023"
+Public Const APPVERSION             As String = "3.0.9"
+Public Const APPLASTUPDATED         As String = "29/01/2023"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 Public Const APPDISTANCECALCULATION As Boolean = True
@@ -220,9 +220,9 @@ Params = Chr(34) & algPath & "\cidades-" & prjName & ".csv" & Chr(34) & _
          " " & _
          Chr(34) & algPath & "\output-" & prjName & ".csv" & Chr(34)
 
-cmd = "%comspec% /k " & Chr(34) & Chr(34) & PythonExe & Chr(34) & " " & PythonScript & " " & Params & Chr(34)
+cmd = "%comspec% /c " & Chr(34) & Chr(34) & PythonExe & Chr(34) & " " & PythonScript & " " & Params & Chr(34)
 'Run the Python Script
-errorCode = wsh.Run(cmd, windowStyle, False)
+errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
 
 If errorCode = 0 Then
     'Insert your code here

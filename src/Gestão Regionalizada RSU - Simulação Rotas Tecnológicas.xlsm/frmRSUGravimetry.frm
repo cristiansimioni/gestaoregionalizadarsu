@@ -102,6 +102,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("GravimetrySum", colUserValue, CDbl(txtTotal.Text))
         FormChanged = False
         Unload Me
+        ThisWorkbook.Save
         frmStepOne.updateForm
     Else
         answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")

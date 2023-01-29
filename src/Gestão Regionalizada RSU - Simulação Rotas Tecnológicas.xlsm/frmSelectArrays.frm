@@ -33,6 +33,7 @@ Private Sub btnSave_Click()
         updateValues arrays
         frmStepTwo.updateForm
         Unload Me
+        ThisWorkbook.Save
     Else
         Call MsgBox(MSG_WRONG_NUMBER_ARRAYS, vbCritical, MSG_WRONG_NUMBER_ARRAYS_TITLE)
     End If
