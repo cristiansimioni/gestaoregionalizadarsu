@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData
    Caption         =   "Metas para a Simulação do Estudo de Caso"
    ClientHeight    =   5235
    ClientLeft      =   240
-   ClientTop       =   930
+   ClientTop       =   936
    ClientWidth     =   9600.001
    OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
