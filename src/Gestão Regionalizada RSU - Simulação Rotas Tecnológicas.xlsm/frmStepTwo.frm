@@ -76,7 +76,7 @@ End Sub
 Private Sub btnRunAlgorithm_Click()
     btnRunAlgorithm.Enabled = False
     'Calculate cities distance
-    If APPDISTANCECALCULATION Then
+    If Database.GetDatabaseValue("CalculateDistance", colUserValue) = "Sim" Then
         Call modCity.calculateDistances
     End If
     
