@@ -5,7 +5,7 @@ import csv
 import copy
 
 # Global variables
-ROUND = 3
+ROUND = 10
 
 def sorted_k_partitions(seq, k):
     """Returns a list of all unique k-partitions of `seq`.
@@ -82,7 +82,7 @@ def clusterization(data, distance, max):
         centrodemassa = ""
         outracidade = ""
 
-        logging.debug("A menor distância é  %d vou unir as cidades %s (%f) e %s (%f)", min, cities_temp[line], trash_line, cities_temp[column], trash_column)
+        logging.debug("A menor distância é %f vou unir as cidades %s (%f) e %s (%f)", min, cities_temp[line], trash_line, cities_temp[column], trash_column)
         if trash_line > trash_column:
             logging.debug("A cidade %s é o centro de massa (%f) e irá representar o cluster", cities_temp[line], trash_line)
             centrodemassa = cities_temp[line]
@@ -169,14 +169,14 @@ def funccentrodemassa(data, cluster, utvrs):
             c_centrodemassa = i
     return c_centrodemassa
 
-def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION, totalTrash):
+def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_only, aterros_only, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION, totalTrash, ADDITIONAL_COST):
     data = []
     subArrayTrash = getSubArrayTrash(cdata, subarray)
     for utvr_city in subarray:
         entry = {}
         sum_inbound = 0
         if utvr_city in utvrs_only:
-            logging.debug("%s é uma UTVR...", utvr_city)
+            #logging.debug("%s é uma UTVR...", utvr_city)
             entry["sub-arranjo"] = subarray
             entry["utvr"] = utvr_city
             for other_city in subarray:
@@ -184,11 +184,17 @@ def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_onl
                 transshipment_cost = cdata[other_city]["transshipment-cost"]
                 cost_post_transhipment = cdata[other_city]["cost-post-transhipment"]
                 trash = cdata[other_city]["trash"]
-                sum_inbound = sum_inbound + round(((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, other_city, utvr_city))) * trash, ROUND)
+                sum_inbound = sum_inbound + ((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, other_city, utvr_city))) * trash
                 #sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
 
             #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
-            sum_inbound = round(sum_inbound / subArrayTrash, 3)
+            entry["inbound-sum"] = sum_inbound
+            entry["inbound-show"] = round(sum_inbound/totalTrash, 3)
+
+            if isCentralized:
+                sum_inbound = round(sum_inbound * ADDITIONAL_COST / subArrayTrash, 3)
+            else:
+                sum_inbound = round(sum_inbound / subArrayTrash, 3)
 
             entry["inbound"] = sum_inbound
 
@@ -198,21 +204,28 @@ def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_onl
                 if distCities < dist:
                     dist = distCities
                     sum_outbound = 0
-                    entry['outbound-existent-landfill'] = sum_outbound + round((distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION, ROUND)
+                    if isCentralized:
+                        entry['outbound-existent-landfill'] = sum_outbound + round((distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION, ROUND)
+                    else:
+                        entry['outbound-existent-landfill'] = sum_outbound + round((distCities * (MOVIMENTATION_COST * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION * ADDITIONAL_COST, ROUND)
                     entry["aterro-existente"] = a
         
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
                 #sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
-                e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/subArrayTrash, ROUND)
+                if isCentralized:
+                    e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/subArrayTrash, ROUND)
+                else:
+                    e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST)) * ADDITIONAL_COST/subArrayTrash, ROUND)
                 e["aterro"] = a
                 e["total"] = e["inbound"] + e["outbound"]
                 
-                logging.debug("Adicionando: %s", e)
+                #logging.debug("Adicionando: %s", e)
                 data.append(e)
     
     data = sorted(data, key = lambda k: (k["total"]))
+
     if isCentralized:
         #Retorna a UTVR sendo o centro de massa, não o mais eficaz
         cmassa = funccentrodemassa(cdata, subarray, utvrs_only)
@@ -224,13 +237,15 @@ def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_onl
 
 def getSubArrayCapex(range, trashSum, rsutrash):
     fator = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    capexRT1 = [0, 22893, 11568, 7876, 6029, 7044, 6141, 5499, 5018, 4646, 4350, 4109, 3909, 3741, 3598, 3475, 3368, 3274, 3192, 3119, 3054, 2953, 2855, 2765, 2683, 2608, 2538, 2473, 2413, 2358, 2305, 2257, 2211, 2168, 2128, 2090, 2054, 2020, 1987, 1957, 1928, 1900, 1874, 1849, 1825, 1802, 1780, 1759, 1739, 1719, 1701, 1719, 1701, 1725, 1707, 1691, 1675, 1659, 1644, 1630, 1616, 1603, 1590, 1577, 1565, 1553, 1541, 1530, 1519, 1493, 1483, 1473, 1464, 1454, 1445, 1437, 1428, 1420, 1412, 1404, 1396, 1389, 1381, 1374, 1367, 1361, 1354, 1348, 1341, 1335, 1329, 1323, 1317, 1312, 1306, 1301, 1295, 1290, 1285, 1280, 1275, 1262, 1258, 1254, 1251, 1247, 1278, 1274, 1271, 1267, 1263, 1260, 1256, 1253, 1249, 1246, 1243, 1239, 1236, 1233, 1230, 1227, 1223, 1220, 1217, 1214, 1211, 1208, 1205, 1203, 1200, 1197, 1194, 1192, 1189, 1186, 1184, 1181, 1179, 1176, 1174, 1172, 1169, 1167, 1165, 1163, 1160, 1158, 1156, 1154, 1152, 1150, 1148, 1146, 1144, 1142, 1140, 1138, 1136, 1165, 1163, 1159, 1157, 1155, 1153, 1151, 1149, 1147, 1145, 1143, 1142, 1140, 1138, 1136, 1135, 1133, 1131, 1130, 1128, 1127, 1125, 1123, 1122, 1120, 1119, 1117, 1116, 1114, 1113, 1111, 1110, 1108, 1107, 1106, 1104, 1103, 1102, 1100, 1099, 1098, 1096, 1095, 1094, 1093, 1091, 1090, 1089, 1088, 1086, 1085, 1084, 1083, 1113, 1111, 1110, 1109, 1108, 1106, 1105, 1104, 1103, 1102, 1100, 1099, 1098, 1097, 1096, 1095, 1094, 1092, 1091, 1090, 1089, 1088, 1087, 1086, 1085, 1084, 1083, 1082, 1081, 1080, 1079, 1078, 1077, 1076, 1075, 1074, 1073, 1072, 1071, 1070, 1069, 1068, 1068, 1067, 1066, 1065, 1064, 1063, 1062, 1061, 1061, 1060, 1059, 1058, 1057, 1056, 1056, 1055, 1054, 1053, 1052, 1052, 1051, 1050, 1049, 1049, 1048, 1047, 1046, 1046, 1045, 1044, 1043, 1043, 1042, 1041, 1041, 1040, 1039, 1038, 1038, 1037, 1036, 1036, 1035, 1034, 1034, 1033, 1032, 1052, 1052, 1051, 1050, 1050, 1049, 1048, 1048, 1047, 1046, 1046, 1045, 1044, 1044, 1043, 1042, 1042, 1041, 1041, 1040, 1039, 1039, 1038, 1038, 1037, 1036, 1036, 1035, 1035, 1034, 1034, 1033, 1032, 1032, 1031, 1031, 1030, 1030, 1029, 1029, 1028, 1028, 1027, 1027, 1026, 1025, 1025, 1024, 1024, 1023, 1023, 1022, 1022, 1021, 1021, 1020, 1020, 1019, 1019, 1019, 1018, 1018, 1017, 1017, 1016, 1016, 1015, 1014, 1014, 1013, 1012, 1012, 1011, 1010, 1010, 1009, 1008, 1008, 1007, 1006, 1006, 1005, 1004, 1004, 1003, 1002, 1002, 1001, 1001, 1000, 999, 999, 998, 997, 997, 996, 996, 995, 994, 994, 1007, 1007, 1006, 1006, 1005, 1004, 1004, 1003, 1002, 1002, 1001, 1001, 1000, 999, 999, 998, 998, 997, 996, 996, 995, 995, 994, 993, 993, 992, 992, 991, 991, 990, 990, 989, 988, 988, 987, 987, 986, 986, 985, 985, 984, 984, 983, 982, 982, 981, 981, 980, 980, 979, 979, 978, 978, 977, 977, 976, 976, 975, 975, 974, 974, 973, 973, 972, 972, 971, 971, 970, 970, 970, 969, 969, 968, 968, 967, 967, 966, 966, 965, 965, 965, 964, 964, 963, 963, 962, 962, 961, 961, 961, 960, 960, 959, 959, 958, 958, 958, 957, 957, 956]
+    #capexRT1 = [0, 22893, 11568, 7876, 6029, 7044, 6141, 5499, 5018, 4646, 4350, 4109, 3909, 3741, 3598, 3475, 3368, 3274, 3192, 3119, 3054, 2953, 2855, 2765, 2683, 2608, 2538, 2473, 2413, 2358, 2305, 2257, 2211, 2168, 2128, 2090, 2054, 2020, 1987, 1957, 1928, 1900, 1874, 1849, 1825, 1802, 1780, 1759, 1739, 1719, 1701, 1719, 1701, 1725, 1707, 1691, 1675, 1659, 1644, 1630, 1616, 1603, 1590, 1577, 1565, 1553, 1541, 1530, 1519, 1493, 1483, 1473, 1464, 1454, 1445, 1437, 1428, 1420, 1412, 1404, 1396, 1389, 1381, 1374, 1367, 1361, 1354, 1348, 1341, 1335, 1329, 1323, 1317, 1312, 1306, 1301, 1295, 1290, 1285, 1280, 1275, 1262, 1258, 1254, 1251, 1247, 1278, 1274, 1271, 1267, 1263, 1260, 1256, 1253, 1249, 1246, 1243, 1239, 1236, 1233, 1230, 1227, 1223, 1220, 1217, 1214, 1211, 1208, 1205, 1203, 1200, 1197, 1194, 1192, 1189, 1186, 1184, 1181, 1179, 1176, 1174, 1172, 1169, 1167, 1165, 1163, 1160, 1158, 1156, 1154, 1152, 1150, 1148, 1146, 1144, 1142, 1140, 1138, 1136, 1165, 1163, 1159, 1157, 1155, 1153, 1151, 1149, 1147, 1145, 1143, 1142, 1140, 1138, 1136, 1135, 1133, 1131, 1130, 1128, 1127, 1125, 1123, 1122, 1120, 1119, 1117, 1116, 1114, 1113, 1111, 1110, 1108, 1107, 1106, 1104, 1103, 1102, 1100, 1099, 1098, 1096, 1095, 1094, 1093, 1091, 1090, 1089, 1088, 1086, 1085, 1084, 1083, 1113, 1111, 1110, 1109, 1108, 1106, 1105, 1104, 1103, 1102, 1100, 1099, 1098, 1097, 1096, 1095, 1094, 1092, 1091, 1090, 1089, 1088, 1087, 1086, 1085, 1084, 1083, 1082, 1081, 1080, 1079, 1078, 1077, 1076, 1075, 1074, 1073, 1072, 1071, 1070, 1069, 1068, 1068, 1067, 1066, 1065, 1064, 1063, 1062, 1061, 1061, 1060, 1059, 1058, 1057, 1056, 1056, 1055, 1054, 1053, 1052, 1052, 1051, 1050, 1049, 1049, 1048, 1047, 1046, 1046, 1045, 1044, 1043, 1043, 1042, 1041, 1041, 1040, 1039, 1038, 1038, 1037, 1036, 1036, 1035, 1034, 1034, 1033, 1032, 1052, 1052, 1051, 1050, 1050, 1049, 1048, 1048, 1047, 1046, 1046, 1045, 1044, 1044, 1043, 1042, 1042, 1041, 1041, 1040, 1039, 1039, 1038, 1038, 1037, 1036, 1036, 1035, 1035, 1034, 1034, 1033, 1032, 1032, 1031, 1031, 1030, 1030, 1029, 1029, 1028, 1028, 1027, 1027, 1026, 1025, 1025, 1024, 1024, 1023, 1023, 1022, 1022, 1021, 1021, 1020, 1020, 1019, 1019, 1019, 1018, 1018, 1017, 1017, 1016, 1016, 1015, 1014, 1014, 1013, 1012, 1012, 1011, 1010, 1010, 1009, 1008, 1008, 1007, 1006, 1006, 1005, 1004, 1004, 1003, 1002, 1002, 1001, 1001, 1000, 999, 999, 998, 997, 997, 996, 996, 995, 994, 994, 1007, 1007, 1006, 1006, 1005, 1004, 1004, 1003, 1002, 1002, 1001, 1001, 1000, 999, 999, 998, 998, 997, 996, 996, 995, 995, 994, 993, 993, 992, 992, 991, 991, 990, 990, 989, 988, 988, 987, 987, 986, 986, 985, 985, 984, 984, 983, 982, 982, 981, 981, 980, 980, 979, 979, 978, 978, 977, 977, 976, 976, 975, 975, 974, 974, 973, 973, 972, 972, 971, 971, 970, 970, 970, 969, 969, 968, 968, 967, 967, 966, 966, 965, 965, 965, 964, 964, 963, 963, 962, 962, 961, 961, 961, 960, 960, 959, 959, 958, 958, 958, 957, 957, 956]
+    capexRT1 = [0,	38717,	20334,	14235,	11184,	10340,	8963,	7978,	7240,	6665,	6204,	5827,	5512,	5246,	5017,	4819,	4646,	4492,	4356,	4234,	4124,	4024,	3933,	3849,	3773,	3702,	3637,	3576,	3520,	3467,	3418,	3372,	3329,	3288,	3250,	3213,	3179,	3146,	3115,	3086,	3058,	3031,	3005,	2980,	2957,	2934,	2913,	2892,	2872,	2853,	2834,	2838,	2820,	2820,	2803,	2787,	2771,	2756,	2741,	2727,	2713,	2700,	2686,	2674,	2661,	2649,	2638,	2626,	2615,	2605,	2594,	2584,	2573,	2563,	2554,	2544,	2535,	2526,	2517,	2508,	2499,	2488,	2480,	2472,	2464,	2456,	2448,	2441,	2434,	2426,	2419,	2412,	2405,	2399,	2392,	2385,	2379,	2373,	2366,	2364,	2360,	2350,	2346,	2343,	2339,	2335,	2346,	2342,	2338,	2335,	2332,	2328,	2325,	2322,	2318,	2315,	2312,	2309,	2306,	2303,	2300,	2297,	2294,	2292,	2289,	2286,	2283,	2281,	2278,	2276,	2273,	2270,	2268,	2266,	2263,	2261,	2258,	2256,	2254,	2252,	2250,	2248,	2247,	2245,	2243,	2241,	2240,	2238,	2236,	2235,	2233,	2232,	2230,	2229,	2227,	2226,	2224,	2223,	2221,	2233,	2231,	2229,	2228,	2226,	2225,	2224,	2222,	2221,	2220,	2219,	2217,	2216,	2215,	2214,	2213,	2211,	2210,	2209,	2208,	2207,	2206,	2205,	2204,	2203,	2202,	2201,	2200,	2199,	2198,	2197,	2196,	2195,	2194,	2193,	2192,	2191,	2190,	2191,	2190,	2189,	2188,	2187,	2186,	2035,	2035,	2035,	2035,	2035,	2035,	2035,	2035,	2035,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2049,	2049,	2049,	2049,	2049,	2049,	2049,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2047,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2048,	2049,	2049,	2049,	2049,	2049,	2049,	2049,	2050,	2050,	2050,	2050,	2050,	2050,	2051,	2051,	2051,	2051,	2051,	2052,	2052,	2052,	2052,	2053,	2053,	2053,	2053,	2054,	2054,	2054,	2054,	2055,	2055,	2055,	2055,	2056,	2057,	2057,	2057,	2057,	2058,	2058,	2071,	2071,	2071,	2071,	2072,	2072,	2072,	2073,	2073,	2073,	2074,	2074,	2074,	2075,	2075,	2075,	2076,	2076,	2076,	2077,	2077,	2077,	2078,	2078,	2078,	2079,	2079,	2079,	2080,	2080,	2081,	2081,	2081,	2082,	2082,	2082,	2083,	2083,	2084,	2084,	2084,	2085,	2085,	2086,	2086,	2087,	2087,	2087,	2088,	2088,	2089,	2089,	2090,	2090,	2090,	2091,	2091,	2092,	2092,	2093,	2093,	2094,	2094,	2094,	2095,	2095,	2096,	2096,	2097,	2097,	2097,	2098,	2098,	2099,	2099,	2100,	2100,	2101,	2101,	2101,	2102,	2102,	2103,	2103,	2104,	2104,	2104,	2105,	2105,	2106,	2106,	2107,	2107,	2108,	2108,	2109,	2109,	2109,	2110,	2110,	2121,	2121,	2122,	2122,	1815,	1816,	1817,	1819,	1820,	1821,	1822,	1823,	1824,	1826,	1827,	1828,	1829,	1830,	1832,	1833,	1834,	1835,	1836,	1838,	1839,	1840,	1841,	1842,	1844,	1845,	1846,	1847,	1848,	1850,	1851,	1852,	1853,	1854,	1856,	1857,	1858,	1859,	1860,	1862,	1863,	1864,	1865,	1867,	1868,	1869,	1870,	1872,	1873,	1874,	1875,	1876,	1878,	1879,	1880,	1882,	1883,	1884,	1886,	1887,	1888,	1890,	1891,	1892,	1894,	1895,	1897,	1898,	1899,	1901,	1902,	1903,	1905,	1906,	1907,	1909,	1910,	1912,	1913,	1914,	1916,	1917,	1918,	1920,	1921,	1923,	1924,	1925,	1927,	1928,	1929,	1931,	1932,	1934,	1935,	1936]
     cpRT1 = capexRT1[range]*fator[range] + ((capexRT1[range]*fator[range]-capexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
     return(round(cpRT1, ROUND))
 
 def getSubArrayOpex(range, trashSum, rsutrash):
     fator = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-    opexRT1 = [0, 3417, 4460, 3012, 2288, 2017, 1701, 1475, 1306, 1174, 1069, 982, 911, 850, 792, 747, 708, 668, 637, 610, 585, 562, 542, 523, 506, 490, 475, 461, 449, 437, 426, 416, 406, 397, 388, 380, 373, 366, 359, 352, 346, 340, 335, 329, 324, 320, 315, 310, 306, 302, 298, 301, 297, 295, 291, 288, 285, 282, 279, 276, 273, 270, 267, 265, 262, 260, 257, 255, 253, 253, 251, 249, 247, 245, 243, 241, 239, 238, 236, 234, 233, 231, 229, 228, 226, 225, 223, 222, 220, 219, 218, 217, 215, 214, 213, 212, 211, 210, 208, 209, 208, 210, 209, 208, 207, 206, 206, 205, 204, 203, 203, 202, 201, 200, 199, 198, 198, 197, 196, 195, 195, 194, 193, 192, 192, 191, 190, 190, 189, 188, 188, 187, 187, 186, 185, 185, 184, 184, 184, 184, 183, 183, 182, 182, 181, 181, 180, 180, 179, 179, 178, 178, 177, 177, 176, 176, 175, 175, 175, 175, 174, 174, 173, 173, 173, 172, 172, 171, 171, 171, 170, 170, 169, 169, 169, 168, 168, 168, 167, 167, 167, 166, 166, 166, 165, 165, 165, 165, 164, 164, 164, 163, 163, 163, 163, 162, 162, 163, 163, 163, 162, 162, 162, 158, 158, 158, 158, 157, 157, 157, 157, 156, 156, 156, 156, 156, 155, 155, 155, 155, 155, 154, 154, 154, 154, 154, 153, 153, 153, 154, 154, 154, 154, 153, 153, 153, 153, 153, 152, 152, 152, 152, 152, 152, 151, 151, 151, 151, 151, 151, 150, 150, 150, 150, 150, 150, 149, 149, 149, 149, 149, 149, 148, 148, 148, 148, 148, 148, 148, 147, 147, 147, 147, 147, 147, 147, 146, 146, 146, 146, 146, 146, 146, 146, 145, 145, 145, 145, 145, 145, 145, 145, 145, 144, 144, 145, 145, 144, 144, 144, 144, 150, 150, 150, 150, 150, 150, 150, 149, 149, 149, 149, 149, 149, 149, 149, 149, 148, 148, 148, 148, 148, 148, 148, 148, 148, 147, 147, 147, 147, 147, 147, 147, 147, 147, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 141, 141, 141, 141, 141, 145, 145, 144, 144, 139, 139, 139, 139, 139, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 137, 137, 137, 137, 137, 137, 137, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 135, 135, 135, 135, 135]
+    #opexRT1 = [0, 3417, 4460, 3012, 2288, 2017, 1701, 1475, 1306, 1174, 1069, 982, 911, 850, 792, 747, 708, 668, 637, 610, 585, 562, 542, 523, 506, 490, 475, 461, 449, 437, 426, 416, 406, 397, 388, 380, 373, 366, 359, 352, 346, 340, 335, 329, 324, 320, 315, 310, 306, 302, 298, 301, 297, 295, 291, 288, 285, 282, 279, 276, 273, 270, 267, 265, 262, 260, 257, 255, 253, 253, 251, 249, 247, 245, 243, 241, 239, 238, 236, 234, 233, 231, 229, 228, 226, 225, 223, 222, 220, 219, 218, 217, 215, 214, 213, 212, 211, 210, 208, 209, 208, 210, 209, 208, 207, 206, 206, 205, 204, 203, 203, 202, 201, 200, 199, 198, 198, 197, 196, 195, 195, 194, 193, 192, 192, 191, 190, 190, 189, 188, 188, 187, 187, 186, 185, 185, 184, 184, 184, 184, 183, 183, 182, 182, 181, 181, 180, 180, 179, 179, 178, 178, 177, 177, 176, 176, 175, 175, 175, 175, 174, 174, 173, 173, 173, 172, 172, 171, 171, 171, 170, 170, 169, 169, 169, 168, 168, 168, 167, 167, 167, 166, 166, 166, 165, 165, 165, 165, 164, 164, 164, 163, 163, 163, 163, 162, 162, 163, 163, 163, 162, 162, 162, 158, 158, 158, 158, 157, 157, 157, 157, 156, 156, 156, 156, 156, 155, 155, 155, 155, 155, 154, 154, 154, 154, 154, 153, 153, 153, 154, 154, 154, 154, 153, 153, 153, 153, 153, 152, 152, 152, 152, 152, 152, 151, 151, 151, 151, 151, 151, 150, 150, 150, 150, 150, 150, 149, 149, 149, 149, 149, 149, 148, 148, 148, 148, 148, 148, 148, 147, 147, 147, 147, 147, 147, 147, 146, 146, 146, 146, 146, 146, 146, 146, 145, 145, 145, 145, 145, 145, 145, 145, 145, 144, 144, 145, 145, 144, 144, 144, 144, 150, 150, 150, 150, 150, 150, 150, 149, 149, 149, 149, 149, 149, 149, 149, 149, 148, 148, 148, 148, 148, 148, 148, 148, 148, 147, 147, 147, 147, 147, 147, 147, 147, 147, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 146, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 145, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 143, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 142, 141, 141, 141, 141, 141, 145, 145, 144, 144, 139, 139, 139, 139, 139, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 138, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 137, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 137, 137, 137, 137, 137, 137, 137, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 136, 135, 135, 135, 135, 135]
+    opexRT1 = [0,	8837,	4460,	3012,	2288,	2017,	1701,	1475,	1306,	1174,	1069,	982,	911,	850,	792,	747,	708,	668,	637,	610,	585,	562,	542,	523,	506,	490,	475,	461,	449,	437,	426,	416,	406,	397,	388,	380,	373,	366,	359,	352,	346,	340,	335,	329,	324,	320,	315,	310,	306,	302,	298,	301,	297,	295,	291,	288,	285,	282,	279,	276,	273,	270,	267,	265,	262,	260,	257,	255,	253,	253,	251,	249,	247,	245,	243,	241,	239,	238,	236,	234,	233,	231,	229,	228,	226,	225,	223,	222,	220,	219,	218,	217,	215,	214,	213,	212,	211,	210,	208,	209,	208,	210,	209,	208,	207,	206,	206,	205,	204,	203,	203,	202,	201,	200,	199,	198,	198,	197,	196,	195,	195,	194,	193,	192,	192,	191,	190,	190,	189,	188,	188,	187,	187,	186,	185,	185,	184,	184,	184,	184,	183,	183,	182,	182,	181,	181,	180,	180,	179,	179,	178,	178,	177,	177,	176,	176,	175,	175,	175,	175,	174,	174,	173,	173,	173,	172,	172,	171,	171,	171,	170,	170,	169,	169,	169,	168,	168,	168,	167,	167,	167,	166,	166,	166,	165,	165,	165,	165,	164,	164,	164,	163,	163,	163,	163,	162,	162,	163,	163,	163,	162,	162,	162,	158,	158,	158,	158,	157,	157,	157,	157,	156,	156,	156,	156,	156,	155,	155,	155,	155,	155,	154,	154,	154,	154,	154,	153,	153,	153,	154,	154,	154,	154,	153,	153,	153,	153,	153,	152,	152,	152,	152,	152,	152,	151,	151,	151,	151,	151,	151,	150,	150,	150,	150,	150,	150,	149,	149,	149,	149,	149,	149,	148,	148,	148,	148,	148,	148,	148,	147,	147,	147,	147,	147,	147,	147,	146,	146,	146,	146,	146,	146,	146,	146,	145,	145,	145,	145,	145,	145,	145,	145,	145,	144,	144,	145,	145,	144,	144,	144,	144,	150,	150,	150,	150,	150,	150,	150,	149,	149,	149,	149,	149,	149,	149,	149,	149,	148,	148,	148,	148,	148,	148,	148,	148,	148,	147,	147,	147,	147,	147,	147,	147,	147,	147,	146,	146,	146,	146,	146,	146,	146,	146,	146,	146,	146,	145,	145,	145,	145,	145,	145,	145,	145,	145,	145,	145,	144,	144,	144,	144,	144,	144,	144,	144,	144,	144,	144,	144,	143,	143,	143,	143,	143,	143,	143,	143,	143,	143,	143,	143,	143,	142,	142,	142,	142,	142,	142,	142,	142,	142,	142,	142,	142,	142,	142,	141,	141,	141,	141,	141,	145,	145,	144,	144,	139,	139,	139,	139,	139,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	138,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	137,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	137,	137,	137,	137,	137,	137,	137,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	136,	135,	135,	135,	135,	135]
     opRT1 = opexRT1[range]*fator[range] + ((opexRT1[range]*fator[range]-opexRT1[range+1]*fator[range+1]) * ((trashSum - rsutrash[range]) / (rsutrash[range]-rsutrash[range+1])))
     return(round(opRT1, ROUND))
 
@@ -308,8 +323,10 @@ def main():
         raise SystemExit(f"Usage: {sys.argv[0]} <cities.csv> <distance.csv> <max cities> <trash threshold> <capex inbound> <opex inbound> <paymnent period> <movimentation cost> <landfill deviation> <report.txt> <output.csv> <rsu.cvs>")
 
     # Static variables
-    MAX_SUB_ARRAYS = 3                          # Max sub-arrays per array
-    MAX_ARRAYS = 15                             # Top # arrays that will be exported
+    MAX_SUB_ARRAYS = 2                          # Max sub-arrays per array
+    MAX_ARRAYS = 2000                           # Top # arrays that will be exported
+    VERSION = "3.1.2"                           # Algorithm Version
+    ADDITIONAL_COST = 1.25                      # Inbound for centralized array and outbound for non-centralized arrays
 
     # Output files
     report = open(REPORTFILE, "w")
@@ -370,8 +387,8 @@ def main():
     #    rsu.append(r)
     #    print(r)
 
-    capexInbound  = round((CAPEX_INBOUND  * 1000000)/(totalTrash * 313 * PAYMENT_PERIOD), ROUND)
-    capexOutbound = round((CAPEX_OUTBOUND * 1000000)/(totalTrash * 313 * PAYMENT_PERIOD), ROUND)
+    capexInbound  = round((CAPEX_INBOUND  * 1000000)/(totalTrash * 312 * PAYMENT_PERIOD), ROUND)
+    capexOutbound = round((CAPEX_OUTBOUND * 1000000)/(totalTrash * 312 * PAYMENT_PERIOD), ROUND)
 
     report.write("Capex Inbound: " + repr(capexInbound) + "\n")
     report.write("Capex Outbound: " + repr(capexOutbound) + "\n\n\n")
@@ -408,11 +425,12 @@ def main():
         i += 1
 
     report.write("\n\n\n============= ESTATÍSTICAS ============= \n")
-    logging.info("Cálculando combinaçãoes...")
+    logging.info("Gerando combinaçãoes...")
     combinations = list()
-    #for i in range(MAX_SUB_ARRAYS+1):
+    #for i in range(MAX_SUB_ARRAYS+1):pw
     i = 1
     while i <= MAX_SUB_ARRAYS and i <= MAX_CITIES:
+        logging.info("Gerando combinaçãoes de tamanho: %d", i)
         combinations = combinations + list(sorted_k_partitions(clusters,i))
         i = i + 1
     logging.info("Quantidade de combinações: %d", len(combinations))
@@ -449,12 +467,14 @@ def main():
         
     #logging.info("Quantidade de subarranjos diferentes: %d", len(sub_arrays))
 
-    
-
     data = []
     current = 0
+
+    arrayCentralized = {}
+
     for i in new_comb:
-        logging.info("Progresso: %d de %d", current, len(new_comb))
+        if current % 1000 == 0:
+            logging.info("Progresso: %d de %d", current, len(new_comb))
         isCentralized = False
         if len(i) == 1:
             isCentralized = True
@@ -467,28 +487,37 @@ def main():
         arrayResult['population'] = totalPopulation
         # Initialize values for array
         arrayResult['inbound'] = 0
-        arrayResult['outbound'] = 0
-        arrayResult['outbound-sum'] = 0
-        arrayResult['outbound-capex'] = 0
-        arrayResult['outbound-existent-landfill'] = 0
-        arrayResult['outbound-existent-landfill-sum'] = 0
-        arrayResult['outbound-capex-existent-landfill'] = 0
-        arrayResult['technology'] = 0
         arrayResult['inbound-sum'] = 0
         arrayResult['inbound-capex'] = 0
+        arrayResult['inbound-show'] = 0
+        arrayResult['inbound-show-sum'] = 0
+        arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = 0
+        arrayResult['outbound'] = 0
+        arrayResult['outbound-sum'] = 0
+        arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] = 0
+        arrayResult['outbound-show-capex'] = 0
+        arrayResult['outbound-existent-landfill'] = 0
+        arrayResult['outbound-existent-landfill-sum'] = 0
+        arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = 0
+        arrayResult['outbound-show-capex-existent-landfill'] = 0
+        arrayResult['technology'] = 0
+        
 
         # Calculate inbound and outbound values without adding the capex
         for subArray in i:
             subArrayResult = {}
-            subArrayResult = calculateInboundOutbound(citiesdic, distance, subArray, isCentralized, utvrs, landfill, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION, totalTrash)
+            subArrayResult = calculateInboundOutbound(citiesdic, distance, subArray, isCentralized, utvrs, landfill, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION, totalTrash, ADDITIONAL_COST)
             subArrayResult['trash'] = getSubArrayTrash(citiesdic, subArray)
             subArrayResult['rsu-range'] = getSubArrayRSURange(subArrayResult['trash'], rsutrash)
             subArrayResult['capex'] = getSubArrayCapex(subArrayResult['rsu-range'], subArrayResult['trash'], rsutrash)
             subArrayResult['opex'] = getSubArrayOpex(subArrayResult['rsu-range'], subArrayResult['trash'], rsutrash)
             subArrayResult['population'] = getSubArrayPopulation(citiesdic, subArray)
             subArrayResult['technology'] = (subArrayResult['capex']/PAYMENT_PERIOD + subArrayResult['opex'])
+            subArrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = subArrayResult["inbound-show"] * subArrayResult["trash"] / totalTrash
+            subArrayResult["inbound-custo-incluindo-capex-nivel-sub-arranjo"] = 0
             subArrayResult["total"] = subArrayResult['technology'] + subArrayResult["inbound"] + subArrayResult["outbound"]
             arrayResult['inbound-sum'] = arrayResult['inbound-sum'] + (subArrayResult["inbound"] * subArrayResult['trash'])
+            arrayResult['inbound-show-sum'] = arrayResult['inbound-show-sum'] + (subArrayResult["inbound-show"] * subArrayResult['trash'])
             arrayResult['outbound-sum'] = arrayResult['outbound-sum'] + (subArrayResult["outbound"] * subArrayResult['trash'])
             arrayResult['outbound-existent-landfill-sum'] = arrayResult['outbound-existent-landfill-sum'] + (subArrayResult["outbound-existent-landfill"] * subArrayResult['trash'])
             subArrayResultList.append(subArrayResult)
@@ -499,19 +528,56 @@ def main():
                 subArray['inbound-capex'] = subArray['inbound'] + capexInbound * ((subArray['inbound']*subArray['trash'])/arrayResult['inbound-sum'])
             else:
                 subArray['inbound-capex'] = 0
-            if arrayResult['outbound-sum'] > 0:
-                subArray['outbound-capex'] = subArray['outbound'] + capexOutbound * ((subArray['outbound']*subArray['trash'])/arrayResult['outbound-sum'])
-                subArray['outbound-capex-existent-landfill'] = subArray['outbound-existent-landfill'] + capexOutbound * ((subArray['outbound-existent-landfill']*subArray['trash'])/arrayResult['outbound-existent-landfill-sum'])
+            if arrayResult['inbound-show-sum'] > 0:
+                t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
+                #t40 = (CAPEX_INBOUND * ((arrayResult['inbound-sum']-(subArray["inbound"] * subArray['trash']))/arrayResult['inbound-sum']))
+                t40 = CAPEX_INBOUND * ((subArray['trash']*subArray['inbound'])/(arrayResult['inbound-sum']))
+                if isCentralized:
+                    t40 = CAPEX_INBOUND * ADDITIONAL_COST
+
+                subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray['inbound'] + (t40*t41)
+                subArray["inbound-custo-incluindo-capex-nivel-arranjo"] = subArray['inbound-custo-incluindo-capex-nivel-sub-arranjo'] * subArray['trash'] / totalTrash
             else:
-                subArray['outbound-capex'] = 0
-                subArray['outbound-capex-existent-landfill'] = 0
-            subArray["total-capex"] = subArray['technology'] + subArray["inbound"] + subArray["outbound"]
+                subArray['inbound-custo-incluindo-capex-nivel-arranjo'] = 0    
+            if arrayResult['outbound-sum'] > 0:
+
+                t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
+                #t40 = (CAPEX_INBOUND * ((arrayResult['inbound-sum']-(subArray["inbound"] * subArray['trash']))/arrayResult['inbound-sum']))
+                t40 = CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound'])/(arrayResult['outbound-sum']))
+
+                if isCentralized:
+                    subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound"] + (t40*t41)
+                else:
+                    subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound"] + (ADDITIONAL_COST*t40*t41)
+                subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash
+                #subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = subArray['outbound'] + capexOutbound * (subArray['trash']/totalTrash)
+                #subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-custo-incluindo-capex-nivel-arranjo"] * totalTrash / subArray['trash']
+
+                t40 = CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound-existent-landfill'])/(arrayResult['outbound-existent-landfill-sum']))
+                if isCentralized:
+                    subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill"] + (t40*t41)
+                else:
+                    subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill"] + (ADDITIONAL_COST*t40*t41)
+                subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash
+
+
+                #subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = subArray['outbound-existent-landfill'] + capexOutbound * (subArray['trash']/totalTrash)
+                #subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] * totalTrash / subArray['trash']
+            else:
+                subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = 0
+                subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = 0
+
+            subArray["total-capex"] = subArray['technology'] + subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"]
             arrayResult['inbound'] = arrayResult['inbound'] + (subArray['inbound'] * subArray['trash'])
+            arrayResult['inbound-show'] = arrayResult['inbound-show'] + subArray['inbound-show']
+            arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] + subArray['inbound-custo-incluindo-capex-nivel-arranjo']
             arrayResult['outbound'] = arrayResult['outbound'] + (subArray['outbound'] * subArray['trash'])
+            arrayResult['outbound-show-capex'] = arrayResult['outbound-show-capex'] + subArray["outbound-custo-incluindo-capex-nivel-arranjo"]
+            arrayResult['outbound-show-capex-existent-landfill'] = arrayResult['outbound-show-capex-existent-landfill'] + subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]
             arrayResult['outbound-existent-landfill'] = arrayResult['outbound-existent-landfill'] + (subArray['outbound-existent-landfill'] * subArray['trash'])
             arrayResult['inbound-capex'] = arrayResult['inbound-capex'] + (subArray['inbound-capex'] * subArray['trash'])
-            arrayResult['outbound-capex'] = arrayResult['outbound-capex'] + (subArray['outbound-capex'] * subArray['trash'])
-            arrayResult['outbound-capex-existent-landfill'] = arrayResult['outbound-capex-existent-landfill'] + (subArray['outbound-capex-existent-landfill'] * subArray['trash'])
+            arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-arranjo"]
+            arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] + subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]
             arrayResult['technology'] = arrayResult['technology'] + (subArray['technology'] * subArray['trash'])
 
         arrayResult["arranjo"] = i
@@ -519,14 +585,28 @@ def main():
         arrayResult["inbound"] = arrayResult['inbound']/arrayResult['trash']
         arrayResult["outbound"] = arrayResult['outbound']/arrayResult['trash']
         arrayResult["inbound-capex"] = arrayResult['inbound-capex']/arrayResult['trash']
-        arrayResult["outbound-capex"] = arrayResult['outbound-capex']/arrayResult['trash']
+        #arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"]/arrayResult['trash']
         arrayResult["technology"] = arrayResult['technology']/arrayResult['trash']
         arrayResult['outbound-existent-landfill'] = arrayResult['outbound-existent-landfill']/arrayResult['trash']
-        arrayResult['outbound-capex-existent-landfill'] = arrayResult['outbound-capex-existent-landfill']/arrayResult['trash']
+        #arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]/arrayResult['trash']
         arrayResult["total"] = arrayResult["technology"] + arrayResult["inbound"] + arrayResult["outbound"]
-        arrayResult["total-capex"] = arrayResult["technology"] + arrayResult["inbound-capex"] + arrayResult["outbound-capex"]
+        arrayResult["total-capex"] = arrayResult["technology"] + arrayResult["inbound-custo-incluindo-capex-nivel-arranjo"] + arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"]
         
-        data.append(arrayResult)
+        if isCentralized:
+            arrayCentralized = arrayResult
+
+        # Verifica se a quantidade de resultados atual é maior que a quantidade desejada a ser analizada
+        if len(data) >= MAX_ARRAYS:
+            data = sorted(data, key = lambda k: (k["total-capex"]))
+            last = data[-1]
+            # Somente adiciona no array de data se um resultado melhor for encontrado
+            if arrayResult["total-capex"] < last["total-capex"]:
+                #print("Removendo ", last["total-capex"], " e inserindo ", arrayResult["total-capex"])
+                data.pop()
+                data.append(arrayResult)
+        else:
+            data.append(arrayResult)
+
         current = current + 1
 
     logging.info("Progresso: 100%")
@@ -535,84 +615,105 @@ def main():
 
     logging.info("Escrevendo relatórios...")
     report.write("\n\n============= ARRANJO CENTRALIZADO ============= \n")
-    for d in data:
-        if len(d["arranjo"]) == 1:
-            report.write(repr(d["arranjo"]) + "\n")
-            report.write("- Lixo: " + repr(d["trash"]) + "\n")
-            report.write("- Custo Total: " + repr(d["total"]) + "\n")
-            report.write("- Custo Total - Capex: " + repr(d["total-capex"]) + "\n")
-            report.write("-- Inbound: " + repr(d["inbound"]) + "\n")
-            report.write("-- Inbound - Capex: " + repr(d["inbound-capex"]) + "\n")
-            report.write("-- Tecnologia: " + repr(d['technology']) + "\n")
-            report.write("-- Outbound: " + repr(d["outbound"]) + "\n")
-            report.write("-- Outbound - Capex: " + repr(d["outbound-capex"]) + "\n")
-            report.write("-- Outbound Aterro Existente: " + repr(d["outbound-existent-landfill"]) + "\n")
-            report.write("-- Outbound Aterro Existente - Capex: " + repr(d["outbound-capex-existent-landfill"]) + "\n\n")
-            report.write("-- Sub-arranjos:\n")
 
-            output.write(repr(d["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(d["population"]) + ";" + repr(d["total-capex"]) + ";" + repr(d["trash"]) + ";" + repr(d['technology']) + ";" + repr(d["inbound-capex"]) + ";" + repr(d["outbound-capex"]) + ";" + repr(d['outbound-capex-existent-landfill']) + "\n")
+    report.write(repr(arrayCentralized["arranjo"]) + "\n")
+    report.write("- Lixo: " + repr(arrayCentralized["trash"]) + "\n")
+    #report.write("- Custo Total: " + repr(arrayCentralized["total"]) + "\n")
+    report.write("- Custo Total - Capex: " + repr(arrayCentralized["total-capex"]) + "\n")
+    #report.write("-- Inbound (Old): " + repr(arrayCentralized["inbound"]) + "\n")
+    #report.write("-- Inbound + Capex (Old): " + repr(arrayCentralized["inbound-capex"]) + "\n")
+    #report.write("-- Inbound (custo opex): " + repr(arrayCentralized["inbound-show"]) + "\n")
+    report.write("-- Inbound - Custo incluindo CAPEX (Nível Arranjo): " + repr(arrayCentralized["inbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+    report.write("-- Outbound - Custo incluindo CAPEX (Nível Arranjo): " + repr(arrayCentralized["outbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+    report.write("-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): " + repr(arrayCentralized["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+    report.write("-- Tecnologia: " + repr(arrayCentralized['technology']) + "\n\n")
+    #report.write("-- Outbound: " + repr(arrayCentralized["outbound"]) + "\n")
+    #report.write("-- Outbound - Capex: " + repr(arrayCentralized["outbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+    #report.write("-- Outbound Aterro Existente: " + repr(arrayCentralized["outbound-existent-landfill"]) + "\n")
+            
+    report.write("-- Sub-arranjos:\n")
 
+    output.write(repr(arrayCentralized["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(arrayCentralized["population"]) + ";" + repr(arrayCentralized["total-capex"]) + ";" + repr(arrayCentralized["trash"]) + ";" + repr(arrayCentralized['technology']) + ";" + repr(arrayCentralized["inbound-custo-incluindo-capex-nivel-arranjo"]) + ";" + repr(arrayCentralized["outbound-custo-incluindo-capex-nivel-arranjo"]) + ";" + repr(arrayCentralized["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]) + "\n")
 
-            for x in range(len(d["sub"])):
-                output.write(repr(d["arranjo"]) + ";" + repr(d["sub"][x]["sub-arranjo"]) + ";" + repr(d["sub"][x]["aterro"]) + ";" + repr(d["sub"][x]["aterro-existente"]) + ";" + repr(d["sub"][x]["utvr"]) + ";" + repr(d["sub"][x]['population']) + ";" + repr(d["sub"][x]["total-capex"]) + ";" + repr(d["sub"][x]["trash"]) + ";" + repr(d["sub"][x]['technology']) + ";" + repr(d["sub"][x]["inbound-capex"])  + ";" + repr(d["sub"][x]["outbound-capex"]) + ";" + repr(d["sub"][x]['outbound-capex-existent-landfill']) + "\n")
+    for x in range(len(arrayCentralized["sub"])):
+        output.write(repr(arrayCentralized["arranjo"]) + ";" + repr(arrayCentralized["sub"][x]["sub-arranjo"]) + ";" + repr(arrayCentralized["sub"][x]["aterro"]) + ";" + repr(arrayCentralized["sub"][x]["aterro-existente"]) + ";" + repr(arrayCentralized["sub"][x]["utvr"]) + ";" + repr(arrayCentralized["sub"][x]['population']) + ";" + repr(arrayCentralized["sub"][x]["total-capex"]) + ";" + repr(arrayCentralized["sub"][x]["trash"]) + ";" + repr(arrayCentralized["sub"][x]['technology']) + ";" + repr(arrayCentralized["sub"][x]["inbound-custo-incluindo-capex-nivel-sub-arranjo"])  + ";" + repr(arrayCentralized["sub"][x]["outbound-custo-incluindo-capex-nivel-sub-arranjo"])  + ";" + repr(arrayCentralized["sub"][x]["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
 
-                report.write("\t" + repr(d["sub"][x]["sub-arranjo"]) + "\n")
-                report.write("\t-- UTVR: " + repr(d["sub"][x]["utvr"]) + "\n")
-                report.write("\t-- Aterro: " + repr(d["sub"][x]["aterro"]) + "\n")
-                report.write("\t-- Lixo: " + repr(d["sub"][x]['trash']) + "\n")
-                report.write("\t-- População: " + repr(d["sub"][x]['population']) + "\n")
-                report.write("\t-- Total: " + repr(d["sub"][x]["total"]) + "\n")
-                report.write("\t-- Total - Capex: " + repr(d["sub"][x]["total"]) + "\n")
-                report.write("\t-- Inbound: " + repr(d["sub"][x]["inbound"]) + "\n")
-                report.write("\t-- Inbound - Capex: " + repr(d["sub"][x]["inbound-capex"]) + "\n")
-                report.write("\t-- Tecnologia: " + repr(d["sub"][x]['technology']) + "\n")
-                report.write("\t\t-- Capex: " + repr(d["sub"][x]["capex"]) + "\n")
-                report.write("\t\t-- Opex: " + repr(d["sub"][x]["opex"]) + "\n")
-                report.write("\t-- Outbound: " + repr(d["sub"][x]["outbound"]) + "\n")
-                report.write("\t-- Outbound - Capex: " + repr(d["sub"][x]["outbound-capex"]) + "\n")
-                report.write("\t-- Outbound Aterro Existente: " + repr(d["sub"][x]["outbound-existent-landfill"]) + "\n")
-                report.write("\t-- Outbound Aterro Existente - Capex: " + repr(d["sub"][x]["outbound-capex-existent-landfill"]) + "\n\n")
-                break
+        report.write("\t" + repr(arrayCentralized["sub"][x]["sub-arranjo"]) + "\n")
+        report.write("\t-- UTVR: " + repr(arrayCentralized["sub"][x]["utvr"]) + "\n")
+        report.write("\t-- Aterro: " + repr(arrayCentralized["sub"][x]["aterro"]) + "\n")
+        report.write("\t-- Lixo: " + repr(arrayCentralized["sub"][x]['trash']) + "\n")
+        report.write("\t-- População: " + repr(arrayCentralized["sub"][x]['population']) + "\n")
+        #report.write("\t-- Total: " + repr(arrayCentralized["sub"][x]["total"]) + "\n")
+        report.write("\t-- Total - Capex: " + repr(arrayCentralized["sub"][x]["total"]) + "\n")
+        #report.write("\t-- Inbound: " + repr(arrayCentralized["sub"][x]["inbound"]) + "\n")
+        #report.write("\t-- Inbound - Capex: " + repr(arrayCentralized["sub"][x]["inbound-capex"]) + "\n")
+        report.write("\t-- Inbound - Custo OPEX: " + repr(arrayCentralized["sub"][x]["inbound"]) + "\n")
+        report.write("\t-- Inbound - Custo incluindo CAPEX: " + repr(arrayCentralized["sub"][x]["inbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        report.write("\t-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): " + repr(arrayCentralized["sub"][x]["inbound-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
+        report.write("\t-- Outbound - Custo OPEX: " + repr(arrayCentralized["sub"][x]["outbound"]) + "\n")
+        report.write("\t-- Outbound - Custo incluindo CAPEX: " + repr(arrayCentralized["sub"][x]["outbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        report.write("\t-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): " + repr(arrayCentralized["sub"][x]["outbound-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
+        report.write("\t-- Outbound Aterro Existente - Custo OPEX: " + repr(arrayCentralized["sub"][x]["outbound-existent-landfill"]) + "\n")
+        report.write("\t-- Outbound Aterro Existente - Custo incluindo CAPEX: " + repr(arrayCentralized["sub"][x]["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        report.write("\t-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): " + repr(arrayCentralized["sub"][x]["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
+        report.write("\t-- Tecnologia: " + repr(arrayCentralized["sub"][x]['technology']) + "\n")
+        report.write("\t\t-- Capex: " + repr(arrayCentralized["sub"][x]["capex"]) + "\n")
+        report.write("\t\t-- Opex: " + repr(arrayCentralized["sub"][x]["opex"]) + "\n\n")
 
     report.write("\n\n============= TOP " + repr(MAX_ARRAYS) + " ARRANJOS ============= \n")
     for i in range(len(data)):
         if i >= MAX_ARRAYS:
             break
 
-        output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["population"]) + ";" + repr(data[i]["total-capex"]) + ";" + repr(data[i]["trash"]) + ";" + repr(data[i]['technology']) + ";" + repr(data[i]["inbound-capex"])  + ";" + repr(data[i]["outbound-capex"]) + ";" + repr(data[i]['outbound-capex-existent-landfill']) + "\n")
+        output.write(repr(data[i]["arranjo"]) + ";Sumário;NA;NA;NA;" + repr(data[i]["population"]) + ";" + repr(data[i]["total-capex"]) + ";" + repr(data[i]["trash"]) + ";" + repr(data[i]['technology']) + ";" + repr(data[i]["inbound-custo-incluindo-capex-nivel-arranjo"])  + ";" + repr(data[i]["outbound-custo-incluindo-capex-nivel-arranjo"]) + ";" + repr(data[i]["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]) + "\n")
 
         report.write(repr(i+1) + ".\t" + repr(data[i]["arranjo"]) + "\n")
         report.write("- Lixo: " + repr(data[i]["trash"]) + "\n")
-        report.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
+        #report.write("- Custo Total: " + repr(data[i]["total"]) + "\n")
         report.write("- Custo Total + Capex: " + repr(data[i]["total-capex"]) + "\n")
-        report.write("-- Inbound: " + repr(data[i]["inbound"]) + "\n")
-        report.write("-- Inbound + Capex: " + repr(data[i]["inbound-capex"]) + "\n")
-        report.write("-- Tecnologia: " + repr(data[i]['technology']) + "\n")
-        report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n")
-        report.write("-- Outbound + Capex: " + repr(data[i]["outbound-capex"]) + "\n")
-        report.write("-- Outbound Aterro Existente: " + repr(data[i]["outbound-existent-landfill"]) + "\n")
-        report.write("-- Outbound Aterro Existente - Capex: " + repr(data[i]["outbound-capex-existent-landfill"]) + "\n\n")
+        #report.write("-- Inbound (Old): " + repr(data[i]["inbound"]) + "\n")
+        #report.write("-- Inbound + Capex (Old): " + repr(data[i]["inbound-capex"]) + "\n")
+        #report.write("-- Inbound: " + repr(data[i]["inbound-show"]) + "\n")
+        report.write("-- Inbound - Custo incluindo CAPEX (Nível Arranjo): " + repr(data[i]["inbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        report.write("-- Outbound - Custo incluindo CAPEX (Nível Arranjo): " + repr(data[i]["outbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        report.write("-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): " + repr(data[i]["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        report.write("-- Tecnologia: " + repr(data[i]['technology']) + "\n\n")
+        #report.write("-- Outbound: " + repr(data[i]["outbound"]) + "\n")
+        #report.write("-- Outbound + Capex: " + repr(data[i]["outbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+        #report.write("-- Outbound Aterro Existente: " + repr(data[i]["outbound-existent-landfill"]) + "\n")
+        
 
         report.write("-- Sub-arranjos:\n")
         for x in range(len(data[i]["sub"])):
-            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["aterro-existente"]) + ";" + repr(data[i]["sub"][x]["utvr"]) + ";" + repr(data[i]["sub"][x]['population']) + ";" + repr(data[i]["sub"][x]["total-capex"]) + ";" + repr(data[i]["sub"][x]['trash']) + ";" + repr(data[i]["sub"][x]['technology']) + ";" + repr(data[i]["sub"][x]["inbound-capex"])  + ";" + repr(data[i]["sub"][x]["outbound-capex"]) + ";" + repr(data[i]["sub"][x]['outbound-capex-existent-landfill']) + "\n")
+            output.write(repr(data[i]["arranjo"]) + ";" + repr(data[i]["sub"][x]["sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["aterro"]) + ";" + repr(data[i]["sub"][x]["aterro-existente"]) + ";" + repr(data[i]["sub"][x]["utvr"]) + ";" + repr(data[i]["sub"][x]['population']) + ";" + repr(data[i]["sub"][x]["total-capex"]) + ";" + repr(data[i]["sub"][x]['trash']) + ";" + repr(data[i]["sub"][x]['technology']) + ";" + repr(data[i]["sub"][x]["inbound-custo-incluindo-capex-nivel-sub-arranjo"])  + ";" + repr(data[i]["sub"][x]["outbound-custo-incluindo-capex-nivel-sub-arranjo"]) + ";" + repr(data[i]["sub"][x]["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
 
             report.write("\t" + repr(data[i]["sub"][x]["sub-arranjo"]) + "\n")
             report.write("\t-- UTVR: " + repr(data[i]["sub"][x]["utvr"]) + "\n")
             report.write("\t-- Aterro: " + repr(data[i]["sub"][x]["aterro"]) + "\n")
             report.write("\t-- Lixo: " + repr(data[i]["sub"][x]['trash']) + "\n")
             report.write("\t-- População: " + repr(data[i]["sub"][x]['population']) + "\n")
-            report.write("\t-- Total: " + repr(data[i]["sub"][x]["total"]) + "\n")
+            #report.write("\t-- Total: " + repr(data[i]["sub"][x]["total"]) + "\n")
             report.write("\t-- Total + Capex: " + repr(data[i]["sub"][x]["total-capex"]) + "\n")
-            report.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
-            report.write("\t-- Inbound + Capex: " + repr(data[i]["sub"][x]["inbound-capex"]) + "\n")
+            #report.write("\t-- Inbound: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
+            #report.write("\t-- Inbound + Capex: " + repr(data[i]["sub"][x]["inbound-capex"]) + "\n")
+            report.write("\t-- Inbound - SUM: " + repr(data[i]["sub"][x]["inbound-sum"]) + "\n")
+            report.write("\t-- Inbound - Custo OPEX: " + repr(data[i]["sub"][x]["inbound"]) + "\n")
+            report.write("\t-- Inbound - Custo incluindo CAPEX: " + repr(data[i]["sub"][x]["inbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+            report.write("\t-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): " + repr(data[i]["sub"][x]["inbound-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
+            
+            
+            report.write("\t-- Outbound - Custo OPEX: " + repr(data[i]["sub"][x]["outbound"]) + "\n")
+            report.write("\t-- Outbound - Custo incluindo CAPEX: " + repr(data[i]["sub"][x]["outbound-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+            report.write("\t-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): " + repr(data[i]["sub"][x]["outbound-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
+           
+            report.write("\t-- Outbound Aterro Existente - Custo OPEX: " + repr(data[i]["sub"][x]["outbound-existent-landfill"]) + "\n")
+            report.write("\t-- Outbound Aterro Existente - Custo incluindo CAPEX: " + repr(data[i]["sub"][x]["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]) + "\n")
+            report.write("\t-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): " + repr(data[i]["sub"][x]["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"]) + "\n")
+
             report.write("\t-- Tecnologia: " + repr(data[i]["sub"][x]['technology']) + "\n")
             report.write("\t\t-- Capex: " + repr(data[i]["sub"][x]["capex"]) + "\n")
-            report.write("\t\t-- Opex: " + repr(data[i]["sub"][x]["opex"]) + "\n")
-            report.write("\t-- Outbound: " + repr(data[i]["sub"][x]["outbound"]) + "\n")
-            report.write("\t-- Outbound + Capex: " + repr(data[i]["sub"][x]["outbound-capex"]) + "\n")
-            report.write("\t-- Outbound Aterro Existente: " + repr(data[i]["sub"][x]["outbound-existent-landfill"]) + "\n")
-            report.write("\t-- Outbound Aterro Existente + Capex: " + repr(data[i]["sub"][x]["outbound-capex-existent-landfill"]) + "\n\n")
+            report.write("\t\t-- Opex: " + repr(data[i]["sub"][x]["opex"]) + "\n\n")
+
 
         report.write("-----------------------------------------------------------------\n\n")
 
