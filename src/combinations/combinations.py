@@ -527,6 +527,7 @@ def main():
                 subArray['inbound-capex'] = subArray['inbound'] + capexInbound * ((subArray['inbound']*subArray['trash'])/arrayResult['inbound-sum'])
             else:
                 subArray['inbound-capex'] = 0
+            
             if arrayResult['inbound-show-sum'] > 0:
                 t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
                 #t40 = (CAPEX_INBOUND * ((arrayResult['inbound-sum']-(subArray["inbound"] * subArray['trash']))/arrayResult['inbound-sum']))
@@ -538,8 +539,8 @@ def main():
                 subArray["inbound-custo-incluindo-capex-nivel-arranjo"] = subArray['inbound-custo-incluindo-capex-nivel-sub-arranjo'] * subArray['trash'] / totalTrash
             else:
                 subArray['inbound-custo-incluindo-capex-nivel-arranjo'] = 0    
+            
             if arrayResult['outbound-sum'] > 0:
-
                 t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
                 #t40 = (CAPEX_INBOUND * ((arrayResult['inbound-sum']-(subArray["inbound"] * subArray['trash']))/arrayResult['inbound-sum']))
                 t40 = CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound'])/(arrayResult['outbound-sum']))
@@ -549,22 +550,21 @@ def main():
                 else:
                     subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound"] + (ADDITIONAL_COST*t40*t41)
                 subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash
-                #subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = subArray['outbound'] + capexOutbound * (subArray['trash']/totalTrash)
-                #subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-custo-incluindo-capex-nivel-arranjo"] * totalTrash / subArray['trash']
+            else:
+                subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = 0
+                subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = 0
 
+            if arrayResult['outbound-existent-landfill-sum'] > 0:
+                t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
                 t40 = CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound-existent-landfill'])/(arrayResult['outbound-existent-landfill-sum']))
                 if isCentralized:
                     subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill"] + (t40*t41)
                 else:
                     subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill"] + (ADDITIONAL_COST*t40*t41)
                 subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash
-
-
-                #subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = subArray['outbound-existent-landfill'] + capexOutbound * (subArray['trash']/totalTrash)
-                #subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] * totalTrash / subArray['trash']
-            else:
-                subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = 0
+            else:    
                 subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = 0
+                subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = 0
 
             subArray["total-capex"] = subArray['technology'] + subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"]
             arrayResult['inbound'] = arrayResult['inbound'] + (subArray['inbound'] * subArray['trash'])
