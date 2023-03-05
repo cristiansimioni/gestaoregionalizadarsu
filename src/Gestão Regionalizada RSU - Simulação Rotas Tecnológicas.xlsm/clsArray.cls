@@ -23,4 +23,5 @@ Public vInbound As Double
 Public vOutbound As Double
 Public vOutboundExistentLandfill As Double
 Public vSubArray As Collection
-
+Public vSelectedRoute As String
+Public vSelectedRouteRow As Integer

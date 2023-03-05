@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive 
    Caption         =   "UserForm1"
-   ClientHeight    =   11715
-   ClientLeft      =   240
-   ClientTop       =   936
+   ClientHeight    =   11748
+   ClientLeft      =   168
+   ClientTop       =   660
    ClientWidth     =   18360
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -204,32 +204,25 @@ Private Sub ChangeRoute()
         lineData = 50
     Else
         If cbxRoute.value = "RT1-A" Then
-            lblRouteTitle = "RT1A - Biodigestão e Produção Energia Elétrica"
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEA)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTEONEA)
             lineData = 43
         ElseIf cbxRoute.value = "RT1-B" Then
-            lblRouteTitle = "RT1B - Biodigestão e Descarbonização Frota Pública"
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEB)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTEONEB)
             lineData = 44
         ElseIf cbxRoute.value = "RT1-C" Then
-            lblRouteTitle = "RT1C - Biodigestão e Comercialização Biometano"
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEONEC)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTEONEC)
             lineData = 45
         ElseIf cbxRoute.value = "RT2" Then
-            lblRouteTitle = "RT2 - Compostagem e Produção Composto Orgânico"
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETWO)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTETWO)
             lineData = 46
         ElseIf cbxRoute.value = "RT3" Then
-            lblRouteTitle = "RT3 - Biosecagem e Produção BioCDR."
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTETHREE)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTETHREE)
             lineData = 47
         ElseIf cbxRoute.value = "RT4" Then
-            lblRouteTitle = "RT4 - Incineração Mass Burning"
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFOUR)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTEFOUR)
             lineData = 48
         ElseIf cbxRoute.value = "RT5" Then
-            lblRouteTitle = "RT5 - Incineração Mass Burning Descentralizada"
-            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGSCREENROUTEFIVE)
+            imgRoute.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGESCREENROUTEFIVE)
             lineData = 49
         End If
     End If
@@ -241,15 +234,15 @@ Private Sub ChangeRoute()
     End If
     
     If lineData <> 0 Then
-        capexRouteData.Caption = wksChartData.Cells(lineData, 4).value
-        opexRouteData.Caption = wksChartData.Cells(lineData, 5).value
-        inputRouteData.Caption = wksChartData.Cells(lineData, 6).value
-        reciclableRouteData.Caption = wksChartData.Cells(lineData, 7).value
-        cdrRouteData.Caption = wksChartData.Cells(lineData, 8).value
-        landfillDangerRouteData.Caption = wksChartData.Cells(lineData, 11).value
-        landfillRouteData.Caption = wksChartData.Cells(lineData, 9).value
-        organicCompoundRouteData.Caption = wksChartData.Cells(lineData, 10).value
-        lossWeightRouteData.Caption = wksChartData.Cells(lineData, 12).value
+        capexRouteData.Caption = Format(wksChartData.Cells(lineData, 4).value, "#.000")
+        opexRouteData.Caption = Format(wksChartData.Cells(lineData, 5).value, "#.000")
+        inputRouteData.Caption = Format(wksChartData.Cells(lineData, 6).value, "#.000")
+        reciclableRouteData.Caption = Format(wksChartData.Cells(lineData, 7).value, "#.000")
+        cdrRouteData.Caption = Format(wksChartData.Cells(lineData, 8).value, "#.000")
+        landfillDangerRouteData.Caption = Format(wksChartData.Cells(lineData, 11).value, "#.000")
+        landfillRouteData.Caption = Format(wksChartData.Cells(lineData, 9).value, "#.000")
+        organicCompoundRouteData.Caption = Format(wksChartData.Cells(lineData, 10).value, "#.000")
+        lossWeightRouteData.Caption = Format(wksChartData.Cells(lineData, 12).value, "#.000")
         finalUsageRouteData.Caption = Format(wksChartData.Cells(lineData, 13).value, "#,##0")
         finalUsage2RouteData.Caption = Format(wksChartData.Cells(lineData, 14).value, "#,##0")
     End If
@@ -600,7 +593,6 @@ End Sub
 
 Sub enableDisableRouteLabels(ByVal onoff As Boolean, ByVal route As String)
     
-    lblRouteTitle.Visible = onoff
     imgRoute.Visible = onoff
     
     For Each Ctrl In Me.Controls
@@ -609,74 +601,102 @@ Sub enableDisableRouteLabels(ByVal onoff As Boolean, ByVal route As String)
         End If
     Next Ctrl
     
-    
-    lossWeightRouteData.Left = 492
-    lossWeightRouteData.Top = 90
-    lossWeightRouteDataUnit.Left = 522
-    lossWeightRouteDataUnit.Top = 90
-    cdrRouteData.Left = 18
-    cdrRouteData.Top = 243
-    cdrRouteDataUnit.Left = 48
-    cdrRouteDataUnit.Top = 243
-    finalUsageRouteData.Top = 192
-    finalUsageRouteDataUnit.Top = 192
-    landfillRouteData.Top = 360
-    landfillRouteDataUnit.Top = 360
     finalUsage2RouteData.Visible = False
-    finalUsage2RouteDataUnit.Visible = False
-    
     If route <> "RT4" Or route <> "RT5" Then
         landfillDangerRouteData.Visible = False
-        landfillDangerRouteDataUnit.Visible = False
     End If
     
     If route = "RT1-A" Then
-        finalUsageRouteDataUnit.Caption = "MWh/a"
+        inputRouteData.Left = 186
+        inputRouteData.Top = 114
+        reciclableRouteData.Left = 156
+        reciclableRouteData.Top = 212
+        cdrRouteData.Left = 156
+        cdrRouteData.Top = 252
+        lossWeightRouteData.Left = 366
+        lossWeightRouteData.Top = 84
+        organicCompoundRouteData.Left = 210
+        organicCompoundRouteData.Top = 360
+        finalUsageRouteData.Left = 696
+        finalUsageRouteData.Top = 243
+        landfillRouteData.Left = 594
+        landfillRouteData.Top = 280
     ElseIf route = "RT1-B" Then
-        finalUsageRouteDataUnit.Caption = "Kl Diesel Equiv./a"
+        inputRouteData.Left = 186
+        inputRouteData.Top = 114
+        reciclableRouteData.Left = 156
+        reciclableRouteData.Top = 212
+        cdrRouteData.Left = 156
+        cdrRouteData.Top = 252
+        lossWeightRouteData.Left = 366
+        lossWeightRouteData.Top = 84
+        organicCompoundRouteData.Left = 210
+        organicCompoundRouteData.Top = 360
+        finalUsageRouteData.Left = 708
+        finalUsageRouteData.Top = 120
+        landfillRouteData.Left = 544
+        landfillRouteData.Top = 309
+        finalUsage2RouteData.Left = 705
+        finalUsage2RouteData.Top = 274
         finalUsage2RouteData.Visible = True
-        finalUsage2RouteDataUnit.Visible = True
-        finalUsage2RouteDataUnit.Caption = "Nm3/a"
     ElseIf route = "RT1-C" Then
-        finalUsageRouteData.Top = 360
-        finalUsageRouteDataUnit.Top = 360
-        finalUsageRouteDataUnit.Caption = "Nm3/a"
+        inputRouteData.Left = 186
+        inputRouteData.Top = 114
+        reciclableRouteData.Left = 156
+        reciclableRouteData.Top = 212
+        cdrRouteData.Left = 156
+        cdrRouteData.Top = 252
+        lossWeightRouteData.Left = 366
+        lossWeightRouteData.Top = 84
+        organicCompoundRouteData.Left = 210
+        organicCompoundRouteData.Top = 360
+        finalUsageRouteData.Left = 706
+        finalUsageRouteData.Top = 236
+        landfillRouteData.Left = 544
+        landfillRouteData.Top = 309
     ElseIf route = "RT2" Then
+        inputRouteData.Left = 216
+        inputRouteData.Top = 128
+        reciclableRouteData.Left = 204
+        reciclableRouteData.Top = 228
+        cdrRouteData.Left = 204
+        cdrRouteData.Top = 270
+        lossWeightRouteData.Left = 402
+        lossWeightRouteData.Top = 106
+        organicCompoundRouteData.Left = 684
+        organicCompoundRouteData.Top = 144
+        landfillRouteData.Left = 558
+        landfillRouteData.Top = 298
         finalUsageRouteData.Visible = False
-        finalUsageRouteDataUnit.Visible = False
-        lossWeightRouteData.Left = 378
-        lossWeightRouteData.Top = 216
-        lossWeightRouteDataUnit.Left = 408
-        lossWeightRouteDataUnit.Top = 216
     ElseIf route = "RT3" Then
+        inputRouteData.Left = 198
+        inputRouteData.Top = 132
+        reciclableRouteData.Left = 210
+        reciclableRouteData.Top = 296
+        cdrRouteData.Left = 704
+        cdrRouteData.Top = 296
+        lossWeightRouteData.Left = 370
+        lossWeightRouteData.Top = 106
+        landfillRouteData.Left = 548
+        landfillRouteData.Top = 300
         organicCompoundRouteData.Visible = False
-        organicCompoundRouteDataUnit.Visible = False
         finalUsageRouteData.Visible = False
-        finalUsageRouteDataUnit.Visible = False
-        cdrRouteData.Left = 642
-        cdrRouteData.Top = 318
-        cdrRouteDataUnit.Left = 672
-        cdrRouteDataUnit.Top = 318
-        lossWeightRouteData.Left = 492
-        lossWeightRouteData.Top = 115
-        lossWeightRouteDataUnit.Left = 522
-        lossWeightRouteDataUnit.Top = 115
     ElseIf route = "RT4" Or route = "RT5" Then
+        inputRouteData.Left = 185
+        inputRouteData.Top = 129
+        reciclableRouteData.Left = 204
+        reciclableRouteData.Top = 274
+        lossWeightRouteData.Left = 384
+        lossWeightRouteData.Top = 102
+        landfillRouteData.Left = 408
+        landfillRouteData.Top = 297
+        finalUsageRouteData.Left = 702
+        finalUsageRouteData.Top = 228
+        landfillDangerRouteData.Left = 612
+        landfillDangerRouteData.Top = 306
         cdrRouteData.Visible = False
-        cdrRouteDataUnit.Visible = False
         organicCompoundRouteData.Visible = False
-        organicCompoundRouteDataUnit.Visible = False
         landfillDangerRouteData.Visible = True
-        landfillDangerRouteDataUnit.Visible = True
-        finalUsageRouteData.Top = 210
-        finalUsageRouteDataUnit.Top = 210
-        lossWeightRouteData.Left = 612
-        lossWeightRouteData.Top = 75
-        lossWeightRouteDataUnit.Left = 642
-        lossWeightRouteDataUnit.Top = 75
-        landfillRouteData.Top = 348
-        landfillRouteDataUnit.Top = 348
-        finalUsageRouteDataUnit.Caption = "MWh/a"
     End If
 
 End Sub

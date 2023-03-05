@@ -30,10 +30,6 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
-
 Private Sub txtISSTax_Change()
 Call modForm.textBoxChange(txtISSTax, "ISSTax", FormChanged)
 End Sub

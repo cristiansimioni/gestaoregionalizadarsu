@@ -8,8 +8,8 @@ Private Declare PtrSafe Function GetWindowLong Lib "User32" Alias "GetWindowLong
 'Função que altera o estilo da janela do UserForm
 Private Declare PtrSafe Function SetWindowLong Lib "User32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
+'Abre o formulário principal da ferramenta
 Sub OpenTool()
-    'Application.Visible = False
     frmTool.Show
 End Sub
 
@@ -24,10 +24,6 @@ Public Sub textBoxChange(ByRef txtBox, ByVal varName As String, ByRef FormChange
     End If
     FormChanged = True
 End Sub
-
-Public Function ValidateForm()
-    ValidateForm = True
-End Function
 
 Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal title As String, Optional ByVal bgWhite As Boolean)
     
@@ -94,7 +90,7 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
             End If
             
             If Ctrl.name = "imgLogo" Then
-                Ctrl.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGLOGOEXTRASMALL)
+                Ctrl.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGELOGOEXTRASMALL)
                 Ctrl.width = 110
                 Ctrl.Height = 40
                 Ctrl.Left = 10

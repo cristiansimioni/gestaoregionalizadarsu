@@ -87,11 +87,13 @@ Private Sub executeSimulation()
     tarifaLiquidaBase = Database.GetDatabaseValue("TargetExpectation", colUserValue)
     eficienciaBase = Database.GetDatabaseValue("ValuationEfficiency", colUserValue) / 100
     
+    Dim selectedBaseRoute As String
     
     processed = 1
     For Each a In arrays
         If a.vSelected Then
             For Each m In markets
+                selectedBaseRoute = ""
                 Dim marketPath, arrayMarketPath As String
                 marketPath = Util.FolderCreate(prjPath, m)
                 arrayMarketPath = Util.FolderCreate(marketPath, a.vCode)
@@ -188,37 +190,60 @@ Private Sub executeSimulation()
                     Dim rowRoute As Integer
                     rowRoute = row - 7
                     Dim selectedRow As Integer
-                    Dim minTarifa, maxEficiencia As Double
+                    Dim minTarifa, bestEficiencia As Double
                     minTarifa = 999999
-                    maxEficiencia = -100#
+                    bestEficiencia = -100#
+                    Dim foundTarifa As Boolean
+                    foundTarifa = False
                     
                     For rowRoute = row - 7 To row - 1
-                    
+                        'Se for o mercado base que estamos processando, então buscamos a melhor rota seguindo o critério
+                        'que se não estiver nenhuma rota com a tarifa líquida abaixo do determinando, escolhemos a de menor,
+                        'valor. Porém, se existir uma ou mais rotas com a tarifa líquida abaixo do determinado, adotamos a mais
+                        'eficiente, para os demais mercados, utilazamos a rota selecionada no mercado base.
+                        If m = FOLDERBASEMARKET Then
+                            If tarifaLiquidaBase > wksDefinedArrays.Cells(rowRoute, 9).value Then
+                                foundTarifa = True
+                                If wksDefinedArrays.Cells(rowRoute, 10) > bestEficiencia Then
+                                    bestEficiencia = wksDefinedArrays.Cells(rowRoute, 10)
+                                    s.vSelectedRouteRow = rowRoute
+                                    selectedBaseRoute = wksDefinedArrays.Cells(rowRoute, 4).value
+                                End If
+                            End If
+                            
+                            
+                            If foundTarifa = False Then
+                                If minTarifa > wksDefinedArrays.Cells(rowRoute, 9).value Then
+                                    minTarifa = wksDefinedArrays.Cells(rowRoute, 9).value
+                                    s.vSelectedRouteRow = rowRoute
+                                    s.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value
+                                End If
+                            End If
+                            
+                        Else
+                            If s.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value Then
+                                s.vSelectedRouteRow = rowRoute
+                            End If
+                        End If
+                        
                         If tarifaLiquidaBase > wksDefinedArrays.Cells(rowRoute, 9).value Then
                             wksDefinedArrays.Cells(rowRoute, 9).Interior.Color = ApplicationColors.bgColorValidTextBox
                         Else
                             wksDefinedArrays.Cells(rowRoute, 9).Interior.Color = ApplicationColors.bgColorInvalidTextBox
                         End If
-                        
                         If eficienciaBase < wksDefinedArrays.Cells(rowRoute, 10) Then
                             wksDefinedArrays.Cells(rowRoute, 10).Interior.Color = ApplicationColors.bgColorValidTextBox
                         Else
                             wksDefinedArrays.Cells(rowRoute, 10).Interior.Color = ApplicationColors.bgColorInvalidTextBox
                         End If
-
-                        If minTarifa > wksDefinedArrays.Cells(rowRoute, 9).value Then
-                            minTarifa = wksDefinedArrays.Cells(rowRoute, 9).value
-                            selectedRow = rowRoute
-                        End If
-                        If maxEficiencia < wksDefinedArrays.Cells(rowRoute, 10).value Then
-                            maxEficiencia = wksDefinedArrays.Cells(rowRoute, 10).value
-                        End If
+                        
+                        
                     Next rowRoute
                     
                     wksDefinedArrays.Cells(row, 1).value = m
                     wksDefinedArrays.Cells(row, 2).value = a.vCode
                     wksDefinedArrays.Cells(row, 3).value = s.vCode & "(Consolidado)"
-                    wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(selectedRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
+                    wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(s.vSelectedRouteRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
                     wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
                     Dim rngRow As range
@@ -226,7 +251,7 @@ Private Sub executeSimulation()
                     rngRow.EntireRow.Interior.Color = RGB(255, 242, 204)
                     
                     For X = 6 To 65
-                        wksDefinedArrays.Cells(row, X).value = wksDefinedArrays.Cells(selectedRow, X).value
+                        wksDefinedArrays.Cells(row, X).value = wksDefinedArrays.Cells(s.vSelectedRouteRow, X).value
                     Next X
                     
                     consolidatedRows.Add row

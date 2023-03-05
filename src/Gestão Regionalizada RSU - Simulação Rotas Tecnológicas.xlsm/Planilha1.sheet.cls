@@ -1,4 +1,3 @@
 Private Sub Step1_Click()
-    Application.Visible = False
-    frmTool.Show
+    modForm.OpenTool
 End Sub

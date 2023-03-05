@@ -13,12 +13,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
+'Abre o formulário "sobre" que apresenta informações sobre a ferramenta
 Private Sub btnAbout_Click()
     frmAbout.Show
 End Sub
 
+'Limpa a base de dados para uma nova simulação. Uma confirmação é
+'requisitada para o usuário para evitar que a base seja apagada sem querer
 Private Sub btnClean_Click()
     Dim answer As Integer
     answer = MsgBox(MSG_CLEAN_DATABASE, vbExclamation + vbYesNo + vbDefaultButton2, MSG_ATTENTION)
@@ -28,44 +29,53 @@ Private Sub btnClean_Click()
     End If
 End Sub
 
+'Abre o manual da ferramenta
 Private Sub btnHelp_Click()
     On Error Resume Next
         ThisWorkbook.FollowHyperlink (Application.ThisWorkbook.Path & "\" & FOLDERMANUAL & "\" & FILEMANUAL)
     On Error GoTo 0
 End Sub
 
+'Abre o passo cinco da ferramenta
 Private Sub btnStepFive_Click()
     frmStepFive.Show
 End Sub
 
+'Abre o passo quatro da ferramenta
 Private Sub btnStepFour_Click()
     frmStepFour.Show
 End Sub
 
+'Abre o passo um da ferramenta
 Private Sub btnStepOne_Click()
     frmStepOne.Show
 End Sub
 
+'Abre o passo seis da ferramenta
 Private Sub btnStepSix_Click()
     frmStepSix.Show
 End Sub
 
+'Abre o passo três da ferramenta
 Private Sub btnStepThree_Click()
     frmStepThree.Show
 End Sub
 
+'Abre o passo dois da ferramenta
 Private Sub btnStepTwo_Click()
     frmStepTwo.Show
 End Sub
 
+'Atualiza os elementos do formulário conforme o estado atual dos passos preenchidos
 Public Function updateForm()
+    'Atualiza o formulário para o modo padrão
     imgStepOneStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepTwoStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepThreeStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
     imgStepSixStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONWARNING)
-    imgPartnersBottom.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMGPARTNERS)
+    imgPartnersBottom.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERASSETS & "\" & IMAGEPARTNERS)
     btnStepOne.Enabled = True
     btnStepTwo.Enabled = False
     btnStepThree.Enabled = False
@@ -73,6 +83,9 @@ Public Function updateForm()
     btnStepFive.Enabled = False
     btnStepSix.Enabled = False
     
+    'Se os formuários de gravimetria, estudo de caso, dados de simulação,
+    'a pasta para salvar os arquivos foi selecionada e mais de dois municípios foram
+    'selecionados, então o passo um está completo e o passo dois é liberado
     If ValidateFormRules("frmRSUGravimetry") And _
         ValidateFormRules("frmStudyCaseStepOne") And _
         ValidateFormRules("frmSimulationData") And _
@@ -121,7 +134,7 @@ Public Function updateForm()
 End Function
 
 Private Sub UserForm_Initialize()
-    'Form Appearance
+    'Ajusta a aparência do formulário
     Call modForm.applyLookAndFeel(Me, 1, APPVERSION)
     
     lblApplicationName = APPSHORTNAME
@@ -134,5 +147,4 @@ End Sub
 
 Private Sub UserForm_QueryClose(Cancel As Integer, CloseMode As Integer)
     ThisWorkbook.Save
-    'Application.Visible = True
 End Sub

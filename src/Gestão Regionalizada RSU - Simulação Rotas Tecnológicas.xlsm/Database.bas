@@ -1,6 +1,7 @@
 Attribute VB_Name = "Database"
 Option Explicit
 
+'Definição das colunas da base de dados
 Public Enum DatabaseColumn
     colGroup = 1
     colStep = 2
@@ -81,10 +82,7 @@ Function Validate(ByVal name As String, ByVal value As String, Optional ByRef me
     
 End Function
 
-Function checkStepStatus(ByVal step As String)
-    checkStepStatus = True
-End Function
-
+'Limpa a base de dados
 Sub Clean()
     'Clean Database
     Dim wksDatabase As Worksheet
@@ -109,7 +107,7 @@ Sub Clean()
     'Clear arrays
     Dim wksArrays As Worksheet
     Set wksArrays = Util.GetArraysWorksheet
-    wksArrays.range("A2:O200").ClearContents
+    wksArrays.range("A2:O50000").ClearContents
     
     'Clear defined arrays
     Dim wksDefinedArrays As Worksheet

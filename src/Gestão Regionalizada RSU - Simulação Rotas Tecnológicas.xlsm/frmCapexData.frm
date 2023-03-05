@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmCapexData 
    Caption         =   "UserForm1"
-   ClientHeight    =   10515
+   ClientHeight    =   10512
    ClientLeft      =   120
    ClientTop       =   468
    ClientWidth     =   11028
@@ -29,10 +29,6 @@ Private Sub btnBack_Click()
         Unload Me
     End If
 End Sub
-
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
 
 Private Sub txtRealEuro_Change()
 Call modForm.textBoxChange(txtRealEuro, "RealEuro", FormChanged)

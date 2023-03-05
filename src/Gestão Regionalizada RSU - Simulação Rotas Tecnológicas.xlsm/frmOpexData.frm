@@ -30,9 +30,6 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
 
 Private Sub cbxHiringRegimeManualOperator_Change()
 FormChanged = True

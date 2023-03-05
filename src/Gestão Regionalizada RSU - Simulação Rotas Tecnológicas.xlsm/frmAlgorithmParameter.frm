@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAlgorithmParameter 
    Caption         =   "UserForm1"
-   ClientHeight    =   4155
+   ClientHeight    =   4152
    ClientLeft      =   240
    ClientTop       =   936
    ClientWidth     =   8280.001
@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim FormChanged As Boolean
 
 Private Sub btnBack_Click()

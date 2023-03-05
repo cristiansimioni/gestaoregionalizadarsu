@@ -1,4 +1,3 @@
 Private Sub Workbook_Open()
-    'Application.Visible = False
-    frmTool.Show
+    modForm.OpenTool
 End Sub

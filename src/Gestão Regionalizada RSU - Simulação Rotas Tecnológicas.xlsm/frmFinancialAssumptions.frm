@@ -28,10 +28,6 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
-
 Private Sub cbxFinancingInstitutionProject_Change()
     If cbxFinancingInstitutionProject.value <> "Usuário" Then
         txtRealInterestRateProject.Enabled = False

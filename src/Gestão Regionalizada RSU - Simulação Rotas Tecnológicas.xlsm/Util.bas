@@ -1,17 +1,16 @@
 Attribute VB_Name = "Util"
 Option Explicit
 
-'Application
+'Informações da Aplicação
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "3.1.2"
-Public Const APPLASTUPDATED         As String = "20/02/2023"
+Public Const APPVERSION             As String = "3.2.0"
+Public Const APPLASTUPDATED         As String = "04/03/2023"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
-Public Const APPDISTANCECALCULATION As Boolean = True
 
-'Folder
+'Pastas da Aplicação
 Public Const FOLDERASSETS           As String = "assets"
 Public Const FOLDERICONS            As String = "assets\icons"
 Public Const FOLDERMANUAL           As String = "assets\manual"
@@ -23,23 +22,23 @@ Public Const FOLDERLANDFILLMARKET   As String = "Mercado Aterro Existentes"
 Public Const FOLDERCHART            As String = "Gráficos"
 Public Const FOLDERREPORT           As String = "Relatórios"
 
-'Icons
+'Ícones da Aplicação
 Public Const ICONCHECK              As String = "check-icon.jpg"
 Public Const ICONWARNING            As String = "error-icon.jpg"
 
-'Images
-Public Const imgLogo                As String = "logo-grey.jpg"
-Public Const IMGPARTNERS            As String = "partners.jpg"
-Public Const IMGLOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
-Public Const IMGSCREENROUTEONEA     As String = "screen-rt-1-a.jpg"
-Public Const IMGSCREENROUTEONEB     As String = "screen-rt-1-b.jpg"
-Public Const IMGSCREENROUTEONEC     As String = "screen-rt-1-c.jpg"
-Public Const IMGSCREENROUTETWO      As String = "screen-rt-2.jpg"
-Public Const IMGSCREENROUTETHREE    As String = "screen-rt-3.jpg"
-Public Const IMGSCREENROUTEFOUR     As String = "screen-rt-4.jpg"
-Public Const IMGSCREENROUTEFIVE     As String = "screen-rt-5.jpg"
+'Imagens da Aplicação
+Public Const IMAGELOGO                As String = "logo-grey.jpg"
+Public Const IMAGEPARTNERS            As String = "partners.jpg"
+Public Const IMAGELOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
+Public Const IMAGESCREENROUTEONEA     As String = "screen-rt-1-a.jpg"
+Public Const IMAGESCREENROUTEONEB     As String = "screen-rt-1-b.jpg"
+Public Const IMAGESCREENROUTEONEC     As String = "screen-rt-1-c.jpg"
+Public Const IMAGESCREENROUTETWO      As String = "screen-rt-2.jpg"
+Public Const IMAGESCREENROUTETHREE    As String = "screen-rt-3.jpg"
+Public Const IMAGESCREENROUTEFOUR     As String = "screen-rt-4.jpg"
+Public Const IMAGESCREENROUTEFIVE     As String = "screen-rt-5.jpg"
 
-'Files
+'Arquivos da Aplicação
 Public Const FILEMANUAL             As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP1        As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP2        As String = "Manual da Ferramenta.pdf"
@@ -48,7 +47,7 @@ Public Const FILEMANUALSTEP4        As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP5        As String = "Manual da Ferramenta.pdf"
 Public Const FILEMANUALSTEP6        As String = "Manual da Ferramenta.pdf"
 
-'Messages
+'Mensagens da Aplicação
 Public Const MSG_ATTENTION                          As String = "Atenção"
 Public Const MSG_CLEAN_DATABASE                     As String = "Tem certeza que você deseja apagar tudo? Todos os dados inseridos serão perdidos e você terá que começar o seu projeto novamente."
 Public Const MSG_CHANGED_NOT_SAVED_TITLE            As String = "Salvar Alterações"
@@ -225,13 +224,9 @@ cmd = "%comspec% /c " & Chr(34) & Chr(34) & PythonExe & Chr(34) & " " & PythonSc
 errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
 
 If errorCode = 0 Then
-    'Insert your code here
-    MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY, vbInformation
-    Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Sim")
     RunPythonScript = True
 Else
-    MsgBox MSG_ALGORITHM_COMPLETE_FAILED, vbCritical
-    Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "")
+    Debug.Print cmd
     RunPythonScript = False
 End If
 

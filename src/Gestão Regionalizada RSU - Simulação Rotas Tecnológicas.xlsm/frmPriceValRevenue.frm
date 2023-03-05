@@ -30,9 +30,6 @@ Private Sub btnBack_Click()
     End If
 End Sub
 
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
 
 Private Sub txtExtraordinaryTariffAffordability_Change()
     Call modForm.textBoxChange(txtExtraordinaryTariffAffordability, "ExtraordinaryTariffAffordability", FormChanged)

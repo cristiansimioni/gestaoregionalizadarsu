@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim FoodWaste As Double
 Dim GreenWaste As Double
 Dim Paper As Double
@@ -30,10 +28,6 @@ Dim Wood As Double
 Dim MineralResidues As Double
 Dim Others As Double
 Dim FormChanged As Boolean
-
-Function ValidateForm() As Boolean
-    ValidateForm = True
-End Function
 
 Private Sub btnBack_Click()
     If FormChanged Then
@@ -84,7 +78,7 @@ Private Sub btnDefaultValues_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If ValidateForm() Then
+    On Error GoTo ErrorHandler
         Call Database.SetDatabaseValue("FoodWaste", colUserValue, FoodWaste)
         Call Database.SetDatabaseValue("GreenWaste", colUserValue, GreenWaste)
         Call Database.SetDatabaseValue("Paper", colUserValue, Paper)
@@ -104,9 +98,10 @@ Private Sub btnSave_Click()
         Unload Me
         ThisWorkbook.Save
         frmStepOne.updateForm
-    Else
-        answer = MsgBox("Valores inválidos. Favor verificar!", vbExclamation, "Dados inválidos")
-    End If
+    Exit Sub
+    
+ErrorHandler:
+    Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
 End Sub
 
 Private Sub txtDiapers_Change()

@@ -102,6 +102,11 @@ Private Sub btnRunAlgorithm_Click()
     If Util.RunPythonScript(algPath, prjName) Then
         'Load the result into the workbook
         Call Util.CSVImport(algPath, prjName)
+        MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY, vbInformation
+        Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Sim")
+    Else
+        MsgBox MSG_ALGORITHM_COMPLETE_FAILED, vbCritical
+        Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "")
     End If
     
     btnRunAlgorithm.Enabled = True
