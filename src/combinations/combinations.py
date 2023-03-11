@@ -68,7 +68,7 @@ def clusterization(data, distance, max):
         for l in range(len(cities_temp)):
             for c in range(len(cities_temp)):
                 dist = distance[l, c]
-                if dist < min and dist != 0:
+                if dist < min and l != c:
                     min = dist
                     line = l
                     column = c
