@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "3.2.0"
-Public Const APPLASTUPDATED         As String = "04/03/2023"
+Public Const APPVERSION             As String = "4.0.0"
+Public Const APPLASTUPDATED         As String = "28/03/2023"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -30,13 +30,13 @@ Public Const ICONWARNING            As String = "error-icon.jpg"
 Public Const IMAGELOGO                As String = "logo-grey.jpg"
 Public Const IMAGEPARTNERS            As String = "partners.jpg"
 Public Const IMAGELOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
-Public Const IMAGESCREENROUTEONEA     As String = "screen-rt-1-a.jpg"
-Public Const IMAGESCREENROUTEONEB     As String = "screen-rt-1-b.jpg"
-Public Const IMAGESCREENROUTEONEC     As String = "screen-rt-1-c.jpg"
-Public Const IMAGESCREENROUTETWO      As String = "screen-rt-2.jpg"
-Public Const IMAGESCREENROUTETHREE    As String = "screen-rt-3.jpg"
-Public Const IMAGESCREENROUTEFOUR     As String = "screen-rt-4.jpg"
-Public Const IMAGESCREENROUTEFIVE     As String = "screen-rt-5.jpg"
+Public Const IMAGESCREENROUTEONEA     As String = "screen-rt-1-a.bmp"
+Public Const IMAGESCREENROUTEONEB     As String = "screen-rt-1-b.bmp"
+Public Const IMAGESCREENROUTEONEC     As String = "screen-rt-1-c.bmp"
+Public Const IMAGESCREENROUTETWO      As String = "screen-rt-2.bmp"
+Public Const IMAGESCREENROUTETHREE    As String = "screen-rt-3.bmp"
+Public Const IMAGESCREENROUTEFOUR     As String = "screen-rt-4.bmp"
+Public Const IMAGESCREENROUTEFIVE     As String = "screen-rt-5.bmp"
 
 'Arquivos da Aplicação
 Public Const FILEMANUAL             As String = "Manual da Ferramenta.pdf"
@@ -58,7 +58,7 @@ Public Const MSG_ALGORITHM_COMPLETE_SUCCESSFULLY    As String = "A execução do a
 Public Const MSG_ALGORITHM_COMPLETE_FAILED          As String = "A execução do algoritmo falhou."
 Public Const MSG_ALGORITHM_STARTUP                  As String = "Uma tela preta (terminal) irá abrir para a execução do algoritmo. Quando a execução terminar a tela irá fechar automaticamente. O tempo de processamento depende dos parâmetros selecionados e capacidade da sua máquina."
 Public Const MSG_WRONG_NUMBER_CITIES_TITLE          As String = "Quantidade insuficiente"
-Public Const MSG_WRONG_NUMBER_CITIES                As String = "Quantidade de cidades insuficiente, selecione ao menos duas."
+Public Const MSG_WRONG_NUMBER_CITIES                As String = "Quantidade de municípios insuficiente, selecione ao menos duas."
 Public Const MSG_WRONG_NUMBER_ARRAYS_TITLE          As String = "Quantidade de arranjos incorreta"
 Public Const MSG_WRONG_NUMBER_ARRAYS                As String = "Quantidade de arranjos incorreta. Você deve selecionar três arranjos obrigatoriamente."
 
@@ -151,24 +151,30 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
 
     
     'Copy the contents of required sheet ready to paste into the new CSV
-    If sheet = "city" Then
-        sFileName = "cidades-" & projectName & ".csv"
-        Set wks = Util.GetSelectedCitiesWorksheet
-    Else
-        sFileName = "distancias-" & projectName & ".csv"
-        Set wks = Util.GetCitiesDistanceWorksheet
-    End If
-    
     Dim lRow As Long
     Dim lCol As Long
     
-    'Find the last non-blank cell in column A(1)
-    lRow = wks.Cells(Rows.count, 1).End(xlUp).row
+    If sheet = "city" Then
+        sFileName = "cidades-" & projectName & ".csv"
+        Set wks = Util.GetSelectedCitiesWorksheet
+        'Find the last non-blank cell in column A(1)
+        lRow = wks.Cells(Rows.count, 1).End(xlUp).row
+        
+        'Find the last non-blank cell in row 1
+        lCol = wks.Cells(1, Columns.count).End(xlToLeft).column
+        wks.range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
+    Else
+        sFileName = "distancias-" & projectName & ".csv"
+        Set wks = Util.GetCitiesDistanceWorksheet
+        
+        'Find the last non-blank cell in column A(1)
+        lRow = wks.Cells(Rows.count, 3).End(xlUp).row
+        
+        'Find the last non-blank cell in row 1
+        lCol = wks.Cells(2, Columns.count).End(xlToLeft).column
+        wks.range(wks.Cells(3, 2), wks.Cells(lRow, lCol)).Copy
+    End If
     
-    'Find the last non-blank cell in row 1
-    lCol = wks.Cells(1, Columns.count).End(xlToLeft).column
-    wks.range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
-
     'Open a new XLS workbook, save it as the file name
     Set wb = Workbooks.Add
     With wb
