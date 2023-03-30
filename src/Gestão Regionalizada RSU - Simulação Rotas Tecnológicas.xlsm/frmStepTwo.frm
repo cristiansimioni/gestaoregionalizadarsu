@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
-   ClientHeight    =   5835
+   ClientHeight    =   5832
    ClientLeft      =   480
    ClientTop       =   1860
    ClientWidth     =   9960.001
@@ -74,44 +74,55 @@ Private Sub btnHelpStep_Click()
 End Sub
 
 Private Sub btnRunAlgorithm_Click()
-    btnRunAlgorithm.Enabled = False
+    
     'Calculate cities distance
     If Database.GetDatabaseValue("CalculateDistance", colUserValue) = "Sim" Then
-        Call modCity.calculateDistances
+        'Call modCity.calculateDistances
     End If
     
-    'Create project folder
-    Dim prjPath As String
-    Dim prjName As String
-    prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
-    prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
-    prjPath = Util.FolderCreate(prjPath, prjName)
+    'Verificar se as distâncias dos municípios foram inseridas corretamente
+    Dim errMsg As String
+    If modDistance.checkDistances(errMsg) Then
+        btnRunAlgorithm.Enabled = False
+        
+        'Create project folder
+        Dim prjPath As String
+        Dim prjName As String
+        prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
+        prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
+        prjPath = Util.FolderCreate(prjPath, prjName)
+        
+        'Create algorithm folder
+        Dim algPath As String
+        algPath = Util.FolderCreate(prjPath, FOLDERALGORITHM)
+        
+        'Save cities to csv
+        Call Util.saveAsCSV(prjName, algPath, "city")
     
-    'Create algorithm folder
-    Dim algPath As String
-    algPath = Util.FolderCreate(prjPath, FOLDERALGORITHM)
+        'Save distance to csv
+        Call Util.saveAsCSV(prjName, algPath, "distance")
+        
+        'Run the algorithm
+        MsgBox MSG_ALGORITHM_STARTUP, vbInformation
+        If Util.RunPythonScript(algPath, prjName) Then
+            'Load the result into the workbook
+            Call Util.CSVImport(algPath, prjName)
+            MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY, vbInformation
+            Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Sim")
+        Else
+            MsgBox MSG_ALGORITHM_COMPLETE_FAILED, vbCritical
+            Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "")
+        End If
+        
+        btnRunAlgorithm.Enabled = True
     
-    'Save cities to csv
-    Call Util.saveAsCSV(prjName, algPath, "city")
-
-    'Save distance to csv
-    Call Util.saveAsCSV(prjName, algPath, "distance")
-    
-    'Run the algorithm
-    MsgBox MSG_ALGORITHM_STARTUP, vbInformation
-    If Util.RunPythonScript(algPath, prjName) Then
-        'Load the result into the workbook
-        Call Util.CSVImport(algPath, prjName)
-        MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY, vbInformation
-        Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "Sim")
+        Call updateForm
     Else
-        MsgBox MSG_ALGORITHM_COMPLETE_FAILED, vbCritical
-        Call Database.SetDatabaseValue("AlgorithmStatus", colUserValue, "")
+        MsgBox "Os dados das distância entre os municípios estão incorretos. Favor verificar o erro abaixo na aba Distâncias entre Municípios antes de prosseguir: " _
+        & vbCrLf & vbCrLf _
+        & errMsg, vbCritical, "Distâncias incorretas"
+        Util.GetCitiesDistanceWorksheet.Activate
     End If
-    
-    btnRunAlgorithm.Enabled = True
-    
-    Call updateForm
 End Sub
 
 Private Sub btnSelectArrays_Click()

@@ -91,8 +91,10 @@ Public Function updateForm()
         ValidateFormRules("frmSimulationData") And _
         ValidateFormRules("frmStepOne") And _
         readSelectedCities.count >= 2 Then
+        
         imgStepOneStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepTwo.Enabled = True
+        
     End If
     
     If ValidateFormRules("frmGeneralData") And _

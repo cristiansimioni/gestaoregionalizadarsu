@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmFinancialAssumptions 
    Caption         =   "UserForm1"
-   ClientHeight    =   6915
+   ClientHeight    =   6912
    ClientLeft      =   120
    ClientTop       =   468
-   ClientWidth     =   11508
+   ClientWidth     =   11556
    OleObjectBlob   =   "frmFinancialAssumptions.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

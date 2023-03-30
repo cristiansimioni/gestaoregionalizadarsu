@@ -1,3 +1,3 @@
 Private Sub Workbook_Open()
-    modForm.OpenTool
+    modForm.openTool
 End Sub

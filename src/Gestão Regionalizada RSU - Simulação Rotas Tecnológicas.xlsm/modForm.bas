@@ -9,8 +9,12 @@ Private Declare PtrSafe Function GetWindowLong Lib "User32" Alias "GetWindowLong
 Private Declare PtrSafe Function SetWindowLong Lib "User32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
 
 'Abre o formulário principal da ferramenta
-Sub OpenTool()
+Public Sub openTool()
     frmTool.Show
+End Sub
+
+Public Sub openDistanceForm()
+    frmDistance.Show
 End Sub
 
 Public Sub textBoxChange(ByRef txtBox, ByVal varName As String, ByRef FormChanged As Boolean)

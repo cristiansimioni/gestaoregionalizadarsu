@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmProgressBarSimulation 
    Caption         =   "Processando..."
-   ClientHeight    =   1545
+   ClientHeight    =   1548
    ClientLeft      =   120
    ClientTop       =   468
    ClientWidth     =   12432
@@ -198,16 +198,16 @@ Private Sub executeSimulation()
                     
                     For rowRoute = row - 7 To row - 1
                         'Se for o mercado base que estamos processando, então buscamos a melhor rota seguindo o critério
-                        'que se não estiver nenhuma rota com a tarifa líquida abaixo do determinando, escolhemos a de menor,
+                        'que se não tiver nenhuma rota com a tarifa líquida abaixo do determinando, escolhemos a de menor,
                         'valor. Porém, se existir uma ou mais rotas com a tarifa líquida abaixo do determinado, adotamos a mais
-                        'eficiente, para os demais mercados, utilazamos a rota selecionada no mercado base.
+                        'eficiente, para os demais mercados, utilazaremos a rota selecionada no mercado base.
                         If m = FOLDERBASEMARKET Then
                             If tarifaLiquidaBase > wksDefinedArrays.Cells(rowRoute, 9).value Then
                                 foundTarifa = True
                                 If wksDefinedArrays.Cells(rowRoute, 10) > bestEficiencia Then
                                     bestEficiencia = wksDefinedArrays.Cells(rowRoute, 10)
                                     s.vSelectedRouteRow = rowRoute
-                                    selectedBaseRoute = wksDefinedArrays.Cells(rowRoute, 4).value
+                                    s.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value
                                 End If
                             End If
                             

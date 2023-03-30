@@ -371,7 +371,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Editar Cidades", True)
+    Call modForm.applyLookAndFeel(Me, 3, "Editar Municípios", True)
     
     Set cities = readSelectedCities
     

@@ -114,6 +114,11 @@ Sub Clean()
     Set wksDefinedArrays = Util.GetDefinedArraysWorksheet
     wksDefinedArrays.range("A3:BM500").ClearContents
     
+    'Clear distances
+    Dim wksCitiesDistance As Worksheet
+    Set wksCitiesDistance = Util.GetCitiesDistanceWorksheet
+    wksCitiesDistance.range("A1:XFD500").ClearContents
+    
     frmTool.updateForm
     
 End Sub

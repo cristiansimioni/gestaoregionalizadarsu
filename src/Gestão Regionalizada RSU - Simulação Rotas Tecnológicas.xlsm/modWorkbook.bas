@@ -5,7 +5,7 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     Dim wb As Workbook
     Set wb = Workbooks.Open(filename)
 
-    ' Valores sub-arranjo
+    ' Valores subarranjo
     wb.Sheets("R-Entrada").range("E10") = arr.vTrash
     wb.Sheets("R-Entrada").range("E8") = arr.vPopulation
     wb.Sheets("R&C-Painel de Controle").range("D84") = arr.vInbound
@@ -59,7 +59,7 @@ Public Sub EditToolTwoData(ByVal filename, ByVal routeFiles, ByVal arr, ByVal ma
     Dim wb As Workbook
     Set wb = Workbooks.Open(filename)
     
-    ' Valores sub-arranjo
+    ' Valores subarranjo
     wb.Sheets("RESUMO GERAL Valoriz. RT´s").range("C30") = arr.vInbound
     wb.Sheets("RESUMO GERAL Valoriz. RT´s").range("C31") = arr.vOutbound
     

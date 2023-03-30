@@ -1,3 +1,3 @@
 Private Sub Step1_Click()
-    modForm.OpenTool
+    modForm.openTool
 End Sub

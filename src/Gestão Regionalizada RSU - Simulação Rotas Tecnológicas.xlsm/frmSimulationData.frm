@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
-   ClientHeight    =   5232
+   ClientHeight    =   6204
    ClientLeft      =   228
    ClientTop       =   840
-   ClientWidth     =   7680
+   ClientWidth     =   9588.001
    OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -47,6 +47,7 @@ Private Sub btnDefault_Click()
     txtCurrentLandfillCost.Text = Database.GetDatabaseValue("CurrentLandfillCost", colDefaultValue)
     txtCurrentCostRSU.Text = Database.GetDatabaseValue("CurrentCostRSU", colDefaultValue)
     txtLandfillCurrentDeviation.Text = Database.GetDatabaseValue("LandfillCurrentDeviation", colDefaultValue)
+    txtValuationEfficiency.Text = Database.GetDatabaseValue("ValuationEfficiency", colDefaultValue)
 End Sub
 
 Private Sub btnSave_Click()
@@ -58,6 +59,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("CurrentLandfillCost", colUserValue, CDbl(txtCurrentLandfillCost.Text))
         Call Database.SetDatabaseValue("CurrentCostRSU", colUserValue, CDbl(txtCurrentCostRSU.Text))
         Call Database.SetDatabaseValue("LandfillCurrentDeviation", colUserValue, CDbl(txtLandfillCurrentDeviation.Text))
+        Call Database.SetDatabaseValue("ValuationEfficiency", colUserValue, CDbl(txtValuationEfficiency.Text))
         
         FormChanged = False
         Unload Me
@@ -80,6 +82,7 @@ Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
     End If
     FormChanged = True
 End Sub
+
 
 Private Sub txtCurrentCostRSU_Change()
     Call textBoxChange(txtCurrentCostRSU, "CurrentCostRSU")
@@ -115,7 +118,7 @@ Private Sub txtTargetExpectation_Change()
 End Sub
 
 Private Sub txtValuationEfficiency_Change()
-    'Call textBoxChange(txtValuationEfficiency, "ValuationEfficiency")
+    Call textBoxChange(txtValuationEfficiency, "ValuationEfficiency")
 End Sub
 
 
@@ -123,9 +126,9 @@ Private Sub calculateValuationEfficiency()
     If IsNumeric(txtTargetExpectation.Text) And IsNumeric(txtCurrentCostRSU.Text) And IsNumeric(txtLandfillDeviationTarget.Text) And IsNumeric(txtLandfillCurrentDeviation.Text) And _
        IsNumeric(txtCurrentLandfillCost.Text) Then
        ValuationEfficiency = Round((((CDbl(txtTargetExpectation.Text) - CDbl(txtCurrentCostRSU.Text)) + ((CDbl(txtLandfillDeviationTarget.Text) / 100) - (CDbl(txtLandfillCurrentDeviation.Text) / 100)) * CDbl(txtCurrentLandfillCost.Text)) / CDbl(txtTargetExpectation.Text)) * 100, 1)
-       txtValuationEfficiency.Text = ValuationEfficiency
+       txtValuationEfficiencyCalculation.Text = ValuationEfficiency
     Else
-       txtValuationEfficiency = 0
+       txtValuationEfficiencyCalculation = 0
     End If
     
 End Sub
@@ -133,7 +136,7 @@ End Sub
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Metas para a Simulação do Estudo de Caso")
-    txtValuationEfficiency.ForeColor = RGB(0, 0, 0)
+    txtValuationEfficiencyCalculation.ForeColor = RGB(0, 0, 0)
     
     txtLandfillDeviationTarget.Text = Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)
     txtExpectedDeadline.Text = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
@@ -142,8 +145,9 @@ Private Sub UserForm_Initialize()
     txtCurrentLandfillCost.Text = Database.GetDatabaseValue("CurrentLandfillCost", colUserValue)
     txtCurrentCostRSU.Text = Database.GetDatabaseValue("CurrentCostRSU", colUserValue)
     txtLandfillCurrentDeviation.Text = Database.GetDatabaseValue("LandfillCurrentDeviation", colUserValue)
-    If Database.GetDatabaseValue("ValuationEfficiency", colUserValue) <> "" Then
-        txtValuationEfficiency.Text = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 1)
+    txtValuationEfficiency.Text = Round(Database.GetDatabaseValue("ValuationEfficiency", colUserValue), 1)
+    If Database.GetDatabaseValue("ValuationEfficiencyCalculation", colUserValue) <> "" Then
+        txtValuationEfficiencyCalculation.Text = Round(Database.GetDatabaseValue("ValuationEfficiencyCalculation", colUserValue), 1)
     End If
     
     FormChanged = False
