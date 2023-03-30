@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "Selecionar Cidades"
-   ClientHeight    =   9315.001
+   ClientHeight    =   9312.001
    ClientLeft      =   348
    ClientTop       =   1380
    ClientWidth     =   11028
@@ -56,6 +56,7 @@ End Sub
 
 Private Sub btnSave_Click()
     Set wksSelectedCities = Util.GetSelectedCitiesWorksheet
+    Set wksCitiesDistance = Util.GetCitiesDistanceWorksheet
     
     If selectedCities.count >= 2 Then
         'Clear currect selected cities worksheet
@@ -88,6 +89,16 @@ Private Sub btnSave_Click()
             row = row + 1
         Next city
         
+        'Salva o nome dos municípios na aba de distâncias para facilitar a entrada de dados e visualização
+        row = 3
+        column = 2
+        For Each city In selectedCities
+            wksCitiesDistance.Cells(row, 1) = city.vCityName
+            wksCitiesDistance.Cells(2, column) = city.vCityName
+            row = row + 1
+            column = column + 1
+        Next city
+        
         Unload Me
         frmStepOne.updateForm
         ThisWorkbook.Save
@@ -102,7 +113,29 @@ Private Sub cbxUF_Change()
     currentUF = cbxUF
     For Each city In databaseCities
         If city.vUF = cbxUF Then
-            If Not IsInCollection(selectedCities, city.vIBGECode) Then
+            If Not IsInCollection(selectedCities, city.vIBGECode) And InStr(LCase(city.vCityName), LCase(txtAvailableSearch.Text)) <> 0 Then
+                lstAvailable.AddItem
+                lstAvailable.List(lstAvailable.ListCount - 1, 0) = city.vCityName
+                lstAvailable.List(lstAvailable.ListCount - 1, 1) = city.vIBGECode
+            End If
+        End If
+    Next city
+    
+    If cbxUF <> "" Then
+        lblSearch.Visible = True
+        txtAvailableSearch.Visible = True
+    Else
+        lblSearch.Visible = False
+        txtAvailableSearch.Visible = False
+    End If
+End Sub
+
+Private Sub txtAvailableSearch_Change()
+    lstAvailable.Clear
+    currentUF = cbxUF
+    For Each city In databaseCities
+        If city.vUF = cbxUF Then
+            If Not IsInCollection(selectedCities, city.vIBGECode) And InStr(LCase(city.vCityName), LCase(txtAvailableSearch.Text)) <> 0 Then
                 lstAvailable.AddItem
                 lstAvailable.List(lstAvailable.ListCount - 1, 0) = city.vCityName
                 lstAvailable.List(lstAvailable.ListCount - 1, 1) = city.vIBGECode
@@ -113,7 +146,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Selecionar Cidades")
+    Call modForm.applyLookAndFeel(Me, 3, "Selecionar Municípios")
     
     lstAvailable.ColumnWidths = "130,10"
     lstSelected.ColumnWidths = "130,10"
@@ -123,6 +156,10 @@ Private Sub UserForm_Initialize()
     
     'Load alrady selected cities if available
     Set selectedCities = readSelectedCities
+    
+    lblSearch.Visible = False
+    txtAvailableSearch.Visible = False
+    txtAvailableSearch.Text = ""
     
     'Load UF
     For Each city In databaseCities
