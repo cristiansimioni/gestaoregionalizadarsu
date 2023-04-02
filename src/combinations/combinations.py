@@ -302,31 +302,27 @@ def main():
         format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s',
     )
 
-    # Parser command line parameters
+    # Verifica os parâmetros de entrada do algoritmo
     try:
-        CSVCITIES = sys.argv[1]                 # Cities file
-        CSVDISTANCE = sys.argv[2]               # Distance matrix file
-        MAX_CITIES = int(sys.argv[3])           # The maximum number of allowed cities to generate the combinations due to performance issues
-        TRASH_THRESHOLD = float(sys.argv[4])    # The minimun of trash for a sub-array
-        CAPEX_INBOUND = float(sys.argv[5])      #
-        CAPEX_OUTBOUND = float(sys.argv[6])     #
-        PAYMENT_PERIOD = int(sys.argv[7])       # 
-        MOVIMENTATION_COST = float(sys.argv[8]) #
-        LANDFILL_DEVIATION = float(sys.argv[9]) #     
-        REPORTFILE = sys.argv[10]               # The report file name
-        OUTPUTFILE = sys.argv[11]               # The output file name
-        if len(sys.argv) > 12:
-            CSVRSU = sys.argv[12]
-        else:
-            CSVRSU = "rsu.csv"
+        CSVCITIES = sys.argv[1]                     # Arquivo com as cidades e seus respectivos atributos
+        CSVDISTANCE = sys.argv[2]                   # Arquivo com a matriz de distância entre as cidades
+        MAX_CITIES = int(sys.argv[3])               # Quantidade máxima de cidades para a geração das combinações
+        MAX_SUB_ARRAYS = int(sys.argv[4])           # Quantidade máxima de subarranjos por arranjo
+        TRASH_THRESHOLD = float(sys.argv[5])        # Mínimo de tonelada dia para que um subarranjo seja considerado válido
+        CAPEX_INBOUND = float(sys.argv[6])          # Valor inbound do Capex
+        CAPEX_OUTBOUND = float(sys.argv[7])         # Valor outbout do Capex
+        PAYMENT_PERIOD = int(sys.argv[8])           # Tempo de pagamento do consórcio
+        MOVIMENTATION_COST = float(sys.argv[9])     # Custo de movimentação
+        LANDFILL_DEVIATION = float(sys.argv[10])    # Valor do desvio de aterro    
+        REPORTFILE = sys.argv[11]                   # Nome e caminho do arquivo onde o relatório será salvo
+        OUTPUTFILE = sys.argv[12]                   # Nome e caminho do arquivo onde a lista de arranjos será salva
     except IndexError:
         raise SystemExit(f"Usage: {sys.argv[0]} <cities.csv> <distance.csv> <max cities> <trash threshold> <capex inbound> <opex inbound> <paymnent period> <movimentation cost> <landfill deviation> <report.txt> <output.csv> <rsu.cvs>")
 
     # Static variables
-    MAX_SUB_ARRAYS = 2                          # Max sub-arrays per array
-    MAX_ARRAYS = 2000                           # Top # arrays that will be exported
-    VERSION = "3.1.2"                           # Algorithm Version
+    MAX_ARRAYS = 100                            # Top # arrays that will be exported
     ADDITIONAL_COST = 1.25                      # Inbound for centralized array and outbound for non-centralized arrays
+
 
     # Output files
     report = open(REPORTFILE, "w")
@@ -336,7 +332,6 @@ def main():
     report.write("============= PARÂMETROS ============= \n")
     report.write("Arquivo de cidades: " + repr(CSVCITIES) + "\n")
     report.write("Arquivo de distâncias: " + repr(CSVDISTANCE) + "\n")
-    report.write("Arquivo de RSU: " + repr(CSVRSU) + "\n")
     report.write("Máximo de cidades: " + repr(MAX_CITIES) + "\n")
     report.write("Quantidade de lixo mínimo para um sub-arranjo: " + repr(TRASH_THRESHOLD) + "\n")
     report.write("Capex Inbound: " + repr(CAPEX_INBOUND) + "\n")
@@ -446,7 +441,7 @@ def main():
         logging.info("Removendo combinaçãoes cujo sub-arranjo não possui a quantidade de lixo necessária...")
         combinations = removeArraysTrashThreshold(citiesdic, combinations, TRASH_THRESHOLD)
         logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
-    report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): " + repr(len(combinations)) + "\n\n\n")
+    report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): " + repr(len(combinations)) + "\n\n")
 
     logging.info("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
 

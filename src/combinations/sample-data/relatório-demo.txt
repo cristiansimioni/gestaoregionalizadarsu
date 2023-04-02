@@ -1,0 +1,1685 @@
+============= PARÂMETROS ============= 
+Arquivo de cidades: 'sample-data\\cidades-demo.csv'
+Arquivo de distâncias: 'sample-data\\distancias-demo.csv'
+Máximo de cidades: 10
+Quantidade de lixo mínimo para um sub-arranjo: 0.0
+Capex Inbound: 150.0
+Capex Outbound: 25.0
+Prazo: 30
+Desvio Aterro (%): 0.7
+Redução Custo de Transporte (%): 0.7
+Capex Inbound: 28.9314216894
+Capex Outbound: 4.8219036149
+
+
+============= ATERROS POTENCIAIS ============= 
+Antonina
+
+
+
+============= ATERROS EXISTENTES ============= 
+Matinhos
+
+
+
+============= CLUSTERS ============= 
+1.	['Paranaguá']
+2.	['Antonina']
+3.	['Guaratuba']
+4.	['Matinhos']
+5.	['Pontal do Paraná']
+6.	['Colombo']
+
+
+
+============= ESTATÍSTICAS ============= 
+Quantidade de combinações: 32
+Quantidade de combinações (desconsiderando arranjos com sub-arranjos sem UTVR): 32
+Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): 32
+
+
+
+============= ARRANJO CENTRALIZADO ============= 
+[['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total - Capex: 279.84520799999996
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 279.84520799999996
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Colombo'
+	-- Aterro: 'Antonina'
+	-- Lixo: 553.9182
+	-- População: 527782.0
+	-- Total - Capex: 279.845208
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 279.845208
+		-- Capex: 2328.86544
+		-- Opex: 202.21636
+
+
+
+============= TOP 100 ARRANJOS ============= 
+1.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 279.84520799999996
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 279.84520799999996
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Colombo'
+	-- Aterro: 'Antonina'
+	-- Lixo: 553.9182
+	-- População: 527782.0
+	-- Total + Capex: 279.845208
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 279.845208
+		-- Capex: 2328.86544
+		-- Opex: 202.21636
+
+-----------------------------------------------------------------
+
+2.	[['Paranaguá', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo'], ['Antonina']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 369.35748022394677
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 369.35748022394677
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 534.0623
+	-- População: 508863.0
+	-- Total + Capex: 283.27921200000003
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 283.27921200000003
+		-- Capex: 2342.75016
+		-- Opex: 205.18754
+
+	['Antonina']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 19.8559
+	-- População: 18919.0
+	-- Total + Capex: 2684.596674
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 2684.596674
+		-- Capex: 11271.92982
+		-- Opex: 2308.86568
+
+-----------------------------------------------------------------
+
+3.	[['Paranaguá', 'Matinhos', 'Colombo'], ['Antonina', 'Guaratuba', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 373.53540220998406
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 373.53540220998406
+
+-- Sub-arranjos:
+	['Paranaguá', 'Matinhos', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 464.266
+	-- População: 442360.0
+	-- Total + Capex: 294.1428266666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 294.1428266666667
+		-- Capex: 2399.8808
+		-- Opex: 214.1468
+
+	['Antonina', 'Guaratuba', 'Pontal do Paraná']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 89.6522
+	-- População: 85422.0
+	-- Total + Capex: 784.6716986666665
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 784.6716986666665
+		-- Capex: 4365.46016
+		-- Opex: 639.15636
+
+-----------------------------------------------------------------
+
+4.	[['Paranaguá', 'Guaratuba', 'Colombo'], ['Antonina', 'Matinhos', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 373.602160594779
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 373.602160594779
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 466.6474
+	-- População: 444629.0
+	-- Total + Capex: 293.560308
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 293.560308
+		-- Capex: 2396.69364
+		-- Opex: 213.67052
+
+	['Antonina', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 87.2708
+	-- População: 83153.0
+	-- Total + Capex: 801.5955146666666
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 801.5955146666666
+		-- Capex: 4430.23424
+		-- Opex: 653.92104
+
+-----------------------------------------------------------------
+
+5.	[['Paranaguá', 'Antonina', 'Matinhos', 'Colombo'], ['Guaratuba', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.0610672210978
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.0610672210978
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Matinhos', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 484.1219
+	-- População: 461279.0
+	-- Total + Capex: 289.310744
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 289.310744
+		-- Capex: 2374.05372
+		-- Opex: 210.17562
+
+	['Guaratuba', 'Pontal do Paraná']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 69.7963
+	-- População: 66503.0
+	-- Total + Capex: 961.9072353333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 961.9072353333333
+		-- Capex: 5026.32946
+		-- Opex: 794.36292
+
+-----------------------------------------------------------------
+
+6.	[['Paranaguá', 'Pontal do Paraná', 'Colombo'], ['Antonina', 'Guaratuba', 'Matinhos']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.1710577365751
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.1710577365751
+
+-- Sub-arranjos:
+	['Paranaguá', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 456.7347
+	-- População: 435184.0
+	-- Total + Capex: 296.62516733333337
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 296.62516733333337
+		-- Capex: 2409.57142
+		-- Opex: 216.30612
+
+	['Antonina', 'Guaratuba', 'Matinhos']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 97.1835
+	-- População: 92598.0
+	-- Total + Capex: 738.6146
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 738.6146
+		-- Capex: 4185.963
+		-- Opex: 599.0825
+
+-----------------------------------------------------------------
+
+7.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Colombo'], ['Matinhos', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.19909482967796
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.19909482967796
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 486.5033
+	-- População: 463548.0
+	-- Total + Capex: 288.42852600000003
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 288.42852600000003
+		-- Capex: 2370.89538
+		-- Opex: 209.39868
+
+	['Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Matinhos'
+	-- Aterro: 'Antonina'
+	-- Lixo: 67.4149
+	-- População: 64234.0
+	-- Total + Capex: 993.1670793333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 993.1670793333333
+		-- Capex: 5135.39758
+		-- Opex: 821.98716
+
+-----------------------------------------------------------------
+
+8.	[['Paranaguá', 'Antonina', 'Colombo'], ['Guaratuba', 'Matinhos', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.2534620346706
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.2534620346706
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 446.6488
+	-- População: 425574.0
+	-- Total + Capex: 299.4599626666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 299.4599626666667
+		-- Capex: 2423.69168
+		-- Opex: 218.67024
+
+	['Guaratuba', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 107.2694
+	-- População: 102208.0
+	-- Total + Capex: 685.6789640000001
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 685.6789640000001
+		-- Capex: 3982.69692
+		-- Opex: 552.9224
+
+-----------------------------------------------------------------
+
+9.	[['Paranaguá', 'Antonina', 'Pontal do Paraná', 'Colombo'], ['Guaratuba', 'Matinhos']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.27519365826174
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.27519365826174
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 476.5906
+	-- População: 454103.0
+	-- Total + Capex: 291.11825600000003
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 291.11825600000003
+		-- Capex: 2383.09128
+		-- Opex: 211.68188
+
+	['Guaratuba', 'Matinhos']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 77.3276
+	-- População: 73679.0
+	-- Total + Capex: 886.7935546666668
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 886.7935546666668
+		-- Capex: 4738.46504
+		-- Opex: 728.84472
+
+-----------------------------------------------------------------
+
+10.	[['Paranaguá', 'Antonina', 'Pontal do Paraná'], ['Guaratuba', 'Matinhos', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.70386847561963
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.70386847561963
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 214.9692
+	-- População: 204826.0
+	-- Total + Capex: 428.37542666666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 428.37542666666667
+		-- Capex: 2980.154
+		-- Opex: 329.03696
+
+	['Guaratuba', 'Matinhos', 'Colombo']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 338.949
+	-- População: 322956.0
+	-- Total + Capex: 340.66414
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 340.66414
+		-- Capex: 2617.3122
+		-- Opex: 253.4204
+
+-----------------------------------------------------------------
+
+11.	[['Paranaguá', 'Antonina', 'Matinhos'], ['Guaratuba', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.7527690320504
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.7527690320504
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Matinhos']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 222.5005
+	-- População: 212002.0
+	-- Total + Capex: 420.1828566666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 420.1828566666667
+		-- Capex: 2945.4977
+		-- Opex: 321.9996
+
+	['Guaratuba', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 331.4177
+	-- População: 315780.0
+	-- Total + Capex: 344.25283733333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 344.25283733333333
+		-- Capex: 2634.59752
+		-- Opex: 256.43292
+
+-----------------------------------------------------------------
+
+12.	[['Paranaguá', 'Guaratuba', 'Pontal do Paraná'], ['Antonina', 'Matinhos', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.75807805441156
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.75807805441156
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 234.9678
+	-- População: 223881.0
+	-- Total + Capex: 406.436708
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 406.436708
+		-- Capex: 2892.13524
+		-- Opex: 310.0322
+
+	['Antonina', 'Matinhos', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 318.9504
+	-- População: 303901.0
+	-- Total + Capex: 351.4207253333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 351.4207253333333
+		-- Capex: 2663.72896
+		-- Opex: 262.62976
+
+-----------------------------------------------------------------
+
+13.	[['Paranaguá', 'Matinhos', 'Pontal do Paraná'], ['Antonina', 'Guaratuba', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.87253854116074
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.87253854116074
+
+-- Sub-arranjos:
+	['Paranaguá', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 232.5864
+	-- População: 221612.0
+	-- Total + Capex: 409.151504
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 409.151504
+		-- Capex: 2902.13712
+		-- Opex: 312.4136
+
+	['Antonina', 'Guaratuba', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 321.3318
+	-- População: 306170.0
+	-- Total + Capex: 350.060736
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 350.060736
+		-- Capex: 2657.80368
+		-- Opex: 261.46728
+
+-----------------------------------------------------------------
+
+14.	[['Paranaguá', 'Colombo'], ['Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.9157697966446
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.9157697966446
+
+-- Sub-arranjos:
+	['Paranaguá', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 426.7929
+	-- População: 406655.0
+	-- Total + Capex: 306.0538853333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 306.0538853333333
+		-- Capex: 2453.13136
+		-- Opex: 224.28284
+
+	['Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 127.1253
+	-- População: 121127.0
+	-- Total + Capex: 606.1031366666666
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 606.1031366666666
+		-- Capex: 3674.3711
+		-- Opex: 483.6241
+
+-----------------------------------------------------------------
+
+15.	[['Paranaguá', 'Guaratuba', 'Matinhos'], ['Antonina', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.92457459797123
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.92457459797123
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Matinhos']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 242.4991
+	-- População: 231057.0
+	-- Total + Capex: 399.4175006666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 399.4175006666667
+		-- Capex: 2862.50342
+		-- Opex: 304.00072
+
+	['Antonina', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 311.4191
+	-- População: 296725.0
+	-- Total + Capex: 355.85216533333335
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 355.85216533333335
+		-- Capex: 2682.59416
+		-- Opex: 266.43236
+
+-----------------------------------------------------------------
+
+16.	[['Paranaguá', 'Antonina', 'Guaratuba'], ['Matinhos', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 374.9471917033366
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 374.9471917033366
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 224.8819
+	-- População: 214271.0
+	-- Total + Capex: 417.91258866666664
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 417.91258866666664
+		-- Capex: 2934.54326
+		-- Opex: 320.09448
+
+	['Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Matinhos'
+	-- Aterro: 'Antonina'
+	-- Lixo: 329.0363
+	-- População: 313511.0
+	-- Total + Capex: 345.58222466666666
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 345.58222466666666
+		-- Capex: 2640.12014
+		-- Opex: 257.57822
+
+-----------------------------------------------------------------
+
+17.	[['Paranaguá', 'Matinhos', 'Pontal do Paraná', 'Colombo'], ['Antonina', 'Guaratuba']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 375.16144023446435
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 375.16144023446435
+
+-- Sub-arranjos:
+	['Paranaguá', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 494.2078
+	-- População: 470889.0
+	-- Total + Capex: 287.6521226666666
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 287.6521226666666
+		-- Capex: 2364.31688
+		-- Opex: 208.84156
+
+	['Antonina', 'Guaratuba']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 59.7104
+	-- População: 56893.0
+	-- Total + Capex: 1099.4538133333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 1099.4538133333333
+		-- Capex: 5530.2448
+		-- Opex: 915.11232
+
+-----------------------------------------------------------------
+
+18.	[['Paranaguá', 'Guaratuba', 'Pontal do Paraná', 'Colombo'], ['Antonina', 'Matinhos']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 375.49841871753193
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 375.49841871753193
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 496.5892
+	-- População: 473158.0
+	-- Total + Capex: 287.43978133333337
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 287.43978133333337
+		-- Capex: 2362.72864
+		-- Opex: 208.68216
+
+	['Antonina', 'Matinhos']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 57.329
+	-- População: 54624.0
+	-- Total + Capex: 1138.2706333333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 1138.2706333333333
+		-- Capex: 5680.273
+		-- Opex: 948.9282
+
+-----------------------------------------------------------------
+
+19.	[['Paranaguá'], ['Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 375.87121366807816
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 375.87121366807816
+
+-- Sub-arranjos:
+	['Paranaguá']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 165.1715
+	-- População: 157378.0
+	-- Total + Capex: 506.24785333333335
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 506.24785333333335
+		-- Capex: 3286.6966
+		-- Opex: 396.6913
+
+	['Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 388.7467
+	-- População: 370404.0
+	-- Total + Capex: 320.476518
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 320.476518
+		-- Capex: 2519.25594
+		-- Opex: 236.50132
+
+-----------------------------------------------------------------
+
+20.	[['Paranaguá', 'Pontal do Paraná'], ['Antonina', 'Guaratuba', 'Matinhos', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 376.08650848545466
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 376.08650848545466
+
+-- Sub-arranjos:
+	['Paranaguá', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 195.1133
+	-- População: 185907.0
+	-- Total + Capex: 454.70955733333335
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 454.70955733333335
+		-- Capex: 3085.36552
+		-- Opex: 351.86404
+
+	['Antonina', 'Guaratuba', 'Matinhos', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 358.8049
+	-- População: 341875.0
+	-- Total + Capex: 333.3323473333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 333.3323473333333
+		-- Capex: 2575.62922
+		-- Opex: 247.47804
+
+-----------------------------------------------------------------
+
+21.	[['Paranaguá', 'Guaratuba'], ['Antonina', 'Matinhos', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 376.1195749642499
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 376.1195749642499
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 205.026
+	-- População: 195352.0
+	-- Total + Capex: 441.00282666666664
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 441.00282666666664
+		-- Capex: 3030.8648
+		-- Opex: 339.974
+
+	['Antonina', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 348.8922
+	-- População: 332430.0
+	-- Total + Capex: 337.9910253333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 337.9910253333333
+		-- Capex: 2596.43716
+		-- Opex: 251.44312
+
+-----------------------------------------------------------------
+
+22.	[['Paranaguá', 'Antonina'], ['Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 376.1361829438195
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 376.1361829438195
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 185.0274
+	-- População: 176297.0
+	-- Total + Capex: 470.82264399999997
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 470.82264399999997
+		-- Capex: 3145.83012
+		-- Opex: 365.96164
+
+	['Guaratuba', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 368.8908
+	-- População: 351485.0
+	-- Total + Capex: 328.64356533333336
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 328.64356533333336
+		-- Capex: 2555.99656
+		-- Opex: 243.44368
+
+-----------------------------------------------------------------
+
+23.	[['Paranaguá', 'Matinhos'], ['Antonina', 'Guaratuba', 'Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 376.16756869897245
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 376.16756869897245
+
+-- Sub-arranjos:
+	['Paranaguá', 'Matinhos']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 202.6446
+	-- População: 193083.0
+	-- Total + Capex: 444.28378533333336
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 444.28378533333336
+		-- Capex: 3043.71916
+		-- Opex: 342.82648
+
+	['Antonina', 'Guaratuba', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 351.2736
+	-- População: 334699.0
+	-- Total + Capex: 336.87232
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 336.87232
+		-- Capex: 2591.4528
+		-- Opex: 250.49056
+
+-----------------------------------------------------------------
+
+24.	[['Paranaguá', 'Antonina', 'Matinhos', 'Pontal do Paraná'], ['Guaratuba', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 376.8108956705139
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 376.8108956705139
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 252.4423
+	-- População: 240531.0
+	-- Total + Capex: 393.99717466666664
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 393.99717466666664
+		-- Capex: 2835.95384
+		-- Opex: 299.46538
+
+	['Guaratuba', 'Colombo']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 301.4759
+	-- População: 287251.0
+	-- Total + Capex: 362.41988200000003
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 362.41988200000003
+		-- Capex: 2709.16266
+		-- Opex: 272.11446
+
+-----------------------------------------------------------------
+
+25.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Colombo'], ['Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 377.03452062053776
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 377.03452062053776
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 523.9764
+	-- População: 499253.0
+	-- Total + Capex: 284.0653493333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 284.0653493333333
+		-- Capex: 2335.81888
+		-- Opex: 206.20472
+
+	['Pontal do Paraná']
+	-- UTVR: 'Pontal do Paraná'
+	-- Aterro: 'Antonina'
+	-- Lixo: 29.9418
+	-- População: 28529.0
+	-- Total + Capex: 2003.9791826666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 2003.9791826666667
+		-- Capex: 8979.02828
+		-- Opex: 1704.67824
+
+-----------------------------------------------------------------
+
+26.	[['Paranaguá', 'Guaratuba', 'Matinhos', 'Colombo'], ['Antonina', 'Pontal do Paraná']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 377.27840511216647
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 377.27840511216647
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Matinhos', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 504.1205
+	-- População: 480334.0
+	-- Total + Capex: 288.04016666666666
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 288.04016666666666
+		-- Capex: 2351.759
+		-- Opex: 209.6482
+
+	['Antonina', 'Pontal do Paraná']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 49.7977
+	-- População: 47448.0
+	-- Total + Capex: 1280.6700353333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 1280.6700353333333
+		-- Capex: 6222.65206
+		-- Opex: 1073.2483
+
+-----------------------------------------------------------------
+
+27.	[['Paranaguá', 'Antonina', 'Matinhos', 'Pontal do Paraná', 'Colombo'], ['Guaratuba']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 377.44244821087574
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 377.44244821087574
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Matinhos', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 514.0637
+	-- População: 489808.0
+	-- Total + Capex: 286.305986
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 286.305986
+		-- Capex: 2343.56178
+		-- Opex: 208.18726
+
+	['Guaratuba']
+	-- UTVR: 'Guaratuba'
+	-- Aterro: 'Antonina'
+	-- Lixo: 39.8545
+	-- População: 37974.0
+	-- Total + Capex: 1552.9670933333332
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 1552.9670933333332
+		-- Capex: 7261.4758
+		-- Opex: 1310.9179
+
+-----------------------------------------------------------------
+
+28.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Pontal do Paraná', 'Colombo'], ['Matinhos']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 377.73733019420285
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 377.73733019420285
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 516.4451
+	-- População: 492077.0
+	-- Total + Capex: 285.772444
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 285.772444
+		-- Capex: 2341.84392
+		-- Opex: 207.71098
+
+	['Matinhos']
+	-- UTVR: 'Matinhos'
+	-- Aterro: 'Antonina'
+	-- Lixo: 37.4731
+	-- População: 35705.0
+	-- Total + Capex: 1645.1749013333333
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 1645.1749013333333
+		-- Capex: 7612.97044
+		-- Opex: 1391.40922
+
+-----------------------------------------------------------------
+
+29.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Pontal do Paraná'], ['Matinhos', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 378.51940790093624
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 378.51940790093624
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 254.8237
+	-- População: 242800.0
+	-- Total + Capex: 395.4895186666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 395.4895186666667
+		-- Capex: 2837.85896
+		-- Opex: 300.89422
+
+	['Matinhos', 'Colombo']
+	-- UTVR: 'Matinhos'
+	-- Aterro: 'Antonina'
+	-- Lixo: 299.0945
+	-- População: 284982.0
+	-- Total + Capex: 364.0611466666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 364.0611466666667
+		-- Capex: 2715.5354
+		-- Opex: 273.5433
+
+-----------------------------------------------------------------
+
+30.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná'], ['Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 378.9653675643496
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 378.9653675643496
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 292.2968
+	-- População: 278505.0
+	-- Total + Capex: 368.7742186666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 368.7742186666667
+		-- Capex: 2734.56896
+		-- Opex: 277.62192
+
+	['Colombo']
+	-- UTVR: 'Colombo'
+	-- Aterro: 'Antonina'
+	-- Lixo: 261.6214
+	-- População: 249277.0
+	-- Total + Capex: 390.35144
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 390.35144
+		-- Capex: 2820.0
+		-- Opex: 296.35144
+
+-----------------------------------------------------------------
+
+31.	[['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos'], ['Pontal do Paraná', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 379.12268536761127
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 379.12268536761127
+
+-- Sub-arranjos:
+	['Paranaguá', 'Antonina', 'Guaratuba', 'Matinhos']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 262.355
+	-- População: 249976.0
+	-- Total + Capex: 390.058
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 390.058
+		-- Capex: 2820.0
+		-- Opex: 296.058
+
+	['Pontal do Paraná', 'Colombo']
+	-- UTVR: 'Pontal do Paraná'
+	-- Aterro: 'Antonina'
+	-- Lixo: 291.5632
+	-- População: 277806.0
+	-- Total + Capex: 369.28284799999994
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 369.28284799999994
+		-- Capex: 2736.62304
+		-- Opex: 278.06208
+
+-----------------------------------------------------------------
+
+32.	[['Paranaguá', 'Guaratuba', 'Matinhos', 'Pontal do Paraná'], ['Antonina', 'Colombo']]
+- Lixo: 553.9182000000001
+- Custo Total + Capex: 379.4684869373214
+-- Inbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Arranjo): 0
+-- Tecnologia: 379.4684869373214
+
+-- Sub-arranjos:
+	['Paranaguá', 'Guaratuba', 'Matinhos', 'Pontal do Paraná']
+	-- UTVR: 'Paranaguá'
+	-- Aterro: 'Antonina'
+	-- Lixo: 272.4409
+	-- População: 259586.0
+	-- Total + Capex: 382.7084306666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 382.7084306666667
+		-- Capex: 2795.18912
+		-- Opex: 289.53546
+
+	['Antonina', 'Colombo']
+	-- UTVR: 'Antonina'
+	-- Aterro: 'Antonina'
+	-- Lixo: 281.4773
+	-- População: 268196.0
+	-- Total + Capex: 376.3325566666667
+	-- Inbound - SUM: 0.0
+	-- Inbound - Custo OPEX: 0.0
+	-- Inbound - Custo incluindo CAPEX: 0
+	-- Inbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound - Custo OPEX: 0.0
+	-- Outbound - Custo incluindo CAPEX: 0
+	-- Outbound - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Outbound Aterro Existente - Custo OPEX: 0.0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX: 0
+	-- Outbound Aterro Existente - Custo incluindo CAPEX (Nível Subarranjo): 0
+	-- Tecnologia: 376.3325566666667
+		-- Capex: 2766.5681
+		-- Opex: 284.11362
+
+-----------------------------------------------------------------
+
