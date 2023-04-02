@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmDistance 
    Caption         =   "UserForm1"
-   ClientHeight    =   5124
-   ClientLeft      =   108
-   ClientTop       =   456
-   ClientWidth     =   8424.001
+   ClientHeight    =   4755
+   ClientLeft      =   105
+   ClientTop       =   450
+   ClientWidth     =   8355.001
    OleObjectBlob   =   "frmDistance.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -23,15 +23,21 @@ Private Sub btnCalculate_Click()
     Set cities = readSelectedCities()
     
     If cbxDistanceMethod.value = "Bing" Then
-        result = modDistance.calculateDistance(DistanceMethod.bing, cities, Me.lblProgress, txtAPIKey.Text)
+        If modDistance.validateBingKey(txtAPIKey.Text) Then
+            result = modDistance.calculateDistance(DistanceMethod.bing, cities, Me, txtAPIKey.Text)
+        Else
+            MsgBox "A chave " & txtAPIKey.Text & " não é uma chave válida. Favor verificar!", vbCritical, "Erro"
+            Exit Sub
+        End If
     ElseIf cbxDistanceMethod.value = "Euclidiana" Then
-        result = modDistance.calculateDistance(DistanceMethod.euclidean, cities, Me.lblProgress)
+        result = modDistance.calculateDistance(DistanceMethod.euclidean, cities, Me)
     End If
     
     If result Then
-        MsgBox "OK"
+        MsgBox "Distâncias calculadas com sucesso!", vbInformation, "Sucesso"
+        Unload Me
     Else
-        MsgBox "Deu ruim!"
+        MsgBox "Algo deu errado ao calcular as distâncias.", vbCritical, "Erro"
     End If
     
 End Sub
@@ -58,9 +64,7 @@ Private Sub UserForm_Initialize()
     Call modForm.applyLookAndFeel(Me, 2, "Calcular Distâncias")
     
     cbxDistanceMethod.AddItem "Bing"
-    cbxDistanceMethod.AddItem "Google"
+    'cbxDistanceMethod.AddItem "Google"
     cbxDistanceMethod.AddItem "Euclidiana"
-    
-    lblProgress.BackColor = ApplicationColors.bgColorLevel2
 
 End Sub

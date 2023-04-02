@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAlgorithmParameter 
    Caption         =   "UserForm1"
-   ClientHeight    =   4512
-   ClientLeft      =   240
-   ClientTop       =   936
-   ClientWidth     =   8052
+   ClientHeight    =   3600
+   ClientLeft      =   165
+   ClientTop       =   660
+   ClientWidth     =   6405
    OleObjectBlob   =   "frmAlgorithmParameter.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -34,6 +34,7 @@ End Sub
 Private Sub btnDefault_Click()
     txtTrashThreshold = Database.GetDatabaseValue("TrashThreshold", colDefaultValue)
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colDefaultValue)
+    txtMaxSubarrays = Database.GetDatabaseValue("MaxSubarrays", colDefaultValue)
 End Sub
 
 Private Sub btnPythonExecutable_Click()
@@ -58,6 +59,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("PythonPath", colUserValue, txtPythonPath.Text)
         Call Database.SetDatabaseValue("TrashThreshold", colUserValue, CDbl(txtTrashThreshold.Text))
         Call Database.SetDatabaseValue("MaxClusters", colUserValue, CDbl(txtMaxClusters.Text))
+        Call Database.SetDatabaseValue("MaxSubarrays", colUserValue, CDbl(txtMaxSubarrays.Text))
         FormChanged = False
         frmStepTwo.updateForm
         Unload Me
@@ -77,6 +79,10 @@ Private Sub txtTrashThreshold_Change()
     Call textBoxChange(txtTrashThreshold, "TrashThreshold")
 End Sub
 
+Private Sub txtMaxSubarrays_Change()
+    Call textBoxChange(txtMaxSubarrays, "MaxSubarrays")
+End Sub
+
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Parametrizar Algoritmo")
@@ -88,6 +94,7 @@ Private Sub UserForm_Initialize()
     txtPythonPath = Database.GetDatabaseValue("PythonPath", colUserValue)
     txtTrashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colUserValue)
+    txtMaxSubarrays = Database.GetDatabaseValue("MaxSubarrays", colUserValue)
     
     If txtPythonPath = "" Then
         pythonVersion = CreateObject("WScript.Shell").Exec("python --version").StdOut.ReadAll
@@ -101,6 +108,9 @@ Private Sub UserForm_Initialize()
             Call MsgBox("O Python não está instalado na sua máquina, favor instalar para poder executar o algoritmo.", vbCritical, "Python não encontrado")
         End If
     End If
+    
+    frmAlgorithmParameter.Height = 255
+    frmAlgorithmParameter.width = 411
     
     FormChanged = False
 End Sub

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectArrays 
    Caption         =   "UserForm1"
-   ClientHeight    =   11604
-   ClientLeft      =   348
-   ClientTop       =   1296
-   ClientWidth     =   24288
+   ClientHeight    =   11595
+   ClientLeft      =   300
+   ClientTop       =   1110
+   ClientWidth     =   24240
    OleObjectBlob   =   "frmSelectArrays.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -69,6 +69,10 @@ Private Sub UserForm_Initialize()
     
     vScrollBar.Min = 1
     vScrollBar.Max = arrays.count - 1
+    
+    frmSelectArrays.Height = 609
+    frmSelectArrays.width = 1225
+    
 End Sub
 
 Private Sub vScrollBar_Change()

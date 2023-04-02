@@ -104,7 +104,7 @@ Private Sub btnRunAlgorithm_Click()
         
         'Run the algorithm
         MsgBox MSG_ALGORITHM_STARTUP, vbInformation
-        If Util.RunPythonScript(algPath, prjName) Then
+        If modPython.RunPythonScript(algPath, prjName) Then
             'Load the result into the workbook
             Call Util.CSVImport(algPath, prjName)
             MsgBox MSG_ALGORITHM_COMPLETE_SUCCESSFULLY, vbInformation

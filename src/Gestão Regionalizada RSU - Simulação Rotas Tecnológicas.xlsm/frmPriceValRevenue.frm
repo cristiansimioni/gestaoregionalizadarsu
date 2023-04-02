@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceValRevenue
    Caption         =   "UserForm1"
    ClientHeight    =   2715
    ClientLeft      =   120
-   ClientTop       =   468
+   ClientTop       =   465
    ClientWidth     =   10440
    OleObjectBlob   =   "frmPriceValRevenue.frx":0000
    StartUpPosition =   1  'CenterOwner

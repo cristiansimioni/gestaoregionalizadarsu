@@ -28,8 +28,8 @@ Public Const ICONWARNING            As String = "error-icon.jpg"
 
 'Imagens da Aplicação
 Public Const IMAGELOGO                As String = "logo-grey.jpg"
-Public Const IMAGEPARTNERS            As String = "partners.jpg"
 Public Const IMAGELOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
+Public Const IMAGEPARTNERS            As String = "partners.jpg"
 Public Const IMAGESCREENROUTEONEA     As String = "screen-rt-1-a.bmp"
 Public Const IMAGESCREENROUTEONEB     As String = "screen-rt-1-b.bmp"
 Public Const IMAGESCREENROUTEONEC     As String = "screen-rt-1-c.bmp"
@@ -189,54 +189,6 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
     Application.DisplayAlerts = True
 End Sub
 
-
-Public Function RunPythonScript(ByVal algPath As String, ByVal prjName As String)
-
-'Declare Variables
-Dim PythonExe, PythonScript, Params, cmd As String
-Dim wsh As Object
-Set wsh = VBA.CreateObject("WScript.Shell")
-Dim waitOnReturn As Boolean: waitOnReturn = True
-Dim windowStyle As Integer: windowStyle = 1
-Dim errorCode As Integer
-
-'Provide file path to Python.exe
-PythonExe = Database.GetDatabaseValue("PythonPath", colUserValue)
-PythonScript = Chr(34) & Application.ThisWorkbook.Path & "\src\combinations\combinations.py" & Chr(34)
-
-Dim maxCluster, trashThreshold, capexInbound, capexOutbound, paymentPeriod, movimentationCost, landfillDeviation As Double
-maxCluster = Database.GetDatabaseValue("MaxClusters", colUserValue)
-trashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
-capexInbound = Database.GetDatabaseValue("CapexInbound", colUserValue)
-capexOutbound = Database.GetDatabaseValue("CapexOutbound", colUserValue)
-paymentPeriod = Database.GetDatabaseValue("ExpectedDeadline", colUserValue)
-movimentationCost = (100 - Database.GetDatabaseValue("ReducingCostMovimentation", colUserValue)) / 100#
-landfillDeviation = (100 - Database.GetDatabaseValue("LandfillDeviationTarget", colUserValue)) / 100#
-
-Params = Chr(34) & algPath & "\cidades-" & prjName & ".csv" & Chr(34) & _
-         " " & _
-         Chr(34) & algPath & "\distancias-" & prjName & ".csv" & Chr(34) & _
-         " " & _
-         maxCluster & " " & trashThreshold & " " & capexInbound & " " & capexOutbound & _
-         " " & paymentPeriod & " " & Replace(CStr(movimentationCost), ",", ".") & _
-         " " & Replace(CStr(landfillDeviation), ",", ".") & _
-         " " & _
-         Chr(34) & algPath & "\relatório-" & prjName & ".txt" & Chr(34) & _
-         " " & _
-         Chr(34) & algPath & "\output-" & prjName & ".csv" & Chr(34)
-
-cmd = "%comspec% /c " & Chr(34) & Chr(34) & PythonExe & Chr(34) & " " & PythonScript & " " & Params & Chr(34)
-'Run the Python Script
-errorCode = wsh.Run(cmd, windowStyle, waitOnReturn)
-
-If errorCode = 0 Then
-    RunPythonScript = True
-Else
-    Debug.Print cmd
-    RunPythonScript = False
-End If
-
-End Function
 
 Public Function FolderCreate(ByVal strPathToFolder As String, ByVal strFolder As String) As Variant
     'The function FolderCreate attemps to create the folder strFolder on the path strPathToFolder _

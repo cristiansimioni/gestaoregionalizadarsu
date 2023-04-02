@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
-   Caption         =   "Selecionar Cidades"
-   ClientHeight    =   9312.001
-   ClientLeft      =   348
-   ClientTop       =   1380
-   ClientWidth     =   11028
+   Caption         =   "UserForm1"
+   ClientHeight    =   8028
+   ClientLeft      =   -285
+   ClientTop       =   -1185
+   ClientWidth     =   8835.001
    OleObjectBlob   =   "frmSelectCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -92,6 +92,8 @@ Private Sub btnSave_Click()
         'Salva o nome dos municípios na aba de distâncias para facilitar a entrada de dados e visualização
         row = 3
         column = 2
+        wksCitiesDistance.range("A2:A100").ClearContents
+        wksCitiesDistance.range("B2:DQ2").ClearContents
         For Each city In selectedCities
             wksCitiesDistance.Cells(row, 1) = city.vCityName
             wksCitiesDistance.Cells(2, column) = city.vCityName
@@ -148,9 +150,6 @@ Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Selecionar Municípios")
     
-    lstAvailable.ColumnWidths = "130,10"
-    lstSelected.ColumnWidths = "130,10"
-    
     'Load database cities
     Set databaseCities = readDatabaseCities
     
@@ -195,6 +194,11 @@ Private Sub UserForm_Initialize()
         lstSelected.List(lstSelected.ListCount - 1, 1) = city.vIBGECode
     Next city
     
+    With frmSelectCities
+        Height = 531
+        width = 564
+    End With
+    
     FormChanged = False
 End Sub
 
@@ -219,3 +223,4 @@ Function FindInCollection(ByVal oCollection As Collection, ByVal sItem As Double
     Next vItem
     Set FindInCollection = Nothing
 End Function
+

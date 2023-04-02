@@ -7,7 +7,7 @@ Public Enum DistanceMethod
     googlemaps
 End Enum
 
-Public Function calculateDistance(method As DistanceMethod, cities As Collection, progressBar As MSForms.Label, Optional key As String)
+Public Function calculateDistance(method As DistanceMethod, cities As Collection, form As UserForm, Optional key As String)
     Dim wksCitiesDistance As Worksheet
     Dim CityRow, CityCol As clsCity
     Dim result As Boolean
@@ -25,8 +25,11 @@ Public Function calculateDistance(method As DistanceMethod, cities As Collection
     Dim percent As Double
     
     total = cities.count * cities.count
-    width = progressBar.width
-    progressBar.width = 0
+    width = form.lblProgress.width
+    form.lblProgress.width = 0
+    form.lblProgress.BackColor = ApplicationColors.bgColorLevel2
+    form.txtPercent.Visible = True
+    form.Repaint
     
     processed = 1
     
@@ -47,17 +50,37 @@ Public Function calculateDistance(method As DistanceMethod, cities As Collection
             col = col + 1
             
             percent = processed / total
-            progressBar.width = percent * width
+            form.lblProgress.width = percent * width
+            form.txtPercent.Text = Round(percent * 100, 0) & "%"
             processed = processed + 1
+            form.Repaint
             
         Next CityCol
         col = 2
         row = row + 1
+        
     Next CityRow
     
     
     calculateDistance = result
 
+End Function
+
+Public Function validateBingKey(key As String)
+    Dim Url As String
+    Dim objHTTP As Variant
+    
+    If Len(key) < 8 Then
+        validateBingKey = False
+    Else
+        Set objHTTP = CreateObject("MSXML2.ServerXMLHTTP")
+        Url = "https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?origins=-25.0144,-47.9341&destinations=-22.2904,51.9084&travelMode=driving&o=xml&key=" & key
+        objHTTP.Open "GET", Url, False
+        objHTTP.setRequestHeader "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
+        objHTTP.send ("")
+        validateBingKey = WorksheetFunction.FilterXML(objHTTP.responseText, "//AuthenticationResultCode") = "ValidCredentials"
+    End If
+    
 End Function
 
 Public Function GetDistanceBing(cityA, cityB, key As String)
@@ -68,7 +91,7 @@ Public Function GetDistanceBing(cityA, cityB, key As String)
 
     firstVal = "https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?origins="
     secondVal = "&destinations="
-    lastVal = "&travelMode=driving&o=xml&key=" & key & "&distanceUnit=mi"
+    lastVal = "&travelMode=driving&o=xml&key=" & key
 
     Set objHTTP = CreateObject("MSXML2.ServerXMLHTTP")
 
@@ -80,7 +103,7 @@ Public Function GetDistanceBing(cityA, cityB, key As String)
     objHTTP.setRequestHeader "User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
     objHTTP.send ("")
     If WorksheetFunction.FilterXML(objHTTP.responseText, "//AuthenticationResultCode") = "ValidCredentials" Then
-        GetDistanceBing = Round(Round(WorksheetFunction.FilterXML(objHTTP.responseText, "//TravelDistance"), 3) * 1.609, 2)
+        GetDistanceBing = Round(WorksheetFunction.FilterXML(objHTTP.responseText, "//TravelDistance"), 2)
     Else
         resultcode = False
     End If
