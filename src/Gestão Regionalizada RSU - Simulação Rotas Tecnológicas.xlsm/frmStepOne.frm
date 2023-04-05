@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepOne
    Caption         =   "Passo 1"
    ClientHeight    =   6660
    ClientLeft      =   240
-   ClientTop       =   930
-   ClientWidth     =   8775.001
+   ClientTop       =   936
+   ClientWidth     =   8772.001
    OleObjectBlob   =   "frmStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -56,11 +56,15 @@ Private Sub btnHelpStep_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    Call Database.SetDatabaseValue("ProjectName", DatabaseColumn.colUserValue, txtProjectName.Text)
-    Call Database.SetDatabaseValue("ProjectPathFolder", DatabaseColumn.colUserValue, txtPath.Text)
-    Unload Me
-    frmTool.updateForm
-    ThisWorkbook.Save
+    If IsValidFolderName(txtProjectName.Text) Then
+        Call Database.SetDatabaseValue("ProjectName", DatabaseColumn.colUserValue, txtProjectName.Text)
+        Call Database.SetDatabaseValue("ProjectPathFolder", DatabaseColumn.colUserValue, txtPath.Text)
+        Unload Me
+        frmTool.updateForm
+        ThisWorkbook.Save
+    Else
+        MsgBox "O nome do projeto é inválido pois contém caracteres especiais. Por favor ajustar antes de salvar novamente.", vbCritical, "Erro"
+    End If
 End Sub
 
 Private Sub btnSelectCities_Click()

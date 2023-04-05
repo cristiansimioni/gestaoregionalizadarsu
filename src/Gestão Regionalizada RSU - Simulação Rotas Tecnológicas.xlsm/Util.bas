@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "4.0.0"
-Public Const APPLASTUPDATED         As String = "28/03/2023"
+Public Const APPVERSION             As String = "4.0.1"
+Public Const APPLASTUPDATED         As String = "05/04/2023"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -14,6 +14,7 @@ Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com
 Public Const FOLDERASSETS           As String = "assets"
 Public Const FOLDERICONS            As String = "assets\icons"
 Public Const FOLDERMANUAL           As String = "assets\manual"
+Public Const FOLDERSRC              As String = "src"
 Public Const FOLDERTEMPLATES        As String = "templates"
 Public Const FOLDERALGORITHM        As String = "Algoritmo"
 Public Const FOLDERBASEMARKET       As String = "Mercado Base"
@@ -234,6 +235,33 @@ ErrorHandler:
         MsgBox prompt:="A folder could not be created for the following path: " & FullDirPath & vbCrLf & _
                 "Check the path name and try again."
         FolderCreate = ""
+End Function
+
+
+Function IsValidFolderName(ByVal sFolderName As String) As Boolean
+    On Error GoTo Error_Handler
+    Dim oRegEx          As Object
+
+    'Check to see if any illegal characters have been used
+    Set oRegEx = CreateObject("vbscript.regexp")
+    oRegEx.Pattern = "[<>:""/\\\|\?\*]"
+    IsValidFolderName = Not oRegEx.test(sFolderName)
+    'Ensure the folder name does end with a . or a blank space
+    If Right(sFolderName, 1) = "." Then IsValidFolderName = False
+    If Right(sFolderName, 1) = " " Then IsValidFolderName = False
+
+Error_Handler_Exit:
+    On Error Resume Next
+    Set oRegEx = Nothing
+    Exit Function
+
+Error_Handler:
+    MsgBox "The following error has occurred" & vbCrLf & vbCrLf & _
+           "Error Number: " & Err.number & vbCrLf & vbCrLf & _
+           "Error Source: IsInvalidFolderName" & vbCrLf & _
+           "Error Description: " & Err.description, _
+           vbCritical, "An Error has Occurred!"
+    Resume Error_Handler_Exit
 End Function
 
 Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)

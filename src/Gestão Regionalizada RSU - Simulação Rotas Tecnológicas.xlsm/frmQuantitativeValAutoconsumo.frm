@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmQuantitativeValAutoconsumo
    Caption         =   "UserForm1"
    ClientHeight    =   4260
    ClientLeft      =   120
-   ClientTop       =   465
+   ClientTop       =   468
    ClientWidth     =   10080
    OleObjectBlob   =   "frmQuantitativeValAutoconsumo.frx":0000
    StartUpPosition =   1  'CenterOwner

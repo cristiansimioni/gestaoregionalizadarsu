@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive 
    Caption         =   "UserForm1"
-   ClientHeight    =   11745
-   ClientLeft      =   165
+   ClientHeight    =   9396.001
+   ClientLeft      =   168
    ClientTop       =   660
-   ClientWidth     =   18375
+   ClientWidth     =   18384
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -67,7 +67,6 @@ Function ChkMark() As String
 End Function
 
 Private Sub btnFiles_Click()
-    Dim chartPath As String
     Dim prjPath As String
     Dim prjName As String
     prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)

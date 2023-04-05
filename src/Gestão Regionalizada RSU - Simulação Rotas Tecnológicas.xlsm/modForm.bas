@@ -1,16 +1,20 @@
 Attribute VB_Name = "modForm"
 Option Explicit
 
-'Função que retornará o nome da classe e o nome do UserForm
-Private Declare PtrSafe Function FindWindow Lib "User32" Alias "FindWindowA" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
-'Função que recupera as informações sobre o nome da classe e o estilo da janela do UserForm
-Private Declare PtrSafe Function GetWindowLong Lib "User32" Alias "GetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long) As Long
-'Função que altera o estilo da janela do UserForm
-Private Declare PtrSafe Function SetWindowLong Lib "User32" Alias "SetWindowLongA" (ByVal hWnd As Long, ByVal nIndex As Long, ByVal dwNewLong As Long) As Long
-
 'Abre o formulário principal da ferramenta
 Public Sub openTool()
-    frmTool.Show
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    
+    If fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERASSETS) And _
+       fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERSRC) And _
+       fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERTEMPLATES) Then
+        frmTool.Show
+    Else
+        MsgBox "Os diretórios necessários para a executação da ferramenta não estão localizados na mesma pasta do arquivo Excel. " & _
+        "Verifique se as pastas assets, src e templates existem no caminho (" & Application.ThisWorkbook.Path & ") antes de continuar.", vbCritical, "Erro"
+    End If
+    
 End Sub
 
 Public Sub openDistanceForm()
@@ -113,13 +117,4 @@ Public Sub applyLookAndFeel(ByVal form As Variant, ByVal level As Integer, ByVal
     
     'Repaint form
     form.Repaint
-End Sub
-
-
-'Sub que irá obter o nome do UserForm (ObjForm)
-Sub EnableMinimizeMaximize(ObjForm As Object)
-
-    'Código que atribui os botões minimizar e maximizar e possibilita redimensionar o UserForm
-    SetWindowLong FindWindow("ThunderDFrame", ObjForm.Caption), -16, GetWindowLong(FindWindow("ThunderDFrame", ObjForm.Caption), -16) Or &H10000 Or &H20000 Or &H40000
-
 End Sub

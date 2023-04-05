@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities
    Caption         =   "Editar Cidades"
    ClientHeight    =   8124
    ClientLeft      =   360
-   ClientTop       =   1395
+   ClientTop       =   1392
    ClientWidth     =   15600
    OleObjectBlob   =   "frmEditCities.frx":0000
    StartUpPosition =   1  'CenterOwner

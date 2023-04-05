@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "UserForm1"
    ClientHeight    =   8028
-   ClientLeft      =   -285
-   ClientTop       =   -1185
-   ClientWidth     =   8835.001
+   ClientLeft      =   -288
+   ClientTop       =   -1188
+   ClientWidth     =   8832.001
    OleObjectBlob   =   "frmSelectCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
