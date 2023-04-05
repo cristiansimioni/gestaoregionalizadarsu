@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
-   ClientHeight    =   5832
-   ClientLeft      =   480
-   ClientTop       =   1860
-   ClientWidth     =   9960.001
+   ClientHeight    =   4656
+   ClientLeft      =   420
+   ClientTop       =   1470
+   ClientWidth     =   6375
    OleObjectBlob   =   "frmStepTwo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -74,12 +74,6 @@ Private Sub btnHelpStep_Click()
 End Sub
 
 Private Sub btnRunAlgorithm_Click()
-    
-    'Calculate cities distance
-    If Database.GetDatabaseValue("CalculateDistance", colUserValue) = "Sim" Then
-        'Call modCity.calculateDistances
-    End If
-    
     'Verificar se as distâncias dos municípios foram inseridas corretamente
     Dim errMsg As String
     If modDistance.checkDistances(errMsg) Then
@@ -138,4 +132,8 @@ Private Sub UserForm_Initialize()
     Call modForm.applyLookAndFeel(Me, 2, "Passo 2")
     
     Call frmStepTwo.updateForm
+    
+    Me.Height = 319
+    Me.width = 508
+    
 End Sub

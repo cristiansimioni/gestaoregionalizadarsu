@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceVal
    Caption         =   "Preços para Valorização"
    ClientHeight    =   4710
    ClientLeft      =   120
-   ClientTop       =   468
-   ClientWidth     =   7188
+   ClientTop       =   465
+   ClientWidth     =   7185
    OleObjectBlob   =   "frmPriceVal.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
