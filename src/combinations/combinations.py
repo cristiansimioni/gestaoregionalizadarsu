@@ -422,11 +422,15 @@ def main():
     report.write("\n\n\n============= ESTATÍSTICAS ============= \n")
     logging.info("Gerando combinaçãoes...")
     combinations = list()
-    i = 1
-    while i <= MAX_SUB_ARRAYS and i <= MAX_CITIES:
-        logging.info("Gerando combinaçãoes de tamanho: %d", i)
-        combinations = combinations + list(sorted_k_partitions(clusters,i))
-        i = i + 1
+    combinations = combinations + list(sorted_k_partitions(clusters, 1))
+    if MAX_SUB_ARRAYS <= MAX_CITIES:
+        logging.info("Gerando combinaçãoes de tamanho: %d", MAX_SUB_ARRAYS)
+        combinations = combinations + list(sorted_k_partitions(clusters, MAX_SUB_ARRAYS))
+    #i = 1
+    #while i <= MAX_SUB_ARRAYS and i <= MAX_CITIES:
+    #    logging.info("Gerando combinaçãoes de tamanho: %d", i)
+    #    combinations = combinations + list(sorted_k_partitions(clusters,i))
+    #    i = i + 1
     logging.info("Quantidade de combinações: %d", len(combinations))
     report.write("Quantidade de combinações: " + repr(len(combinations)) + "\n")
 
