@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectArrays
    Caption         =   "UserForm1"
    ClientHeight    =   11595
    ClientLeft      =   300
-   ClientTop       =   1110
+   ClientTop       =   1116
    ClientWidth     =   24240
    OleObjectBlob   =   "frmSelectArrays.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -20,16 +20,16 @@ Private Sub btnBack_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    Dim count As Integer
+    Dim Count As Integer
     Dim e As Variant
-    count = 0
+    Count = 0
     For Each e In arrays
         If e.vSelected Then
-            count = count + 1
+            Count = Count + 1
         End If
     Next e
     
-    If count = 4 Then
+    If Count = 4 Then
         updateValues arrays
         frmStepTwo.updateForm
         Unload Me
@@ -68,7 +68,7 @@ Private Sub UserForm_Initialize()
     txtCentralizedOutboundExistent.Text = arrays(1).vOutboundExistentLandfill
     
     vScrollBar.Min = 1
-    vScrollBar.Max = arrays.count - 1
+    vScrollBar.Max = arrays.Count - 1
     
     frmSelectArrays.Height = 609
     frmSelectArrays.width = 1225
@@ -98,7 +98,7 @@ Private Sub vScrollBar_Change()
     
     'Fill sub array
     t = 1
-    While t <= arrays(currentValue).vSubArray.count
+    While t <= arrays(currentValue).vSubArray.Count
         Me.Controls("txtSubArray" & t).value = arrays.Item(currentValue).vSubArray(t).vArrayRaw
         Me.Controls("txtSubArrayLandfill" & t).value = arrays.Item(currentValue).vSubArray(t).vLandfill
         Me.Controls("txtSubArrayExistentLandfill" & t).value = arrays.Item(currentValue).vSubArray(t).vExistentLandfill

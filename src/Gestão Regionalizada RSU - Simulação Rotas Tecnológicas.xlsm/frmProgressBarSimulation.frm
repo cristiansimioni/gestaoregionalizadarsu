@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmProgressBarSimulation 
    Caption         =   "Processando..."
    ClientHeight    =   780
-   ClientLeft      =   45
-   ClientTop       =   210
-   ClientWidth     =   6345
+   ClientLeft      =   48
+   ClientTop       =   216
+   ClientWidth     =   6348
    OleObjectBlob   =   "frmProgressBarSimulation.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -52,7 +52,7 @@ Private Sub executeSimulation()
     Dim SecondsElapsed As Double
     
 
-    total = arrays.count
+    total = arrays.Count
     
     Dim markets, routes As Variant
     markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
@@ -78,7 +78,7 @@ Private Sub executeSimulation()
     total = 0
     For Each a In arrays
         If a.vSelected Then
-            total = total + a.vSubArray.count
+            total = total + a.vSubArray.Count
         End If
     Next a
     total = total * (UBound(markets) - LBound(markets) + 1) * (UBound(routes) - LBound(routes) + 1 + 1) '+1 Ferramenta 2

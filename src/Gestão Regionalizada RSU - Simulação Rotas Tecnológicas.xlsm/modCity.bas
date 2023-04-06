@@ -35,7 +35,7 @@ Public Function readSelectedCities()
     Dim r As Integer
     
 'On Error GoTo errHandler:
-    lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
     For r = 2 To lastRow
         Dim c As clsCity
         Set c = New clsCity
@@ -79,7 +79,7 @@ Public Function readDatabaseCities()
     Set wks = Util.GetCitiesWorksheet
     Dim lastRow As Integer
     Dim r As Integer
-    lastRow = wks.Cells(Rows.count, 1).End(xlUp).row
+    lastRow = wks.Cells(Rows.Count, 1).End(xlUp).row
     For r = 2 To lastRow
         Dim c As clsCity
         Set c = New clsCity
@@ -102,7 +102,7 @@ Public Function validateDatabaseCities()
     Set wksDatabase = Util.GetSelectedCitiesWorksheet
     Dim lastRow, utvr, potentialLandfill, existentLandfill As Integer
     Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
     
     utvr = 0
     potentialLandfill = 0
@@ -139,7 +139,7 @@ Public Function updateCityValues(ByVal cities As Collection)
     Dim lastRow As Integer
     Dim r, id As Integer
     Dim c As clsCity
-    lastRow = wks.Cells(Rows.count, 1).End(xlUp).row
+    lastRow = wks.Cells(Rows.Count, 1).End(xlUp).row
     
     r = 2
     For Each c In cities

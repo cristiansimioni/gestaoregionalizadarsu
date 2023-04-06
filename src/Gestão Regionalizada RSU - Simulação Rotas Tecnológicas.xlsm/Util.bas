@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
 Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "4.0.1"
-Public Const APPLASTUPDATED         As String = "05/04/2023"
+Public Const APPVERSION             As String = "4.0.2"
+Public Const APPLASTUPDATED         As String = "06/04/2023"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -159,20 +159,20 @@ Sub saveAsCSV(projectName As String, directory As String, sheet As String)
         sFileName = "cidades-" & projectName & ".csv"
         Set wks = Util.GetSelectedCitiesWorksheet
         'Find the last non-blank cell in column A(1)
-        lRow = wks.Cells(Rows.count, 1).End(xlUp).row
+        lRow = wks.Cells(Rows.Count, 1).End(xlUp).row
         
         'Find the last non-blank cell in row 1
-        lCol = wks.Cells(1, Columns.count).End(xlToLeft).column
+        lCol = wks.Cells(1, Columns.Count).End(xlToLeft).column
         wks.range(wks.Cells(1, 1), wks.Cells(lRow, lCol)).Copy
     Else
         sFileName = "distancias-" & projectName & ".csv"
         Set wks = Util.GetCitiesDistanceWorksheet
         
         'Find the last non-blank cell in column A(1)
-        lRow = wks.Cells(Rows.count, 3).End(xlUp).row
+        lRow = wks.Cells(Rows.Count, 3).End(xlUp).row
         
         'Find the last non-blank cell in row 1
-        lCol = wks.Cells(2, Columns.count).End(xlToLeft).column
+        lCol = wks.Cells(2, Columns.Count).End(xlToLeft).column
         wks.range(wks.Cells(3, 2), wks.Cells(lRow, lCol)).Copy
     End If
     
@@ -199,7 +199,7 @@ Public Function FolderCreate(ByVal strPathToFolder As String, ByVal strFolder As
     '
     'The second element of the returned array is the Full Folder Path , meaning ex: "C:\MyExamplePath\MyCreatedFolder"
     
-    Dim fso As Object
+    Dim Fso As Object
     'Dim fso As New FileSystemObject
     Dim FullDirPath As String
     Dim Length As Long
@@ -217,13 +217,13 @@ Public Function FolderCreate(ByVal strPathToFolder As String, ByVal strFolder As
     
     FullDirPath = strPathToFolder & strFolder
     
-    Set fso = CreateObject("Scripting.FileSystemObject")
+    Set Fso = CreateObject("Scripting.FileSystemObject")
     
-    If fso.FolderExists(FullDirPath) Then
+    If Fso.FolderExists(FullDirPath) Then
         FolderCreate = FullDirPath
     Else
         On Error GoTo ErrorHandler
-        fso.CreateFolder Path:=FullDirPath
+        Fso.CreateFolder Path:=FullDirPath
         FolderCreate = FullDirPath
         On Error GoTo 0
     End If
@@ -268,20 +268,20 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
     Dim ws As Worksheet, strFile As String, sPath As String
 
     Set ws = ThisWorkbook.Sheets("Arranjos") 'set to current worksheet name
-    ws.Rows("2:" & Rows.count).ClearContents
+    ws.Rows("2:" & Rows.Count).ClearContents
 
     Dim line As String
     Dim arrayOfElements
     Dim element As Variant
-    Dim filePath As String
+    Dim FilePath As String
     Dim ImportToRow, StartColumn, ArrayId, SubArrayId As Integer
     
     ArrayId = 0
     SubArrayId = 0
     ImportToRow = 1
     
-    filePath = algPath & "\output-" & prjName & ".csv"
-    Open filePath For Input As #1 ' Open file for input
+    FilePath = algPath & "\output-" & prjName & ".csv"
+    Open FilePath For Input As #1 ' Open file for input
         Do While Not EOF(1) ' Loop until end of file
             ImportToRow = ImportToRow + 1
             Line Input #1, line

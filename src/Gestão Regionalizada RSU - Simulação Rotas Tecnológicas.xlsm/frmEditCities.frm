@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities
    Caption         =   "Editar Cidades"
    ClientHeight    =   8124
    ClientLeft      =   360
-   ClientTop       =   1395
+   ClientTop       =   1392
    ClientWidth     =   15600
    OleObjectBlob   =   "frmEditCities.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -376,13 +376,13 @@ Private Sub UserForm_Initialize()
     Set cities = readSelectedCities
     
     vScrollBar.Min = 1
-    If cities.count > 10 Then
-        vScrollBar.Max = cities.count - 9
+    If cities.Count > 10 Then
+        vScrollBar.Max = cities.Count - 9
     Else
         'Desabilitar barra de rolagem
         vScrollBar.Visible = False
         'Desabilitar todos os campos maiores que cities.count
-        element = cities.count + 1
+        element = cities.Count + 1
         Do While element <= 10
             Me.Controls("txtCity" & element).Visible = False
             Me.Controls("txtPopulation" & element).Visible = False
@@ -408,14 +408,14 @@ End Sub
 Sub GetRangeToDisplay(currentValue As Integer)
     Dim i As Integer
     i = 1
-    If cities.count > 10 Then
+    If cities.Count > 10 Then
         i = currentValue
     End If
     
     changeValues = False
     
     t = 1
-    While t <= 10 And t <= cities.count
+    While t <= 10 And t <= cities.Count
         Me.Controls("txtCity" & t).value = cities.Item(i).vCityName
         Me.Controls("txtPopulation" & t).value = cities.Item(i).vPopulation
         Me.Controls("txtTrash" & t).value = cities.Item(i).vTrash

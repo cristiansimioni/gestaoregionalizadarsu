@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo
    Caption         =   "Passo 2"
    ClientHeight    =   4656
    ClientLeft      =   420
-   ClientTop       =   1470
-   ClientWidth     =   6375
+   ClientTop       =   1476
+   ClientWidth     =   6372
    OleObjectBlob   =   "frmStepTwo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

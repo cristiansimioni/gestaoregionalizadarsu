@@ -2,7 +2,7 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
    ClientHeight    =   8580.001
    ClientLeft      =   120
-   ClientTop       =   465
+   ClientTop       =   468
    ClientWidth     =   13680
    OleObjectBlob   =   "frmTool.frx":0000
    ShowModal       =   0   'False
@@ -96,8 +96,8 @@ End Sub
 Public Function updateForm()
     Dim prjPath As String
     Dim prjName As String
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim Fso As Object
+    Set Fso = CreateObject("Scripting.FileSystemObject")
     
     prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
     prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
@@ -124,7 +124,7 @@ Public Function updateForm()
         ValidateFormRules("frmStudyCaseStepOne") And _
         ValidateFormRules("frmSimulationData") And _
         ValidateFormRules("frmStepOne") And _
-        readSelectedCities.count >= 2 Then
+        readSelectedCities.Count >= 2 Then
         
         imgStepOneStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepTwo.Enabled = True
@@ -160,7 +160,7 @@ Public Function updateForm()
         ValidateFormRules("frmQuantitativeValPublic") And _
         ValidateFormRules("frmStepFour") And _
         btnStepFour.Enabled = True And _
-        fso.FolderExists(prjPath & "\" & prjName) Then
+        Fso.FolderExists(prjPath & "\" & prjName) Then
         imgStepFourStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepFive.Enabled = True
         imgStepFiveStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)

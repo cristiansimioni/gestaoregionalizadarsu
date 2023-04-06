@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepOne 
    Caption         =   "Passo 1"
-   ClientHeight    =   6660
-   ClientLeft      =   240
-   ClientTop       =   930
-   ClientWidth     =   8775.001
+   ClientHeight    =   4260
+   ClientLeft      =   168
+   ClientTop       =   648
+   ClientWidth     =   5604
    OleObjectBlob   =   "frmStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -56,14 +56,16 @@ Private Sub btnHelpStep_Click()
 End Sub
 
 Private Sub btnSave_Click()
-    If IsValidFolderName(txtProjectName.Text) Then
+    If Not IsValidFolderName(txtProjectName.Text) Then
+        MsgBox "O nome do projeto é inválido pois contém caracteres especiais. Por favor ajustar antes de salvar novamente.", vbCritical, "Erro"
+    ElseIf Not modFolder.HasWriteAccessToFolder(txtPath) Then
+        MsgBox "Você não tem permissão para salvar arquivos na pasta " & txtPath & ". Por favor, selecione uma outra pasta.", vbCritical, "Erro"
+    Else
         Call Database.SetDatabaseValue("ProjectName", DatabaseColumn.colUserValue, txtProjectName.Text)
         Call Database.SetDatabaseValue("ProjectPathFolder", DatabaseColumn.colUserValue, txtPath.Text)
         Unload Me
         frmTool.updateForm
         ThisWorkbook.Save
-    Else
-        MsgBox "O nome do projeto é inválido pois contém caracteres especiais. Por favor ajustar antes de salvar novamente.", vbCritical, "Erro"
     End If
 End Sub
 
@@ -99,7 +101,7 @@ Public Function updateForm()
     If ValidateFormRules("frmStudyCaseStepOne") Then imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmSimulationData") Then imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If Dir(txtPath.Text, vbDirectory) <> "." Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    If readSelectedCities.count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If readSelectedCities.Count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
 End Function
 
 Private Sub UserForm_Initialize()
@@ -114,5 +116,8 @@ Private Sub UserForm_Initialize()
     Call updateForm
     
     FormChanged = False
+    
+    Me.Height = 361
+    Me.width = 449
     
 End Sub

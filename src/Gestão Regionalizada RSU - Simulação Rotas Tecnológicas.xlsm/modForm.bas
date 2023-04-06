@@ -3,12 +3,12 @@ Option Explicit
 
 'Abre o formulário principal da ferramenta
 Public Sub openTool()
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
+    Dim Fso As Object
+    Set Fso = CreateObject("Scripting.FileSystemObject")
     
-    If fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERASSETS) And _
-       fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERSRC) And _
-       fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERTEMPLATES) Then
+    If Fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERASSETS) And _
+       Fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERSRC) And _
+       Fso.FolderExists(Application.ThisWorkbook.Path & "\" & FOLDERTEMPLATES) Then
         frmTool.Show
     Else
         MsgBox "Os diretórios necessários para a executação da ferramenta não estão localizados na mesma pasta do arquivo Excel. " & _
