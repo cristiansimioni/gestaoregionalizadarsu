@@ -3,7 +3,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities
    Caption         =   "Editar Cidades"
    ClientHeight    =   8124
    ClientLeft      =   360
-   ClientTop       =   1392
+   ClientTop       =   1395
    ClientWidth     =   15600
    OleObjectBlob   =   "frmEditCities.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Public cities As New Collection
 Public changeValues As Boolean
 
@@ -232,7 +230,7 @@ Private Sub updateConventionalCost(ByRef txtBox, ByVal index As Integer)
         i = i + vScrollBar.value - 1
     End If
     
-    If Util.validateRange(txtBox.Text, 0#, 1000#, errorMsg) Then
+    If Util.validateRange(txtBox.Text, 0#, 1500#, errorMsg) Then
         txtBox.BackColor = ApplicationColors.bgColorValidTextBox
         txtBox.ControlTipText = errorMsg
     Else

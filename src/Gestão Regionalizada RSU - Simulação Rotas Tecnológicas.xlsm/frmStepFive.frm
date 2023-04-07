@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive 
    Caption         =   "UserForm1"
-   ClientHeight    =   7512
-   ClientLeft      =   144
-   ClientTop       =   576
-   ClientWidth     =   14700
+   ClientHeight    =   11715
+   ClientLeft      =   135
+   ClientTop       =   480
+   ClientWidth     =   18360
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -87,9 +87,9 @@ Private Sub cbxArrayRoute_Change()
     For Each a In arrays
         If a.vSelected Then
             If a.vCode = cbxArrayRoute.value Then
-                For Each s In a.vSubArray
-                    cbxSubArrayRoute.AddItem s.vCode
-                Next s
+                For Each S In a.vSubArray
+                    cbxSubArrayRoute.AddItem S.vCode
+                Next S
                 cbxSubArrayRoute.AddItem "Consolidado"
             End If
         End If
@@ -107,9 +107,9 @@ Private Sub cbxArray_Change()
     For Each a In arrays
         If a.vSelected Then
             If a.vCode = cbxArray.value Then
-                For Each s In a.vSubArray
-                    cbxSubArray.AddItem s.vCode
-                Next s
+                For Each S In a.vSubArray
+                    cbxSubArray.AddItem S.vCode
+                Next S
             End If
         End If
     Next
@@ -151,19 +151,19 @@ Private Sub cbxArraySelected_Change()
                 txtArrayOutboundExistent.Text = a.vOutboundExistentLandfill
                 
                 t = 1
-                For Each s In a.vSubArray
-                    Me.Controls("txtSubArray" & t).value = s.vArrayRaw
-                    Me.Controls("txtSubArrayLandfill" & t).value = s.vLandfill
-                    Me.Controls("txtSubArrayExistentLandfill" & t).value = s.vExistentLandfill
-                    Me.Controls("txtSubArrayUTVR" & t).value = s.vUTVR
-                    Me.Controls("txtSubArrayTotal" & t).value = s.vTotal
-                    Me.Controls("txtSubArrayTrash" & t).value = s.vTrash
-                    Me.Controls("txtSubArrayTechnology" & t).value = s.vTechnology
-                    Me.Controls("txtSubArrayInbound" & t).value = s.vInbound
-                    Me.Controls("txtSubArrayOutbound" & t).value = s.vOutbound
-                    Me.Controls("txtSubArrayOutboundExistent" & t).value = s.vOutboundExistentLandfill
+                For Each S In a.vSubArray
+                    Me.Controls("txtSubArray" & t).value = S.vArrayRaw
+                    Me.Controls("txtSubArrayLandfill" & t).value = S.vLandfill
+                    Me.Controls("txtSubArrayExistentLandfill" & t).value = S.vExistentLandfill
+                    Me.Controls("txtSubArrayUTVR" & t).value = S.vUTVR
+                    Me.Controls("txtSubArrayTotal" & t).value = S.vTotal
+                    Me.Controls("txtSubArrayTrash" & t).value = S.vTrash
+                    Me.Controls("txtSubArrayTechnology" & t).value = S.vTechnology
+                    Me.Controls("txtSubArrayInbound" & t).value = S.vInbound
+                    Me.Controls("txtSubArrayOutbound" & t).value = S.vOutbound
+                    Me.Controls("txtSubArrayOutboundExistent" & t).value = S.vOutboundExistentLandfill
                     t = t + 1
-                Next s
+                Next S
             End If
         End If
     Next
@@ -580,6 +580,9 @@ Private Sub UserForm_Initialize()
     End With
     
     Call enableDisableConsolidado(False)
+    
+    Me.Height = 615
+    Me.width = 930
     
 End Sub
 

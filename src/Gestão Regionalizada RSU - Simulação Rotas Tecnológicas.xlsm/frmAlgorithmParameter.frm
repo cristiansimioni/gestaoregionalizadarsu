@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAlgorithmParameter 
    Caption         =   "UserForm1"
    ClientHeight    =   3600
-   ClientLeft      =   168
+   ClientLeft      =   165
    ClientTop       =   660
-   ClientWidth     =   6396
+   ClientWidth     =   6405
    OleObjectBlob   =   "frmAlgorithmParameter.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

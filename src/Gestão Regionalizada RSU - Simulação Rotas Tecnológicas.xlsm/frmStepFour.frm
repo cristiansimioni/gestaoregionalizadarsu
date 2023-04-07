@@ -2,7 +2,7 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFour 
    Caption         =   "UserForm1"
    ClientHeight    =   8940.001
-   ClientLeft      =   48
+   ClientLeft      =   45
    ClientTop       =   180
    ClientWidth     =   12000
    OleObjectBlob   =   "frmStepFour.frx":0000

@@ -24,4 +24,29 @@ Public vUTVR As Boolean
 Public vExistentLandfill As Boolean
 Public vPotentialLandfill As Boolean
 
+Public Function vUTVRAsString()
+    If Me.vUTVR Then
+        vUTVRAsString = "Sim"
+    Else
+        vUTVRAsString = "Não"
+    End If
+End Function
+
+Public Function vExistentLandfillAsString()
+    If Me.vExistentLandfill Then
+        vExistentLandfillAsString = "Sim"
+    Else
+        vExistentLandfillAsString = "Não"
+    End If
+End Function
+
+Public Function vPotentialLandfillAsString()
+    If Me.vPotentialLandfill Then
+        vPotentialLandfillAsString = "Sim"
+    Else
+        vPotentialLandfillAsString = "Não"
+    End If
+End Function
+
+
 

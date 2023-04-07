@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepSix 
    Caption         =   "UserForm1"
-   ClientHeight    =   10515
-   ClientLeft      =   120
-   ClientTop       =   468
+   ClientHeight    =   10500
+   ClientLeft      =   150
+   ClientTop       =   585
    ClientWidth     =   9360.001
    OleObjectBlob   =   "frmStepSix.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -24,34 +24,7 @@ Private Sub btnBack_Click()
 End Sub
 
 Private Sub btnReport_Click()
-    Dim prjPath As String
-    Dim prjName As String
-        
-    prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
-    prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
-    prjPath = Util.FolderCreate(prjPath, prjName)
-    Dim reportPath As String
-    reportPath = Util.FolderCreate(prjPath, FOLDERREPORT)
-    
-    On Error GoTo ErrorHandler
-        Dim wksReportData As Worksheet
-        Set wksReportData = Util.GetReportWorksheet
-        
-        wksReportData.Cells(12, 1).value = txtIntroduction.Text
-        wksReportData.Cells(23, 1).value = txtObjectives.Text
-        wksReportData.Cells(43, 1).value = txtArray.Text
-        wksReportData.Cells(63, 1).value = txtRoutes.Text
-        wksReportData.Cells(83, 1).value = txtMarket.Text
-        wksReportData.Cells(103, 1).value = txtValuation.Text
-        wksReportData.Cells(123, 1).value = txtConclusion.Text
-        
-        wksReportData.range("A1:K141").ExportAsFixedFormat Type:=xlTypePDF, Quality:=xlQualityStandard, OpenAfterPublish:=True, filename:=reportPath & "\Relatório.pdf"
-        'Call MsgBox("Relatório gerado com sucesso!", vbOKOnly, "Relatório")
-    Exit Sub
-    
-ErrorHandler:
-    Call MsgBox(MSG_INVALID_DATA, vbExclamation, MSG_INVALID_DATA_TITLE)
-    
+    modReport.generateReport
 End Sub
 
 Private Sub txtArray_Change()
