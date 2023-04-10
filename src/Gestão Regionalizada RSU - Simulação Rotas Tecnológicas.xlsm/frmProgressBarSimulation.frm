@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmProgressBarSimulation 
    Caption         =   "Processando..."
-   ClientHeight    =   780
-   ClientLeft      =   45
-   ClientTop       =   210
-   ClientWidth     =   6345
+   ClientHeight    =   1500
+   ClientLeft      =   24
+   ClientTop       =   132
+   ClientWidth     =   9984.001
    OleObjectBlob   =   "frmProgressBarSimulation.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -355,4 +355,7 @@ Private Sub UserForm_Initialize()
     lblProgress.width = 0
     lblFile.Visible = True
     lblProgress.BackColor = ApplicationColors.bgColorLevel2
+    
+    Me.Height = 122
+    Me.width = 634
 End Sub

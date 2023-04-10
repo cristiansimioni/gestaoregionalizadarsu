@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepTwo 
    Caption         =   "Passo 2"
-   ClientHeight    =   4656
-   ClientLeft      =   420
-   ClientTop       =   1470
-   ClientWidth     =   6375
+   ClientHeight    =   3720
+   ClientLeft      =   396
+   ClientTop       =   1392
+   ClientWidth     =   7944
    OleObjectBlob   =   "frmStepTwo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -135,5 +135,4 @@ Private Sub UserForm_Initialize()
     
     Me.Height = 319
     Me.width = 508
-    
 End Sub

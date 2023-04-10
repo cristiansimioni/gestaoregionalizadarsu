@@ -15,9 +15,10 @@ Dim errorCode As Integer
 PythonExe = Database.GetDatabaseValue("PythonPath", colUserValue)
 PythonScript = Chr(34) & Application.ThisWorkbook.Path & "\src\combinations\combinations.py" & Chr(34)
 
-Dim maxCluster, maxSubarrays, trashThreshold, capexInbound, capexOutbound, paymentPeriod, movimentationCost, landfillDeviation As Double
+Dim maxCluster, maxSubarrays, maxArrays, trashThreshold, capexInbound, capexOutbound, paymentPeriod, movimentationCost, landfillDeviation As Double
 maxCluster = Database.GetDatabaseValue("MaxClusters", colUserValue)
 maxSubarrays = Database.GetDatabaseValue("MaxSubarrays", colUserValue)
+maxArrays = Database.GetDatabaseValue("MaxArrays", colUserValue)
 trashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
 capexInbound = Database.GetDatabaseValue("CapexInbound", colUserValue)
 capexOutbound = Database.GetDatabaseValue("CapexOutbound", colUserValue)
@@ -29,7 +30,7 @@ Params = Chr(34) & algPath & "\cidades-" & prjName & ".csv" & Chr(34) & _
          " " & _
          Chr(34) & algPath & "\distancias-" & prjName & ".csv" & Chr(34) & _
          " " & _
-         maxCluster & " " & maxSubarrays & " " & trashThreshold & " " & capexInbound & " " & capexOutbound & _
+         maxCluster & " " & maxSubarrays & " " & maxArrays & " " & trashThreshold & " " & capexInbound & " " & capexOutbound & _
          " " & paymentPeriod & " " & Replace(CStr(movimentationCost), ",", ".") & _
          " " & Replace(CStr(landfillDeviation), ",", ".") & _
          " " & _

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAlgorithmParameter 
    Caption         =   "UserForm1"
-   ClientHeight    =   3600
-   ClientLeft      =   165
-   ClientTop       =   660
-   ClientWidth     =   6405
+   ClientHeight    =   1992
+   ClientLeft      =   96
+   ClientTop       =   396
+   ClientWidth     =   4104
    OleObjectBlob   =   "frmAlgorithmParameter.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -35,6 +35,7 @@ Private Sub btnDefault_Click()
     txtTrashThreshold = Database.GetDatabaseValue("TrashThreshold", colDefaultValue)
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colDefaultValue)
     txtMaxSubarrays = Database.GetDatabaseValue("MaxSubarrays", colDefaultValue)
+    txtArrays = Database.GetDatabaseValue("MaxArrays", colDefaultValue)
 End Sub
 
 Private Sub btnPythonExecutable_Click()
@@ -60,6 +61,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("TrashThreshold", colUserValue, CDbl(txtTrashThreshold.Text))
         Call Database.SetDatabaseValue("MaxClusters", colUserValue, CDbl(txtMaxClusters.Text))
         Call Database.SetDatabaseValue("MaxSubarrays", colUserValue, CDbl(txtMaxSubarrays.Text))
+        Call Database.SetDatabaseValue("MaxArrays", colUserValue, CDbl(txtArrays.Text))
         FormChanged = False
         frmStepTwo.updateForm
         Unload Me
@@ -69,6 +71,10 @@ Private Sub btnSave_Click()
 ErrorHandler:
     Call MsgBox(MSG_INVALID_DATA, vbCritical, MSG_INVALID_DATA_TITLE)
     
+End Sub
+
+Private Sub txtArrays_Change()
+    Call textBoxChange(txtArrays, "MaxArrays")
 End Sub
 
 Private Sub txtMaxClusters_Change()
@@ -95,6 +101,7 @@ Private Sub UserForm_Initialize()
     txtTrashThreshold = Database.GetDatabaseValue("TrashThreshold", colUserValue)
     txtMaxClusters = Database.GetDatabaseValue("MaxClusters", colUserValue)
     txtMaxSubarrays = Database.GetDatabaseValue("MaxSubarrays", colUserValue)
+    txtArrays = Database.GetDatabaseValue("MaxArrays", colUserValue)
     
     If txtPythonPath = "" Then
         pythonVersion = CreateObject("WScript.Shell").Exec("python --version").StdOut.ReadAll
@@ -109,8 +116,8 @@ Private Sub UserForm_Initialize()
         End If
     End If
     
-    frmAlgorithmParameter.Height = 255
-    frmAlgorithmParameter.width = 411
+    Me.Height = 272
+    Me.width = 412
     
     FormChanged = False
 End Sub

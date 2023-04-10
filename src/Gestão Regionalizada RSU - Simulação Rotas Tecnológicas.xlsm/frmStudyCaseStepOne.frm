@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne 
    Caption         =   "Dados de Definição do Estudo de Caso"
-   ClientHeight    =   3915
-   ClientLeft      =   240
-   ClientTop       =   930
-   ClientWidth     =   8625.001
+   ClientHeight    =   2496
+   ClientLeft      =   216
+   ClientTop       =   852
+   ClientWidth     =   6900
    OleObjectBlob   =   "frmStudyCaseStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,8 +13,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Dim GenerationPerCapitaRDO As Double
 Dim IndexSelectiveColletionRSU As Double
 Dim AnnualGrowthPopulation As Double
@@ -107,4 +105,7 @@ Private Sub UserForm_Initialize()
     End If
     
     FormChanged = False
+    
+    Me.Height = 223
+    Me.width = 442
 End Sub

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmCapexData 
    Caption         =   "UserForm1"
-   ClientHeight    =   10512
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   11025
+   ClientHeight    =   6720
+   ClientLeft      =   108
+   ClientTop       =   372
+   ClientWidth     =   8820.001
    OleObjectBlob   =   "frmCapexData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -130,6 +130,9 @@ Private Sub UserForm_Initialize()
     txtTechnologyLandfillOvercapacity = Database.GetDatabaseValue("TechnologyLandfillOvercapacity", colUserValue)
     
     FormChanged = False
+    
+    Me.Height = 554
+    Me.width = 562
 End Sub
 
 Private Sub btnSave_Click()

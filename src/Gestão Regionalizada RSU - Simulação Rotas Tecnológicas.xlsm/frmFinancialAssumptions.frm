@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmFinancialAssumptions 
    Caption         =   "UserForm1"
-   ClientHeight    =   6912
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   11550
+   ClientHeight    =   4416
+   ClientLeft      =   96
+   ClientTop       =   372
+   ClientWidth     =   9240.001
    OleObjectBlob   =   "frmFinancialAssumptions.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -233,6 +233,9 @@ Private Sub UserForm_Initialize()
     txtTargetShareholder = Database.GetDatabaseValue("TargetShareholder", colUserValue)
 
     FormChanged = False
+    
+    Me.Height = 373
+    Me.width = 588
 End Sub
 
 Private Sub btnSave_Click()

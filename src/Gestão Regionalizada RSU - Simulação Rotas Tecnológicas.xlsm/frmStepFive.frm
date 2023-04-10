@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive 
    Caption         =   "UserForm1"
-   ClientHeight    =   11715
-   ClientLeft      =   135
-   ClientTop       =   480
-   ClientWidth     =   18360
+   ClientHeight    =   6000
+   ClientLeft      =   84
+   ClientTop       =   216
+   ClientWidth     =   11748
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

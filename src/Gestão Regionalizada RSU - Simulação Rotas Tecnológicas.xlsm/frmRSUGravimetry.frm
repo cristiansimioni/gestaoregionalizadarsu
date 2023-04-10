@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmRSUGravimetry 
    Caption         =   "Dados de Gravimetria do RSU"
-   ClientHeight    =   8460.001
-   ClientLeft      =   360
-   ClientTop       =   1395
-   ClientWidth     =   8385.001
+   ClientHeight    =   5424
+   ClientLeft      =   312
+   ClientTop       =   1224
+   ClientWidth     =   6720
    OleObjectBlob   =   "frmRSUGravimetry.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -240,6 +240,9 @@ Private Sub UserForm_Initialize()
     Call calculateTotal
     
     FormChanged = False
+    
+    Me.Height = 453
+    Me.width = 430
 End Sub
 
 Sub calculateTotal()

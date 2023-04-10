@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectCities 
    Caption         =   "UserForm1"
-   ClientHeight    =   8028
-   ClientLeft      =   -285
-   ClientTop       =   -1185
-   ClientWidth     =   8835.001
+   ClientHeight    =   6432
+   ClientLeft      =   -300
+   ClientTop       =   -1284
+   ClientWidth     =   8832.001
    OleObjectBlob   =   "frmSelectCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -194,12 +194,10 @@ Private Sub UserForm_Initialize()
         lstSelected.List(lstSelected.ListCount - 1, 1) = city.vIBGECode
     Next city
     
-    With frmSelectCities
-        Height = 531
-        width = 564
-    End With
-    
     FormChanged = False
+    
+    Me.Height = 531
+    Me.width = 564
 End Sub
 
 Function IsInCollection(ByVal oCollection As Collection, ByVal sItem As Double) As Boolean

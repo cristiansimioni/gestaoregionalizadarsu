@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmQuantitativeValPublic 
    Caption         =   "UserForm1"
-   ClientHeight    =   4380
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   10065
+   ClientHeight    =   2808
+   ClientLeft      =   84
+   ClientTop       =   276
+   ClientWidth     =   8064
    OleObjectBlob   =   "frmQuantitativeValPublic.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -69,6 +69,9 @@ Private Sub UserForm_Initialize()
     txtInfrastructureCommercialOptimized = Database.GetDatabaseValue("InfrastructureCommercialOptimized", colUserValue)
 
     FormChanged = False
+    
+    Me.Height = 248
+    Me.width = 515
 End Sub
 
 Private Sub btnSave_Click()

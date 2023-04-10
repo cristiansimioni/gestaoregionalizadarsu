@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
-   ClientHeight    =   8580.001
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   13680
+   ClientHeight    =   8712.001
+   ClientLeft      =   96
+   ClientTop       =   372
+   ClientWidth     =   13668
    OleObjectBlob   =   "frmTool.frx":0000
    ShowModal       =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -183,6 +183,9 @@ Private Sub UserForm_Initialize()
     'STYLE = STYLE Or WS_CX_MINIMIZAR      '// Minimize button
     'STYLE = STYLE Or WS_CX_MAXIMIZAR      '// Maximize button
     'MoveWindow Form_Personalized, STYLE_CURRENT, (STYLE)
+    
+    Me.Height = 463
+    Me.width = 694
     
     updateForm
 End Sub

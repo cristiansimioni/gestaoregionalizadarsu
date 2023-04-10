@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepThree 
    Caption         =   "UserForm1"
-   ClientHeight    =   7395
-   ClientLeft      =   240
-   ClientTop       =   930
-   ClientWidth     =   9600.001
+   ClientHeight    =   4716
+   ClientLeft      =   216
+   ClientTop       =   852
+   ClientWidth     =   7680
    OleObjectBlob   =   "frmStepThree.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -77,4 +77,7 @@ Private Sub UserForm_Initialize()
     Call modForm.applyLookAndFeel(Me, 2, "Passo 3")
     
     Call updateForm
+    
+    Me.Height = 397
+    Me.width = 490
 End Sub

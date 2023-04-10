@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAbout 
-   ClientHeight    =   5790
-   ClientLeft      =   240
-   ClientTop       =   930
-   ClientWidth     =   5925
+   ClientHeight    =   1872
+   ClientLeft      =   168
+   ClientTop       =   576
+   ClientWidth     =   2448
    OleObjectBlob   =   "frmAbout.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -18,4 +18,7 @@ Private Sub UserForm_Initialize()
     lblAppSubname = APPSUBNAME
     lblVersion = "Versão: " & APPVERSION
     lblReleaseDate = "Última Atualização: " & APPLASTUPDATED
+    
+    Me.Height = 316
+    Me.width = 310
 End Sub

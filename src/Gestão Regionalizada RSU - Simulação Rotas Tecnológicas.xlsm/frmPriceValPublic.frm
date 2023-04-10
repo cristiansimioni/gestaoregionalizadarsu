@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceValPublic 
    Caption         =   "UserForm1"
-   ClientHeight    =   4410
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   8880.001
+   ClientHeight    =   2796
+   ClientLeft      =   72
+   ClientTop       =   288
+   ClientWidth     =   7008
    OleObjectBlob   =   "frmPriceValPublic.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -69,6 +69,9 @@ Private Sub UserForm_Initialize()
     txtProposedPriceBiofuelOptimized = Database.GetDatabaseValue("ProposedPriceBiofuelOptimized", colUserValue)
 
     FormChanged = False
+    
+    Me.Height = 247
+    Me.width = 449
 End Sub
 
 Private Sub btnSave_Click()

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepSix 
    Caption         =   "UserForm1"
-   ClientHeight    =   10500
-   ClientLeft      =   150
-   ClientTop       =   585
-   ClientWidth     =   9360.001
+   ClientHeight    =   6720
+   ClientLeft      =   132
+   ClientTop       =   504
+   ClientWidth     =   7488
    OleObjectBlob   =   "frmStepSix.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -68,4 +68,6 @@ Private Sub UserForm_Initialize()
     txtValuation.Text = Database.GetDatabaseValue("ValuationText", colUserValue)
     txtConclusion.Text = Database.GetDatabaseValue("ConclusionText", colUserValue)
 
+    Me.Height = 553
+    Me.width = 478
 End Sub

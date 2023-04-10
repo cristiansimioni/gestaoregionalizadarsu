@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
-   ClientHeight    =   3960
-   ClientLeft      =   105
-   ClientTop       =   285
-   ClientWidth     =   6465
+   ClientHeight    =   3948
+   ClientLeft      =   84
+   ClientTop       =   192
+   ClientWidth     =   8052
    OleObjectBlob   =   "frmSimulationData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

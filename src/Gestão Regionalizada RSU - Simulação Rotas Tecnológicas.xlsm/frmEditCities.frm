@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities 
    Caption         =   "Editar Cidades"
-   ClientHeight    =   8124
-   ClientLeft      =   360
-   ClientTop       =   1395
-   ClientWidth     =   15600
+   ClientHeight    =   5184
+   ClientLeft      =   336
+   ClientTop       =   1308
+   ClientWidth     =   12480
    OleObjectBlob   =   "frmEditCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -397,6 +397,9 @@ Private Sub UserForm_Initialize()
     
     changeValues = True
     GetRangeToDisplay vScrollBar.value
+    
+    Me.Height = 434
+    Me.width = 790
 End Sub
 
 Private Sub vScrollBar_Change()

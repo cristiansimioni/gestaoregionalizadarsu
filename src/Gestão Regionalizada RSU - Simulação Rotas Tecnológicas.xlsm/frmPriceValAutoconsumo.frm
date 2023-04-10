@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceValAutoconsumo 
    Caption         =   "Preços para Valorização - Autoconsumo"
-   ClientHeight    =   3915
-   ClientLeft      =   120
-   ClientTop       =   465
-   ClientWidth     =   9255.001
+   ClientHeight    =   2496
+   ClientLeft      =   72
+   ClientTop       =   288
+   ClientWidth     =   7344
    OleObjectBlob   =   "frmPriceValAutoconsumo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -62,6 +62,9 @@ Private Sub UserForm_Initialize()
     txtProposedPriceBiofuelAutOptimized = Database.GetDatabaseValue("ProposedPriceBiofuelAutOptimized", colUserValue)
 
     FormChanged = False
+    
+    Me.Height = 223
+    Me.width = 469
 End Sub
 
 Private Sub btnSave_Click()

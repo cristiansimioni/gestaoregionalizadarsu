@@ -308,21 +308,20 @@ def main():
         CSVDISTANCE = sys.argv[2]                   # Arquivo com a matriz de distância entre as cidades
         MAX_CITIES = int(sys.argv[3])               # Quantidade máxima de cidades para a geração das combinações
         MAX_SUB_ARRAYS = int(sys.argv[4])           # Quantidade máxima de subarranjos por arranjo
-        TRASH_THRESHOLD = float(sys.argv[5])        # Mínimo de tonelada dia para que um subarranjo seja considerado válido
-        CAPEX_INBOUND = float(sys.argv[6])          # Valor inbound do Capex
-        CAPEX_OUTBOUND = float(sys.argv[7])         # Valor outbout do Capex
-        PAYMENT_PERIOD = int(sys.argv[8])           # Tempo de pagamento do consórcio
-        MOVIMENTATION_COST = float(sys.argv[9])     # Custo de movimentação
-        LANDFILL_DEVIATION = float(sys.argv[10])    # Valor do desvio de aterro    
-        REPORTFILE = sys.argv[11]                   # Nome e caminho do arquivo onde o relatório será salvo
-        OUTPUTFILE = sys.argv[12]                   # Nome e caminho do arquivo onde a lista de arranjos será salva
+        MAX_ARRAYS = int(sys.argv[5])               # Quantidade máxima de arranjos que serão exportados no resultado
+        TRASH_THRESHOLD = float(sys.argv[6])        # Mínimo de tonelada dia para que um subarranjo seja considerado válido
+        CAPEX_INBOUND = float(sys.argv[7])          # Valor inbound do Capex
+        CAPEX_OUTBOUND = float(sys.argv[8])         # Valor outbout do Capex
+        PAYMENT_PERIOD = int(sys.argv[9])           # Tempo de pagamento do consórcio
+        MOVIMENTATION_COST = float(sys.argv[10])    # Custo de movimentação
+        LANDFILL_DEVIATION = float(sys.argv[11])    # Valor do desvio de aterro    
+        REPORTFILE = sys.argv[12]                   # Nome e caminho do arquivo onde o relatório será salvo
+        OUTPUTFILE = sys.argv[13]                   # Nome e caminho do arquivo onde a lista de arranjos será salva
     except IndexError:
         raise SystemExit(f"Usage: {sys.argv[0]} <cities.csv> <distance.csv> <max cities> <trash threshold> <capex inbound> <opex inbound> <paymnent period> <movimentation cost> <landfill deviation> <report.txt> <output.csv> <rsu.cvs>")
 
     # Static variables
-    MAX_ARRAYS = 100                            # Top # arrays that will be exported
-    ADDITIONAL_COST = 1.25                      # Inbound for centralized array and outbound for non-centralized arrays
-
+    ADDITIONAL_COST = 1.25                          # Inbound for centralized array and outbound for non-centralized arrays
 
     # Output files
     report = open(REPORTFILE, "w")
@@ -359,7 +358,7 @@ def main():
                 city["utvr"] = True
             else:
                 city["utvr"] = False
-            if row["Aterro Pontencial"] == "Sim":
+            if row["Aterro Potencial"] == "Sim":
                 city["landfill"] = True
             else:
                 city["landfill"] = False
