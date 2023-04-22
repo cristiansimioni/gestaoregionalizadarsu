@@ -24,7 +24,7 @@ Public Function calculateDistance(method As DistanceMethod, cities As Collection
     Dim width As Long
     Dim percent As Double
     
-    total = cities.Count * cities.Count
+    total = cities.count * cities.count
     width = form.lblProgress.width
     form.lblProgress.width = 0
     form.lblProgress.BackColor = ApplicationColors.bgColorLevel2
@@ -156,8 +156,8 @@ Public Function checkDistances(ByRef errMsg As String)
     Dim cities As New Collection
     Set cities = readSelectedCities()
     
-    For row = 3 To cities.Count + 2
-        For column = 2 To cities.Count + 1
+    For row = 3 To cities.count + 2
+        For column = 2 To cities.count + 1
             Dim value As Variant
             value = wks.Cells(row, column).value
             If IsEmpty(value) = True Then

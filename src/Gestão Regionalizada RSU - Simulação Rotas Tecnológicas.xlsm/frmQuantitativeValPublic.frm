@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmQuantitativeValPublic 
    Caption         =   "UserForm1"
-   ClientHeight    =   2808
-   ClientLeft      =   84
-   ClientTop       =   276
-   ClientWidth     =   8064
+   ClientHeight    =   3516
+   ClientLeft      =   60
+   ClientTop       =   180
+   ClientWidth     =   6450
    OleObjectBlob   =   "frmQuantitativeValPublic.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

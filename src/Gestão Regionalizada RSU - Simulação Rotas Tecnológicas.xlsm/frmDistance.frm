@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmDistance 
    Caption         =   "UserForm1"
-   ClientHeight    =   2544
-   ClientLeft      =   12
-   ClientTop       =   -24
-   ClientWidth     =   5448
+   ClientHeight    =   3192
+   ClientLeft      =   -15
+   ClientTop       =   -120
+   ClientWidth     =   4365
    OleObjectBlob   =   "frmDistance.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -49,7 +49,7 @@ Private Sub cbxDistanceMethod_Change()
         lblAPIKey.Enabled = True
         lblDescription.Caption = "Para utilizar esse método é necessário a geração de uma chave API (API Key) conforme descrito no manual " & _
                                  "do usuário. Verifique a quantidade de requests que serão gerados antes de continuar. A quantidade máxima de requests " & _
-                                 "gratuitos por ano é de 125.000 mil requests. Em um consórcio de 50 municípios, por exemplo, serão necessários 2500 requests para cada vez " & _
+                                 "gratuitos por ano é de 125.000 mil requests. Em um consórcio de 50 municípios, por exemplo, serão necessários 2500 requests (50 municípios x 50 municípios) para cada vez " & _
                                  "que o botão calcular for acionado. Ao continuar você aceita os termos da plataforma Bing."
     Else
         txtAPIKey.Enabled = False

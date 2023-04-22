@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAbout 
-   ClientHeight    =   1872
-   ClientLeft      =   168
-   ClientTop       =   576
-   ClientWidth     =   2448
+   ClientHeight    =   2352
+   ClientLeft      =   150
+   ClientTop       =   480
+   ClientWidth     =   1950
    OleObjectBlob   =   "frmAbout.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

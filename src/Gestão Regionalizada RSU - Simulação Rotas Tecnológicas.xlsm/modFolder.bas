@@ -20,11 +20,11 @@ Public Function HasWriteAccessToFolder(ByVal FolderPath As String) As Boolean
 
     'GET UNIQUE TEMP FilePath, DON'T WANT TO OVERWRITE SOMETHING THAT ALREADY EXISTS
     Do
-        Dim Count As Integer
+        Dim count As Integer
         Dim FilePath As String
 
-        FilePath = Fso.BuildPath(FolderPath, "TestWriteAccess" & Count & ".tmp")
-        Count = Count + 1
+        FilePath = Fso.BuildPath(FolderPath, "TestWriteAccess" & count & ".tmp")
+        count = count + 1
     Loop Until Not Fso.FileExists(FilePath)
 
     'ATTEMPT TO CREATE THE TMP FILE, ERROR RETURNS FALSE

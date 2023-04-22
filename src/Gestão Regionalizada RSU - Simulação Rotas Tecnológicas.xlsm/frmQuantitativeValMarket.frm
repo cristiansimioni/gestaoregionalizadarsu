@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmQuantitativeValMarket 
    Caption         =   "UserForm1"
-   ClientHeight    =   2268
-   ClientLeft      =   84
-   ClientTop       =   288
-   ClientWidth     =   7956
+   ClientHeight    =   2844
+   ClientLeft      =   75
+   ClientTop       =   195
+   ClientWidth     =   6360
    OleObjectBlob   =   "frmQuantitativeValMarket.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

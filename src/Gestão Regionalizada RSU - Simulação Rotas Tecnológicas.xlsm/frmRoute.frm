@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmRoute 
    Caption         =   "UserForm1"
-   ClientHeight    =   1896
-   ClientLeft      =   72
-   ClientTop       =   288
-   ClientWidth     =   6720
+   ClientHeight    =   2376
+   ClientLeft      =   45
+   ClientTop       =   195
+   ClientWidth     =   5385
    OleObjectBlob   =   "frmRoute.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

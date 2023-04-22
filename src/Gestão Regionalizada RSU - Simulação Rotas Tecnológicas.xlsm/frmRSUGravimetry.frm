@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmRSUGravimetry 
    Caption         =   "Dados de Gravimetria do RSU"
-   ClientHeight    =   5424
-   ClientLeft      =   312
-   ClientTop       =   1224
-   ClientWidth     =   6720
+   ClientHeight    =   6792
+   ClientLeft      =   285
+   ClientTop       =   1140
+   ClientWidth     =   5385
    OleObjectBlob   =   "frmRSUGravimetry.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

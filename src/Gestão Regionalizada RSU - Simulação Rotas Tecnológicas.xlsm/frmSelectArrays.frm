@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectArrays 
    Caption         =   "UserForm1"
-   ClientHeight    =   7392
-   ClientLeft      =   252
-   ClientTop       =   924
-   ClientWidth     =   18252
+   ClientHeight    =   7584
+   ClientLeft      =   75
+   ClientTop       =   120
+   ClientWidth     =   16605
    OleObjectBlob   =   "frmSelectArrays.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,24 +13,28 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Dim arrays2 As New Collection
+Dim arrays3 As New Collection
 Dim arrays As Collection
+Dim arraySave As Collection
+Dim subArraySize As Integer
 
 Private Sub btnBack_Click()
     Unload Me
 End Sub
 
 Private Sub btnSave_Click()
-    Dim Count As Integer
+    Dim count As Integer
     Dim e As Variant
-    Count = 0
-    For Each e In arrays
+    count = 0
+    For Each e In arraySave
         If e.vSelected Then
-            Count = Count + 1
+            count = count + 1
         End If
     Next e
     
-    If Count = 4 Then
-        updateValues arrays
+    If count = 4 Then
+        modArray.updateValues arraySave
         frmStepTwo.updateForm
         Unload Me
         ThisWorkbook.Save
@@ -40,37 +44,119 @@ Private Sub btnSave_Click()
 End Sub
 
 
+Private Sub subarrayTab_Change()
+    If subarrayTab.SelectedItem.index = 0 Then
+        subArraySize = 2
+    Else
+        subArraySize = 3
+    End If
+    
+    Set arrays = arraySave
+    Set arrays2 = New Collection
+    Set arrays3 = New Collection
+    For Each A In arrays
+        If A.vSubArray.count = 2 Then
+            arrays2.Add A
+        ElseIf A.vSubArray.count = 3 Then
+            arrays3.Add A
+        End If
+    Next A
+    
+    If subArraySize = 2 Then
+        Set arrays = arrays2
+    Else
+        Set arrays = arrays3
+    End If
+    
+    vScrollBar.Min = 1
+    vScrollBar.Max = arrays.count
+    
+    vScrollBar.value = 1
+    vScrollBar_Change
+    
+End Sub
+
 Private Sub txtArraySelected_Click()
     Dim currentValue As Integer
     currentValue = vScrollBar.value
-    currentValue = currentValue + 1
+    'currentValue = currentValue + 1
     
-    arrays.Item(currentValue).vSelected = txtArraySelected.value
+    For Each A In arraySave
+        If arrays.Item(currentValue).vCode = A.vCode Then
+            A.vSelected = txtArraySelected.value
+            Exit For
+        End If
+    Next A
+    
+    Set arrays = arraySave
+    Set arrays2 = New Collection
+    Set arrays3 = New Collection
+    For Each A In arrays
+        If A.vSubArray.count = 2 Then
+            arrays2.Add A
+        ElseIf A.vSubArray.count = 3 Then
+            arrays3.Add A
+        End If
+    Next A
+    
+    If subArraySize = 2 Then
+        Set arrays = arrays2
+    Else
+        Set arrays = arrays3
+    End If
+    
 End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
     Call modForm.applyLookAndFeel(Me, 3, "Definir Arranjos Consolidados", True)
     
-    Set arrays = readArrays
+    
+    Set arraySave = readArrays
     
     'Centralized Array is always the first one
-    lblCentralizedCode.Caption = arrays(1).vCode
-    txtCentralizedArray.Text = arrays(1).vSubArray(1).vArrayRaw
-    txtCentralizedLandfill.Text = arrays(1).vSubArray(1).vLandfill
-    txtCentralizedExistentLandfill.Text = arrays(1).vSubArray(1).vExistentLandfill
-    txtCentralizedUTVR.Text = arrays(1).vSubArray(1).vUTVR
-    txtCentralizedTotal.Text = arrays(1).vTotal
-    txtCentralizedTrash.Text = arrays(1).vTrash
-    txtCentralizedTechnology = arrays(1).vTechnology
-    txtCentralizedInbound.Text = arrays(1).vInbound
-    txtCentralizedOutbound.Text = arrays(1).vOutbound
-    txtCentralizedOutboundExistent.Text = arrays(1).vOutboundExistentLandfill
+    lblCentralizedCode.Caption = arraySave(1).vCode
+    txtCentralizedArray.Text = arraySave(1).vSubArray(1).vArrayRaw
+    txtCentralizedLandfill.Text = arraySave(1).vSubArray(1).vLandfill
+    txtCentralizedExistentLandfill.Text = arraySave(1).vSubArray(1).vExistentLandfill
+    txtCentralizedUTVR.Text = arraySave(1).vSubArray(1).vUTVR
+    txtCentralizedTotal.Text = arraySave(1).vTotal
+    txtCentralizedTrash.Text = arraySave(1).vTrash
+    txtCentralizedTechnology = arraySave(1).vTechnology
+    txtCentralizedInbound.Text = arraySave(1).vInbound
+    txtCentralizedOutbound.Text = arraySave(1).vOutbound
+    txtCentralizedOutboundExistent.Text = arraySave(1).vOutboundExistentLandfill
+    
+    subArraySize = 2
+    
+    Set arrays = arraySave
+    Set arrays2 = New Collection
+    Set arrays3 = New Collection
+    For Each A In arrays
+        If A.vSubArray.count = 2 Then
+            arrays2.Add A
+        ElseIf A.vSubArray.count = 3 Then
+            arrays3.Add A
+        End If
+    Next A
+    
+    If subArraySize = 2 Then
+        Set arrays = arrays2
+    Else
+        Set arrays = arrays3
+    End If
     
     vScrollBar.Min = 1
-    vScrollBar.Max = arrays.Count - 1
+    vScrollBar.Max = arrays.count
     
-    frmSelectArrays.Height = 609
+    subarrayTab.Tabs(0).Caption = "Subarranjos de Tamanho 2"
+    subarrayTab.Tabs(1).Caption = "Subarranjos de Tamanho 3"
+
+    If Database.GetDatabaseValue("MaxSubarrays", colUserValue) < 3 Then
+        subarrayTab.Tabs(1).Visible = False
+    End If
+    
+    frmSelectArrays.Height = 621
     frmSelectArrays.width = 1225
     
 End Sub
@@ -78,7 +164,7 @@ End Sub
 Private Sub vScrollBar_Change()
     Dim currentValue As Integer
     currentValue = vScrollBar.value
-    currentValue = currentValue + 1
+    'currentValue = currentValue + 1
     
     'Clear
     t = 1
@@ -98,7 +184,7 @@ Private Sub vScrollBar_Change()
     
     'Fill sub array
     t = 1
-    While t <= arrays(currentValue).vSubArray.Count
+    While t <= arrays(currentValue).vSubArray.count
         Me.Controls("txtSubArray" & t).value = arrays.Item(currentValue).vSubArray(t).vArrayRaw
         Me.Controls("txtSubArrayLandfill" & t).value = arrays.Item(currentValue).vSubArray(t).vLandfill
         Me.Controls("txtSubArrayExistentLandfill" & t).value = arrays.Item(currentValue).vSubArray(t).vExistentLandfill

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmCapexData 
    Caption         =   "UserForm1"
-   ClientHeight    =   6720
-   ClientLeft      =   108
-   ClientTop       =   372
-   ClientWidth     =   8820.001
+   ClientHeight    =   8400.001
+   ClientLeft      =   90
+   ClientTop       =   270
+   ClientWidth     =   7065
    OleObjectBlob   =   "frmCapexData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepOne 
    Caption         =   "Passo 1"
-   ClientHeight    =   4224
-   ClientLeft      =   120
-   ClientTop       =   456
-   ClientWidth     =   7140
+   ClientHeight    =   5280
+   ClientLeft      =   90
+   ClientTop       =   360
+   ClientWidth     =   5715
    OleObjectBlob   =   "frmStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -101,7 +101,7 @@ Public Function updateForm()
     If ValidateFormRules("frmStudyCaseStepOne") Then imgStudyCase.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If ValidateFormRules("frmSimulationData") Then imgSimulation.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
     If Dir(txtPath.Text, vbDirectory) <> "." Then imgFolder.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
-    If readSelectedCities.Count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
+    If readSelectedCities.count >= 2 Then imgSelectCities.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
 End Function
 
 Private Sub UserForm_Initialize()

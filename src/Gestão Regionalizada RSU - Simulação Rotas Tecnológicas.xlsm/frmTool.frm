@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTool 
    ClientHeight    =   8712.001
-   ClientLeft      =   96
-   ClientTop       =   372
-   ClientWidth     =   13668
+   ClientLeft      =   90
+   ClientTop       =   375
+   ClientWidth     =   13680
    OleObjectBlob   =   "frmTool.frx":0000
    ShowModal       =   0   'False
    StartUpPosition =   1  'CenterOwner
@@ -124,7 +124,7 @@ Public Function updateForm()
         ValidateFormRules("frmStudyCaseStepOne") And _
         ValidateFormRules("frmSimulationData") And _
         ValidateFormRules("frmStepOne") And _
-        readSelectedCities.Count >= 2 Then
+        readSelectedCities.count >= 2 Then
         
         imgStepOneStatus.Picture = LoadPicture(Application.ThisWorkbook.Path & "\" & FOLDERICONS & "\" & ICONCHECK)
         btnStepTwo.Enabled = True

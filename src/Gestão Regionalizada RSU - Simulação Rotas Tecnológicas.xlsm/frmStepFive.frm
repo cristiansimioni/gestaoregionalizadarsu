@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepFive 
    Caption         =   "UserForm1"
-   ClientHeight    =   6000
-   ClientLeft      =   84
-   ClientTop       =   216
-   ClientWidth     =   11748
+   ClientHeight    =   9384.001
+   ClientLeft      =   -15
+   ClientTop       =   -270
+   ClientWidth     =   14625
    OleObjectBlob   =   "frmStepFive.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -37,8 +37,6 @@ Private Sub btnBack_Click()
     frmTool.updateForm
     Unload Me
 End Sub
-
-
 
 Private Sub MultiPage1_Change()
 'Purpose: mark current page caption by a checkmark
@@ -84,10 +82,10 @@ End Sub
 Private Sub cbxArrayRoute_Change()
     cbxSubArrayRoute.Clear
     
-    For Each a In arrays
-        If a.vSelected Then
-            If a.vCode = cbxArrayRoute.value Then
-                For Each S In a.vSubArray
+    For Each A In arrays
+        If A.vSelected Then
+            If A.vCode = cbxArrayRoute.value Then
+                For Each S In A.vSubArray
                     cbxSubArrayRoute.AddItem S.vCode
                 Next S
                 cbxSubArrayRoute.AddItem "Consolidado"
@@ -104,10 +102,10 @@ End Sub
 Private Sub cbxArray_Change()
     cbxSubArray.Clear
     
-    For Each a In arrays
-        If a.vSelected Then
-            If a.vCode = cbxArray.value Then
-                For Each S In a.vSubArray
+    For Each A In arrays
+        If A.vSelected Then
+            If A.vCode = cbxArray.value Then
+                For Each S In A.vSubArray
                     cbxSubArray.AddItem S.vCode
                 Next S
             End If
@@ -140,18 +138,18 @@ Private Sub cbxArraySelected_Change()
         t = t + 1
     Wend
     
-    For Each a In arrays
-        If a.vSelected Then
-            If a.vCode = cbxArraySelected.value Then
-                txtArrayTotal.Text = a.vTotal
-                txtArrayTrash.Text = a.vTrash
-                txtArrayTechnology.Text = a.vTechnology
-                txtArrayInbound.Text = a.vInbound
-                txtArrayOutbound.Text = a.vOutbound
-                txtArrayOutboundExistent.Text = a.vOutboundExistentLandfill
+    For Each A In arrays
+        If A.vSelected Then
+            If A.vCode = cbxArraySelected.value Then
+                txtArrayTotal.Text = A.vTotal
+                txtArrayTrash.Text = A.vTrash
+                txtArrayTechnology.Text = A.vTechnology
+                txtArrayInbound.Text = A.vInbound
+                txtArrayOutbound.Text = A.vOutbound
+                txtArrayOutboundExistent.Text = A.vOutboundExistentLandfill
                 
                 t = 1
-                For Each S In a.vSubArray
+                For Each S In A.vSubArray
                     Me.Controls("txtSubArray" & t).value = S.vArrayRaw
                     Me.Controls("txtSubArrayLandfill" & t).value = S.vLandfill
                     Me.Controls("txtSubArrayExistentLandfill" & t).value = S.vExistentLandfill
@@ -327,21 +325,21 @@ Private Sub cbxMarketValuation_Change()
         Me.imgPublic3.Picture = LoadPicture(chartPath & "\" & "Desoneração Gestão Pública - " & cbxMarketValuation.value & lblArray3.Caption & ".bmp")
         Me.imgPublic4.Picture = LoadPicture(chartPath & "\" & "Desoneração Gestão Pública - " & cbxMarketValuation.value & lblArray4.Caption & ".bmp")
         
-        formulaUp1.Caption = wksBridgeData.Cells(3, 25).value
-        formulaDown1.Caption = wksBridgeData.Cells(3, 26).value
-        formulaResult1 = wksBridgeData.Cells(3, 27).value
+        formulaUp1.Caption = wksBridgeData.Cells(3, 26).value
+        formulaDown1.Caption = wksBridgeData.Cells(3, 27).value
+        formulaResult1 = wksBridgeData.Cells(3, 28).value
         
-        formulaUp2.Caption = wksBridgeData.Cells(5, 25).value
-        formulaDown2.Caption = wksBridgeData.Cells(5, 26).value
-        formulaResult2 = wksBridgeData.Cells(5, 27).value
+        formulaUp2.Caption = wksBridgeData.Cells(5, 26).value
+        formulaDown2.Caption = wksBridgeData.Cells(5, 27).value
+        formulaResult2 = wksBridgeData.Cells(5, 28).value
         
-        formulaUp3.Caption = wksBridgeData.Cells(7, 25).value
-        formulaDown3.Caption = wksBridgeData.Cells(7, 26).value
-        formulaResult3 = wksBridgeData.Cells(7, 27).value
+        formulaUp3.Caption = wksBridgeData.Cells(7, 26).value
+        formulaDown3.Caption = wksBridgeData.Cells(7, 27).value
+        formulaResult3 = wksBridgeData.Cells(7, 28).value
         
-        formulaUp4.Caption = wksBridgeData.Cells(9, 25).value
-        formulaDown4.Caption = wksBridgeData.Cells(9, 26).value
-        formulaResult4 = wksBridgeData.Cells(9, 27).value
+        formulaUp4.Caption = wksBridgeData.Cells(9, 26).value
+        formulaDown4.Caption = wksBridgeData.Cells(9, 27).value
+        formulaResult4 = wksBridgeData.Cells(9, 28).value
         
         For Each Ctrl In Me.Controls
             If InStr(Ctrl.name, "formula") > 0 Then
@@ -505,9 +503,11 @@ Private Sub UserForm_Initialize()
     Set arrays = readArrays
     
     'Ajustar arranjos selecionados na aba de "Dados - Gráfico"
-    Dim wksChartData, wksBridgeData As Worksheet
+    Dim wksChartData, wksDashboard, wksBridgeData, wksBridgeChart As Worksheet
     Set wksChartData = Util.GetChartDataWorksheet
+    Set wksDashboard = Util.GetDashboardWorksheet
     Set wksBridgeData = Util.GetBridgeDataWorksheet
+    Set wksBridgeChart = Util.GetBridgeChartWorksheet
     Dim markets As Variant
     markets = Array(FOLDERBASEMARKET, FOLDEROPTIMIZEDMARKET, FOLDERLANDFILLMARKET)
     Dim row, selected, rowBridge As Integer
@@ -515,11 +515,11 @@ Private Sub UserForm_Initialize()
     For Each m In markets
         selected = 1
         rowBridge = 3
-        For Each a In arrays
-            If a.vSelected Then
-                wksChartData.Cells(row, 1).value = GetMarketCode(m) & a.vCode
-                wksBridgeData.Cells(rowBridge, 1).value = a.vCode
-                Me.Controls("lblArray" & selected).Caption = a.vCode
+        For Each A In arrays
+            If A.vSelected Then
+                wksChartData.Cells(row, 1).value = GetMarketCode(m) & A.vCode
+                wksBridgeData.Cells(rowBridge, 1).value = A.vCode
+                Me.Controls("lblArray" & selected).Caption = A.vCode
                 row = row + 1
                 rowBridge = rowBridge + 2
                 selected = selected + 1
@@ -530,7 +530,12 @@ Private Sub UserForm_Initialize()
     Dim MyChart As Chart
     Dim Fname As String
     
-    For Each c In ThisWorkbook.Sheets("Dashboard").ChartObjects
+    wksDashboard.Activate
+    ActiveWindow.Zoom = 100
+    wksBridgeChart.Activate
+    ActiveWindow.Zoom = 80
+    
+    For Each c In wksDashboard.ChartObjects
         cbxCharts.AddItem c.Chart.ChartTitle.Text
         c.Activate
         Fname = chartPath & "\" & c.Chart.ChartTitle.Text & ".jpg"
@@ -555,11 +560,11 @@ Private Sub UserForm_Initialize()
     cbxRoute.AddItem "RT4"
     cbxRoute.AddItem "RT5"
     
-    For Each a In arrays
-        If a.vSelected Then
-            cbxArray.AddItem a.vCode
-            cbxArrayRoute.AddItem a.vCode
-            cbxArraySelected.AddItem a.vCode
+    For Each A In arrays
+        If A.vSelected Then
+            cbxArray.AddItem A.vCode
+            cbxArrayRoute.AddItem A.vCode
+            cbxArraySelected.AddItem A.vCode
         End If
     Next
     

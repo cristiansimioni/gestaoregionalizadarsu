@@ -22,19 +22,19 @@ End Enum
 
 Public Function countSelectedArrays()
     Dim arrays As New Collection
-    Dim Count As Integer
+    Dim count As Integer
     Dim e As Variant
-    Count = 0
+    count = 0
     Set arrays = readArrays
-    If arrays.Count <> 0 Then
+    If arrays.count <> 0 Then
         For Each e In arrays
             If e.vSelected Then
-                Count = Count + 1
+                count = count + 1
             End If
         Next e
     End If
     
-    countSelectedArrays = Count
+    countSelectedArrays = count
 End Function
 
 Public Function readArrays()
@@ -43,7 +43,7 @@ Public Function readArrays()
     Set wksDatabase = Util.GetArraysWorksheet
     Dim lastRow As Integer
     Dim r As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
     
     
     Dim arr As clsArray
@@ -107,7 +107,7 @@ Public Function updateValues(ByVal arrays As Collection)
     Set wksDatabase = Util.GetArraysWorksheet
     Dim lastRow As Integer
     Dim r, id As Integer
-    lastRow = wksDatabase.Cells(Rows.Count, 1).End(xlUp).row
+    lastRow = wksDatabase.Cells(Rows.count, 1).End(xlUp).row
     
     For r = 2 To lastRow
         id = wksDatabase.Cells(r, DatabaseArrayColumn.colID).value
