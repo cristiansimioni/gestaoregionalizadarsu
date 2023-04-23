@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepOne 
    Caption         =   "Passo 1"
    ClientHeight    =   5280
-   ClientLeft      =   90
+   ClientLeft      =   96
    ClientTop       =   360
-   ClientWidth     =   5715
+   ClientWidth     =   5712
    OleObjectBlob   =   "frmStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

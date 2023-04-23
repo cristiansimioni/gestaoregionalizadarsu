@@ -2,8 +2,8 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne 
    Caption         =   "Dados de Definição do Estudo de Caso"
    ClientHeight    =   3120
-   ClientLeft      =   195
-   ClientTop       =   765
+   ClientLeft      =   192
+   ClientTop       =   768
    ClientWidth     =   5520
    OleObjectBlob   =   "frmStudyCaseStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner

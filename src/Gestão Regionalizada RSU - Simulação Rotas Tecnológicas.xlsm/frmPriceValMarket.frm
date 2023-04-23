@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceValMarket 
    Caption         =   "UserForm2"
    ClientHeight    =   6480
-   ClientLeft      =   45
+   ClientLeft      =   48
    ClientTop       =   180
-   ClientWidth     =   6150
+   ClientWidth     =   6144
    OleObjectBlob   =   "frmPriceValMarket.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

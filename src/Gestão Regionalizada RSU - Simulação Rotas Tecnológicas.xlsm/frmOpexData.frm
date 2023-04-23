@@ -3,8 +3,8 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmOpexData
    Caption         =   "UserForm1"
    ClientHeight    =   6780
    ClientLeft      =   180
-   ClientTop       =   675
-   ClientWidth     =   7050
+   ClientTop       =   672
+   ClientWidth     =   7056
    OleObjectBlob   =   "frmOpexData.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

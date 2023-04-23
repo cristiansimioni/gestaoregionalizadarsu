@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmDistance 
    Caption         =   "UserForm1"
-   ClientHeight    =   3192
-   ClientLeft      =   -15
-   ClientTop       =   -120
-   ClientWidth     =   4365
+   ClientHeight    =   2544
+   ClientLeft      =   -36
+   ClientTop       =   -216
+   ClientWidth     =   3480
    OleObjectBlob   =   "frmDistance.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

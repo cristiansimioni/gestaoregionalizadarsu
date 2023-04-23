@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmProgressBarSimulation 
    Caption         =   "Processando..."
    ClientHeight    =   1500
-   ClientLeft      =   30
-   ClientTop       =   135
-   ClientWidth     =   9975.001
+   ClientLeft      =   24
+   ClientTop       =   132
+   ClientWidth     =   9984.001
    OleObjectBlob   =   "frmProgressBarSimulation.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -98,45 +98,45 @@ Private Sub executeSimulation()
                 marketPath = Util.FolderCreate(prjPath, m)
                 arrayMarketPath = Util.FolderCreate(marketPath, A.vCode)
                 
-                For Each S In A.vSubArray
+                For Each s In A.vSubArray
                     Dim routeFiles As New Collection
                     Dim consolidatedRows As New Collection
                     For Each r In routes
                         Dim subArrayBaseMarketPath, subArrayOptimizedMarketPath, subArrayLandfillMarketPath, newFile, templateFile As String
-                        subArrayMarketPath = Util.FolderCreate(arrayMarketPath, S.vCode)
+                        subArrayMarketPath = Util.FolderCreate(arrayMarketPath, s.vCode)
                         
                         If InStr(r, "RT1") Then
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = A.vCode
-                            wksDefinedArrays.Cells(row, 3).value = S.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-A"
-                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & S.vCode & "RT1-A"
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-A"
                             row = row + 1
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = A.vCode
-                            wksDefinedArrays.Cells(row, 3).value = S.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-B"
-                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & S.vCode & "RT1-B"
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-B"
                             row = row + 1
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = A.vCode
-                            wksDefinedArrays.Cells(row, 3).value = S.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-C"
-                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & S.vCode & "RT1-C"
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-C"
                             row = row + 1
                         Else
                             wksDefinedArrays.Cells(row, 1).value = m
                             wksDefinedArrays.Cells(row, 2).value = A.vCode
-                            wksDefinedArrays.Cells(row, 3).value = S.vCode
+                            wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = r
-                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & S.vCode & r
+                            wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & r
                             row = row + 1
                         End If
                         
                         StartTime = Timer
                         
                         'Create routes from 1 to 5 for all markets
-                        newFile = subArrayMarketPath & "\" & GetMarketCode(m) & S.vCode & r & ".xlsm"
+                        newFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & r & ".xlsm"
                         templateFile = Application.ThisWorkbook.Path & "\templates\Base Ferramenta 3 - " & r & ".xlsm"
                         
                         lblFile = "Processando arquivo: " & newFile
@@ -153,7 +153,7 @@ Private Sub executeSimulation()
                             FileCopy templateFile, newFile
                         End If
                         
-                        Call EditRouteToolData(newFile, S, m)
+                        Call EditRouteToolData(newFile, s, m)
                         
                         SecondsElapsed = Round(Timer - StartTime, 2)
                         
@@ -163,7 +163,7 @@ Private Sub executeSimulation()
 
                     'Create tool 2 for array
                     Dim toolTwoFile, templateToolTwoFile As String
-                    toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & S.vCode & " - Ferramenta 2.xlsm"
+                    toolTwoFile = subArrayMarketPath & "\" & GetMarketCode(m) & s.vCode & " - Ferramenta 2.xlsm"
                     templateFile = Application.ThisWorkbook.Path & "\templates\Base Ferramenta 3 - Ferramenta 2.xlsm"
                     
                     StartTime = Timer
@@ -176,7 +176,7 @@ Private Sub executeSimulation()
                         FileCopy templateFile, toolTwoFile
                      End If
                     
-                    Call EditToolTwoData(toolTwoFile, routeFiles, S, m)
+                    Call EditToolTwoData(toolTwoFile, routeFiles, s, m)
                     SecondsElapsed = Round(Timer - StartTime, 2)
                     Debug.Print "Criar e editar: " & toolTwoFile & " - Tempo: " & SecondsElapsed
                     
@@ -206,8 +206,8 @@ Private Sub executeSimulation()
                                 foundTarifa = True
                                 If wksDefinedArrays.Cells(rowRoute, 10) > bestEficiencia Then
                                     bestEficiencia = wksDefinedArrays.Cells(rowRoute, 10)
-                                    S.vSelectedRouteRow = rowRoute
-                                    S.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value
+                                    s.vSelectedRouteRow = rowRoute
+                                    s.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value
                                 End If
                             End If
                             
@@ -215,14 +215,14 @@ Private Sub executeSimulation()
                             If foundTarifa = False Then
                                 If minTarifa > wksDefinedArrays.Cells(rowRoute, 9).value Then
                                     minTarifa = wksDefinedArrays.Cells(rowRoute, 9).value
-                                    S.vSelectedRouteRow = rowRoute
-                                    S.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value
+                                    s.vSelectedRouteRow = rowRoute
+                                    s.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value
                                 End If
                             End If
                             
                         Else
-                            If S.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value Then
-                                S.vSelectedRouteRow = rowRoute
+                            If s.vSelectedRoute = wksDefinedArrays.Cells(rowRoute, 4).value Then
+                                s.vSelectedRouteRow = rowRoute
                             End If
                         End If
                         
@@ -242,16 +242,16 @@ Private Sub executeSimulation()
                     
                     wksDefinedArrays.Cells(row, 1).value = m
                     wksDefinedArrays.Cells(row, 2).value = A.vCode
-                    wksDefinedArrays.Cells(row, 3).value = S.vCode & "(Consolidado)"
-                    wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(S.vSelectedRouteRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
-                    wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & S.vCode
+                    wksDefinedArrays.Cells(row, 3).value = s.vCode & "(Consolidado)"
+                    wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(s.vSelectedRouteRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
+                    wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
                     
                     Dim rngRow As range
                     Set rngRow = wksDefinedArrays.Rows(row)
                     rngRow.EntireRow.Interior.Color = RGB(255, 242, 204)
                     
                     For x = 6 To 65
-                        wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(S.vSelectedRouteRow, x).value
+                        wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(s.vSelectedRouteRow, x).value
                     Next x
                     
                     consolidatedRows.Add row
@@ -266,7 +266,7 @@ Private Sub executeSimulation()
                     processed = processed + 1
                     DoEvents
                 
-                Next S
+                Next s
                     
                     
                 'Read data from tool 2 and insert into sheet

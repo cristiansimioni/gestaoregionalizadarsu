@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmEditCities 
    Caption         =   "Editar Cidades"
    ClientHeight    =   6492
-   ClientLeft      =   315
-   ClientTop       =   1230
-   ClientWidth     =   9975.001
+   ClientLeft      =   312
+   ClientTop       =   1224
+   ClientWidth     =   9984.001
    OleObjectBlob   =   "frmEditCities.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
