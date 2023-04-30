@@ -45,7 +45,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     'Form Appearance
-    Call modForm.applyLookAndFeel(Me, 3, "Impostos")
+    Call modForm.applyLookAndFeel(Me, 3, "Trubutos")
     
     txtISSTax = Database.GetDatabaseValue("ISSTax", colUserValue)
     txtICMSTax = Database.GetDatabaseValue("ICMSTax", colUserValue)
