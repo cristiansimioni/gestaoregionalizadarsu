@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmProgressBarSimulation 
    Caption         =   "Processando..."
-   ClientHeight    =   768
-   ClientLeft      =   -48
-   ClientTop       =   -156
-   ClientWidth     =   5100
+   ClientHeight    =   960
+   ClientLeft      =   -72
+   ClientTop       =   -252
+   ClientWidth     =   4080
    OleObjectBlob   =   "frmProgressBarSimulation.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -301,7 +301,7 @@ Private Sub executeSimulation()
                         Next r
                     ElseIf x = 10 Then
                         '=(H11+AD11+SOMA(AE11:AH11)+AU11)/(I11)
-                        strFormula = strFormula & "(H" & x + 1 & "+AD" & x + 1 & "+AE" & x + 1 & "+AF" & x + 1 & "+AG" & x + 1 & "+AH" & x + 1 & "+AU" & x + 1 & ")/(I" & x + 1 & ")"
+                        strFormula = strFormula & "(H" & row & "+AD" & row & "+AE" & row & "+AF" & row & "+AG" & row & "+AH" & row & "+AU" & row & ")/(I" & row & ")"
                     Else 'Soma Ponderada
                         Dim divisionPart As String
                         Dim sumPart As String
