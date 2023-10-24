@@ -126,33 +126,35 @@ def getSubArrayRSURange(sumTrash, rsutrash):
         if sumTrash >= rsutrash[i] and sumTrash <= rsutrash[i+1]:
             return i
 
-def removeArraysWithoutUTVR(combinations, utvrs):
-    comb = combinations.copy()
-    for c in range(len(comb)):
-        if c % (round(len(comb)+1/10.0)) == 0:
-            logging.info("Progresso: %d%%", c/len(comb)*100)
-        for sub in comb[c]:
-            find = False
-            for cluster in sub:
-                for city in cluster:
-                    if city in utvrs:
-                        find = True
-            if not find:
-                combinations.remove(comb[c])
-                break
-    logging.info("Progresso: 100%")
-    return combinations
+def checkCombinationUTVRAndTrash(combination, subarrays_dic):
+    for sub in combination:
+        if not subarrays_dic[''.join(sub)]["utvr"] or not subarrays_dic[''.join(sub)]["trash"]:
+            return False
+    return True
+
+def checkUTVR(cities, utvrs):
+    for c in cities:
+        if c in utvrs:
+            return True
+    return False
+
+def checkTrashThreshold(data, cities, threshold):
+    trash = 0
+    for c in cities:
+        trash = trash + data[c]["trash"]
+        if trash >= threshold:
+            return True
+    return False
 
 def removeArraysTrashThreshold(data, combinations, threshold):
     comb = combinations.copy()
     for c in range(len(comb)):
-        if c % (round(len(comb)+1/10.0)) == 0:
-            logging.info("Progresso: %d%%", c/len(comb)*100)
+        if c % 1000 == 0:
+            logging.info("Progresso: %d de %d", c, len(comb))
         for sub in comb[c]:
             trash = 0
-            for cluster in sub:
-                for city in cluster:
-                    trash = trash + data[city]["trash"]
+            for city in sub:
+                trash = trash + data[city]["trash"]
             if trash < threshold:
                 combinations.remove(comb[c])
                 break        
@@ -402,23 +404,8 @@ def main():
         logging.info("Quantidade de combinações: %d", len(combinations))
         report.write("Quantidade de combinações: " + repr(len(combinations)) + "\n")
 
-        utvrs = getUTVR(citiesdic)
-        if len(utvrs) != len(citiesdic):
-            logging.info("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
-            combinations = removeArraysWithoutUTVR(combinations, utvrs)
-            logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
-        report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos sem UTVR): " + repr(len(combinations)) + "\n")
-
-        if TRASH_THRESHOLD > 0.0:
-            logging.info("Removendo combinaçãoes cujo sub-arranjo não possui a quantidade de lixo necessária...")
-            combinations = removeArraysTrashThreshold(citiesdic, combinations, TRASH_THRESHOLD)
-            logging.info("Quantidade de combinações após a remoção: %d", len(combinations))
-        report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): " + repr(len(combinations)) + "\n\n")
-
-        logging.info("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
-
         new_comb = list()
-        #sub_arrays = set()
+        sub_arrays = set()
         for c in combinations:
             xcomb = list()
             for sub in c:
@@ -426,18 +413,51 @@ def main():
                 for cluster in sub:   
                     for city in cluster:
                         subarray.append(city)
-                #sub_arrays.add(tuple(subarray))
+                sub_arrays.add(tuple(subarray))
                 xcomb.append(subarray)
             new_comb.append(xcomb)
-            
-        #logging.info("Quantidade de subarranjos diferentes: %d", len(sub_arrays))
+
+        logging.info("Quantidade de subarranjos diferentes: %d", len(sub_arrays))
+
+        logging.info("Avaliando subarranjos")
+        utvrs = getUTVR(citiesdic)
+        subarrays_dic = {}
+        current = 0
+        for s in sub_arrays:
+            if current % 1000 == 0:
+                logging.info("Progresso: %d de %d", current, len(sub_arrays))
+            item = {}
+            item["utvr"] = checkUTVR(s, utvrs)
+            item["trash"] = checkTrashThreshold(citiesdic, s, TRASH_THRESHOLD)
+            subarrays_dic[''.join(s)] = item
+            current = current + 1
+
+        #if len(utvrs) != len(citiesdic):
+        #    logging.info("Removendo combinaçãoes cujo sub-arranjo não possui uma UTVR...")
+        #    new_comb = removeArraysWithoutUTVR(new_comb, subarrays_dic)
+        #    logging.info("Quantidade de combinações após a remoção: %d", len(new_comb))
+        #report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos sem UTVR): " + repr(len(combinations)) + "\n")
+
+        #if TRASH_THRESHOLD > 0.0:
+        #    logging.info("Removendo combinaçãoes cujo sub-arranjo não possui a quantidade de lixo necessária...")
+        #    new_comb = removeArraysTrashThreshold(citiesdic, new_comb, TRASH_THRESHOLD)
+        #    logging.info("Quantidade de combinações após a remoção: %d", len(new_comb))
+        #report.write("Quantidade de combinações (desconsiderando arranjos com sub-arranjos que não somam a quantidade de lixo produzida mínima): " + repr(len(combinations)) + "\n\n")
+
+        logging.info("Cálculando valores (inbound, tecnologia e outbound) por combinação...")
 
         result = []
         current = 0
 
+        ignoradas = 0
+        total = len(new_comb)
         for i in new_comb:
+            if len(utvrs) != len(citiesdic) or TRASH_THRESHOLD > 0.0: 
+                if not checkCombinationUTVRAndTrash(i, subarrays_dic):
+                    ignoradas = ignoradas + 1
+                    continue
             if current % 1000 == 0:
-                logging.info("Progresso: %d de %d", current, len(new_comb))
+                logging.info("Progresso: %d de %d (%f) / Avaliadas: %d / Ignoradas: %d", current + ignoradas, total, (current + ignoradas)/total * 100, current, ignoradas)
             isCentralized = False
             if len(i) == 1:
                 isCentralized = True
@@ -572,6 +592,7 @@ def main():
 
             current = current + 1
 
+        logging.info("Progresso: %d de %d (%f) / Avaliadas: %d / Ignoradas: %d", current + ignoradas, total, (current + ignoradas)/total * 100, current, ignoradas)
         logging.info("Progresso: 100%")
         logging.info("Ordenando combinações...")
         
