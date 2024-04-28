@@ -155,6 +155,62 @@ Public Sub generateReport()
 End Sub
 
 
+Public Sub generatePresentation()
+    ' Declaração das variáveis
+    Dim pptApp As Object
+    Dim pptPres As Object
+    Dim pptSlide As Object
+    Dim valor1 As String
+    Dim valor2 As String
+    
+    Dim prjPath As String, prjName As String, presentationPath As String
+    prjName = Database.GetDatabaseValue("ProjectName", colUserValue)
+    
+    ' Inicializa o PowerPoint
+    Set pptApp = CreateObject("PowerPoint.Application")
+    pptApp.Visible = True ' Altere para False se não quiser que o PowerPoint seja exibido
+    
+    ' Abre o arquivo PowerPoint
+    Set pptPres = pptApp.Presentations.Open(ThisWorkbook.Path & "\" & FOLDERTEMPLATES & "\" & "Apresentação.pptx")
+    
+    ' Define o slide onde os dados serão preenchidos
+    Set pptSlide = pptPres.Slides(1) ' Altere para o número do slide onde deseja preencher os dados
+    
+    ' Preenche os dados no PowerPoint
+    pptSlide.Shapes("Title 1").TextFrame.TextRange.Text = prjName
+    pptSlide.Shapes("Subtitle 2").TextFrame.TextRange.Text = "Test"
+    
+    
+    Set Chart = pptPres.Slides(2).Shapes("Gráfico 1").Chart
+    
+    ' Atualiza os dados do gráfico com os dados da planilha
+    Set ChartData = Chart.ChartData
+    ChartData.Activate
+    ChartData.Workbook.Application.Windows(1).Visible = False
+    ChartData.Workbook.Sheets(1).range("B2:D5").value = 5
+    ChartData.Workbook.Close True
+    
+    
+    'Criar o path para salvar o relatório se o mesmo ainda não existir
+    prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)
+    prjPath = Util.FolderCreate(prjPath, prjName)
+    presentationPath = Util.FolderCreate(prjPath, FOLDERREPORT)
+    
+    'Salva o relatório final como Word para posterior alteração
+    pptPres.SaveCopyAs presentationPath & "\Apresentação do Projeto " & prjName & ".pptx"
+    
+    pptPres.Close
+    
+    ' Finaliza as aplicações
+    pptApp.Quit
+    
+    ' Libera a memória
+    Set pptSlide = Nothing
+    Set pptPres = Nothing
+    Set pptApp = Nothing
+    Set planilha = Nothing
+End Sub
+
 Public Function getTable(s As String, r As Variant) As Table
     Dim tbl As Table
     For Each tbl In r.Tables

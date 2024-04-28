@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepSix 
    Caption         =   "UserForm1"
-   ClientHeight    =   3972
+   ClientHeight    =   5040
    ClientLeft      =   -120
    ClientTop       =   -636
-   ClientWidth     =   5988
+   ClientWidth     =   9396.001
    OleObjectBlob   =   "frmStepSix.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -20,6 +20,14 @@ Private Sub btnHelpStep_Click()
 End Sub
 
 Private Sub btnBack_Click()
+    Unload Me
+End Sub
+
+Private Sub btnPresentation_Click()
+    btnPresentation.Enabled = False
+    modReport.generatePresentation
+    MsgBox "Apresentação gerada com sucesso!", vbInformation, "Sucesso"
+    btnPresentation.Enabled = True
     Unload Me
 End Sub
 
