@@ -2,8 +2,8 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmProgressBarSimulation 
    Caption         =   "Processando..."
    ClientHeight    =   960
-   ClientLeft      =   -72
-   ClientTop       =   -252
+   ClientLeft      =   -75
+   ClientTop       =   -255
    ClientWidth     =   4080
    OleObjectBlob   =   "frmProgressBarSimulation.frx":0000
    StartUpPosition =   1  'CenterOwner

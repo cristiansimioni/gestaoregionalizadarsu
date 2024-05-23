@@ -1,9 +1,9 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmAbout 
-   ClientHeight    =   2352
-   ClientLeft      =   144
+   ClientHeight    =   2355
+   ClientLeft      =   150
    ClientTop       =   480
-   ClientWidth     =   1956
+   ClientWidth     =   1950
    OleObjectBlob   =   "frmAbout.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -14,7 +14,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Inicializa o formulário
 Private Sub UserForm_Initialize()
-    lblAppName = APPNAME
+    lblAppName = APPSHORTNAME
     lblAppSubname = APPSUBNAME
     lblVersion = "Versão: " & APPVERSION
     lblReleaseDate = "Última Atualização: " & APPLASTUPDATED

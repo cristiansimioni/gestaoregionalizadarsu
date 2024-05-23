@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmTaxes 
    Caption         =   "UserForm1"
    ClientHeight    =   2256
-   ClientLeft      =   168
-   ClientTop       =   648
-   ClientWidth     =   4296
+   ClientLeft      =   165
+   ClientTop       =   645
+   ClientWidth     =   4305
    OleObjectBlob   =   "frmTaxes.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

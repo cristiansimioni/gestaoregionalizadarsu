@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectArrays 
    Caption         =   "UserForm1"
    ClientHeight    =   7584
-   ClientLeft      =   72
+   ClientLeft      =   75
    ClientTop       =   120
-   ClientWidth     =   16608
+   ClientWidth     =   16605
    OleObjectBlob   =   "frmSelectArrays.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

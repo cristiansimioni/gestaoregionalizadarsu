@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmContract 
    Caption         =   "UserForm1"
    ClientHeight    =   4560
-   ClientLeft      =   72
+   ClientLeft      =   75
    ClientTop       =   300
-   ClientWidth     =   5292
+   ClientWidth     =   5295
    OleObjectBlob   =   "frmContract.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

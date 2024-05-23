@@ -4,7 +4,7 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 
 O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versioning].
 
-## [5.0.0] - 2024-05-20
+## [5.0.0] - 2024-05-23
 
 - Primeiro release oficial da ferramenta
 

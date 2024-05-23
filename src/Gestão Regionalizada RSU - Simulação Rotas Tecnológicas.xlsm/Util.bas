@@ -2,11 +2,11 @@ Attribute VB_Name = "Util"
 Option Explicit
 
 'Informações da Aplicação
-Public Const APPNAME                As String = "Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPSHORTNAME           As String = "Gestão Regionalizada RSU"
-Public Const APPSUBNAME             As String = "Simulação Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "4.2.2"
-Public Const APPLASTUPDATED         As String = "28/04/2024"
+Public Const APPNAME                As String = "Gestão Regionalizada de RSU - Simulação de Rotas Tecnológicas: Tratamento/Disposição"
+Public Const APPSHORTNAME           As String = "Gestão Regionalizada de RSU"
+Public Const APPSUBNAME             As String = "Simulação de Rotas Tecnológicas: Tratamento/Disposição"
+Public Const APPVERSION             As String = "5.0.0"
+Public Const APPLASTUPDATED         As String = "23/05/2024"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 

@@ -190,6 +190,13 @@ Public Sub generatePresentation()
     ChartData.Workbook.Sheets(1).range("B2:D5").value = 5
     ChartData.Workbook.Close True
     
+    Set Chart = pptPres.Slides(3).Shapes("Gráfico 2").Chart
+    Set ChartData = Chart.ChartData
+    ChartData.Activate
+    ChartData.Workbook.Application.Windows(1).Visible = False
+    ChartData.Workbook.Sheets(1).range("E2:E2").value = 500
+    ChartData.Workbook.Close True
+    
     
     'Criar o path para salvar o relatório se o mesmo ainda não existir
     prjPath = Database.GetDatabaseValue("ProjectPathFolder", colUserValue)

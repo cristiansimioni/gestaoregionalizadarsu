@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmQuantitativeValPublic
    ClientHeight    =   3516
    ClientLeft      =   60
    ClientTop       =   180
-   ClientWidth     =   6444
+   ClientWidth     =   6450
    OleObjectBlob   =   "frmQuantitativeValPublic.frx":0000
    StartUpPosition =   1  'CenterOwner
 End

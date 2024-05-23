@@ -2,9 +2,9 @@ VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmPriceValAutoconsumo 
    Caption         =   "Preços para Valorização - Autoconsumo"
    ClientHeight    =   3120
-   ClientLeft      =   48
-   ClientTop       =   204
-   ClientWidth     =   5868
+   ClientLeft      =   45
+   ClientTop       =   210
+   ClientWidth     =   5865
    OleObjectBlob   =   "frmPriceValAutoconsumo.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
