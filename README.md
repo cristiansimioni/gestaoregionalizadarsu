@@ -22,3 +22,7 @@ Gestão Regionalizada RSU - Simulação Rotas Tecnológicas: Tratamento/Disposi�
 
 ## 📁 Acesso ao Projeto
 Você pode acessar os arquivos do projeto clicando [aqui](https://github.com/cristiansimioni/gestaoregionalizadarsu/tree/main/).
+
+## License <a href="LICENSE"> ![GitHub License](https://img.shields.io/github/license/cristiansimioni/gestaoregionalizadarsu?style=flat-square) </a>
+
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/cristiansimioni/gestaoregionalizadarsu/blob/main/LICENSE) file for details.
