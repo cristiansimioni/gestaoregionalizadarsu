@@ -128,7 +128,7 @@ Public Sub CopyDataFromToolTwo(ByVal filename, ByVal row)
     route5Row = row - 1
     
     colStartTool = 6
-    rowLastToolTwo = 68
+    rowLastToolTwo = 73
     
     Dim tarifaLiquida, eficiencia As Double
     tarifaLiquida = Database.GetDatabaseValue("TargetExpectation", colUserValue)

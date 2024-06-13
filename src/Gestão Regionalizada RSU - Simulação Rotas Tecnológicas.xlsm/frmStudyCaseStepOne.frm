@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStudyCaseStepOne 
    Caption         =   "Dados de Definição do Estudo de Caso"
-   ClientHeight    =   3120
+   ClientHeight    =   4395
    ClientLeft      =   195
    ClientTop       =   765
-   ClientWidth     =   5520
+   ClientWidth     =   8640.001
    OleObjectBlob   =   "frmStudyCaseStepOne.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -37,6 +37,7 @@ Private Sub btnDefault_Click()
     txtAnnualGrowthPopulation.Text = Database.GetDatabaseValue("AnnualGrowthPopulation", colDefaultValue)
     txtIndexSelectiveColletionRSU.Text = Database.GetDatabaseValue("IndexSelectiveColletionRSU", colDefaultValue)
     txtAnnualGrowthCollect.Text = Database.GetDatabaseValue("AnnualGrowthCollect", colDefaultValue)
+    txtEmpregosIndiretosDiretos = Database.GetDatabaseValue("EmpregosIndiretosDiretos", colDefaultValue)
 End Sub
 
 Private Sub btnSave_Click()
@@ -45,6 +46,7 @@ Private Sub btnSave_Click()
         Call Database.SetDatabaseValue("IndexSelectiveColletionRSU", colUserValue, CDbl(txtIndexSelectiveColletionRSU.Text))
         Call Database.SetDatabaseValue("AnnualGrowthPopulation", colUserValue, CDbl(txtAnnualGrowthPopulation.Text))
         Call Database.SetDatabaseValue("AnnualGrowthCollect", colUserValue, CDbl(txtAnnualGrowthCollect.Text))
+        Call Database.SetDatabaseValue("EmpregosIndiretosDiretos", colUserValue, CDbl(txtEmpregosIndiretosDiretos.Text))
         FormChanged = False
         Unload Me
         frmStepOne.updateForm
@@ -66,6 +68,10 @@ Private Sub textBoxChange(ByRef txtBox, ByVal varName As String)
         txtBox.ControlTipText = errorMsg
     End If
     FormChanged = True
+End Sub
+
+Private Sub txtEmpregosIndiretosDiretos_Change()
+    Call textBoxChange(txtEmpregosIndiretosDiretos, "EmpregosIndiretosDiretos")
 End Sub
 
 Private Sub txtGenerationPerCapitaRDO_Change()
@@ -94,18 +100,20 @@ Private Sub UserForm_Initialize()
     IndexSelectiveColletionRSU = Database.GetDatabaseValue("IndexSelectiveColletionRSU", colUserValue)
     AnnualGrowthPopulation = Database.GetDatabaseValue("AnnualGrowthPopulation", colUserValue)
     AnnualGrowthCollect = Database.GetDatabaseValue("AnnualGrowthCollect", colUserValue)
+    EmpregosIndiretosDiretos = Database.GetDatabaseValue("EmpregosIndiretosDiretos", colUserValue)
 
     'Only show the data if it's available
     If GenerationPerCapitaRDO + IndexSelectiveColletionRSU + AnnualGrowthPopulation + _
-       AnnualGrowthCollect <> 0 Then
+       AnnualGrowthCollect + EmpregosDiretosIndiretos <> 0 Then
         txtGenerationPerCapitaRDO.Text = GenerationPerCapitaRDO
         txtIndexSelectiveColletionRSU.Text = IndexSelectiveColletionRSU
         txtAnnualGrowthPopulation.Text = AnnualGrowthPopulation
         txtAnnualGrowthCollect.Text = AnnualGrowthCollect
+        txtEmpregosIndiretosDiretos = EmpregosIndiretosDiretos
     End If
     
     FormChanged = False
     
-    Me.Height = 223
+    Me.Height = 249
     Me.width = 442
 End Sub

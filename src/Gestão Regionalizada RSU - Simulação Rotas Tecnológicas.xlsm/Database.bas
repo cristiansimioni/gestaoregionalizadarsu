@@ -112,7 +112,7 @@ Sub Clean()
     'Clear defined arrays
     Dim wksDefinedArrays As Worksheet
     Set wksDefinedArrays = Util.GetDefinedArraysWorksheet
-    wksDefinedArrays.range("A3:BM500").ClearContents
+    wksDefinedArrays.range("A3:BR1000").ClearContents
     
     'Clear distances
     Dim wksCitiesDistance As Worksheet

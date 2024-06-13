@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmStepSix 
    Caption         =   "UserForm1"
-   ClientHeight    =   5040
+   ClientHeight    =   5052
    ClientLeft      =   -120
    ClientTop       =   -630
    ClientWidth     =   9390.001
@@ -25,8 +25,15 @@ End Sub
 
 Private Sub btnPresentation_Click()
     btnPresentation.Enabled = False
-    modReport.generatePresentation
-    MsgBox "Apresentação gerada com sucesso!", vbInformation, "Sucesso"
+    Dim presentationPath As String
+    presentationPath = modReport.generatePresentation
+    Dim answer As Integer
+    answer = MsgBox("Infográfico gerado com sucesso! O arquivo está disponível em " & presentationPath & ". Deseja abrir o infográfico?", vbInformation + vbYesNo + vbDefaultButton2, "Sucesso")
+    If answer = vbYes Then
+        On Error Resume Next
+            ThisWorkbook.FollowHyperlink (presentationPath)
+        On Error GoTo 0
+    End If
     btnPresentation.Enabled = True
     Unload Me
 End Sub
@@ -38,6 +45,7 @@ Private Sub btnReport_Click()
     btnReport.Enabled = True
     Unload Me
 End Sub
+
 
 'Private Sub txtArray_Change()
 '    Call Database.SetDatabaseValue("ArrayText", colUserValue, txtArray.Text)

@@ -65,9 +65,9 @@ Private Sub executeSimulation()
     Dim row As Integer
     row = 3
     
-    wksDefinedArrays.range("A3:BJ2000").ClearContents
-    wksDefinedArrays.range("A3:BJ2000").Interior.Color = xlNone
-    wksDefinedArrays.range("A3:BJ2000").Font.Bold = False
+    wksDefinedArrays.range("A3:BR2000").ClearContents
+    wksDefinedArrays.range("A3:BR2000").Interior.Color = xlNone
+    wksDefinedArrays.range("A3:BR2000").Font.Bold = False
     
     Application.DisplayAlerts = False
     Application.ScreenUpdating = False
@@ -76,11 +76,11 @@ Private Sub executeSimulation()
     Application.EnableEvents = False
     
     total = 0
-    For Each A In arrays
-        If A.vSelected Then
-            total = total + A.vSubArray.count
+    For Each a In arrays
+        If a.vSelected Then
+            total = total + a.vSubArray.count
         End If
-    Next A
+    Next a
     total = total * (UBound(markets) - LBound(markets) + 1) * (UBound(routes) - LBound(routes) + 1 + 1) '+1 Ferramenta 2
     
     Dim tarifaLiquida, eficiencia As Double
@@ -90,15 +90,15 @@ Private Sub executeSimulation()
     Dim selectedBaseRoute As String
     
     processed = 1
-    For Each A In arrays
-        If A.vSelected Then
+    For Each a In arrays
+        If a.vSelected Then
             For Each m In markets
                 selectedBaseRoute = ""
                 Dim marketPath, arrayMarketPath As String
                 marketPath = Util.FolderCreate(prjPath, m)
-                arrayMarketPath = Util.FolderCreate(marketPath, A.vCode)
+                arrayMarketPath = Util.FolderCreate(marketPath, a.vCode)
                 
-                For Each s In A.vSubArray
+                For Each s In a.vSubArray
                     Dim routeFiles As New Collection
                     Dim consolidatedRows As New Collection
                     For Each r In routes
@@ -107,26 +107,26 @@ Private Sub executeSimulation()
                         
                         If InStr(r, "RT1") Then
                             wksDefinedArrays.Cells(row, 1).value = m
-                            wksDefinedArrays.Cells(row, 2).value = A.vCode
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-A"
                             wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-A"
                             row = row + 1
                             wksDefinedArrays.Cells(row, 1).value = m
-                            wksDefinedArrays.Cells(row, 2).value = A.vCode
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-B"
                             wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-B"
                             row = row + 1
                             wksDefinedArrays.Cells(row, 1).value = m
-                            wksDefinedArrays.Cells(row, 2).value = A.vCode
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = "RT1-C"
                             wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & "RT1-C"
                             row = row + 1
                         Else
                             wksDefinedArrays.Cells(row, 1).value = m
-                            wksDefinedArrays.Cells(row, 2).value = A.vCode
+                            wksDefinedArrays.Cells(row, 2).value = a.vCode
                             wksDefinedArrays.Cells(row, 3).value = s.vCode
                             wksDefinedArrays.Cells(row, 4).value = r
                             wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode & r
@@ -241,7 +241,7 @@ Private Sub executeSimulation()
                     Next rowRoute
                     
                     wksDefinedArrays.Cells(row, 1).value = m
-                    wksDefinedArrays.Cells(row, 2).value = A.vCode
+                    wksDefinedArrays.Cells(row, 2).value = a.vCode
                     wksDefinedArrays.Cells(row, 3).value = s.vCode & "(Consolidado)"
                     wksDefinedArrays.Cells(row, 4).value = wksDefinedArrays.Cells(s.vSelectedRouteRow, 4).value 'Salvar o valor da rota selecionada na coluna tecnologia
                     wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & s.vCode
@@ -250,7 +250,7 @@ Private Sub executeSimulation()
                     Set rngRow = wksDefinedArrays.Rows(row)
                     rngRow.EntireRow.Interior.Color = RGB(255, 242, 204)
                     
-                    For x = 6 To 65
+                    For x = 6 To 70
                         wksDefinedArrays.Cells(row, x).value = wksDefinedArrays.Cells(s.vSelectedRouteRow, x).value
                     Next x
                     
@@ -271,17 +271,17 @@ Private Sub executeSimulation()
                     
                 'Read data from tool 2 and insert into sheet
                 wksDefinedArrays.Cells(row, 1).value = m
-                wksDefinedArrays.Cells(row, 2).value = A.vCode & "(Consolidado)"
+                wksDefinedArrays.Cells(row, 2).value = a.vCode & "(Consolidado)"
                 wksDefinedArrays.Cells(row, 3).value = "NA"
                 wksDefinedArrays.Cells(row, 4).value = "NA"
-                wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & A.vCode
+                wksDefinedArrays.Cells(row, 5).value = GetMarketCode(m) & a.vCode
                 
                 
                 Set rngRow = wksDefinedArrays.Rows(row)
                 rngRow.EntireRow.Font.Bold = True
                 rngRow.EntireRow.Interior.Color = RGB(233, 196, 106)
                 
-                For x = 6 To 65
+                For x = 6 To 70
                     Dim strFormula As String
                     Dim ColumnLetter As String
                     strFormula = "="
@@ -330,7 +330,7 @@ Private Sub executeSimulation()
             Next m
             
         End If
-    Next A
+    Next a
       
     Application.DisplayAlerts = True
     Application.ScreenUpdating = True

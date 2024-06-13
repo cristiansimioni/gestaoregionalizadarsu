@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSelectArrays 
    Caption         =   "UserForm1"
-   ClientHeight    =   7584
-   ClientLeft      =   75
-   ClientTop       =   120
-   ClientWidth     =   16605
+   ClientHeight    =   6060
+   ClientLeft      =   45
+   ClientTop       =   30
+   ClientWidth     =   13290
    OleObjectBlob   =   "frmSelectArrays.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -26,20 +26,38 @@ End Sub
 Private Sub btnSave_Click()
     Dim count As Integer
     Dim e As Variant
+    Dim selectedArraySub2, selectedArraySub3 As Boolean
+    selectedArraySub2 = False
+    selectedArraySub3 = False
     count = 0
+    
+    Set wksInfographs = Util.GetInfographsWorksheet
+    
     For Each e In arraySave
         If e.vSelected Then
             count = count + 1
+            If e.vSubArray.count = 2 Then
+                If selectedArraySub2 <> True Then
+                    wksInfographs.range("K9") = e.vCode
+                End If
+                selectedArraySub2 = True
+            End If
+            If e.vSubArray.count = 3 Then
+                If selectedArraySub3 <> True Then
+                    wksInfographs.range("L9") = e.vCode
+                End If
+                selectedArraySub3 = True
+            End If
         End If
     Next e
     
-    If count = 4 Then
+    If count = 4 And selectedArraySub2 = True And selectedArraySub3 = True Then
         modArray.updateValues arraySave
         frmStepTwo.updateForm
         Unload Me
         ThisWorkbook.Save
     Else
-        Call MsgBox(MSG_WRONG_NUMBER_ARRAYS, vbCritical, MSG_WRONG_NUMBER_ARRAYS_TITLE)
+        Call MsgBox("É obrigatório selecionar três arranjos, sendo pelo menos um arranjo com dois subarranjos e um arranjo com três subarranjos.", vbCritical, "")
     End If
 End Sub
 
@@ -54,13 +72,13 @@ Private Sub subarrayTab_Change()
     Set arrays = arraySave
     Set arrays2 = New Collection
     Set arrays3 = New Collection
-    For Each A In arrays
-        If A.vSubArray.count = 2 Then
-            arrays2.Add A
-        ElseIf A.vSubArray.count = 3 Then
-            arrays3.Add A
+    For Each a In arrays
+        If a.vSubArray.count = 2 Then
+            arrays2.Add a
+        ElseIf a.vSubArray.count = 3 Then
+            arrays3.Add a
         End If
-    Next A
+    Next a
     
     If subArraySize = 2 Then
         Set arrays = arrays2
@@ -81,23 +99,23 @@ Private Sub txtArraySelected_Click()
     currentValue = vScrollBar.value
     'currentValue = currentValue + 1
     
-    For Each A In arraySave
-        If arrays.Item(currentValue).vCode = A.vCode Then
-            A.vSelected = txtArraySelected.value
+    For Each a In arraySave
+        If arrays.Item(currentValue).vCode = a.vCode Then
+            a.vSelected = txtArraySelected.value
             Exit For
         End If
-    Next A
+    Next a
     
     Set arrays = arraySave
     Set arrays2 = New Collection
     Set arrays3 = New Collection
-    For Each A In arrays
-        If A.vSubArray.count = 2 Then
-            arrays2.Add A
-        ElseIf A.vSubArray.count = 3 Then
-            arrays3.Add A
+    For Each a In arrays
+        If a.vSubArray.count = 2 Then
+            arrays2.Add a
+        ElseIf a.vSubArray.count = 3 Then
+            arrays3.Add a
         End If
-    Next A
+    Next a
     
     If subArraySize = 2 Then
         Set arrays = arrays2
@@ -132,13 +150,13 @@ Private Sub UserForm_Initialize()
     Set arrays = arraySave
     Set arrays2 = New Collection
     Set arrays3 = New Collection
-    For Each A In arrays
-        If A.vSubArray.count = 2 Then
-            arrays2.Add A
-        ElseIf A.vSubArray.count = 3 Then
-            arrays3.Add A
+    For Each a In arrays
+        If a.vSubArray.count = 2 Then
+            arrays2.Add a
+        ElseIf a.vSubArray.count = 3 Then
+            arrays3.Add a
         End If
-    Next A
+    Next a
     
     If subArraySize = 2 Then
         Set arrays = arrays2

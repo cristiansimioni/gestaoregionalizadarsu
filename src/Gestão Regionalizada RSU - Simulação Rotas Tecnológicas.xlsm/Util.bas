@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada de RSU - Simulação de Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada de RSU"
 Public Const APPSUBNAME             As String = "Simulação de Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "5.0.0"
-Public Const APPLASTUPDATED         As String = "23/05/2024"
+Public Const APPVERSION             As String = "5.1.0"
+Public Const APPLASTUPDATED         As String = "14/06/2024"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
@@ -28,16 +28,16 @@ Public Const ICONCHECK              As String = "check-icon.jpg"
 Public Const ICONWARNING            As String = "error-icon.jpg"
 
 'Imagens da Aplicação
-Public Const IMAGELOGO                As String = "logo-grey.jpg"
-Public Const IMAGELOGOEXTRASMALL      As String = "logo-extra-small-grey.jpg"
-Public Const IMAGEPARTNERS            As String = "partners.jpg"
-Public Const IMAGESCREENROUTEONEA     As String = "screen-rt-1-a.bmp"
-Public Const IMAGESCREENROUTEONEB     As String = "screen-rt-1-b.bmp"
-Public Const IMAGESCREENROUTEONEC     As String = "screen-rt-1-c.bmp"
-Public Const IMAGESCREENROUTETWO      As String = "screen-rt-2.bmp"
-Public Const IMAGESCREENROUTETHREE    As String = "screen-rt-3.bmp"
-Public Const IMAGESCREENROUTEFOUR     As String = "screen-rt-4.bmp"
-Public Const IMAGESCREENROUTEFIVE     As String = "screen-rt-5.bmp"
+Public Const IMAGELOGO              As String = "logo-grey.jpg"
+Public Const IMAGELOGOEXTRASMALL    As String = "logo-extra-small-grey.jpg"
+Public Const IMAGEPARTNERS          As String = "partners.jpg"
+Public Const IMAGESCREENROUTEONEA   As String = "screen-rt-1-a.bmp"
+Public Const IMAGESCREENROUTEONEB   As String = "screen-rt-1-b.bmp"
+Public Const IMAGESCREENROUTEONEC   As String = "screen-rt-1-c.bmp"
+Public Const IMAGESCREENROUTETWO    As String = "screen-rt-2.bmp"
+Public Const IMAGESCREENROUTETHREE  As String = "screen-rt-3.bmp"
+Public Const IMAGESCREENROUTEFOUR   As String = "screen-rt-4.bmp"
+Public Const IMAGESCREENROUTEFIVE   As String = "screen-rt-5.bmp"
 
 'Arquivos da Aplicação
 Public Const FILEMANUAL             As String = "Manual da Ferramenta.pdf"
@@ -68,26 +68,26 @@ Public Const MSG_WRONG_NUMBER_ARRAYS                As String = "Quantidade de a
 Public Enum ApplicationColors
     'Form
     '#Background
-    frmBgColorLevel1 = 16777215    'RGB(255, 255, 255)
-    frmBgColorLevel2 = 16777215    'RGB(255, 255, 255)
-    frmBgColorLevel3 = 16777215    'RGB(255, 255, 255)
-    frmBgColorLevel4 = 16777215    'RGB(255, 255, 255)
+    frmBgColorLevel1 = 16777215     'RGB(255, 255, 255)
+    frmBgColorLevel2 = 16777215     'RGB(255, 255, 255)
+    frmBgColorLevel3 = 16777215     'RGB(255, 255, 255)
+    frmBgColorLevel4 = 16777215     'RGB(255, 255, 255)
     '#Button
-    bgColorLevel1 = 14602886    'RGB(134, 210, 222)
-    bgColorLevel2 = 14855222    'RGB(54,  172, 226)
-    bgColorLevel3 = 7220525     'RGB(45,   45, 110)
-    bgColorLevel4 = 2461170     'RGB(242, 141,  37)
-    fgColorLevel1 = 0           'RGB(0, 0, 0)
-    fgColorLevel2 = 16777215    'RGB(255, 255, 255)
-    fgColorLevel3 = 16777215    'RGB(255, 255, 255)
-    fgColorLevel4 = 16777215    'RGB(255, 255, 255)
+    bgColorLevel1 = 14602886        'RGB(134, 210, 222)
+    bgColorLevel2 = 14855222        'RGB(54,  172, 226)
+    bgColorLevel3 = 7220525         'RGB(45,   45, 110)
+    bgColorLevel4 = 2461170         'RGB(242, 141,  37)
+    fgColorLevel1 = 0               'RGB(0, 0, 0)
+    fgColorLevel2 = 16777215        'RGB(255, 255, 255)
+    fgColorLevel3 = 16777215        'RGB(255, 255, 255)
+    fgColorLevel4 = 16777215        'RGB(255, 255, 255)
     'Text Box
-    bgColorValidTextBox = 11973449 'RGB(73, 179, 182)
+    bgColorValidTextBox = 11973449  'RGB(73, 179, 182)
     bgColorInvalidTextBox = 5855743 'RGB(255, 89, 89)
-    txtFgColorLevel1 = 0           'RGB(0, 0, 0)
-    txtFgColorLevel2 = 0           'RGB(0, 0, 0)
-    txtFgColorLevel3 = 16777215    'RGB(255, 255, 255)
-    txtFgColorLevel4 = 16777215    'RGB(255, 255, 255)
+    txtFgColorLevel1 = 0            'RGB(0, 0, 0)
+    txtFgColorLevel2 = 0            'RGB(0, 0, 0)
+    txtFgColorLevel3 = 16777215     'RGB(255, 255, 255)
+    txtFgColorLevel4 = 16777215     'RGB(255, 255, 255)
 End Enum
 
 Function GetDatabaseWorksheet() As Worksheet
@@ -128,6 +128,10 @@ End Function
 
 Function GetBridgeChartWorksheet() As Worksheet
     Set GetBridgeChartWorksheet = ThisWorkbook.Worksheets("Bridges")
+End Function
+
+Function GetInfographsWorksheet() As Worksheet
+    Set GetInfographsWorksheet = ThisWorkbook.Worksheets("Dados Infográfico")
 End Function
 
 
@@ -298,7 +302,12 @@ Public Function CSVImport(ByVal algPath As String, ByVal prjName As String)
             End If
             ws.Cells(ImportToRow, 1) = ArrayId
             
-            If ArrayId <= 4 Then 'Centralized array
+            'Seleciona por padrão o arranjo centralizado (id = 1),
+            'os dois primeiros com dois subarranjos (id = 2 e id = 3)
+            If ArrayId <= 3 Then 'Centralized array
+                ws.Cells(ImportToRow, 2) = "Sim"
+            'Seleciona o primeiro arranjo com três subarranjos
+            ElseIf ArrayId = Database.GetDatabaseValue("MaxArrays", colDefaultValue) + 2 Then
                 ws.Cells(ImportToRow, 2) = "Sim"
             Else
                 ws.Cells(ImportToRow, 2) = "Não"
@@ -330,5 +339,21 @@ Public Function GetMarketCode(ByVal market As String)
         GetMarketCode = "M2"
     Else
         GetMarketCode = "M3"
+    End If
+End Function
+
+Public Function GetRouteName(ByVal route As String)
+    If route = "RT1-A" Then
+        GetRouteName = "Biodigestão | E.Elétrica"
+    ElseIf route = "RT1-C" Then
+        GetRouteName = "Biodigestão | Biometano"
+    ElseIf route = "RT2" Then
+        GetRouteName = "Compostagem"
+    ElseIf route = "RT3" Then
+        GetRouteName = "Biosecagem"
+    ElseIf route = "RT4" Then
+        GetRouteName = "Incineração"
+    Else
+        GetRouteName = "ERRO"
     End If
 End Function

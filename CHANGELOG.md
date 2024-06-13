@@ -4,6 +4,26 @@ Todas as alterações notáveis neste projeto serão documentadas neste arquivo.
 
 O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versioning].
 
+## [Unreleased]
+
+### Adicionado
+
+- Aba "Visulizador de Arranjos" adicionada a ferramenta para facilitar a visualização de arranjos de maneira tabelada
+- Aba "Dados Infográfico" adicionada para facilitar a geração automática do infográfico em formato PPT
+- Variável da relação de empregos diretos/indiretos adicionada ao passo um no estudo de caso
+- Valores de números empregos diretos, indiretos e emissão de CO₂ adicionaos a aba Arranjos Consolidados
+- Possibilidade de exportar um infográfico no formato PPT e PDF no passo seis da ferramenta
+
+### Alterado
+
+- Cálculos do algoritmo arredondados para duas casas decimais
+- Templates das ferramentas de Rotas Tecnológicas e Ferramenta 2 alterados para incluir os dados de números empregos diretos, indiretos e emissão de CO₂
+- Valor padrão para o número máximo de subarranjos alterado de dois para três, obrigatoriamente
+
+### Corrigido
+
+- 
+
 ## [5.0.0] - 2024-05-23
 
 - Primeiro release oficial da ferramenta

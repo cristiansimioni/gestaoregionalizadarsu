@@ -82,10 +82,10 @@ End Sub
 Private Sub cbxArrayRoute_Change()
     cbxSubArrayRoute.Clear
     
-    For Each A In arrays
-        If A.vSelected Then
-            If A.vCode = cbxArrayRoute.value Then
-                For Each s In A.vSubArray
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArrayRoute.value Then
+                For Each s In a.vSubArray
                     cbxSubArrayRoute.AddItem s.vCode
                 Next s
                 cbxSubArrayRoute.AddItem "Consolidado"
@@ -102,10 +102,10 @@ End Sub
 Private Sub cbxArray_Change()
     cbxSubArray.Clear
     
-    For Each A In arrays
-        If A.vSelected Then
-            If A.vCode = cbxArray.value Then
-                For Each s In A.vSubArray
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArray.value Then
+                For Each s In a.vSubArray
                     cbxSubArray.AddItem s.vCode
                 Next s
             End If
@@ -138,18 +138,18 @@ Private Sub cbxArraySelected_Change()
         t = t + 1
     Wend
     
-    For Each A In arrays
-        If A.vSelected Then
-            If A.vCode = cbxArraySelected.value Then
-                txtArrayTotal.Text = A.vTotal
-                txtArrayTrash.Text = A.vTrash
-                txtArrayTechnology.Text = A.vTechnology
-                txtArrayInbound.Text = A.vInbound
-                txtArrayOutbound.Text = A.vOutbound
-                txtArrayOutboundExistent.Text = A.vOutboundExistentLandfill
+    For Each a In arrays
+        If a.vSelected Then
+            If a.vCode = cbxArraySelected.value Then
+                txtArrayTotal.Text = a.vTotal
+                txtArrayTrash.Text = a.vTrash
+                txtArrayTechnology.Text = a.vTechnology
+                txtArrayInbound.Text = a.vInbound
+                txtArrayOutbound.Text = a.vOutbound
+                txtArrayOutboundExistent.Text = a.vOutboundExistentLandfill
                 
                 t = 1
-                For Each s In A.vSubArray
+                For Each s In a.vSubArray
                     Me.Controls("txtSubArray" & t).value = s.vArrayRaw
                     Me.Controls("txtSubArrayLandfill" & t).value = s.vLandfill
                     Me.Controls("txtSubArrayExistentLandfill" & t).value = s.vExistentLandfill
@@ -515,11 +515,11 @@ Private Sub UserForm_Initialize()
     For Each m In markets
         selected = 1
         rowBridge = 3
-        For Each A In arrays
-            If A.vSelected Then
-                wksChartData.Cells(row, 1).value = GetMarketCode(m) & A.vCode
-                wksBridgeData.Cells(rowBridge, 1).value = A.vCode
-                Me.Controls("lblArray" & selected).Caption = A.vCode
+        For Each a In arrays
+            If a.vSelected Then
+                wksChartData.Cells(row, 1).value = GetMarketCode(m) & a.vCode
+                wksBridgeData.Cells(rowBridge, 1).value = a.vCode
+                Me.Controls("lblArray" & selected).Caption = a.vCode
                 row = row + 1
                 rowBridge = rowBridge + 2
                 selected = selected + 1
@@ -560,11 +560,11 @@ Private Sub UserForm_Initialize()
     cbxRoute.AddItem "RT4"
     cbxRoute.AddItem "RT5"
     
-    For Each A In arrays
-        If A.vSelected Then
-            cbxArray.AddItem A.vCode
-            cbxArrayRoute.AddItem A.vCode
-            cbxArraySelected.AddItem A.vCode
+    For Each a In arrays
+        If a.vSelected Then
+            cbxArray.AddItem a.vCode
+            cbxArrayRoute.AddItem a.vCode
+            cbxArraySelected.AddItem a.vCode
         End If
     Next
     

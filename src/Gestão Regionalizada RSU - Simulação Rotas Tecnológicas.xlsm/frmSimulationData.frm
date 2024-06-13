@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmSimulationData 
    Caption         =   "Metas para a Simulação do Estudo de Caso"
-   ClientHeight    =   3948
+   ClientHeight    =   3945
    ClientLeft      =   30
    ClientTop       =   15
    ClientWidth     =   5145
