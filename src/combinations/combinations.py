@@ -5,7 +5,7 @@ import csv
 import copy
 
 # Global variables
-ROUND = 10
+ROUND = 2
 
 def sorted_k_partitions(seq, k):
     """Returns a list of all unique k-partitions of `seq`.
@@ -118,10 +118,10 @@ def clusterization(data, distance, max):
         
     return clusters
 
-def getDistanceBetweenCites(data, distance, cityA, cityB):
-    return round(distance[data[cityA]["position"]][data[cityB]["position"]], ROUND)
+def get_distance_between_cities(data, distance, cityA, cityB):
+    return distance[data[cityA]["position"]][data[cityB]["position"]]
 
-def getSubArrayRSURange(sumTrash, rsutrash):
+def get_subarray_rsu_range(sumTrash, rsutrash):
     for i in range(len(rsutrash)):
         if sumTrash >= rsutrash[i] and sumTrash <= rsutrash[i+1]:
             return i
@@ -176,23 +176,23 @@ def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_onl
                 transshipment_cost = cdata[other_city]["transshipment-cost"]
                 cost_post_transhipment = cdata[other_city]["cost-post-transhipment"]
                 trash = cdata[other_city]["trash"]
-                sum_inbound = sum_inbound + ((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * getDistanceBetweenCites(cdata, distance, other_city, utvr_city))) * trash
-                #sum_co2 = sum_co2 + (1.24 * getDistanceBetweenCites(cdata, distance, utvr_city, other_city * trash))
+                sum_inbound = sum_inbound + ((conventional_cost) + (transshipment_cost) + (cost_post_transhipment * get_distance_between_cities(cdata, distance, other_city, utvr_city))) * trash
+                #sum_co2 = sum_co2 + (1.24 * get_distance_between_cities(cdata, distance, utvr_city, other_city * trash))
 
             #sum_co2 = sum_co2 / getSubTrash(cdata, subarray)
             entry["inbound-sum"] = sum_inbound
-            entry["inbound-show"] = round(sum_inbound/totalTrash, 3)
+            entry["inbound-show"] = round(sum_inbound/totalTrash, ROUND)
 
             if isCentralized:
-                sum_inbound = round(sum_inbound * ADDITIONAL_COST / subArrayTrash, 3)
+                sum_inbound = round(sum_inbound * ADDITIONAL_COST / subArrayTrash, ROUND)
             else:
-                sum_inbound = round(sum_inbound / subArrayTrash, 3)
+                sum_inbound = round(sum_inbound / subArrayTrash, ROUND)
 
             entry["inbound"] = sum_inbound
 
             dist = 999999
             for a in existentlandfill:
-                distCities = getDistanceBetweenCites(cdata, distance, utvr_city, a)
+                distCities = get_distance_between_cities(cdata, distance, utvr_city, a)
                 if distCities < dist:
                     dist = distCities
                     sum_outbound = 0
@@ -205,11 +205,11 @@ def calculateInboundOutbound(cdata, distance, subarray, isCentralized, utvrs_onl
             for a in aterros_only:
                 e = copy.deepcopy(entry)
                 sum_outbound = 0
-                #sum_outbound = sum_outbound + (getDistanceBetweenCites(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
+                #sum_outbound = sum_outbound + (get_distance_between_cities(cdata, distance, utvr_city,a) * (0.7 * cdata[utvr_city]["cost-post-transhipment"])) * LANDFILL_DEVIATION
                 if isCentralized:
-                    e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/subArrayTrash, ROUND)
+                    e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*get_distance_between_cities(cdata, distance, utvr_city,a)*MOVIMENTATION_COST))/subArrayTrash, ROUND)
                 else:
-                    e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*getDistanceBetweenCites(cdata, distance, utvr_city,a)*MOVIMENTATION_COST)) * ADDITIONAL_COST/subArrayTrash, ROUND)
+                    e["outbound"] = round(((subArrayTrash * LANDFILL_DEVIATION)*(cdata[utvr_city]["cost-post-transhipment"]*get_distance_between_cities(cdata, distance, utvr_city,a)*MOVIMENTATION_COST)) * ADDITIONAL_COST/subArrayTrash, ROUND)
                 e["aterro"] = a
                 e["total"] = e["inbound"] + e["outbound"]
                 
@@ -496,89 +496,89 @@ def main():
                 subArrayResult = {}
                 subArrayResult = calculateInboundOutbound(citiesdic, distance, subArray, isCentralized, utvrs, landfill, existentlandfill, CAPEX_INBOUND, CAPEX_OUTBOUND, PAYMENT_PERIOD, MOVIMENTATION_COST, LANDFILL_DEVIATION, totalTrash, ADDITIONAL_COST)
                 subArrayResult['trash'] = getSubArrayTrash(citiesdic, subArray)
-                subArrayResult['rsu-range'] = getSubArrayRSURange(subArrayResult['trash'], rsutrash)
+                subArrayResult['rsu-range'] = get_subarray_rsu_range(subArrayResult['trash'], rsutrash)
                 subArrayResult['capex'] = getSubArrayCapex(subArrayResult['rsu-range'], subArrayResult['trash'], rsutrash)
                 subArrayResult['opex'] = getSubArrayOpex(subArrayResult['rsu-range'], subArrayResult['trash'], rsutrash)
                 subArrayResult['population'] = getSubArrayPopulation(citiesdic, subArray)
-                subArrayResult['technology'] = (subArrayResult['capex']/PAYMENT_PERIOD + subArrayResult['opex'])
-                subArrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = subArrayResult["inbound-show"] * subArrayResult["trash"] / totalTrash
+                subArrayResult['technology'] = round((subArrayResult['capex']/PAYMENT_PERIOD + subArrayResult['opex']), ROUND)
+                subArrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = round(subArrayResult["inbound-show"] * subArrayResult["trash"] / totalTrash, ROUND)
                 subArrayResult["inbound-custo-incluindo-capex-nivel-sub-arranjo"] = 0
-                subArrayResult["total"] = subArrayResult['technology'] + subArrayResult["inbound"] + subArrayResult["outbound"]
-                arrayResult['inbound-sum'] = arrayResult['inbound-sum'] + (subArrayResult["inbound"] * subArrayResult['trash'])
-                arrayResult['inbound-show-sum'] = arrayResult['inbound-show-sum'] + (subArrayResult["inbound-show"] * subArrayResult['trash'])
-                arrayResult['outbound-sum'] = arrayResult['outbound-sum'] + (subArrayResult["outbound"] * subArrayResult['trash'])
-                arrayResult['outbound-existent-landfill-sum'] = arrayResult['outbound-existent-landfill-sum'] + (subArrayResult["outbound-existent-landfill"] * subArrayResult['trash'])
+                subArrayResult["total"] = round(subArrayResult['technology'] + subArrayResult["inbound"] + subArrayResult["outbound"], ROUND)
+                arrayResult['inbound-sum'] = round(arrayResult['inbound-sum'] + (subArrayResult["inbound"] * subArrayResult['trash']), ROUND)
+                arrayResult['inbound-show-sum'] = round(arrayResult['inbound-show-sum'] + (subArrayResult["inbound-show"] * subArrayResult['trash']), ROUND)
+                arrayResult['outbound-sum'] = round(arrayResult['outbound-sum'] + (subArrayResult["outbound"] * subArrayResult['trash']), ROUND)
+                arrayResult['outbound-existent-landfill-sum'] = round(arrayResult['outbound-existent-landfill-sum'] + (subArrayResult["outbound-existent-landfill"] * subArrayResult['trash']), ROUND)
                 subArrayResultList.append(subArrayResult)
 
             # Add capex value to inbound and outbound
             for subArray in subArrayResultList:
                 if arrayResult['inbound-sum'] > 0:
-                    subArray['inbound-capex'] = subArray['inbound'] + capexInbound * ((subArray['inbound']*subArray['trash'])/arrayResult['inbound-sum'])
+                    subArray['inbound-capex'] = round(subArray['inbound'] + capexInbound * ((subArray['inbound']*subArray['trash'])/arrayResult['inbound-sum']), ROUND)
                 else:
                     subArray['inbound-capex'] = 0
                 
                 if arrayResult['inbound-show-sum'] > 0:
-                    t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
+                    t41 = round((1000000/(subArray['trash']*312*PAYMENT_PERIOD)), ROUND)
                     #t40 = (CAPEX_INBOUND * ((arrayResult['inbound-sum']-(subArray["inbound"] * subArray['trash']))/arrayResult['inbound-sum']))
-                    t40 = CAPEX_INBOUND * ((subArray['trash']*subArray['inbound'])/(arrayResult['inbound-sum']))
+                    t40 = round(CAPEX_INBOUND * ((subArray['trash']*subArray['inbound'])/(arrayResult['inbound-sum'])), ROUND)
                     if isCentralized:
-                        t40 = CAPEX_INBOUND * ADDITIONAL_COST
+                        t40 = round(CAPEX_INBOUND * ADDITIONAL_COST, ROUND)
 
-                    subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray['inbound'] + (t40*t41)
-                    subArray["inbound-custo-incluindo-capex-nivel-arranjo"] = subArray['inbound-custo-incluindo-capex-nivel-sub-arranjo'] * subArray['trash'] / totalTrash
+                    subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] = round(subArray['inbound'] + (t40*t41), ROUND)
+                    subArray["inbound-custo-incluindo-capex-nivel-arranjo"] = round(subArray['inbound-custo-incluindo-capex-nivel-sub-arranjo'] * subArray['trash'] / totalTrash, ROUND)
                 else:
                     subArray['inbound-custo-incluindo-capex-nivel-arranjo'] = 0    
                 
                 if arrayResult['outbound-sum'] > 0:
-                    t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
+                    t41 = round((1000000/(subArray['trash']*312*PAYMENT_PERIOD)), ROUND)
                     #t40 = (CAPEX_INBOUND * ((arrayResult['inbound-sum']-(subArray["inbound"] * subArray['trash']))/arrayResult['inbound-sum']))
-                    t40 = CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound'])/(arrayResult['outbound-sum']))
+                    t40 = round(CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound'])/(arrayResult['outbound-sum'])), ROUND)
 
                     if isCentralized:
-                        subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound"] + (t40*t41)
+                        subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = round(subArray["outbound"] + (t40*t41), ROUND)
                     else:
-                        subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound"] + (ADDITIONAL_COST*t40*t41)
-                    subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash
+                        subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = round(subArray["outbound"] + (ADDITIONAL_COST*t40*t41), ROUND)
+                    subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = round(subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash, ROUND)
                 else:
                     subArray["outbound-custo-incluindo-capex-nivel-arranjo"] = 0
                     subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"] = 0
 
                 if arrayResult['outbound-existent-landfill-sum'] > 0:
-                    t41 = (1000000/(subArray['trash']*312*PAYMENT_PERIOD))
-                    t40 = CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound-existent-landfill'])/(arrayResult['outbound-existent-landfill-sum']))
+                    t41 = round((1000000/(subArray['trash']*312*PAYMENT_PERIOD)), ROUND)
+                    t40 = round(CAPEX_OUTBOUND * ((subArray['trash']*subArray['outbound-existent-landfill'])/(arrayResult['outbound-existent-landfill-sum'])), ROUND)
                     if isCentralized:
-                        subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill"] + (t40*t41)
+                        subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = round(subArray["outbound-existent-landfill"] + (t40*t41), ROUND)
                     else:
-                        subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = subArray["outbound-existent-landfill"] + (ADDITIONAL_COST*t40*t41)
-                    subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash
+                        subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = round(subArray["outbound-existent-landfill"] + (ADDITIONAL_COST*t40*t41), ROUND)
+                    subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = round(subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] * subArray['trash'] / totalTrash, ROUND)
                 else:    
                     subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = 0
                     subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-sub-arranjo"] = 0
 
-                subArray["total-capex"] = subArray['technology'] + subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"]
-                arrayResult['inbound'] = arrayResult['inbound'] + (subArray['inbound'] * subArray['trash'])
-                arrayResult['inbound-show'] = arrayResult['inbound-show'] + subArray['inbound-show']
-                arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] + subArray['inbound-custo-incluindo-capex-nivel-arranjo']
-                arrayResult['outbound'] = arrayResult['outbound'] + (subArray['outbound'] * subArray['trash'])
-                arrayResult['outbound-show-capex'] = arrayResult['outbound-show-capex'] + subArray["outbound-custo-incluindo-capex-nivel-arranjo"]
-                arrayResult['outbound-show-capex-existent-landfill'] = arrayResult['outbound-show-capex-existent-landfill'] + subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]
-                arrayResult['outbound-existent-landfill'] = arrayResult['outbound-existent-landfill'] + (subArray['outbound-existent-landfill'] * subArray['trash'])
-                arrayResult['inbound-capex'] = arrayResult['inbound-capex'] + (subArray['inbound-capex'] * subArray['trash'])
-                arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-arranjo"]
-                arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] + subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]
-                arrayResult['technology'] = arrayResult['technology'] + (subArray['technology'] * subArray['trash'])
+                subArray["total-capex"] = round(subArray['technology'] + subArray["inbound-custo-incluindo-capex-nivel-sub-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-sub-arranjo"], ROUND)
+                arrayResult['inbound'] = round(arrayResult['inbound'] + (subArray['inbound'] * subArray['trash']), ROUND)
+                arrayResult['inbound-show'] = round(arrayResult['inbound-show'] + subArray['inbound-show'], ROUND)
+                arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] = round(arrayResult['inbound-custo-incluindo-capex-nivel-arranjo'] + subArray['inbound-custo-incluindo-capex-nivel-arranjo'], ROUND)
+                arrayResult['outbound'] = round(arrayResult['outbound'] + (subArray['outbound'] * subArray['trash']), ROUND)
+                arrayResult['outbound-show-capex'] = round(arrayResult['outbound-show-capex'] + subArray["outbound-custo-incluindo-capex-nivel-arranjo"], ROUND)
+                arrayResult['outbound-show-capex-existent-landfill'] = round(arrayResult['outbound-show-capex-existent-landfill'] + subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"], ROUND)
+                arrayResult['outbound-existent-landfill'] = round(arrayResult['outbound-existent-landfill'] + (subArray['outbound-existent-landfill'] * subArray['trash']), ROUND)
+                arrayResult['inbound-capex'] = round(arrayResult['inbound-capex'] + (subArray['inbound-capex'] * subArray['trash']), ROUND)
+                arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] = round(arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] + subArray["outbound-custo-incluindo-capex-nivel-arranjo"], ROUND)
+                arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = round(arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] + subArray["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"], ROUND)
+                arrayResult['technology'] = round(arrayResult['technology'] + (subArray['technology'] * subArray['trash']), ROUND)
 
             arrayResult["arranjo"] = i
             arrayResult["sub"] = subArrayResultList
-            arrayResult["inbound"] = arrayResult['inbound']/arrayResult['trash']
-            arrayResult["outbound"] = arrayResult['outbound']/arrayResult['trash']
-            arrayResult["inbound-capex"] = arrayResult['inbound-capex']/arrayResult['trash']
+            arrayResult["inbound"] = round(arrayResult['inbound']/arrayResult['trash'], ROUND)
+            arrayResult["outbound"] = round(arrayResult['outbound']/arrayResult['trash'], ROUND)
+            arrayResult["inbound-capex"] = round(arrayResult['inbound-capex']/arrayResult['trash'], ROUND)
             #arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"]/arrayResult['trash']
-            arrayResult["technology"] = arrayResult['technology']/arrayResult['trash']
-            arrayResult['outbound-existent-landfill'] = arrayResult['outbound-existent-landfill']/arrayResult['trash']
+            arrayResult["technology"] = round(arrayResult['technology']/arrayResult['trash'], ROUND)
+            arrayResult['outbound-existent-landfill'] = round(arrayResult['outbound-existent-landfill']/arrayResult['trash'], ROUND)
             #arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"] = arrayResult["outbound-existent-landfill-custo-incluindo-capex-nivel-arranjo"]/arrayResult['trash']
-            arrayResult["total"] = arrayResult["technology"] + arrayResult["inbound"] + arrayResult["outbound"]
-            arrayResult["total-capex"] = arrayResult["technology"] + arrayResult["inbound-custo-incluindo-capex-nivel-arranjo"] + arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"]
+            arrayResult["total"] = round(arrayResult["technology"] + arrayResult["inbound"] + arrayResult["outbound"], ROUND)
+            arrayResult["total-capex"] = round(arrayResult["technology"] + arrayResult["inbound-custo-incluindo-capex-nivel-arranjo"] + arrayResult["outbound-custo-incluindo-capex-nivel-arranjo"], ROUND)
             
             if isCentralized:
                 arrayCentralized = arrayResult
@@ -587,7 +587,7 @@ def main():
                 if len(result) >= MAX_ARRAYS:
                     last = result[-1]
                     # Somente adiciona no array de data se um resultado melhor for encontrado
-                    if (round(arrayResult["total-capex"] * (1 + parameters['variacao_top_arranjos']))) < round(last["total-capex"]):
+                    if (round(arrayResult["total-capex"] * (1 + parameters['variacao_top_arranjos']), ROUND)) < round(last["total-capex"], ROUND):
                         print("Removendo ", last["total-capex"], " e inserindo ", arrayResult["total-capex"])
                         result.pop()
                         result.append(arrayResult)
