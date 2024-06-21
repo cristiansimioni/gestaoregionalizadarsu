@@ -188,7 +188,7 @@ Public Function generatePresentation() As String
     pptSlide.Shapes("População").TextFrame.TextRange.Text = Format(wksInfograph.range("C5").value, "#,##0")
     pptSlide.Shapes("Resíduos").TextFrame.TextRange.Text = wksInfograph.range("C6").value
     pptSlide.Shapes("TaxaReciclagemAtual").TextFrame.TextRange.Text = "< " & FormatPercent(wksInfograph.range("E47").value, 0)
-    pptSlide.Shapes("IRRAtual").TextFrame.TextRange.Text = "< " & FormatPercent(wksInfograph.range("O37").value, 0)
+    pptSlide.Shapes("IRRAtual").TextFrame.TextRange.Text = "< " & FormatPercent(wksInfograph.range("E113").value, 1)
     pptSlide.Shapes("DesvioAterroAtual").TextFrame.TextRange.Text = "< " & FormatPercent(wksInfograph.range("N37").value, 0)
     pptSlide.Shapes("EmissõesAtual").TextFrame.TextRange.Text = FormatNumber(wksInfograph.range("N99").value, 0)
     pptSlide.Shapes("EmpregosDiretos").TextFrame.TextRange.Text = Format(wksInfograph.range("N42").value, "#,##0") & " a " & Format(wksInfograph.range("O42").value, "#,##0")

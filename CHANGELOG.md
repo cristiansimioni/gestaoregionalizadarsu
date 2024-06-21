@@ -6,6 +6,12 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 
 ## [Unreleased]
 
+## [5.1.2] - 2024-06-21
+
+### Corrigido
+
+- Alterado o valor do IRR Atual no template do infográfico
+
 ## [5.1.1] - 2024-06-20
 
 ### Corrigido
@@ -41,6 +47,8 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/Author/Repository/compare/v5.1.0...HEAD
+[Unreleased]: https://github.com/Author/Repository/compare/v5.1.2...HEAD
+[5.1.2]: https://github.com/Author/Repository/compare/v5.1.1...v5.1.2
+[5.1.1]: https://github.com/Author/Repository/compare/v5.1.0...v5.1.1
 [5.1.0]: https://github.com/Author/Repository/compare/v5.0.0...v5.1.0
 [5.0.0]: https://github.com/cristiansimioni/gestaoregionalizadarsu/releases/tag/v5.0.0
