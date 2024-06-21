@@ -6,6 +6,14 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 
 ## [Unreleased]
 
+## [5.1.1] - 2024-06-20
+
+### Corrigido
+
+- Alterado o valor do IRR Futuro no template do infográfico
+
+## [5.1.0] - 2024-06-19
+
 ### Adicionado
 
 - Aba "Visulizador de Arranjos" adicionada a ferramenta para facilitar a visualização de arranjos de maneira tabelada
@@ -22,7 +30,7 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 
 ### Corrigido
 
-- 
+- Variáveis escritas na Ferramenta 1 (Rotas) considerando os mercados base e otimizado
 
 ## [5.0.0] - 2024-05-23
 

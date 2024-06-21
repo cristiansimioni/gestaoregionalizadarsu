@@ -195,7 +195,7 @@ Public Function generatePresentation() As String
     pptSlide.Shapes("EmpregosIndiretos").TextFrame.TextRange.Text = "+ " & Format(wksInfograph.range("N43").value, "#,##0") & " a " & Format(wksInfograph.range("O43").value, "#,##0")
     pptSlide.Shapes("TaxaReciclagemFuturoPercentagem").TextFrame.TextRange.Text = FormatPercent(wksInfograph.range("N39").value, 0) & " a " & FormatPercent(wksInfograph.range("O39").value, 0)
     pptSlide.Shapes("TaxaReciclagemFuturo").TextFrame.TextRange.Text = Format(wksInfograph.range("N88").value, "#,##0") & " a " & Format(wksInfograph.range("O88").value, "#,##0") & " Kt/a"
-    pptSlide.Shapes("IRRFuturo").TextFrame.TextRange.Text = "> " & FormatPercent(wksInfograph.range("N38").value, 0) & " a " & FormatPercent(wksInfograph.range("O38").value, 0)
+    pptSlide.Shapes("IRRFuturo").TextFrame.TextRange.Text = FormatPercent(wksInfograph.range("N112").value, 0) & " a " & FormatPercent(wksInfograph.range("O112").value, 0)
     pptSlide.Shapes("DesvioDeAterroFuturo").TextFrame.TextRange.Text = FormatPercent(wksInfograph.range("N38").value, 0) & " a " & FormatPercent(wksInfograph.range("O38").value, 0)
     pptSlide.Shapes("EmissõesFuturo").TextFrame.TextRange.Text = FormatNumber(wksInfograph.range("O101").value, 0) & " a " & FormatNumber(wksInfograph.range("N101").value, 0)
     
