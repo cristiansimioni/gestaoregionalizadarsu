@@ -24,15 +24,30 @@ Public Sub EditRouteToolData(ByVal filename, ByVal arr, ByVal market As String)
     lastRow = wksDatabase.Cells(Rows.count, DatabaseColumn.colName).End(xlUp).row
     For r = 2 To lastRow
         If wksDatabase.Cells(r, DatabaseColumn.colWorkbook).value = "Ferramenta 1" Then
-            Dim var, sheet, range, unit As String
+            Dim var, sheet, range, description, unit As String
             var = wksDatabase.Cells(r, DatabaseColumn.colName)
             sheet = Database.GetDatabaseValue(var, colSheet)
             range = Database.GetDatabaseValue(var, colCell)
             unit = Database.GetDatabaseValue(var, colUnit)
-            If unit = "%" Then
-                wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
-            Else
-                wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+            description = Database.GetDatabaseValue(var, colDescription)
+            If InStr(description, "- Base") = 0 And InStr(description, "- Otimizado") = 0 Then
+                If unit = "%" Then
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                Else
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                End If
+            ElseIf InStr(description, "- Otimizado") > 0 And market = FOLDEROPTIMIZEDMARKET Then
+                If unit = "%" Then
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                Else
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                End If
+            ElseIf InStr(description, "- Base") > 0 And (market = FOLDERBASEMARKET Or market = FOLDERLANDFILLMARKET) Then
+                If unit = "%" Then
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue) / 100#
+                Else
+                    wb.Sheets(sheet).range(range) = Database.GetDatabaseValue(var, colUserValue)
+                End If
             End If
         End If
     Next r

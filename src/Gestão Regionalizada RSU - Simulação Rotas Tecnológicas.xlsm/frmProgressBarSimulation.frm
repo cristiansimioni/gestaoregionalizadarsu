@@ -291,7 +291,7 @@ Private Sub executeSimulation()
                     
                     If x = 11 Or x = 7 Then 'Fixas
                         strFormula = strFormula & ColumnLetter & consolidatedRows(1)
-                    ElseIf x >= 12 And x <= 23 Or x = 6 Then 'Somatório
+                    ElseIf x >= 12 And x <= 23 Or x = 6 Or x >= 69 Then 'Somatório
                         For Each r In consolidatedRows
                             If element <> 1 Then
                                 strFormula = strFormula & "+"

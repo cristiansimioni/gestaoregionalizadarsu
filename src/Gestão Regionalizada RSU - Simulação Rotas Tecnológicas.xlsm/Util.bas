@@ -6,7 +6,7 @@ Public Const APPNAME                As String = "Gestão Regionalizada de RSU - S
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada de RSU"
 Public Const APPSUBNAME             As String = "Simulação de Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPVERSION             As String = "5.1.0"
-Public Const APPLASTUPDATED         As String = "14/06/2024"
+Public Const APPLASTUPDATED         As String = "19/06/2024"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
