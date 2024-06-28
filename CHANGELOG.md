@@ -6,6 +6,13 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 
 ## [Unreleased]
 
+## [5.1.3] - 2024-06-28
+
+### Corrigido
+
+- Alterada a conta de Rejeitos de Classe II não perigosos (75%) e perigosos (25%) para RT4 e RT5
+- Alreada a conta de "Repasse Receitas Mat. Recicláveis p/ Coop. Catadores" na aba "Dados Infográfico"
+
 ## [5.1.2] - 2024-06-21
 
 ### Corrigido
@@ -47,7 +54,8 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/Author/Repository/compare/v5.1.2...HEAD
+[Unreleased]: https://github.com/Author/Repository/compare/v5.1.3...HEAD
+[5.1.3]: https://github.com/Author/Repository/compare/v5.1.2...v5.1.3
 [5.1.2]: https://github.com/Author/Repository/compare/v5.1.1...v5.1.2
 [5.1.1]: https://github.com/Author/Repository/compare/v5.1.0...v5.1.1
 [5.1.0]: https://github.com/Author/Repository/compare/v5.0.0...v5.1.0

@@ -5,8 +5,8 @@ Option Explicit
 Public Const APPNAME                As String = "Gestão Regionalizada de RSU - Simulação de Rotas Tecnológicas: Tratamento/Disposição"
 Public Const APPSHORTNAME           As String = "Gestão Regionalizada de RSU"
 Public Const APPSUBNAME             As String = "Simulação de Rotas Tecnológicas: Tratamento/Disposição"
-Public Const APPVERSION             As String = "5.1.2"
-Public Const APPLASTUPDATED         As String = "21/06/2024"
+Public Const APPVERSION             As String = "5.1.3"
+Public Const APPLASTUPDATED         As String = "28/06/2024"
 Public Const APPDEVELOPERNAME       As String = "Cristian Simioni Milani"
 Public Const APPDEVELOPEREMAIL      As String = "cristiansimionimilani@gmail.com"
 
