@@ -62,7 +62,8 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 
 <!-- Versions -->
-[Unreleased]: https://github.com/Author/Repository/compare/v5.1.3...HEAD
+[Unreleased]: https://github.com/Author/Repository/compare/v5.1.4...HEAD
+[5.1.4]: https://github.com/Author/Repository/compare/v5.1.3...v5.1.4
 [5.1.3]: https://github.com/Author/Repository/compare/v5.1.2...v5.1.3
 [5.1.2]: https://github.com/Author/Repository/compare/v5.1.1...v5.1.2
 [5.1.1]: https://github.com/Author/Repository/compare/v5.1.0...v5.1.1
