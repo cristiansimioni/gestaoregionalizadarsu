@@ -320,7 +320,7 @@ Public Function generatePresentation() As String
     pptSlide.Shapes("VendaMaterialRecicláveisReal").TextFrame.TextRange.Text = Format(wksInfograph.range("H50").value, "0")
     pptSlide.Shapes("VendaCDR").TextFrame.TextRange.Text = Format(wksInfograph.range("H53").value, "0")
     pptSlide.Shapes("VendaCDRReal").TextFrame.TextRange.Text = Format(wksInfograph.range("H54").value, "0")
-    Set Chart = pptPres.Slides(9).Shapes("Gráfico").Chart
+    Set Chart = pptPres.Slides(11).Shapes("Gráfico").Chart
     Set ChartData = Chart.ChartData
     ChartData.Activate
     ChartData.Workbook.Application.Windows(1).Visible = False
