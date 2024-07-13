@@ -6,6 +6,14 @@ O formato é baseado em [Keep a Changelog] e este projeto segue [Semantic Versio
 
 ## [Unreleased]
 
+## [5.1.4] - 2024-07-13
+
+### Corrigido
+
+- Ajustado o template dos infográficos para melhor visualização de valores maiores que mil nos gráficos
+- Valores incorretos no gráfico de Biosecagem dos infográficos corrigidos
+- Manual da ferramenta ajustado para a nova versão
+
 ## [5.1.3] - 2024-06-28
 
 ### Corrigido
